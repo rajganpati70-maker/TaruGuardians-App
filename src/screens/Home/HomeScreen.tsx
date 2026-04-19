@@ -1816,6 +1816,127 @@ const GUARDIAN_COVENANTS: GuardianCovenant[] = [
   { id: 'gc-7', promise: 'We keep the grove · always.',                                               because: 'The trees were here before us · will be here after · we are only caretakers.',          color: '#16A34A', emoji: '🌳' },
 ];
 
+// =====================================================
+// Phase 3ao: deeper home structures — round 4
+// =====================================================
+
+interface HomeDailyBeacon {
+  id: string;
+  slot: string;
+  beacon: string;
+  intention: string;
+  color: string;
+  emoji: string;
+}
+
+const HOME_DAILY_BEACONS: HomeDailyBeacon[] = [
+  { id: 'hdb-1', slot: '05:30 · predawn',     beacon: 'Forest wake',                intention: 'Birds before people · walk with one breath per step · notice three trees.',            color: '#22C55E', emoji: '🌄' },
+  { id: 'hdb-2', slot: '07:00 · sunrise',      beacon: 'Grove loop',                 intention: 'Ten-minute loop · water one sapling · nod to the gardener · nothing to prove.',        color: '#F59E0B', emoji: '☀️' },
+  { id: 'hdb-3', slot: '10:30 · morning',       beacon: 'Desk check-in',             intention: 'One true line on the shared board · three deep-work blocks · no heroics.',             color: '#00D4FF', emoji: '💼' },
+  { id: 'hdb-4', slot: '13:00 · midday',        beacon: 'Slow lunch',                intention: 'Eat slowly · away from the screen · one real conversation · no Slack.',                color: '#F472B6', emoji: '🍲' },
+  { id: 'hdb-5', slot: '16:00 · afternoon',      beacon: 'Garden break',               intention: 'Ten-minute weed · two-minute water · hands in soil · mind returns.',                   color: '#16A34A', emoji: '🪴' },
+  { id: 'hdb-6', slot: '19:30 · evening',         beacon: 'Lamp-light read',            intention: 'Lamp · one page of something old · tea · phone on the other room\'s shelf.',            color: '#A78BFA', emoji: '📖' },
+  { id: 'hdb-7', slot: '22:00 · night',            beacon: 'Stargaze',                    intention: 'Roof · blanket · look up for five minutes · remember how small today was.',               color: '#FFD166', emoji: '🌌' },
+];
+
+interface HomeSeasonalRitual {
+  id: string;
+  season: string;
+  ritual: string;
+  tokens: string;
+  keeper: string;
+  color: string;
+  emoji: string;
+}
+
+const HOME_SEASONAL_RITUALS: HomeSeasonalRitual[] = [
+  { id: 'hsr-1', season: 'Spring · Vasant',      ritual: 'Open-sowing day · 2000 saplings handed out with letters from alumni.',                    tokens: 'Terracotta pot · handwritten letter · one sapling · one song.',      keeper: 'Green wing · Rehan',     color: '#22C55E', emoji: '🌸' },
+  { id: 'hsr-2', season: 'Summer · Grishma',       ritual: 'Campus cooling walk · shade-map audit · water dispenser refills around campus.',           tokens: 'Neem garland · a bottle of mitti-cooled water · a paper fan.',          keeper: 'Ops · Nidhi',             color: '#F59E0B', emoji: '🌞' },
+  { id: 'hsr-3', season: 'Monsoon · Varsha',         ritual: 'Rain bonfire inside the atrium · wet hair · chai · open mic for memories from the year.', tokens: 'A puddle photo · a damp marigold · a cup of ginger chai · one read-aloud.', keeper: 'Community · Meera',       color: '#00D4FF', emoji: '🌧️' },
+  { id: 'hsr-4', season: 'Autumn · Sharad',            ritual: 'Leaf-fall walk · collect a dry leaf · press it in a shared book · add a sentence of the year.', tokens: 'Pressed leaf · typed sentence · one archive entry · one thank-you.',  keeper: 'Content · Priya',          color: '#FFD166', emoji: '🍂' },
+  { id: 'hsr-5', season: 'Pre-winter · Hemant',          ritual: 'Sweater drive · alumni send warm things back to campus · students pick what fits.',         tokens: 'Alumni sweater · handwritten thank-you · a photograph pinned up.',    keeper: 'Alumni · Kabir',            color: '#F472B6', emoji: '🧣' },
+  { id: 'hsr-6', season: 'Winter · Shishir',               ritual: 'Library lantern nights · shared reading · soft music · quiet writing alongside.',             tokens: 'Lantern · a shared poem · one soft blanket · hot cocoa in clay cups.',  keeper: 'Library · elders',          color: '#A78BFA', emoji: '🕯️' },
+  { id: 'hsr-7', season: 'Late winter · Shishiranta',      ritual: 'New-year letter · write to last-year you · open the letter kept from two years ago.',           tokens: 'One letter · one envelope · one seal · one hidden truth between.',   keeper: 'Everyone · self',             color: '#EF4444', emoji: '✉️' },
+];
+
+interface HomeCampusGrove {
+  id: string;
+  tree: string;
+  ageYears: string;
+  planter: string;
+  story: string;
+  color: string;
+  emoji: string;
+}
+
+const HOME_CAMPUS_GROVES: HomeCampusGrove[] = [
+  { id: 'hcg-1', tree: 'Banyan by the library',          ageYears: '~78 years',   planter: 'Grandmother Leela · founding librarian',  story: 'Reading room was built around it · we kept the arch low to honour the roots.',             color: '#16A34A', emoji: '🌳' },
+  { id: 'hcg-2', tree: 'Neem beside the tuck shop',        ageYears: '~42 years',   planter: 'Class of 1982 · farewell ritual',           story: 'Graduating batches pin one letter each year · the bark holds a decade of stories.',           color: '#22C55E', emoji: '🌿' },
+  { id: 'hcg-3', tree: 'Tamarind near the sports field',    ageYears: '~55 years',   planter: 'Coach Rahim · for summer shade',             story: 'Before every tournament · team sits under it · a quiet circle · no pep talks.',                color: '#F59E0B', emoji: '🌱' },
+  { id: 'hcg-4', tree: 'Gulmohar at the gate',                ageYears: '~31 years',   planter: 'Class of 1995 · convocation plant',           story: 'Flowers every May · we photograph alumni returning under it · the gate itself is an event.',  color: '#EF4444', emoji: '🌺' },
+  { id: 'hcg-5', tree: 'Peepal near the dorm',                 ageYears: '~65 years',   planter: 'Temple priest Raghavanji',                      story: 'Dorms keep a window open toward it · freshers are walked past it on first day.',              color: '#A78BFA', emoji: '🍃' },
+  { id: 'hcg-6', tree: 'Ashoka along the walkway',              ageYears: '~22 years',   planter: 'Class of 2004 · sustainability week',            story: 'A long line of them · we prune gently · the walk under it is the longest in campus.',        color: '#F472B6', emoji: '🌲' },
+  { id: 'hcg-7', tree: 'Fig behind the mess',                     ageYears: '~48 years',   planter: 'Gardener Anand-ji · quiet initiative',            story: 'Birds more than fruit · mornings · we\'re told · listen for the little ones before sunrise.',    color: '#FFD166', emoji: '🌾' },
+];
+
+interface HomeKindlingKit {
+  id: string;
+  kit: string;
+  contents: string;
+  useWhen: string;
+  learning: string;
+  color: string;
+  emoji: string;
+}
+
+const HOME_KINDLING_KITS: HomeKindlingKit[] = [
+  { id: 'hkk-1', kit: 'First-day buddy kit',               contents: 'Campus map · a fold with first-7-days · a phone list · a chai coupon · an alumni letter.',                       useWhen: 'Day one · every new member · given by a senior · not left on a desk.',                  learning: 'The club feels like a person · not an app · from minute one.',                             color: '#F59E0B', emoji: '🎒' },
+  { id: 'hkk-2', kit: 'Night-owl warmth kit',                contents: 'A thermos of chai · a small lamp · a chocolate bar · earplugs · a thank-you note · a two-minute break card.',  useWhen: 'Late nights before deadlines · on the shared desk · for whoever stayed.',                learning: 'We reward staying · we honour going home too · both are allowed.',                          color: '#A78BFA', emoji: '🔦' },
+  { id: 'hkk-3', kit: 'Rainy-day comfort kit',                 contents: 'Small towels · ginger-tea sachet · dry kurta · tissue pack · a book of short stories.',                         useWhen: 'Monsoon walk-ins · reception desk · first-come · no sign-ins.',                           learning: 'Weather is not an obstacle · it is part of what we do.',                                     color: '#00D4FF', emoji: '☂️' },
+  { id: 'hkk-4', kit: 'Stage-fright calm kit',                  contents: 'Water · lozenges · a small quote card · earphones with two-minute calm track · a grounding-squeeze ball.',   useWhen: 'Backstage · 10 minutes before a speaker walks on · handed by the MC.',                    learning: 'Anxiety is normal · kit-first · feeling-second · stage is last.',                           color: '#F472B6', emoji: '🎤' },
+  { id: 'hkk-5', kit: 'Exam-week keep-going kit',                contents: 'Nuts · fruits · a playlist card · a walk-map · alumni "you will survive this" letter · 5-minute yoga card.', useWhen: 'Exam week · library entrance · pickable · self-refilled by alumni.',                       learning: 'We were held · we hold · it is how the batch after us passes.',                             color: '#22C55E', emoji: '🍎' },
+  { id: 'hkk-6', kit: 'Post-event thank-you kit',                 contents: 'Folded card · tea sachet · sticker · alumni-written "you showed up" note · photo strip after recap.',          useWhen: 'Day after a big event · ops table · every volunteer takes one.',                           learning: 'We close the loop · volunteers are not forgotten · gratitude has a shelf.',                  color: '#FFD166', emoji: '🎁' },
+  { id: 'hkk-7', kit: 'Leaving-campus kit',                         contents: 'Alumni-badge · a campus-fig-leaf · handwritten council letter · a sapling in a pot · one photo from day one.', useWhen: 'Convocation day · doorway · before the family photo.',                                     learning: 'Leaving is not losing · the grove remembers · you carry a cutting.',                        color: '#EF4444', emoji: '📦' },
+];
+
+interface HomeQuietWin {
+  id: string;
+  win: string;
+  quiet: string;
+  who: string;
+  color: string;
+  emoji: string;
+}
+
+const HOME_QUIET_WINS: HomeQuietWin[] = [
+  { id: 'hqw-1', win: 'Someone stayed back to help a junior debug · past midnight · with no fanfare.',            quiet: 'No slack message · just quiet · the junior passed exam · the senior never mentioned it.',   who: 'Senior dev · 2023 batch · unnamed on purpose',      color: '#00D4FF', emoji: '🫱' },
+  { id: 'hqw-2', win: 'A graphic designer redid the alumni poster · at 3 AM · because she noticed a typo.',       quiet: 'The next-morning version was better · she deleted her "sorry" message · it was already fine.', who: 'GD member · 2024 batch · caught a typo',           color: '#F472B6', emoji: '🖌️' },
+  { id: 'hqw-3', win: 'The photo wing quietly printed 14 frames of the last event · pinned on the library wall.',  quiet: 'No post · no announcement · alumni noticed · smiled · walked past · said thank you in person.', who: 'Photo wing · anonymous curator',                   color: '#22C55E', emoji: '🖼️' },
+  { id: 'hqw-4', win: 'Someone rewrote the onboarding doc · clearer · kinder · now juniors don\'t get lost.',       quiet: 'They slipped it into the shared drive · didn\'t announce · we noticed through the joy of the juniors.', who: 'Web wing · care-first junior',                   color: '#F59E0B', emoji: '📘' },
+  { id: 'hqw-5', win: 'A PR lead declined a pitch that would have hurt a small venue · quietly · kindly.',          quiet: 'A one-line email · respectful · the venue sent a thank-you card a month later.',             who: 'PR lead · quiet dissent',                          color: '#FFD166', emoji: '✉️' },
+  { id: 'hqw-6', win: 'The ops team fixed the hall AC the day before an event · at midnight · with their own tools.', quiet: 'The speakers never knew · the audience smiled · the ops team was asleep by the time we thanked them.', who: 'Ops · late-night team',                     color: '#EF4444', emoji: '🛠️' },
+  { id: 'hqw-7', win: 'An alumna flew in · paid her own ticket · to mentor juniors on a Saturday.',                   quiet: 'She left the same night · didn\'t ask for recognition · left one handwritten card in the council mailbox.', who: 'Alumna · 2019 batch · distance no barrier',    color: '#A78BFA', emoji: '✈️' },
+];
+
+interface HomeFounderNote {
+  id: string;
+  year: string;
+  excerpt: string;
+  writer: string;
+  color: string;
+  emoji: string;
+}
+
+const HOME_FOUNDER_NOTES: HomeFounderNote[] = [
+  { id: 'hfn-1', year: '1998', excerpt: 'We started with four chairs · one broken table · and a plan that was mostly a wish. I remember writing "we will be kind first" on the back of a book cover. It is the thing I am still proudest of.', writer: 'Shreya R. · co-founder',          color: '#F59E0B', emoji: '🪑' },
+  { id: 'hfn-2', year: '2003', excerpt: 'The first grove day · sixty saplings · a storm cloud · nobody left. We planted in the rain · because waiting felt wrong. The grove that came up was the crookedest · most alive thing I have ever seen grow.', writer: 'Arjun M. · founding tree-keeper', color: '#22C55E', emoji: '🌳' },
+  { id: 'hfn-3', year: '2008', excerpt: 'We started refusing sponsors who wanted to speak from stage about themselves. It lost us a year of budget. It bought us a decade of trust. I still think about that trade every August.', writer: 'Priya N. · council chair',         color: '#00D4FF', emoji: '🤝' },
+  { id: 'hfn-4', year: '2014', excerpt: 'A junior cried backstage before her first talk. I sat with her for 20 minutes. She went on. The room stood up. That was the moment I knew the club had become something larger than any of us.', writer: 'Meera V. · mentor',               color: '#F472B6', emoji: '🎤' },
+  { id: 'hfn-5', year: '2019', excerpt: 'The reunion weekend · 200 alumni · we had planned for 50. The hall was too small. We moved outside · under the banyan. It was the first time I saw the tree as a venue · and I cried a little.', writer: 'Rehan K. · alumni lead',          color: '#A78BFA', emoji: '🌳' },
+  { id: 'hfn-6', year: '2022', excerpt: 'Came back post-covid · the grove had grown four feet in two years. Nobody tended it much. Nature did its thing. I learned to trust the club the way we trust the grove. It grows even when we are distracted.', writer: 'Kabir S. · returning council',   color: '#FFD166', emoji: '🌱' },
+  { id: 'hfn-7', year: '2025', excerpt: 'Watched a first-year teach a fresher how to mount a poster · the way I had taught her · the way someone had taught me. Three generations in one gesture. The grove grows by passing a thing on · gently.', writer: 'Nidhi P. · incumbent lead',   color: '#EF4444', emoji: '🪔' },
+];
+
 const HomeScreen: React.FC = () => {
   // ------ State ------
   const [refreshing, setRefreshing] = useState(false);
@@ -3784,6 +3905,125 @@ const HomeScreen: React.FC = () => {
     </View>
   );
 
+  const renderDailyBeacons = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🕯️ Daily beacons · a soft day-shape</Text>
+        <Text style={styles.sectionCaption}>{HOME_DAILY_BEACONS.length} slots</Text>
+      </View>
+      {HOME_DAILY_BEACONS.map((b) => (
+        <View key={b.id} style={[styles.hdbCard, { borderLeftColor: b.color }]}>
+          <View style={styles.hdbTopRow}>
+            <Text style={[styles.hdbSlot, { color: b.color }]}>{b.slot}</Text>
+            <Text style={styles.hdbEmoji}>{b.emoji}</Text>
+            <Text style={styles.hdbBeacon} numberOfLines={1}>{b.beacon}</Text>
+          </View>
+          <Text style={styles.hdbIntention} numberOfLines={2}>{b.intention}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderSeasonalRituals = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🪔 Seasonal rituals · our year in tokens</Text>
+        <Text style={styles.sectionCaption}>{HOME_SEASONAL_RITUALS.length} seasons</Text>
+      </View>
+      {HOME_SEASONAL_RITUALS.map((s) => (
+        <View key={s.id} style={[styles.hsrCard, { borderLeftColor: s.color }]}>
+          <View style={styles.hsrTopRow}>
+            <Text style={[styles.hsrSeason, { color: s.color }]}>{s.season}</Text>
+            <Text style={styles.hsrEmoji}>{s.emoji}</Text>
+          </View>
+          <Text style={styles.hsrRitual} numberOfLines={3}>{s.ritual}</Text>
+          <Text style={styles.hsrTokens} numberOfLines={2}>tokens · {s.tokens}</Text>
+          <Text style={styles.hsrKeeper} numberOfLines={1}>keeper · {s.keeper}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderCampusGroves = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🌳 Campus grove · trees we are in conversation with</Text>
+        <Text style={styles.sectionCaption}>{HOME_CAMPUS_GROVES.length} trees</Text>
+      </View>
+      {HOME_CAMPUS_GROVES.map((g) => (
+        <View key={g.id} style={[styles.hcgCard, { borderLeftColor: g.color }]}>
+          <View style={styles.hcgTopRow}>
+            <Text style={styles.hcgEmoji}>{g.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.hcgTree} numberOfLines={1}>{g.tree}</Text>
+              <Text style={[styles.hcgAge, { color: g.color }]}>{g.ageYears}</Text>
+            </View>
+          </View>
+          <Text style={styles.hcgPlanter} numberOfLines={1}>planter · {g.planter}</Text>
+          <Text style={styles.hcgStory} numberOfLines={3}>{g.story}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderKindlingKits = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🎒 Kindling kits · what we pre-pack for each other</Text>
+        <Text style={styles.sectionCaption}>{HOME_KINDLING_KITS.length} kits</Text>
+      </View>
+      {HOME_KINDLING_KITS.map((k) => (
+        <View key={k.id} style={[styles.hkkCard, { borderLeftColor: k.color }]}>
+          <View style={styles.hkkTopRow}>
+            <Text style={styles.hkkEmoji}>{k.emoji}</Text>
+            <Text style={styles.hkkKit} numberOfLines={1}>{k.kit}</Text>
+          </View>
+          <Text style={styles.hkkContents} numberOfLines={3}>contents · {k.contents}</Text>
+          <Text style={styles.hkkWhen} numberOfLines={2}>use · {k.useWhen}</Text>
+          <Text style={[styles.hkkLearning, { color: k.color }]} numberOfLines={2}>learning · {k.learning}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderQuietWins = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🤫 Quiet wins · the stories we did not post</Text>
+        <Text style={styles.sectionCaption}>{HOME_QUIET_WINS.length} wins</Text>
+      </View>
+      {HOME_QUIET_WINS.map((w) => (
+        <View key={w.id} style={[styles.hqwCard, { borderLeftColor: w.color }]}>
+          <View style={styles.hqwTopRow}>
+            <Text style={styles.hqwEmoji}>{w.emoji}</Text>
+            <Text style={styles.hqwWin} numberOfLines={3}>{w.win}</Text>
+          </View>
+          <Text style={styles.hqwQuiet} numberOfLines={3}>{w.quiet}</Text>
+          <Text style={styles.hqwWho} numberOfLines={1}>— {w.who}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderFounderNotes = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🪔 Founder notes · lanterns from different years</Text>
+        <Text style={styles.sectionCaption}>{HOME_FOUNDER_NOTES.length} notes</Text>
+      </View>
+      {HOME_FOUNDER_NOTES.map((n) => (
+        <View key={n.id} style={[styles.hfnCard, { borderLeftColor: n.color }]}>
+          <View style={styles.hfnTopRow}>
+            <Text style={[styles.hfnYear, { color: n.color }]}>{n.year}</Text>
+            <Text style={styles.hfnEmoji}>{n.emoji}</Text>
+          </View>
+          <Text style={styles.hfnExcerpt} numberOfLines={6}>{n.excerpt}</Text>
+          <Text style={styles.hfnWriter} numberOfLines={1}>— {n.writer}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
   const renderClubValues = () => (
     <View style={styles.sectionBlock}>
       <View style={styles.sectionHeaderRow}>
@@ -3883,6 +4123,12 @@ const HomeScreen: React.FC = () => {
         {renderLocalHeroes()}
         {renderGratitudeWall()}
         {renderGuardianCovenants()}
+        {renderDailyBeacons()}
+        {renderSeasonalRituals()}
+        {renderCampusGroves()}
+        {renderKindlingKits()}
+        {renderQuietWins()}
+        {renderFounderNotes()}
         {renderSpotlights()}
         {renderCollab()}
         {renderClubValues()}
@@ -5233,6 +5479,57 @@ const styles = StyleSheet.create({
   gcEmoji: { fontSize: 20, marginRight: 10, marginTop: 2 },
   gcPromise: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', flex: 1, lineHeight: 17 },
   gcBecause: { color: Colors.text.muted, fontSize: 11, lineHeight: 15, marginTop: 6, paddingLeft: 30, fontStyle: 'italic' },
+
+  // --- Phase 3ao: daily beacons ---
+  hdbCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  hdbTopRow: { flexDirection: 'row', alignItems: 'center' },
+  hdbSlot: { fontSize: 11, fontWeight: '900', letterSpacing: 0.5, marginRight: 10, width: 100 },
+  hdbEmoji: { fontSize: 20, marginRight: 8 },
+  hdbBeacon: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', flex: 1 },
+  hdbIntention: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 6, paddingLeft: 40 },
+
+  // --- Phase 3ao: seasonal rituals ---
+  hsrCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 14, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  hsrTopRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+  hsrSeason: { fontSize: 12, fontWeight: '900', letterSpacing: 1, textTransform: 'uppercase' },
+  hsrEmoji: { fontSize: 24 },
+  hsrRitual: { color: Colors.text.primary, fontSize: 13, lineHeight: 17, marginTop: 8 },
+  hsrTokens: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 6 },
+  hsrKeeper: { color: Colors.text.muted, fontSize: 11, marginTop: 4, fontStyle: 'italic' },
+
+  // --- Phase 3ao: campus groves ---
+  hcgCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  hcgTopRow: { flexDirection: 'row', alignItems: 'center' },
+  hcgEmoji: { fontSize: 24, marginRight: 10 },
+  hcgTree: { color: Colors.text.primary, fontSize: 13, fontWeight: '900' },
+  hcgAge: { fontSize: 11, fontWeight: '700', marginTop: 2 },
+  hcgPlanter: { color: Colors.text.muted, fontSize: 11, marginTop: 8, paddingLeft: 34 },
+  hcgStory: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 34 },
+
+  // --- Phase 3ao: kindling kits ---
+  hkkCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  hkkTopRow: { flexDirection: 'row', alignItems: 'center' },
+  hkkEmoji: { fontSize: 22, marginRight: 10 },
+  hkkKit: { color: Colors.text.primary, fontSize: 13, fontWeight: '900', flex: 1 },
+  hkkContents: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8, paddingLeft: 32 },
+  hkkWhen: { color: Colors.text.muted, fontSize: 11, lineHeight: 15, marginTop: 3, paddingLeft: 32 },
+  hkkLearning: { fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32, fontStyle: 'italic' },
+
+  // --- Phase 3ao: quiet wins ---
+  hqwCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  hqwTopRow: { flexDirection: 'row', alignItems: 'flex-start' },
+  hqwEmoji: { fontSize: 22, marginRight: 10, marginTop: 2 },
+  hqwWin: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', flex: 1, lineHeight: 17 },
+  hqwQuiet: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8, paddingLeft: 32, fontStyle: 'italic' },
+  hqwWho: { color: Colors.text.muted, fontSize: 11, marginTop: 6, paddingLeft: 32 },
+
+  // --- Phase 3ao: founder notes ---
+  hfnCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 14, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  hfnTopRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+  hfnYear: { fontSize: 14, fontWeight: '900', letterSpacing: 1 },
+  hfnEmoji: { fontSize: 24 },
+  hfnExcerpt: { color: Colors.text.primary, fontSize: 13, lineHeight: 19, marginTop: 10, fontStyle: 'italic' },
+  hfnWriter: { color: Colors.accent.softGold, fontSize: 11, marginTop: 8, fontWeight: '700' },
 });
 
 export default HomeScreen;
