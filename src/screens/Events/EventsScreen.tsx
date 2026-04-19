@@ -1541,6 +1541,130 @@ const EVENT_CODE_OF_CARE: EventCodeOfCare[] = [
   { id: 'eco-7', pillar: 'Pay + credits',          oneLine: 'Every artist · fairly paid · properly credited.',                  guideline: 'No "expose for exposure" gigs · minimum stipend · signed agreement in advance · name on poster.',     color: '#FFD166', emoji: '💚' },
 ];
 
+// =====================================================
+// Phase 3am: deeper events structures — round 3
+// =====================================================
+
+interface EventAccessGuide {
+  id: string;
+  audience: string;
+  need: string;
+  arrangement: string;
+  host: string;
+  color: string;
+  emoji: string;
+}
+
+const EVT_ACCESS_GUIDES: EventAccessGuide[] = [
+  { id: 'eag-1', audience: 'Wheelchair users',                need: 'Step-free access · wide aisles · reserved viewing bay',        arrangement: 'Ramped entry · 4 reserved bays near the front · escort on call.',          host: 'Accessibility lead · Rhea', color: '#F472B6', emoji: '♿' },
+  { id: 'eag-2', audience: 'Hearing · low-hearing friends',    need: 'Live captions · quiet queue signage · visual cue system',       arrangement: 'Captions on all screens · ISL interpreter for keynote.',                      host: 'AV lead · Arjun',         color: '#00D4FF', emoji: '👂' },
+  { id: 'eag-3', audience: 'Low-vision friends',                need: 'High-contrast signage · voice-announced cues',                 arrangement: 'Tactile maps at entry · audio announcements · volunteer pair on call.',       host: 'Hospitality · Meera',       color: '#F59E0B', emoji: '👁️' },
+  { id: 'eag-4', audience: 'Sensory-sensitive attendees',       need: 'Low-noise corner · soft lighting · earplug kit',                arrangement: 'Quiet room next to hall · earplugs + headphones at reception.',               host: 'Wellness · Nidhi',          color: '#A78BFA', emoji: '🤫' },
+  { id: 'eag-5', audience: 'Parents with young children',       need: 'Stroller space · feeding corner · quick washroom',              arrangement: 'Family-first seating · curtained feeding nook · sitter on rotation.',          host: 'Hospitality · Sunita didi', color: '#FFD166', emoji: '🍼' },
+  { id: 'eag-6', audience: 'First-language non-English',        need: 'Hindi · Marathi · Kannada translation on request',             arrangement: 'Keynote subtitles in 3 languages · volunteers badged by language.',          host: 'Language lead · Priya',     color: '#22C55E', emoji: '🗣️' },
+  { id: 'eag-7', audience: 'Solo attendees',                     need: 'Friendly intro mechanism · not awkward icebreakers',             arrangement: 'Solo-welcomer volunteer · opt-in lanyard dot · mid-event mixer.',             host: 'Community · Ishita',         color: '#EF4444', emoji: '🧍' },
+];
+
+interface EventTimeBlock {
+  id: string;
+  timeSlot: string;
+  block: string;
+  owner: string;
+  goal: string;
+  color: string;
+  emoji: string;
+}
+
+const EVT_TIME_BLOCKS: EventTimeBlock[] = [
+  { id: 'etb-1', timeSlot: '08:30 – 09:30',  block: 'Setup walkthrough',       owner: 'Ops + crew leads',      goal: 'Gear checked · power routed · wifi confirmed · triage plan briefed.',             color: '#F59E0B', emoji: '🛠️' },
+  { id: 'etb-2', timeSlot: '09:30 – 10:00',  block: 'Doors open · arrivals',    owner: 'Hospitality + ushers',  goal: 'Warm welcome · quick registration · soft music · coffee ready.',                   color: '#F472B6', emoji: '🚪' },
+  { id: 'etb-3', timeSlot: '10:00 – 10:30',  block: 'Opening ritual',           owner: 'MC + founders',         goal: 'Grounding moment · land acknowledgement · welcome elders.',                         color: '#A78BFA', emoji: '🪔' },
+  { id: 'etb-4', timeSlot: '10:30 – 12:30',  block: 'Morning deep work',        owner: 'Track leads',            goal: 'Focused talks · workshops · prototype sessions · no context-switching.',            color: '#00D4FF', emoji: '💼' },
+  { id: 'etb-5', timeSlot: '12:30 – 14:00',  block: 'Lunch + slow hallway',     owner: 'Hospitality · caterer',  goal: 'Proper meal · quiet space · mixer prompts optional · no programming scheduled.',    color: '#22C55E', emoji: '🍽️' },
+  { id: 'etb-6', timeSlot: '14:00 – 16:30',  block: 'Afternoon collaboration',   owner: 'Track leads',            goal: 'Group sessions · demos · hands-on activities · live critiques.',                     color: '#FFD166', emoji: '🤝' },
+  { id: 'etb-7', timeSlot: '16:30 – 17:30',  block: 'Closing circle + tea',      owner: 'MC + hosts',             goal: 'Reflections · thank-yous · one-commitment-each · goodbye song.',                     color: '#EF4444', emoji: '🍵' },
+];
+
+interface EventRehearsalStep {
+  id: string;
+  step: string;
+  when: string;
+  who: string;
+  proves: string;
+  color: string;
+  emoji: string;
+}
+
+const EVT_REHEARSAL_STEPS: EventRehearsalStep[] = [
+  { id: 'ers-1', step: 'Tech dry run · audio · display · internet',          when: '3 days before · 2 hours',      who: 'Tech crew + AV partner',         proves: 'Every mic · screen · dongle works end-to-end without improvisation.',                 color: '#00D4FF', emoji: '🎚️' },
+  { id: 'ers-2', step: 'Speaker walkthrough · with real timing',              when: '2 days before · 90 min',       who: 'Speakers + MC + track leads',    proves: 'Timing honest · cues agreed · nervous spots rehearsed once.',                          color: '#F59E0B', emoji: '🎤' },
+  { id: 'ers-3', step: 'Hospitality flow · from gate to seat',                 when: '1 day before · 60 min',        who: 'Hospitality + ushers + ops',      proves: 'A first-timer can enter → register → sit → feel welcomed in under 5 min.',               color: '#F472B6', emoji: '🚪' },
+  { id: 'ers-4', step: 'Food taste + dietary cross-check',                     when: '1 day before · 60 min',        who: 'Caterer + dietary-sensitive volunteers', proves: 'Vegan · gluten-free · jain options tasted · labels accurate · allergens called out.', color: '#22C55E', emoji: '🍲' },
+  { id: 'ers-5', step: 'Emergency drill · fire · medical · lost child',         when: '1 day before · 30 min',        who: 'Safety lead + all volunteers',    proves: 'Exits known · first-aider located · radio etiquette understood.',                        color: '#EF4444', emoji: '🚨' },
+  { id: 'ers-6', step: 'Photo + stream dry run · with real lighting',           when: '1 day before · 60 min',        who: 'Photo + stream crew',              proves: 'Angles approved · no-photo lanyards respected · stream link ready.',                     color: '#A78BFA', emoji: '📷' },
+  { id: 'ers-7', step: 'Volunteer briefing + kindness reminder',                when: 'Event morning · 30 min',        who: 'Event lead + all volunteers',      proves: 'Everyone knows their station · hand signals · shift timings · rest breaks.',              color: '#FFD166', emoji: '🫶' },
+];
+
+interface EventVolunteerRole {
+  id: string;
+  role: string;
+  shift: string;
+  perks: string;
+  skill: string;
+  color: string;
+  emoji: string;
+}
+
+const EVT_VOLUNTEER_ROLES: EventVolunteerRole[] = [
+  { id: 'evr-1', role: 'Gate buddy',                     shift: '2h morning · 1h noon',          perks: 'Event kit · meal · one handwritten thank-you',        skill: 'Smile often · remember names · gentle direction.',             color: '#F59E0B', emoji: '🚪' },
+  { id: 'evr-2', role: 'Stage shepherd',                 shift: '3h afternoon',                   perks: 'Backstage access · speaker prep · meal',                skill: 'Time-wise · calm under cue · not-too-loud mic-passer.',         color: '#A78BFA', emoji: '🎤' },
+  { id: 'evr-3', role: 'Food steward',                    shift: '2h lunch block',                  perks: 'Choose-first buffet · meal · apron keeper',              skill: 'Dietary-aware · allergy-alert · label-reader.',                 color: '#22C55E', emoji: '🍲' },
+  { id: 'evr-4', role: 'Photo guardian',                   shift: '4h rolling',                      perks: 'Kit rental + card · meal · credit in recap',             skill: 'Lanyard-aware · consent-first · never-block-the-speaker.',      color: '#00D4FF', emoji: '📷' },
+  { id: 'evr-5', role: 'Accessibility pair',                shift: 'Full day · rotating',            perks: 'Training credit · meal · shadow-intro to disability lead', skill: 'Patient · soft-voiced · knows where every ramp · lift is.',     color: '#F472B6', emoji: '♿' },
+  { id: 'evr-6', role: 'Kindness line · wellness desk',     shift: 'Full day · rotating',            perks: 'Wellness lead shadow · meal · reflection write-up',     skill: 'Listens without fixing · offers water · offers quiet room.',    color: '#FFD166', emoji: '🫶' },
+  { id: 'evr-7', role: 'Closing crew · teardown',             shift: '90 min · end-of-day',            perks: 'Last meal + bonfire · team photo · handwritten thanks',  skill: 'Lifts carefully · labels boxes · leaves campus as we found it.', color: '#EF4444', emoji: '📦' },
+];
+
+interface EventMemoryCapsule {
+  id: string;
+  year: string;
+  moment: string;
+  why: string;
+  keeper: string;
+  color: string;
+  emoji: string;
+}
+
+const EVT_MEMORY_CAPSULES: EventMemoryCapsule[] = [
+  { id: 'emc-1', year: '2017',   moment: 'The monsoon bonfire that would not start · and then did · right when Priya started singing.',              why: 'We stopped thinking of events as schedules · and as weather we dance inside.',         keeper: 'Priya + photo archive · 34 frames',    color: '#F59E0B', emoji: '🔥' },
+  { id: 'emc-2', year: '2019',   moment: 'The accidental alumni reunion · 28 people turned up unannounced on a Friday night.',                        why: 'We learned that the door is a ritual · not a locked thing · and we leave it open.',     keeper: 'Alumni circle · letter wall',            color: '#F472B6', emoji: '✉️' },
+  { id: 'emc-3', year: '2021',   moment: 'The masked exam-week bonfire · we fed 200 people in shifts · nobody was left hungry.',                      why: 'We kept hospitality during pandemic · it taught us capacity is about care not count.',  keeper: 'Ops log · anonymous donor thanks',      color: '#22C55E', emoji: '🍲' },
+  { id: 'emc-4', year: '2022',   moment: 'The storytelling showcase where Arjun cried on stage · and four of us cried in the back · and no one moved.', why: 'We learned a stage can be a confessional · and how to hold a room that is holding itself.', keeper: 'Video archive · masters + cuts',        color: '#A78BFA', emoji: '🎞️' },
+  { id: 'emc-5', year: '2023',   moment: 'The sapling planting that turned into three days of impromptu campus gardening.',                            why: 'We accidentally built our own green wing · and it stayed.',                              keeper: 'Green wing · photo + counts',           color: '#16A34A', emoji: '🌱' },
+  { id: 'emc-6', year: '2023',   moment: 'The poetry night that became a city-wide show · three venues · one shared mic.',                               why: 'We learned we can hold more than campus · if we ask gently · the city says yes.',          keeper: 'PR wing · press clips',                 color: '#FFD166', emoji: '📰' },
+  { id: 'emc-7', year: '2024',   moment: 'The first zero-plastic event · we counted bottles at the end · there were four · not forty.',                  why: 'We learned what we measure · we shift · and what we shift · we keep.',                   keeper: 'Green wing · ledger + graph',            color: '#EF4444', emoji: '🌍' },
+];
+
+interface EventSponsorPromise {
+  id: string;
+  tier: string;
+  price: string;
+  promise: string;
+  limit: string;
+  color: string;
+  emoji: string;
+}
+
+const EVT_SPONSOR_PROMISES: EventSponsorPromise[] = [
+  { id: 'esp-1', tier: 'Friend · 10k',                  price: '₹10,000',                   promise: 'Logo on thank-you slide + event recap. No stage time. No banners. No bio-break pitch.',                                        limit: 'No content-control · no attendee data · no pitch from stage.',             color: '#22C55E', emoji: '🌱' },
+  { id: 'esp-2', tier: 'Partner · 50k',                  price: '₹50,000',                   promise: '60-second acknowledgement · logo on shared banner · 2 volunteer stations co-hosted · photo recap feature.',                      limit: 'Absolute no-data-sharing · no mailing list · no pitch from stage.',         color: '#00D4FF', emoji: '🤝' },
+  { id: 'esp-3', tier: 'Supporter · 1 lakh',              price: '₹1,00,000',                 promise: 'Workshop co-host · 10-min guest talk · logo on wristband + banner · table at booth row · post-event blog mention.',                    limit: 'Talk must be educational not sales · no pushy booth · no data-sharing.',     color: '#A78BFA', emoji: '🎓' },
+  { id: 'esp-4', tier: 'Co-host · 3 lakh',                 price: '₹3,00,000',                   promise: 'Track co-host · full hour keynote · 3 workshops · booth prime spot · closing-circle shout-out · annual partner badge.',            limit: 'Content must be curated with event team · no surprise reveal · no manipulation.', color: '#F472B6', emoji: '🎤' },
+  { id: 'esp-5', tier: 'In-kind · saplings',                price: '2k saplings',                 promise: 'Planted + credited · photo set + blog feature · green wing partner badge + annual acknowledgement.',                                    limit: 'Saplings must be native · no invasive · no palm-for-plantation tradeoff.',   color: '#16A34A', emoji: '🌳' },
+  { id: 'esp-6', tier: 'In-kind · venue',                   price: 'Venue for 2 days',            promise: 'Venue partner on all banners · 5 workshops hosted on-site · photo recap feature · annual partner badge.',                              limit: 'Venue rules to match our accessibility · no surprise closing · no upcharges.',  color: '#FFD166', emoji: '🏛️' },
+  { id: 'esp-7', tier: 'Scholar · 25k',                     price: '₹25,000 × 4',                  promise: 'Named scholarship for 4 first-year members for 1 year · logo at library wall · annual letter from scholars.',                        limit: 'Scholars chosen by committee · no sponsor interference · publishable-impact report.', color: '#EF4444', emoji: '🎓' },
+];
+
 const EventsScreen: React.FC = () => {
   // State
   const [activeTab, setActiveTab] = useState<'upcoming' | 'past'>('upcoming');
@@ -3881,8 +4005,142 @@ const EventsScreen: React.FC = () => {
     </View>
   );
 
+  // ------ Phase 3am: round 3 events blocks ------
+  const renderAccessGuides = () => (
+    <View style={[styles.sectionBlock, { paddingHorizontal: HORIZONTAL_PADDING }]}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>♿ Access guide · arriving ready for everyone</Text>
+        <Text style={styles.sectionHint}>{EVT_ACCESS_GUIDES.length} groups</Text>
+      </View>
+      {EVT_ACCESS_GUIDES.map((g) => (
+        <View key={g.id} style={[styles.eagCard, { borderLeftColor: g.color }]}>
+          <View style={styles.eagTopRow}>
+            <Text style={styles.eagEmoji}>{g.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.eagAudience} numberOfLines={1}>{g.audience}</Text>
+              <Text style={[styles.eagNeed, { color: g.color }]} numberOfLines={2}>{g.need}</Text>
+            </View>
+          </View>
+          <Text style={styles.eagArrangement} numberOfLines={3}>{g.arrangement}</Text>
+          <Text style={styles.eagHost} numberOfLines={1}>host · {g.host}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderTimeBlocks = () => (
+    <View style={[styles.sectionBlock, { paddingHorizontal: HORIZONTAL_PADDING }]}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>⏱️ The day · time-blocked</Text>
+        <Text style={styles.sectionHint}>{EVT_TIME_BLOCKS.length} blocks</Text>
+      </View>
+      {EVT_TIME_BLOCKS.map((b) => (
+        <View key={b.id} style={[styles.etbCard, { borderLeftColor: b.color }]}>
+          <View style={styles.etbTopRow}>
+            <Text style={[styles.etbSlot, { color: b.color }]}>{b.timeSlot}</Text>
+            <Text style={styles.etbEmoji}>{b.emoji}</Text>
+            <Text style={styles.etbBlock} numberOfLines={1}>{b.block}</Text>
+          </View>
+          <Text style={styles.etbOwner} numberOfLines={1}>owner · {b.owner}</Text>
+          <Text style={styles.etbGoal} numberOfLines={2}>{b.goal}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderRehearsalSteps = () => (
+    <View style={[styles.sectionBlock, { paddingHorizontal: HORIZONTAL_PADDING }]}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🎬 Rehearsal · every shipment earns calm</Text>
+        <Text style={styles.sectionHint}>{EVT_REHEARSAL_STEPS.length} checks</Text>
+      </View>
+      {EVT_REHEARSAL_STEPS.map((s, i) => (
+        <View key={s.id} style={[styles.ersCard, { borderLeftColor: s.color }]}>
+          <View style={styles.ersTopRow}>
+            <Text style={[styles.ersStep, { color: s.color }]}>{String(i + 1).padStart(2, '0')}</Text>
+            <Text style={styles.ersEmoji}>{s.emoji}</Text>
+            <Text style={styles.ersTitle} numberOfLines={2}>{s.step}</Text>
+          </View>
+          <Text style={styles.ersWhen} numberOfLines={1}>when · {s.when}</Text>
+          <Text style={styles.ersWho} numberOfLines={1}>who · {s.who}</Text>
+          <Text style={styles.ersProves} numberOfLines={3}>{s.proves}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderVolunteerRoles = () => (
+    <View style={[styles.sectionBlock, { paddingHorizontal: HORIZONTAL_PADDING }]}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🫶 Volunteer roles · pick a station that fits</Text>
+        <Text style={styles.sectionHint}>{EVT_VOLUNTEER_ROLES.length} roles</Text>
+      </View>
+      {EVT_VOLUNTEER_ROLES.map((r) => (
+        <View key={r.id} style={[styles.evrCard, { borderLeftColor: r.color }]}>
+          <View style={styles.evrTopRow}>
+            <Text style={styles.evrEmoji}>{r.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.evrRole} numberOfLines={1}>{r.role}</Text>
+              <Text style={[styles.evrShift, { color: r.color }]} numberOfLines={1}>{r.shift}</Text>
+            </View>
+          </View>
+          <Text style={styles.evrPerks} numberOfLines={2}>perks · {r.perks}</Text>
+          <Text style={styles.evrSkill} numberOfLines={2}>skill · {r.skill}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderMemoryCapsules = () => (
+    <View style={[styles.sectionBlock, { paddingHorizontal: HORIZONTAL_PADDING }]}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>💾 Memory capsules · why we still gather</Text>
+        <Text style={styles.sectionHint}>{EVT_MEMORY_CAPSULES.length} memories</Text>
+      </View>
+      {EVT_MEMORY_CAPSULES.map((c) => (
+        <View key={c.id} style={[styles.emcCard, { borderLeftColor: c.color }]}>
+          <View style={styles.emcTopRow}>
+            <Text style={[styles.emcYear, { color: c.color }]}>{c.year}</Text>
+            <Text style={styles.emcEmoji}>{c.emoji}</Text>
+          </View>
+          <Text style={styles.emcMoment} numberOfLines={4}>{c.moment}</Text>
+          <Text style={styles.emcWhy} numberOfLines={3}>why · {c.why}</Text>
+          <Text style={styles.emcKeeper} numberOfLines={1}>keeper · {c.keeper}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderSponsorPromises = () => (
+    <View style={[styles.sectionBlock, { paddingHorizontal: HORIZONTAL_PADDING }]}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🤝 Sponsor promises · what we accept · what we refuse</Text>
+        <Text style={styles.sectionHint}>{EVT_SPONSOR_PROMISES.length} tiers</Text>
+      </View>
+      {EVT_SPONSOR_PROMISES.map((s) => (
+        <View key={s.id} style={[styles.espCard, { borderLeftColor: s.color }]}>
+          <View style={styles.espTopRow}>
+            <Text style={styles.espEmoji}>{s.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.espTier} numberOfLines={1}>{s.tier}</Text>
+              <Text style={[styles.espPrice, { color: s.color }]}>{s.price}</Text>
+            </View>
+          </View>
+          <Text style={styles.espPromise} numberOfLines={4}>promise · {s.promise}</Text>
+          <Text style={styles.espLimit} numberOfLines={3}>limit · {s.limit}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
   const renderExtrasFooter = () => (
     <View>
+      {renderAccessGuides()}
+      {renderTimeBlocks()}
+      {renderRehearsalSteps()}
+      {renderVolunteerRoles()}
+      {renderMemoryCapsules()}
+      {renderSponsorPromises()}
       {renderGreenScorecards()}
       {renderCrewRotations()}
       {renderBackstageNotes()}
@@ -6505,6 +6763,61 @@ const styles = StyleSheet.create({
   ecoPillar: { color: Colors.text.primary, fontSize: 13, fontWeight: '800' },
   ecoOneLine: { fontSize: 11, fontWeight: '700', marginTop: 2 },
   ecoGuideline: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 6, paddingLeft: 32 },
+
+  // --- Phase 3am: access guides ---
+  eagCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginBottom: 10, borderLeftWidth: 3 },
+  eagTopRow: { flexDirection: 'row', alignItems: 'center' },
+  eagEmoji: { fontSize: 22, marginRight: 10 },
+  eagAudience: { color: Colors.text.primary, fontSize: 13, fontWeight: '900' },
+  eagNeed: { fontSize: 11, fontWeight: '700', marginTop: 2, lineHeight: 15 },
+  eagArrangement: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8, paddingLeft: 32 },
+  eagHost: { color: Colors.text.muted, fontSize: 11, marginTop: 3, paddingLeft: 32 },
+
+  // --- Phase 3am: time blocks ---
+  etbCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginBottom: 10, borderLeftWidth: 3 },
+  etbTopRow: { flexDirection: 'row', alignItems: 'center' },
+  etbSlot: { fontSize: 11, fontWeight: '900', letterSpacing: 0.5, marginRight: 10, width: 92 },
+  etbEmoji: { fontSize: 20, marginRight: 10 },
+  etbBlock: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', flex: 1 },
+  etbOwner: { color: Colors.text.muted, fontSize: 11, marginTop: 6, paddingLeft: 42 },
+  etbGoal: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 3, paddingLeft: 42 },
+
+  // --- Phase 3am: rehearsal steps ---
+  ersCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginBottom: 10, borderLeftWidth: 3 },
+  ersTopRow: { flexDirection: 'row', alignItems: 'center' },
+  ersStep: { fontSize: 14, fontWeight: '900', marginRight: 10 },
+  ersEmoji: { fontSize: 20, marginRight: 10 },
+  ersTitle: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', flex: 1, lineHeight: 17 },
+  ersWhen: { color: Colors.accent.softGold, fontSize: 11, fontWeight: '700', marginTop: 6, paddingLeft: 50 },
+  ersWho: { color: Colors.text.muted, fontSize: 11, marginTop: 2, paddingLeft: 50 },
+  ersProves: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 50 },
+
+  // --- Phase 3am: volunteer roles ---
+  evrCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginBottom: 10, borderLeftWidth: 3 },
+  evrTopRow: { flexDirection: 'row', alignItems: 'center' },
+  evrEmoji: { fontSize: 22, marginRight: 10 },
+  evrRole: { color: Colors.text.primary, fontSize: 13, fontWeight: '900' },
+  evrShift: { fontSize: 11, fontWeight: '700', marginTop: 2 },
+  evrPerks: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8, paddingLeft: 32 },
+  evrSkill: { color: Colors.accent.softGold, fontSize: 11, lineHeight: 15, marginTop: 3, paddingLeft: 32, fontStyle: 'italic' },
+
+  // --- Phase 3am: memory capsules ---
+  emcCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 14, marginBottom: 10, borderLeftWidth: 3 },
+  emcTopRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+  emcYear: { fontSize: 14, fontWeight: '900', letterSpacing: 1 },
+  emcEmoji: { fontSize: 24 },
+  emcMoment: { color: Colors.text.primary, fontSize: 13, lineHeight: 18, marginTop: 10, fontStyle: 'italic' },
+  emcWhy: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8 },
+  emcKeeper: { color: Colors.text.muted, fontSize: 10, marginTop: 4, fontStyle: 'italic' },
+
+  // --- Phase 3am: sponsor promises ---
+  espCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginBottom: 10, borderLeftWidth: 3 },
+  espTopRow: { flexDirection: 'row', alignItems: 'center' },
+  espEmoji: { fontSize: 22, marginRight: 10 },
+  espTier: { color: Colors.text.primary, fontSize: 13, fontWeight: '900' },
+  espPrice: { fontSize: 11, fontWeight: '800', marginTop: 2 },
+  espPromise: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8, paddingLeft: 32 },
+  espLimit: { color: '#F87171', fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32 },
 });
 
 export default EventsScreen;
