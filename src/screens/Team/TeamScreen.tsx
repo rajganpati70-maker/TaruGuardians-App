@@ -1592,6 +1592,70 @@ const TEAM_GRIEVANCE_PATH: TeamGrievancePath[] = [
   { id: 'tgp-7', step: 'Care plan · person-first support · regardless of outcome',                         owner: 'Wellness lead',                                          slaDays: 'Rolling · as long as needed', safeguard: 'Check-ins · counselling referral · re-integration plan · no ghosting.',                           color: '#EF4444', emoji: '🫖' },
 ];
 
+// =====================================================
+// Phase 3av: deeper team structures — round 5
+// =====================================================
+
+interface TeamOnboardingDay {
+  id: string;
+  day: string;
+  focus: string;
+  activity: string;
+  guide: string;
+  color: string;
+  emoji: string;
+}
+
+const TEAM_ONBOARDING_DAYS: TeamOnboardingDay[] = [
+  { id: 'tod-1', day: 'Day 1 · meet the grove',                                 focus: 'Place · people · purpose',                                  activity: 'Tour campus · plant one sapling · meet 3 seniors for chai · receive your steel mug.',                                  guide: 'Council buddy + grove keeper',                  color: '#22C55E', emoji: '🌱' },
+  { id: 'tod-2', day: 'Day 2 · the wing walk',                                       focus: 'Meet all 6 wings in 6 hours',                                     activity: 'Sit in 6 wing rooms · ask 3 questions each · write down what felt right · no pressure to choose.',                                    guide: 'Wing leads on rotation',                                 color: '#00D4FF', emoji: '🪶' },
+  { id: 'tod-3', day: 'Day 3 · values read-aloud',                                             focus: 'What we believe · in our own voice',                                         activity: 'Read our values in a circle · each takes one · rewrites in their words · we edit the doc.',                                               guide: 'Content lead + council chair',                                      color: '#F59E0B', emoji: '📜' },
+  { id: 'tod-4', day: 'Day 4 · shadow day',                                                         focus: 'One full workshop · observe quietly',                                                activity: 'No participation required · watch · take notes · one-on-one debrief in the evening.',                                                           guide: 'Senior mentor assigned',                                                 color: '#A78BFA', emoji: '👀' },
+  { id: 'tod-5', day: 'Day 5 · craft sampler',                                                            focus: 'Try the wing you\'re curious about',                                                       activity: 'Pair on one real task for 3 hours · get a frank mentor read · decide next step.',                                                                     guide: 'Chosen wing lead',                                                              color: '#F472B6', emoji: '🔧' },
+  { id: 'tod-6', day: 'Day 6 · norms + safety',                                                                   focus: 'How we work together + where to go',                                                                activity: 'Read the code of care · walk through grievance paths · share two wellness resources · ask anything.',                                                        guide: 'Wellness lead + grievance lead',                                                     color: '#EF4444', emoji: '🧭' },
+  { id: 'tod-7', day: 'Day 7 · first small ship',                                                                      focus: 'Contribute · even tiny · see your work in-situ',                                                                    activity: 'Submit one small deliverable · receive feedback · see it used · sign the club book.',                                                                             guide: 'Wing lead + buddy',                                                                          color: '#FFD166', emoji: '🚢' },
+];
+
+interface TeamDayInTheLife {
+  id: string;
+  who: string;
+  role: string;
+  dayArc: string;
+  snapshot: string;
+  color: string;
+  emoji: string;
+}
+
+const TEAM_DAY_IN_LIFE: TeamDayInTheLife[] = [
+  { id: 'tdl-1', who: 'Priya N.',     role: 'Content lead',                     dayArc: '6:30 AM grove walk · 8 AM desk-check · 11 AM edit window · 2 PM mentor 1:1 · 5 PM ship window · 7 PM read-aloud.',                          snapshot: 'Wrote two pieces · edited four · mentored two · closed laptop at 8 PM · felt the shape of the day.',                   color: '#F59E0B', emoji: '✍️' },
+  { id: 'tdl-2', who: 'Rehan K.',         role: 'Web lead',                                 dayArc: '7 AM coffee + code · 9 AM stand-up · 10 AM deep work · 1 PM pair review · 4 PM design doc · 6 PM walk · 9 PM journal.',                                        snapshot: 'Shipped one feature · reviewed three PRs · unblocked two juniors · walked 6 km · went to bed tired, not fried.',               color: '#00D4FF', emoji: '💻' },
+  { id: 'tdl-3', who: 'Tanvi R.',             role: 'GD lead',                                            dayArc: '8 AM sketchbook · 10 AM brief review · 12 PM three-variant sprint · 3 PM crit hour · 5 PM print lab · 7 PM coffee circle.',                                                  snapshot: 'Seven sketches · three variants · one landed version · one critique given · two frames printed · one shared smile.',                   color: '#F472B6', emoji: '🎨' },
+  { id: 'tdl-4', who: 'Nidhi P.',                 role: 'Video lead',                                                dayArc: '7:30 AM walk · 9 AM timeline · 11 AM assembly · 2 PM music pass · 4 PM color · 6 PM review · 8 PM finish plate.',                                                             snapshot: 'One 90-second recap · 3 reviewers · 14 edits · 1 final that stayed · 1 shoot booked for next morning.',                   color: '#A78BFA', emoji: '🎬' },
+  { id: 'tdl-5', who: 'Arjun M.',                     role: 'Photo lead',                                                            dayArc: '6 AM first light · 9 AM cull · 11 AM edit · 2 PM portfolio update · 4 PM walk with junior · 7 PM chai review.',                                                                           snapshot: 'Twelve frames shot · forty culled · four kept · one junior walked the grove · one print delivered for library wall.',                   color: '#22C55E', emoji: '📸' },
+  { id: 'tdl-6', who: 'Nisha K.',                         role: 'PR lead',                                                                       dayArc: '7 AM news scan · 9 AM pitch prep · 11 AM interview · 2 PM follow-ups · 4 PM social · 6 PM stakeholder call · 9 PM log.',                                                                                   snapshot: 'Three pitches sent · one landed · one declined gracefully · two stakeholders called · one kind note received.',                   color: '#FFD166', emoji: '📰' },
+  { id: 'tdl-7', who: 'Kabir S.',                             role: 'Council chair',                                                                                 dayArc: '6 AM meditation · 8 AM check-ins · 10 AM decision log · 1 PM 1:1 rotation · 4 PM strategy · 6 PM grove · 8 PM letter writing.',                                                                                             snapshot: 'Made three decisions · logged all · met six members · wrote one hard email · walked the grove alone · slept well.',                   color: '#EF4444', emoji: '👑' },
+];
+
+interface TeamMentorLine {
+  id: string;
+  pair: string;
+  cadence: string;
+  focus: string;
+  artefact: string;
+  color: string;
+  emoji: string;
+}
+
+const TEAM_MENTOR_LINES: TeamMentorLine[] = [
+  { id: 'tml-1', pair: 'Senior engineer ↔ first-year developer',             cadence: 'Weekly 45-min + async',                 focus: 'Code review craft · impostor syndrome talks · career roadmap.',                                        artefact: 'Quarterly growth doc · anonymised · shared across the wing.',                             color: '#00D4FF', emoji: '🧭' },
+  { id: 'tml-2', pair: 'Content editor ↔ copywriter apprentice',                     cadence: 'Bi-weekly 60-min',                              focus: 'Voice development · headline writing · dealing with rejection.',                                             artefact: 'Portfolio of before/after edits · public at year-end.',                                          color: '#F59E0B', emoji: '📝' },
+  { id: 'tml-3', pair: 'Design principal ↔ junior designer',                                   cadence: 'Weekly crit · monthly 1:1',                                    focus: 'Grid discipline · type pairing · presenting work.',                                                                    artefact: '12-month portfolio review document · shared with the wing.',                                             color: '#F472B6', emoji: '🎨' },
+  { id: 'tml-4', pair: 'Filmmaker alumnus ↔ video apprentice',                                           cadence: 'Monthly 2-hour session · async reviews',                                     focus: 'Story arc · pacing · editing to feeling not formula.',                                                                                    artefact: 'Three recaps per year co-reviewed · notes archived.',                                                          color: '#A78BFA', emoji: '🎞️' },
+  { id: 'tml-5', pair: 'Published photographer ↔ student photographer',                                                    cadence: 'Monthly photo walk + portfolio review',                                                focus: 'Frame discipline · patience with subject · print craft.',                                                                                                artefact: 'Annual print showcase · co-curated · library wall.',                                                              color: '#22C55E', emoji: '📷' },
+  { id: 'tml-6', pair: 'Communications director ↔ PR apprentice',                                                              cadence: 'Bi-weekly 45-min',                                                             focus: 'Pitch craft · relationship building · crisis communication.',                                                                                                 artefact: 'Crisis playbook co-authored · stored in secure comms doc.',                                                             color: '#FFD166', emoji: '📞' },
+  { id: 'tml-7', pair: 'Outgoing chair ↔ incoming chair',                                                                                     cadence: 'Weekly hand-off · monthly check-in',                                                              focus: 'Governance rhythms · decision making · conflict de-escalation.',                                                                                                       artefact: 'Handoff document · updated annually · living artifact.',                                                                color: '#EF4444', emoji: '🪔' },
+];
+
 const TeamScreen: React.FC = () => {
   // ------ State ------
   const [selectedDept, setSelectedDept] = useState<DeptId>('all');
@@ -3603,6 +3667,71 @@ const TeamScreen: React.FC = () => {
     </View>
   );
 
+  // ------ Phase 3av: round 5 team blocks ------
+  const renderTeamOnboardingDays = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🗓️ First week · how a new member settles in</Text>
+        <Text style={styles.sectionCaption}>{TEAM_ONBOARDING_DAYS.length} days</Text>
+      </View>
+      {TEAM_ONBOARDING_DAYS.map((d) => (
+        <View key={d.id} style={[styles.todCard, { borderLeftColor: d.color }]}>
+          <View style={styles.todTopRow}>
+            <Text style={styles.todEmoji}>{d.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.todDay} numberOfLines={1}>{d.day}</Text>
+              <Text style={[styles.todFocus, { color: d.color }]}>{d.focus}</Text>
+            </View>
+          </View>
+          <Text style={styles.todActivity} numberOfLines={3}>{d.activity}</Text>
+          <Text style={styles.todGuide} numberOfLines={1}>guide · {d.guide}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderTeamDayInLife = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🌓 A day in the life · how our leads move through the day</Text>
+        <Text style={styles.sectionCaption}>{TEAM_DAY_IN_LIFE.length} days</Text>
+      </View>
+      {TEAM_DAY_IN_LIFE.map((d) => (
+        <View key={d.id} style={[styles.tdlCard, { borderLeftColor: d.color }]}>
+          <View style={styles.tdlTopRow}>
+            <Text style={styles.tdlEmoji}>{d.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.tdlWho} numberOfLines={1}>{d.who}</Text>
+              <Text style={[styles.tdlRole, { color: d.color }]}>{d.role}</Text>
+            </View>
+          </View>
+          <Text style={styles.tdlArc} numberOfLines={4}>{d.dayArc}</Text>
+          <Text style={styles.tdlSnapshot} numberOfLines={3}>snapshot · {d.snapshot}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderTeamMentorLines = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🪢 Mentor lines · how craft gets passed</Text>
+        <Text style={styles.sectionCaption}>{TEAM_MENTOR_LINES.length} pairs</Text>
+      </View>
+      {TEAM_MENTOR_LINES.map((m) => (
+        <View key={m.id} style={[styles.tmlCard, { borderLeftColor: m.color }]}>
+          <View style={styles.tmlTopRow}>
+            <Text style={styles.tmlEmoji}>{m.emoji}</Text>
+            <Text style={styles.tmlPair} numberOfLines={2}>{m.pair}</Text>
+          </View>
+          <Text style={[styles.tmlCadence, { color: m.color }]} numberOfLines={1}>{m.cadence}</Text>
+          <Text style={styles.tmlFocus} numberOfLines={2}>focus · {m.focus}</Text>
+          <Text style={styles.tmlArtefact} numberOfLines={2}>artefact · {m.artefact}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
   const renderTeamGrievancePath = () => (
     <View style={styles.sectionBlock}>
       <View style={styles.sectionHeaderRow}>
@@ -3666,6 +3795,9 @@ const TeamScreen: React.FC = () => {
       {renderTeamOneOnOnes()}
       {renderTeamWellnessPillars()}
       {renderTeamGrievancePath()}
+      {renderTeamOnboardingDays()}
+      {renderTeamDayInLife()}
+      {renderTeamMentorLines()}
       {renderThanks()}
       {renderTeamGoodbye()}
       {renderApplyToJoin()}
@@ -5019,6 +5151,33 @@ const styles = StyleSheet.create({
   tgp2Owner: { color: Colors.text.muted, fontSize: 11, marginTop: 8, paddingLeft: 46 },
   tgp2Sla: { color: Colors.accent.softGold, fontSize: 11, marginTop: 3, paddingLeft: 46, fontWeight: '700' },
   tgp2Safeguard: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 46, fontStyle: 'italic' },
+
+  // --- Phase 3av: onboarding days ---
+  todCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  todTopRow: { flexDirection: 'row', alignItems: 'center' },
+  todEmoji: { fontSize: 22, marginRight: 10 },
+  todDay: { color: Colors.text.primary, fontSize: 13, fontWeight: '900' },
+  todFocus: { fontSize: 11, fontWeight: '700', marginTop: 2 },
+  todActivity: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8, paddingLeft: 32 },
+  todGuide: { color: Colors.text.muted, fontSize: 11, marginTop: 4, paddingLeft: 32 },
+
+  // --- Phase 3av: day-in-life ---
+  tdlCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  tdlTopRow: { flexDirection: 'row', alignItems: 'center' },
+  tdlEmoji: { fontSize: 22, marginRight: 10 },
+  tdlWho: { color: Colors.text.primary, fontSize: 13, fontWeight: '900' },
+  tdlRole: { fontSize: 11, fontWeight: '700', marginTop: 2 },
+  tdlArc: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8, paddingLeft: 32 },
+  tdlSnapshot: { color: Colors.accent.softGold, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32, fontStyle: 'italic' },
+
+  // --- Phase 3av: mentor lines ---
+  tmlCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  tmlTopRow: { flexDirection: 'row', alignItems: 'center' },
+  tmlEmoji: { fontSize: 22, marginRight: 10 },
+  tmlPair: { color: Colors.text.primary, fontSize: 13, fontWeight: '900', flex: 1, lineHeight: 17 },
+  tmlCadence: { fontSize: 11, fontWeight: '700', marginTop: 8, paddingLeft: 32 },
+  tmlFocus: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32 },
+  tmlArtefact: { color: Colors.text.muted, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32, fontStyle: 'italic' },
 });
 
 export default TeamScreen;
