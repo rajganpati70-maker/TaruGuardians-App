@@ -1665,6 +1665,110 @@ const EVT_SPONSOR_PROMISES: EventSponsorPromise[] = [
   { id: 'esp-7', tier: 'Scholar · 25k',                     price: '₹25,000 × 4',                  promise: 'Named scholarship for 4 first-year members for 1 year · logo at library wall · annual letter from scholars.',                        limit: 'Scholars chosen by committee · no sponsor interference · publishable-impact report.', color: '#EF4444', emoji: '🎓' },
 ];
 
+// =====================================================
+// Phase 3as: deeper events structures — round 4
+// =====================================================
+
+interface EventSchedulePromise {
+  id: string;
+  promise: string;
+  measure: string;
+  exception: string;
+  color: string;
+  emoji: string;
+}
+
+const EVENT_SCHEDULE_PROMISES: EventSchedulePromise[] = [
+  { id: 'esch-1', promise: 'Start on time · first words within 3 min of announced start',                                measure: 'Track start delta across 18 events · publish in annual recap · avg must stay under 5 min.',                   exception: 'If a safety issue · we start only when safe · and we say why.',                                                    color: '#00D4FF', emoji: '⏰' },
+  { id: 'esch-2', promise: 'Scheduled breaks · every 75 min · minimum 15 min',                                                 measure: 'No exceptions without a sign-off from care lead · noted in run-of-show.',                                           exception: 'Closing keynote · 90 min block · with a pre-event warning on invite.',                                               color: '#22C55E', emoji: '☕' },
+  { id: 'esch-3', promise: 'Announcements stay under 3 min · speakers stay under their time',                                    measure: 'Timekeeper · neutral · has authority to end · gentle first · firm second · applause always.',                         exception: 'First-time speakers · 1-min grace · councillors 0-min grace.',                                                          color: '#F59E0B', emoji: '⏳' },
+  { id: 'esch-4', promise: 'We end on the announced time · or 10 min early · never late',                                             measure: 'Post-event survey asks · if below 85% satisfaction on ending · review run-of-show.',                                      exception: 'Emergency · medical · safety · weather · extended only with announcement.',                                                color: '#A78BFA', emoji: '🏁' },
+  { id: 'esch-5', promise: 'Quiet-hour buffer · 30 min before · 30 min after · no programming',                                             measure: 'For setup · tear-down · meetings · no rushing volunteers · scheduled in run-of-show.',                                          exception: 'Never · this is sacred · it protects the people doing the work.',                                                              color: '#F472B6', emoji: '🤫' },
+  { id: 'esch-6', promise: 'Food timing matches body clocks · not venue convenience',                                                           measure: 'Events over 4 hrs get 2 proper meals · events over 8 hrs get 3 · with real water stations.',                                           exception: 'Events under 2 hrs · snack table only · with fruit and water · not cookies.',                                                         color: '#FFD166', emoji: '🍽️' },
+  { id: 'esch-7', promise: 'Closing circle · 10 min · held · with thank-yous · not announcements',                                                   measure: 'Every event · regardless of size · led by a council member · no last-minute sponsor plugs.',                                                   exception: 'Event canceled mid-way · still hold closing · even if just 5 min · with the people who came.',                                                         color: '#EF4444', emoji: '🕯️' },
+];
+
+interface EventProductionCheck {
+  id: string;
+  category: string;
+  item: string;
+  owner: string;
+  deadline: string;
+  color: string;
+  emoji: string;
+}
+
+const EVENT_PRODUCTION_CHECKS: EventProductionCheck[] = [
+  { id: 'epc-1',  category: 'Stage + AV',                 item: 'Two mics tested · one backup · cable taped down · monitor facing speaker',                          owner: 'AV team · Rehan + Priya',           deadline: 'T-2 hr before doors',                color: '#00D4FF', emoji: '🎤' },
+  { id: 'epc-2',  category: 'Signage',                    item: 'Directional signs at all 4 entry points · bathroom + water + quiet-room routes',                       owner: 'Ops · Meera + buddy',                  deadline: 'T-3 hr before doors',                    color: '#F59E0B', emoji: '🪧' },
+  { id: 'epc-3',  category: 'Accessibility',                 item: 'Ramp clear · captions tested · sign-language interpreter briefed · quiet room ready',                       owner: 'Access lead · Kabir',                     deadline: 'T-4 hr before doors',                        color: '#A78BFA', emoji: '♿' },
+  { id: 'epc-4',  category: 'Safety',                          item: 'Fire exits marked · first-aid 2 stations · emergency numbers on wall · water refilled',                       owner: 'Safety · certified team',                    deadline: 'T-2 hr before doors',                            color: '#EF4444', emoji: '🚨' },
+  { id: 'epc-5',  category: 'Registration',                        item: 'Volunteer desk ready · roster printed · badges pre-sorted · cash-box counted',                               owner: 'Front-desk · Tanvi + 3 volunteers',              deadline: 'T-1 hr before doors',                                color: '#F472B6', emoji: '🪪' },
+  { id: 'epc-6',  category: 'Food + water',                             item: 'Menu confirmed · allergen-labels printed · water stations filled · cups counted',                                   owner: 'Mess lead · Sunita didi',                           deadline: 'T-90 min before doors',                                    color: '#FFD166', emoji: '🥤' },
+  { id: 'epc-7',  category: 'Documentation',                                  item: 'Photographer briefed · consent forms ready · tripod set · spare battery · SD card',                                   owner: 'Photo team · Arjun',                                   deadline: 'T-60 min before doors',                                        color: '#22C55E', emoji: '📸' },
+  { id: 'epc-8',  category: 'Stream',                                              item: 'Wifi tested · OBS scenes loaded · YouTube key inserted · chat moderator assigned',                                       owner: 'Stream · Dev P.',                                         deadline: 'T-30 min before doors',                                            color: '#16A34A', emoji: '📡' },
+];
+
+interface EventRainyPlan {
+  id: string;
+  scenario: string;
+  trigger: string;
+  fallback: string;
+  owner: string;
+  color: string;
+  emoji: string;
+}
+
+const EVENT_RAINY_PLANS: EventRainyPlan[] = [
+  { id: 'erp-1', scenario: 'Rain · open-air event',                      trigger: 'IMD alert > 60% · or light rain starts · or ground gets slippery',                                                fallback: 'Move to assembly hall · notify 20 min before · volunteers sweep ground · carry mats.',                                     owner: 'Ops + weather watcher',          color: '#00D4FF', emoji: '🌧️' },
+  { id: 'erp-2', scenario: 'Heat · outdoor activity',                        trigger: 'Temp > 36°C · or humidity > 70% · or cases of dizziness reported',                                                      fallback: 'Shift to shade + indoor · add 2 water stations · pause for 20 min · offer ORS.',                                              owner: 'Safety + medical buddy',              color: '#F59E0B', emoji: '☀️' },
+  { id: 'erp-3', scenario: 'Power outage',                                       trigger: 'Grid cut · inverter < 30 min · laptops on low battery',                                                                       fallback: 'Move to outdoor or daylight-windowed hall · simplify AV · use megaphone · printed notes.',                                          owner: 'AV lead + facilities',                     color: '#A78BFA', emoji: '🔌' },
+  { id: 'erp-4', scenario: 'Noise clash · neighbouring event',                         trigger: 'Db > 75 · community complaint · adjacent event running',                                                                             fallback: 'Cap speakers to 60 Db · close doors · reschedule announcements to quieter windows.',                                                  owner: 'Ops + community liaison',                       color: '#F472B6', emoji: '🔊' },
+  { id: 'erp-5', scenario: 'Speaker cancels last-minute',                                   trigger: 'No-show by T-30 min · or confirmed cancellation · or health emergency',                                                                    fallback: 'Playback pre-recorded talk · fireside alt-format · or extend Q&A for other speakers · announce reason.',                                     owner: 'Content lead · council backup',                       color: '#FFD166', emoji: '🎤' },
+  { id: 'erp-6', scenario: 'Venue unavailable day-of',                                             trigger: 'Keyholder absent · double-booking · maintenance emergency',                                                                                      fallback: 'Alt venue list · 3 options pre-confirmed · move by T-4 hr · shuttle info + update app + sign.',                                                 owner: 'Facilities + alt-venue pair',                             color: '#22C55E', emoji: '🏛️' },
+  { id: 'erp-7', scenario: 'Medical emergency · attendee',                                                  trigger: 'Anyone reports chest-pain · fainting · severe allergy · acute injury',                                                                                    fallback: 'First-aid team reach in < 3 min · call ambulance · clear exit · buddy stays · parents called.',                                                      owner: 'Safety lead + 2 first-aid certified',                            color: '#EF4444', emoji: '🩺' },
+];
+
+interface EventAftercareStep {
+  id: string;
+  step: string;
+  window: string;
+  owner: string;
+  deliverable: string;
+  color: string;
+  emoji: string;
+}
+
+const EVENT_AFTERCARE_STEPS: EventAftercareStep[] = [
+  { id: 'eas-1', step: 'Tear-down + venue return',                 window: 'Same night · T+0 to T+3 hr',                  owner: 'Ops team · rotating',                           deliverable: 'Venue signed off · clean · inventory counted · items stored · trash sorted.',                    color: '#00D4FF', emoji: '🧹' },
+  { id: 'eas-2', step: 'Volunteer thank-yous',                         window: 'Same day · before everyone sleeps',              owner: 'Council · writes · sends',                           deliverable: 'Personal message · voice-note or card · names + contributions · no group forward.',                    color: '#F59E0B', emoji: '💌' },
+  { id: 'eas-3', step: 'Lost-and-found sweep',                             window: 'T+1 day · morning',                                  owner: 'Front-desk pair',                                       deliverable: 'Items logged · photos on app · claims open 14 days · then donated with consent.',                         color: '#A78BFA', emoji: '🧳' },
+  { id: 'eas-4', step: 'Debrief · what worked · what didn\'t',                    window: 'T+3 days · 90 min · in-person',                       owner: 'Whole crew',                                                deliverable: 'Public memo · decision log · 3 changes for next time · 3 things to keep · named.',                            color: '#F472B6', emoji: '🔄' },
+  { id: 'eas-5', step: 'Financial reconciliation',                                   window: 'T+7 days · vouchers · receipts',                           owner: 'Finance pair',                                                 deliverable: 'Ledger closed · receipts scanned · variance explained · published to members · archived.',                        color: '#FFD166', emoji: '📒' },
+  { id: 'eas-6', step: 'Photo + video recap release',                                      window: 'T+14 days · edited · consent-checked',                         owner: 'Media team',                                                      deliverable: 'Highlight reel · photo album · consent-double-checked · captions · credit everyone · link on app.',                     color: '#22C55E', emoji: '🎞️' },
+  { id: 'eas-7', step: 'Attendee survey + learnings',                                           window: 'T+21 days · anonymous + named',                                     owner: 'Research lead',                                                        deliverable: 'Response rate > 40% · top-3 praises · top-3 fixes · quotes · charts · full report public.',                                   color: '#EF4444', emoji: '📊' },
+  { id: 'eas-8', step: 'Thank-you to community + sponsors',                                             window: 'T+30 days · personal · not form',                                        owner: 'Council + sponsor leads',                                                    deliverable: 'Letter · photos · outcomes · what their money did · no metrics without context · signed.',                                  color: '#16A34A', emoji: '🙏' },
+];
+
+interface EventLegacyMarker {
+  id: string;
+  marker: string;
+  origin: string;
+  kept: string;
+  color: string;
+  emoji: string;
+}
+
+const EVENT_LEGACY_MARKERS: EventLegacyMarker[] = [
+  { id: 'elm-1', marker: 'The opening song · same 3 verses · always',                 origin: 'First event · 1998 · someone started singing · everyone joined',                            kept: 'Every major event opens with it · sung live · no recording · no amplifier.',                                color: '#22C55E', emoji: '🎶' },
+  { id: 'elm-2', marker: 'First-year speaker slot · always protected',                      origin: '2006 · junior asked for stage · got 3 minutes · blew everyone away',                              kept: 'Every event reserves 5 min for a first-year · mentored · rehearsed · never skipped.',                             color: '#00D4FF', emoji: '🎤' },
+  { id: 'elm-3', marker: 'Closing circle · hands held · 30 seconds silent',                        origin: '2011 · after a difficult year · council decided we need quiet',                                         kept: 'No matter how celebratory · we close in silence · no phones · faces visible · breath shared.',                         color: '#A78BFA', emoji: '🤝' },
+  { id: 'elm-4', marker: 'The sapling table · always at entrance',                                     origin: '2014 · a first-year brought 3 plants · they stayed · we added to it',                                          kept: 'Every event · plants at entry · free to take one · with a note about care · never empty.',                               color: '#16A34A', emoji: '🌱' },
+  { id: 'elm-5', marker: 'Handwritten badges · never printed',                                              origin: '2016 · printer broke · someone grabbed markers · we never went back',                                              kept: 'Volunteers write every badge by hand · with the person\'s chosen name · mistakes allowed.',                                 color: '#F472B6', emoji: '🪪' },
+  { id: 'elm-6', marker: 'A chair for the absent',                                                               origin: '2019 · after we lost Iman · we kept her seat',                                                                           kept: 'Every event · one chair · marked quietly · no spotlight · for people we carry with us.',                                         color: '#FFD166', emoji: '🪑' },
+  { id: 'elm-7', marker: 'Leftover food = shared food · no exception',                                                     origin: '2012 · canteen asked what to do with extras · we drove to shelter · never stopped',                                                       kept: 'Every event · leftover food goes to local shelter · within 2 hours · driven · not dumped.',                                                color: '#EF4444', emoji: '🍲' },
+];
+
 const EventsScreen: React.FC = () => {
   // State
   const [activeTab, setActiveTab] = useState<'upcoming' | 'past'>('upcoming');
@@ -4133,6 +4237,109 @@ const EventsScreen: React.FC = () => {
     </View>
   );
 
+  // ------ Phase 3as: round 4 events blocks ------
+  const renderEventSchedulePromises = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>⏰ Schedule promises · seven things we owe every attendee</Text>
+        <Text style={styles.sectionCaption}>{EVENT_SCHEDULE_PROMISES.length} promises</Text>
+      </View>
+      {EVENT_SCHEDULE_PROMISES.map((p) => (
+        <View key={p.id} style={[styles.eschCard, { borderLeftColor: p.color }]}>
+          <View style={styles.eschTopRow}>
+            <Text style={styles.eschEmoji}>{p.emoji}</Text>
+            <Text style={styles.eschPromise} numberOfLines={2}>{p.promise}</Text>
+          </View>
+          <Text style={styles.eschMeasure} numberOfLines={3}>measure · {p.measure}</Text>
+          <Text style={[styles.eschExc, { color: p.color }]} numberOfLines={2}>exception · {p.exception}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderEventProductionChecks = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>✅ Production checks · the ready-to-open list</Text>
+        <Text style={styles.sectionCaption}>{EVENT_PRODUCTION_CHECKS.length} checks</Text>
+      </View>
+      {EVENT_PRODUCTION_CHECKS.map((c) => (
+        <View key={c.id} style={[styles.epcCard, { borderLeftColor: c.color }]}>
+          <View style={styles.epcTopRow}>
+            <Text style={styles.epcEmoji}>{c.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.epcCategory} numberOfLines={1}>{c.category}</Text>
+              <Text style={[styles.epcDeadline, { color: c.color }]}>{c.deadline}</Text>
+            </View>
+          </View>
+          <Text style={styles.epcItem} numberOfLines={3}>{c.item}</Text>
+          <Text style={styles.epcOwner} numberOfLines={1}>owner · {c.owner}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderEventRainyPlans = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🌧️ Rainy-day plans · what to do when plans bend</Text>
+        <Text style={styles.sectionCaption}>{EVENT_RAINY_PLANS.length} plans</Text>
+      </View>
+      {EVENT_RAINY_PLANS.map((r) => (
+        <View key={r.id} style={[styles.erpCard, { borderLeftColor: r.color }]}>
+          <View style={styles.erpTopRow}>
+            <Text style={styles.erpEmoji}>{r.emoji}</Text>
+            <Text style={styles.erpScenario} numberOfLines={2}>{r.scenario}</Text>
+          </View>
+          <Text style={[styles.erpTrigger, { color: r.color }]} numberOfLines={2}>trigger · {r.trigger}</Text>
+          <Text style={styles.erpFallback} numberOfLines={3}>fallback · {r.fallback}</Text>
+          <Text style={styles.erpOwner} numberOfLines={1}>owner · {r.owner}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderEventAftercareSteps = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🧹 Aftercare · the 30 days after the event</Text>
+        <Text style={styles.sectionCaption}>{EVENT_AFTERCARE_STEPS.length} steps</Text>
+      </View>
+      {EVENT_AFTERCARE_STEPS.map((s) => (
+        <View key={s.id} style={[styles.easCard, { borderLeftColor: s.color }]}>
+          <View style={styles.easTopRow}>
+            <Text style={styles.easEmoji}>{s.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.easStep} numberOfLines={1}>{s.step}</Text>
+              <Text style={[styles.easWindow, { color: s.color }]}>{s.window}</Text>
+            </View>
+          </View>
+          <Text style={styles.easOwner} numberOfLines={1}>owner · {s.owner}</Text>
+          <Text style={styles.easDeliverable} numberOfLines={3}>deliverable · {s.deliverable}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderEventLegacyMarkers = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🕯️ Legacy markers · rituals we never edit out</Text>
+        <Text style={styles.sectionCaption}>{EVENT_LEGACY_MARKERS.length} markers</Text>
+      </View>
+      {EVENT_LEGACY_MARKERS.map((m) => (
+        <View key={m.id} style={[styles.elmCard, { borderLeftColor: m.color }]}>
+          <View style={styles.elmTopRow}>
+            <Text style={styles.elmEmoji}>{m.emoji}</Text>
+            <Text style={styles.elmMarker} numberOfLines={2}>{m.marker}</Text>
+          </View>
+          <Text style={styles.elmOrigin} numberOfLines={2}>origin · {m.origin}</Text>
+          <Text style={styles.elmKept} numberOfLines={3}>kept · {m.kept}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
   const renderExtrasFooter = () => (
     <View>
       {renderAccessGuides()}
@@ -4183,6 +4390,11 @@ const EventsScreen: React.FC = () => {
       {renderEventLessons()}
       {renderRecapsSection()}
       {renderCheckinSection()}
+      {renderEventSchedulePromises()}
+      {renderEventProductionChecks()}
+      {renderEventRainyPlans()}
+      {renderEventAftercareSteps()}
+      {renderEventLegacyMarkers()}
       <View style={styles.footerBand}>
         <Text style={styles.footerLine}>
           Built with saplings, scripts + slow weekends.
@@ -6387,6 +6599,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 10,
   },
+  sectionCaption: {
+    color: Colors.text.muted,
+    fontSize: 11,
+    fontWeight: '700',
+  },
 
   // Merch
   merchCard: {
@@ -6818,6 +7035,49 @@ const styles = StyleSheet.create({
   espPrice: { fontSize: 11, fontWeight: '800', marginTop: 2 },
   espPromise: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8, paddingLeft: 32 },
   espLimit: { color: '#F87171', fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32 },
+
+  // --- Phase 3as: schedule promises ---
+  eschCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  eschTopRow: { flexDirection: 'row', alignItems: 'center' },
+  eschEmoji: { fontSize: 22, marginRight: 10 },
+  eschPromise: { color: Colors.text.primary, fontSize: 13, fontWeight: '900', flex: 1, lineHeight: 17 },
+  eschMeasure: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8, paddingLeft: 32 },
+  eschExc: { fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32, fontStyle: 'italic' },
+
+  // --- Phase 3as: production checks ---
+  epcCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  epcTopRow: { flexDirection: 'row', alignItems: 'center' },
+  epcEmoji: { fontSize: 22, marginRight: 10 },
+  epcCategory: { color: Colors.text.primary, fontSize: 13, fontWeight: '900' },
+  epcDeadline: { fontSize: 11, fontWeight: '700', marginTop: 2 },
+  epcItem: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8, paddingLeft: 32 },
+  epcOwner: { color: Colors.text.muted, fontSize: 11, marginTop: 4, paddingLeft: 32 },
+
+  // --- Phase 3as: rainy plans ---
+  erpCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  erpTopRow: { flexDirection: 'row', alignItems: 'center' },
+  erpEmoji: { fontSize: 22, marginRight: 10 },
+  erpScenario: { color: Colors.text.primary, fontSize: 13, fontWeight: '900', flex: 1, lineHeight: 17 },
+  erpTrigger: { fontSize: 11, lineHeight: 15, marginTop: 8, paddingLeft: 32, fontWeight: '700' },
+  erpFallback: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32 },
+  erpOwner: { color: Colors.text.muted, fontSize: 11, marginTop: 4, paddingLeft: 32 },
+
+  // --- Phase 3as: aftercare steps ---
+  easCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  easTopRow: { flexDirection: 'row', alignItems: 'center' },
+  easEmoji: { fontSize: 22, marginRight: 10 },
+  easStep: { color: Colors.text.primary, fontSize: 13, fontWeight: '900' },
+  easWindow: { fontSize: 11, fontWeight: '700', marginTop: 2 },
+  easOwner: { color: Colors.text.muted, fontSize: 11, marginTop: 8, paddingLeft: 32 },
+  easDeliverable: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32 },
+
+  // --- Phase 3as: legacy markers ---
+  elmCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  elmTopRow: { flexDirection: 'row', alignItems: 'center' },
+  elmEmoji: { fontSize: 22, marginRight: 10 },
+  elmMarker: { color: Colors.text.primary, fontSize: 13, fontWeight: '900', flex: 1, lineHeight: 17 },
+  elmOrigin: { color: Colors.accent.softGold, fontSize: 11, lineHeight: 15, marginTop: 8, paddingLeft: 32, fontStyle: 'italic' },
+  elmKept: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32 },
 });
 
 export default EventsScreen;
