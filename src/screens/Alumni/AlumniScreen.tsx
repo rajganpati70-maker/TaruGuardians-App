@@ -1,238 +1,3069 @@
 // =====================================================
-// ULTRA PREMIUM ALUMNI SCREEN
-// HIGH-QUALITY UI
+// TARU GUARDIANS — ALUMNI NETWORK (Premium Screen)
+// Nature + Tech fusion · advanced filtering · rich data
 // =====================================================
 
-import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Animated, Dimensions, StatusBar, Modal, Linking, RefreshControl, Platform, TextInput } from 'react-native';
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+  Animated,
+  Dimensions,
+  StatusBar,
+  Modal,
+  Linking,
+  RefreshControl,
+  Platform,
+  TextInput,
+  FlatList,
+  Easing,
+  Share,
+  Alert,
+  Pressable,
+  KeyboardAvoidingView,
+  Image,
+} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Colors } from '../../constants/colors';
 import { Alumni, AlumniStats } from '../../types/navigation';
 
+// -----------------------------------------------------
+// Responsive + design tokens
+// -----------------------------------------------------
+
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
-const isSmallScreen = SCREEN_WIDTH < 375;
+const IS_SMALL = SCREEN_WIDTH < 375;
+const IS_TABLET = SCREEN_WIDTH >= 768;
+const HORIZONTAL_PADDING = IS_SMALL ? 14 : 18;
+const CARD_RADIUS = 22;
+const AVATAR_SIZE = IS_SMALL ? 56 : 64;
 
-const ALUMNI_STATS: AlumniStats = { totalAlumni: 500, avgExperience: 5, placementRate: 95, companiesHired: 50 };
+const ANIM = {
+  duration: {
+    instant: 60,
+    fast: 200,
+    normal: 360,
+    slow: 540,
+    xslow: 820,
+  },
+  easing: {
+    inOut: Easing.inOut(Easing.cubic),
+    out: Easing.out(Easing.cubic),
+    soft: Easing.bezier(0.25, 0.1, 0.25, 1),
+    overshoot: Easing.bezier(0.175, 0.885, 0.32, 1.275),
+  },
+};
 
-const BATCH_YEARS = ['2025', '2024', '2023', '2022', '2021', '2020'];
+// -----------------------------------------------------
+// Batches / domains / filters
+// -----------------------------------------------------
 
-const ALUMNI_DATA: Alumni[] = [
-  { id: '1', name: 'Rohit Sharma', batch: '2020', role: 'Senior Software Engineer', company: 'Google', location: 'Bangalore', imageUrl: '', email: 'rohit@google.com', linkedin: 'https://linkedin.com/in/rohit', currentRole: 'Engineering Manager', pastRoles: ['Software Engineer', 'Senior Engineer'], achievements: ['Google Excellence Award'], messageToStudents: 'Dream big and work hard!' },
-  { id: '2', name: 'Priya Singh', batch: '2021', role: 'Product Manager', company: 'Amazon', location: 'Hyderabad', imageUrl: '', email: 'priya@amazon.com', linkedin: 'https://linkedin.com/in/priya', currentRole: 'Senior Product Manager', pastRoles: ['Associate PM', 'Product Manager'], achievements: ['Amazon Star Award'], messageToStudents: 'Focus on impact, not just features.' },
-  { id: '3', name: 'Ankit Patel', batch: '2022', role: 'Data Scientist', company: 'Microsoft', location: 'Bangalore', imageUrl: '', email: 'ankit@microsoft.com', linkedin: 'https://linkedin.com/in/ankit', currentRole: 'ML Engineer', pastRoles: ['Data Analyst', 'Junior DS'], achievements: ['Microsoft AI Award'], messageToStudents: 'Data is the new oil!' },
-  { id: '4', name: 'Sneha Gupta', batch: '2023', role: 'UX Designer', company: 'Apple', location: 'Bangalore', imageUrl: '', email: 'sneha@apple.com', linkedin: 'https://linkedin.com/in/sneha', currentRole: 'Senior Designer', pastRoles: ['Junior Designer'], achievements: ['Apple Design Award'], messageToStudents: 'Design with empathy.' },
-  { id: '5', name: 'Vikram Kumar', batch: '2024', role: 'Startup Founder', company: 'EcoTech Solutions', location: 'Bangalore', imageUrl: '', email: 'vikram@ecotech.com', linkedin: 'https://linkedin.com/in/vikram', currentRole: 'CEO', pastRoles: ['CTO'], achievements: ['Forbes 30 Under 30'], messageToStudents: 'Solve real problems.' },
-  { id: '6', name: 'Meera Shah', batch: '2025', role: 'Consultant', company: 'McKinsey', location: 'Mumbai', imageUrl: '', email: 'meera@mckinsey.com', linkedin: 'https://linkedin.com/in/meera', currentRole: 'Business Analyst', pastRoles: [], achievements: ['Top Performer'], messageToStudents: 'Always be curious.' },
-  { id: '7', name: 'Aditya Reddy', batch: '2020', role: 'Investment Banker', company: 'Goldman Sachs', location: 'Bangalore', imageUrl: '', email: 'aditya@gs.com', linkedin: 'https://linkedin.com/in/aditya', currentRole: 'Vice President', pastRoles: ['Analyst', 'Associate'], achievements: ['Best Analyst Award'], messageToStudents: 'Network is net worth.' },
-  { id: '8', name: 'Kavya Nair', batch: '2021', role: 'Research Scientist', company: 'ISRO', location: 'Bangalore', imageUrl: '', email: 'kavya@isro.gov.in', linkedin: 'https://linkedin.com/in/kavya', currentRole: 'Scientist', pastRoles: ['Junior Researcher'], achievements: ['ISRO Young Scientist'], messageToStudents: 'Reach for the stars.' },
+const BATCH_YEARS = ['2025', '2024', '2023', '2022', '2021', '2020', '2019', '2018'] as const;
+
+type SectorId =
+  | 'all'
+  | 'tech'
+  | 'product'
+  | 'data'
+  | 'design'
+  | 'research'
+  | 'entrepreneur'
+  | 'finance'
+  | 'impact'
+  | 'creative';
+
+interface SectorMeta {
+  id: SectorId;
+  label: string;
+  icon: string;
+  color: string;
+}
+
+const SECTORS: SectorMeta[] = [
+  { id: 'all', label: 'All Sectors', icon: '🌐', color: Colors.tech.neonBlue },
+  { id: 'tech', label: 'Software & Tech', icon: '💻', color: '#2DD4BF' },
+  { id: 'product', label: 'Product', icon: '🧭', color: '#FBBF24' },
+  { id: 'data', label: 'Data / AI', icon: '🧠', color: '#A78BFA' },
+  { id: 'design', label: 'Design', icon: '🎨', color: '#F472B6' },
+  { id: 'research', label: 'Research', icon: '🔬', color: '#60A5FA' },
+  { id: 'entrepreneur', label: 'Founders', icon: '🚀', color: '#F97316' },
+  { id: 'finance', label: 'Finance', icon: '💹', color: '#10B981' },
+  { id: 'impact', label: 'Sustainability', icon: '🌱', color: '#4ADE80' },
+  { id: 'creative', label: 'Creative / Media', icon: '🎬', color: '#F87171' },
 ];
 
-const AlumniScreen: React.FC = () => {
-  const [selectedBatch, setSelectedBatch] = useState<string>('all');
-  const [searchQuery, setSearchQuery] = useState('');
-  const [alumni, setAlumni] = useState<Alumni[]>(ALUMNI_DATA);
-  const [filteredAlumni, setFilteredAlumni] = useState<Alumni[]>(ALUMNI_DATA);
-  const [selectedAlumni, setSelectedAlumni] = useState<Alumni | null>(null);
-  const [showAlumniModal, setShowAlumniModal] = useState(false);
-  const [refreshing, setRefreshing] = useState(false);
+type SortKey =
+  | 'recent-batch'
+  | 'oldest-batch'
+  | 'name-asc'
+  | 'name-desc'
+  | 'company-asc';
 
-  const animationValues = useRef(Array.from({ length: 15 }, () => ({ opacity: new Animated.Value(0), translateY: new Animated.Value(50) }))).current;
+const SORT_OPTIONS: { key: SortKey; label: string; icon: string }[] = [
+  { key: 'recent-batch', label: 'Most recent batch', icon: '🆕' },
+  { key: 'oldest-batch', label: 'Earliest batch', icon: '📜' },
+  { key: 'name-asc', label: 'Name A→Z', icon: '🔤' },
+  { key: 'name-desc', label: 'Name Z→A', icon: '🔡' },
+  { key: 'company-asc', label: 'Company A→Z', icon: '🏢' },
+];
 
-  useEffect(() => { startAnimations(); }, []);
-  useEffect(() => { filterAlumni(); }, [selectedBatch, searchQuery]);
+type ViewMode = 'list' | 'grid';
 
-  const startAnimations = () => {
-    animationValues.forEach((anim, index) => {
-      Animated.parallel([
-        Animated.timing(anim.opacity, { toValue: 1, duration: 500, delay: index * 50, useNativeDriver: true }),
-        Animated.timing(anim.translateY, { toValue: 0, duration: 500, delay: index * 50, useNativeDriver: true }),
-      ]).start();
-    });
-  };
+// -----------------------------------------------------
+// Domain helpers
+// -----------------------------------------------------
 
-  const filterAlumni = () => {
-    let filtered = alumni;
-    if (selectedBatch !== 'all') filtered = filtered.filter(a => a.batch === selectedBatch);
-    if (searchQuery.trim()) {
-      const query = searchQuery.toLowerCase();
-      filtered = filtered.filter(a => a.name.toLowerCase().includes(query) || a.company.toLowerCase().includes(query));
+interface ExtAlumni extends Alumni {
+  sector: SectorId;
+  featured?: boolean;
+  mentor?: boolean;
+  experienceYears: number;
+  skills: string[];
+  sustainabilityPledge?: string;
+  quote?: string;
+  timeline: { year: string; role: string; company: string }[];
+}
+
+const makeAlumni = (
+  id: number,
+  name: string,
+  batch: string,
+  currentRole: string,
+  company: string,
+  location: string,
+  sector: SectorId,
+  experienceYears: number,
+  achievements: string[],
+  skills: string[],
+  message: string,
+  opts?: {
+    featured?: boolean;
+    mentor?: boolean;
+    pledge?: string;
+    quote?: string;
+    pastRoles?: string[];
+    timeline?: { year: string; role: string; company: string }[];
+    linkedin?: string;
+    email?: string;
+    role?: string;
+  }
+): ExtAlumni => ({
+  id: String(id),
+  name,
+  batch,
+  role: opts?.role ?? currentRole,
+  company,
+  location,
+  imageUrl: '',
+  email: opts?.email ?? `${name.toLowerCase().replace(/[^a-z]/g, '')}@alumni.taruguardians.org`,
+  linkedin:
+    opts?.linkedin ?? `https://linkedin.com/in/${name.toLowerCase().replace(/[^a-z]/g, '-')}`,
+  currentRole,
+  pastRoles: opts?.pastRoles ?? [],
+  achievements,
+  messageToStudents: message,
+  sector,
+  experienceYears,
+  skills,
+  featured: opts?.featured,
+  mentor: opts?.mentor,
+  sustainabilityPledge: opts?.pledge,
+  quote: opts?.quote,
+  timeline:
+    opts?.timeline ??
+    [
+      { year: batch, role: 'Graduated', company: 'Taru Guardians' },
+      { year: String(Number(batch) + 1), role: currentRole, company },
+    ],
+});
+
+// -----------------------------------------------------
+// Alumni dataset
+// -----------------------------------------------------
+
+const ALUMNI_DATA: ExtAlumni[] = [
+  makeAlumni(
+    1,
+    'Rohit Sharma',
+    '2020',
+    'Engineering Manager',
+    'Google',
+    'Bangalore, India',
+    'tech',
+    6,
+    ['Google Excellence Award 2023', 'Led migration of 400M-user billing service', 'Author of 2 internal design docs turned org-wide'],
+    ['Go', 'Kubernetes', 'Distributed Systems', 'Site Reliability', 'Team Leadership'],
+    'Dream bada rakho lekin ground realities ko respect karo — shortcuts long-term compound nahi karte.',
+    {
+      featured: true,
+      mentor: true,
+      pledge: 'Plant 50 trees every year + fund 5 scholarships annually.',
+      quote: 'Code is easy. Calibrating impact is hard.',
+      pastRoles: ['Software Engineer', 'Senior SWE'],
+      timeline: [
+        { year: '2020', role: 'Graduated', company: 'Taru Guardians' },
+        { year: '2020', role: 'SWE Intern', company: 'Infosys' },
+        { year: '2021', role: 'Software Engineer', company: 'Flipkart' },
+        { year: '2023', role: 'Senior SWE', company: 'Google' },
+        { year: '2025', role: 'Engineering Manager', company: 'Google' },
+      ],
     }
-    setFilteredAlumni(filtered);
-  };
+  ),
+  makeAlumni(
+    2,
+    'Priya Singh',
+    '2021',
+    'Senior Product Manager',
+    'Amazon',
+    'Hyderabad, India',
+    'product',
+    5,
+    ['Amazon Star Award 2024', 'Shipped 3 0→1 products with >50M users', 'Keynote at PMF India 2024'],
+    ['Product Strategy', 'User Research', 'Growth', 'A/B Experimentation', 'SQL'],
+    'Features kam banao, outcomes zyada sochna seekho — user pain points ka ek clear tree rakho.',
+    {
+      featured: true,
+      mentor: true,
+      quote: 'A PM without data is just opinions with confidence.',
+      pledge: 'Mentor 10 first-gen college students every year.',
+      timeline: [
+        { year: '2021', role: 'Graduated', company: 'Taru Guardians' },
+        { year: '2021', role: 'APM', company: 'Swiggy' },
+        { year: '2023', role: 'Product Manager', company: 'Amazon' },
+        { year: '2025', role: 'Senior PM', company: 'Amazon' },
+      ],
+    }
+  ),
+  makeAlumni(
+    3,
+    'Ankit Patel',
+    '2022',
+    'Machine Learning Engineer',
+    'Microsoft',
+    'Bangalore, India',
+    'data',
+    4,
+    ['Microsoft AI Impact Award', 'Co-authored 2 NeurIPS workshop papers', 'Open-sourced a ranking library (3.2k stars)'],
+    ['Python', 'PyTorch', 'Transformers', 'MLOps', 'Distributed Training'],
+    'ML me shortcut lene se models unreliable ho jaate hain — baseline strong banao pehle.',
+    {
+      featured: true,
+      mentor: true,
+      quote: 'Data is the new oil — but refining matters more than volume.',
+      pledge: 'Donate 5% of stipend to open-source AI safety research.',
+    }
+  ),
+  makeAlumni(
+    4,
+    'Sneha Gupta',
+    '2023',
+    'Senior Product Designer',
+    'Apple',
+    'Bangalore, India',
+    'design',
+    3,
+    ['Apple Design Excellence 2024', '3 WWDC session feature shipments', 'Design system used by 14 teams'],
+    ['Figma', 'Design Systems', 'Motion', 'Prototyping', 'User Research'],
+    'Aesthetic likna easy hai, accessibility tough — dono ek saath practice karte raho.',
+    {
+      featured: true,
+      mentor: true,
+      quote: 'Great design is invisible — and opinionated.',
+      pledge: 'Free accessibility audits for 12 NGO websites every year.',
+    }
+  ),
+  makeAlumni(
+    5,
+    'Vikram Kumar',
+    '2024',
+    'Founder & CEO',
+    'EcoTech Solutions',
+    'Bangalore, India',
+    'entrepreneur',
+    2,
+    ['Forbes 30 Under 30 — Asia 2025', 'Raised Seed + Series A ($8.4M)', 'Recognized by UNEP for rural cleantech'],
+    ['Business Strategy', 'Hardware–Software', 'Fundraising', 'IoT', 'Supply Chain'],
+    'Idea se zyada execution matter karta hai — aur execution = honest feedback loops.',
+    {
+      featured: true,
+      mentor: true,
+      pledge: 'Hire 30% of workforce from tier-3 colleges and rural talent.',
+      quote: 'Startups don\'t need vision decks — they need weekly cash runways and believers.',
+      timeline: [
+        { year: '2024', role: 'Graduated', company: 'Taru Guardians' },
+        { year: '2024', role: 'Co-founder', company: 'EcoTech Solutions' },
+        { year: '2025', role: 'CEO', company: 'EcoTech Solutions' },
+      ],
+    }
+  ),
+  makeAlumni(
+    6,
+    'Meera Shah',
+    '2025',
+    'Business Analyst',
+    'McKinsey & Company',
+    'Mumbai, India',
+    'finance',
+    1,
+    ['Top Performer Q4 2025', 'Led 3 CSR engagements', 'Best Campus Rookie — McK Mumbai'],
+    ['Structured Problem Solving', 'Excel Modeling', 'Client Communication', 'Strategy'],
+    'Pehla saal seekhne me invest karo — compensation baad me apne aap chase karega.',
+    {
+      mentor: true,
+      quote: 'Consulting is 80% listening, 20% framing.',
+      pledge: 'Volunteer 100+ hrs with rural financial-literacy NGOs.',
+    }
+  ),
+  makeAlumni(
+    7,
+    'Aditya Reddy',
+    '2020',
+    'Vice President — Investment Banking',
+    'Goldman Sachs',
+    'Bangalore, India',
+    'finance',
+    6,
+    ['Best Analyst 2022', 'Closed $1.2B cross-border deal', 'Directors\' List 3 years in a row'],
+    ['Valuation', 'M&A', 'Financial Modeling', 'Cross-border deals'],
+    'Network is net worth — par trust unka hi banta hai jinhone mistakes mana aur fix kiya ho.',
+    {
+      mentor: true,
+      quote: 'In finance, compounding your reputation matters more than compounding your Excel tricks.',
+    }
+  ),
+  makeAlumni(
+    8,
+    'Kavya Nair',
+    '2021',
+    'Scientist-C',
+    'ISRO',
+    'Bangalore, India',
+    'research',
+    5,
+    ['ISRO Young Scientist Award 2024', 'Co-designed Chandrayaan-3 payload thermal subsystem', '3 peer-reviewed publications'],
+    ['MATLAB', 'Thermal Analysis', 'Systems Engineering', 'Scientific Writing'],
+    'Reach for the stars — lekin paper pehle publish karo, ghar waale phir satisfy hote hain.',
+    {
+      featured: true,
+      mentor: true,
+      quote: 'Space missions fail silently. Engineering rigor is not optional.',
+    }
+  ),
+  makeAlumni(
+    9,
+    'Harshit Jain',
+    '2019',
+    'Staff Software Engineer',
+    'Netflix',
+    'Los Gatos, USA',
+    'tech',
+    7,
+    ['Netflix Rockstar 2023', 'Led CDN rollout in APAC', 'Invited speaker QCon SF'],
+    ['Streaming Systems', 'Rust', 'Edge Computing', 'Video Codecs'],
+    'Bahar jaake kaam karna hai to system-design me genuinely deep jaao — interviews ki ratt mat lagao.',
+    {
+      quote: 'Scale eats assumptions for breakfast.',
+    }
+  ),
+  makeAlumni(
+    10,
+    'Shruti Menon',
+    '2022',
+    'UX Researcher',
+    'Spotify',
+    'Stockholm, Sweden',
+    'research',
+    4,
+    ['Spotify R&D Award', 'Led listener-behavior study across 12 markets', 'Published Nielsen-Norman guest essay'],
+    ['Mixed-methods Research', 'Diary Studies', 'NPS', 'Quant+Qual', 'Storytelling'],
+    'Research agar action me translate na ho to report nahi, museum piece ban jaati hai.',
+    {
+      mentor: true,
+      quote: 'Users don\'t owe you coherence. You owe them clarity.',
+    }
+  ),
+  makeAlumni(
+    11,
+    'Devraj Iyer',
+    '2021',
+    'Senior iOS Engineer',
+    'Swiggy',
+    'Bangalore, India',
+    'tech',
+    5,
+    ['Swiggy Spotlight 2024', 'Shipped delivery-partner iOS rewrite', 'Led 4-person pod'],
+    ['Swift', 'SwiftUI', 'Combine', 'Performance Tuning', 'CI/CD'],
+    'Crash-free sessions >= 99.7% ke neeche chhota hi launch mat karo.',
+    {}
+  ),
+  makeAlumni(
+    12,
+    'Anaya Verma',
+    '2023',
+    'Sustainability Analyst',
+    'BCG — Climate & Sustainability',
+    'Gurugram, India',
+    'impact',
+    3,
+    ['Clean Tech Rising 2025', 'ESG framework for 2 Fortune 500', 'TEDx Youth Bangalore'],
+    ['ESG Reporting', 'Carbon Accounting', 'Policy Analysis', 'Workshops'],
+    'Sustainability marketing ke paar le jaao — real KPIs ke bina intent shallow hai.',
+    {
+      featured: true,
+      mentor: true,
+      pledge: 'Help 20 startups publish their first sustainability report pro-bono.',
+      quote: 'Climate is not a vertical. It\'s a context.',
+    }
+  ),
+  makeAlumni(
+    13,
+    'Ritika Bansal',
+    '2020',
+    'Lead Data Scientist',
+    'Ola',
+    'Bangalore, India',
+    'data',
+    6,
+    ['Ola Innovate 2023', 'Built matching engine v3', '3 patents filed'],
+    ['Causal Inference', 'Bayesian Methods', 'PyMC', 'Spark', 'A/B'],
+    'Data scientist ko philosopher banna padta hai — pehle question, phir model.',
+    {
+      mentor: true,
+    }
+  ),
+  makeAlumni(
+    14,
+    'Arjun Pillai',
+    '2022',
+    'Backend Engineer',
+    'Stripe',
+    'Dublin, Ireland',
+    'tech',
+    4,
+    ['Stripe Engineering Excellence', 'Owned payments reconciliation SLA', 'Open-source contributor to Postgres'],
+    ['Java', 'Postgres', 'Kafka', 'Observability', 'Consistency models'],
+    'Payments systems me integrity > latency. Har bug ka blast radius sochke code likho.',
+    {
+      mentor: true,
+      quote: 'Correctness is a feature, not a luxury.',
+    }
+  ),
+  makeAlumni(
+    15,
+    'Nandini Rao',
+    '2024',
+    'Brand Strategist',
+    'Ogilvy',
+    'Mumbai, India',
+    'creative',
+    2,
+    ['Young Lions Shortlist', 'Led 3 fintech repositioning campaigns'],
+    ['Brand Strategy', 'Copy', 'Storytelling', 'Campaign Planning'],
+    'Brand matlab logo nahi — brand matlab emotional default jo customer ke mann me apna ghar bana le.',
+    {
+      quote: 'Ads ruk jaate hain, reputation compound hoti hai.',
+    }
+  ),
+  makeAlumni(
+    16,
+    'Sanjay Rane',
+    '2019',
+    'Co-founder & CTO',
+    'GreenLogix',
+    'Pune, India',
+    'entrepreneur',
+    7,
+    ['Seed raised $1.8M', 'Deploy cleantech in 14 MSMEs', 'IIT Bombay collaborator'],
+    ['Hardware', 'Low-power electronics', 'Embedded C', 'Operations'],
+    'Customer ke saath 20 hafta gujaro phir build karo — chair-builder hardware startup zinda nahi rahti.',
+    {
+      mentor: true,
+      pledge: 'Co-build 4 open-source hardware kits for schools.',
+    }
+  ),
+  makeAlumni(
+    17,
+    'Ayesha Khan',
+    '2023',
+    'Frontend Engineer',
+    'Razorpay',
+    'Bangalore, India',
+    'tech',
+    3,
+    ['Razorpay Shine Award', 'Accessible payment flow redesign', 'Internal speaker program host'],
+    ['React', 'TypeScript', 'Accessibility', 'Performance', 'Design tokens'],
+    'Frontend me polish obvious dikhti hai — isliye uske peeche "fundamentals" ko dhanda karo.',
+    {
+      mentor: true,
+      quote: 'Shipping fast is good. Shipping correct is non-negotiable.',
+    }
+  ),
+  makeAlumni(
+    18,
+    'Rahul Desai',
+    '2021',
+    'Senior Consultant',
+    'Deloitte Strategy',
+    'Bangalore, India',
+    'finance',
+    5,
+    ['Outstanding Consultant 2024', 'Turnaround for state-run utility'],
+    ['Market Entry', 'Due Diligence', 'Financial Modeling', 'Workshops'],
+    'Consulting deck me slide kam, decision framework zyada honi chahiye.',
+    {}
+  ),
+  makeAlumni(
+    19,
+    'Pooja Kulkarni',
+    '2020',
+    'DevOps Architect',
+    'Atlassian',
+    'Bangalore, India',
+    'tech',
+    6,
+    ['Atlassian Values Award', 'Reduced CI minutes by 42%', 'Speaker at DevOpsDays'],
+    ['Kubernetes', 'Terraform', 'Observability', 'Incident Management'],
+    'Automate apni insanity — log roz dekhne padein to pipeline adhoora hai.',
+    {
+      mentor: true,
+    }
+  ),
+  makeAlumni(
+    20,
+    'Tanmay Joshi',
+    '2022',
+    'Game Designer',
+    'Ubisoft',
+    'Montreal, Canada',
+    'creative',
+    4,
+    ['Game Awards Shortlist 2024', 'Designed 2 mechanics shipped in AAA title'],
+    ['Unity', 'Game Balance', 'Level Design', 'Playtesting'],
+    'Game design me "fun" feel se judge hota hai, metrics se prove hota hai.',
+    {
+      quote: 'Players don\'t play your intention. They play your systems.',
+    }
+  ),
+  makeAlumni(
+    21,
+    'Megha Srinivasan',
+    '2019',
+    'Principal Engineer',
+    'Adobe',
+    'Noida, India',
+    'tech',
+    7,
+    ['Adobe Founders\' Award', 'Led Premiere Rush perf overhaul', 'Architect of cloud-sync subsystem'],
+    ['C++', 'Graphics', 'Cross-platform', 'Profiling', 'Leadership'],
+    'Principal role = technical judgment + taste + humility to be overruled by data.',
+    {
+      featured: true,
+      mentor: true,
+    }
+  ),
+  makeAlumni(
+    22,
+    'Aniket Bose',
+    '2024',
+    'Associate',
+    'Bain & Company',
+    'New Delhi, India',
+    'finance',
+    2,
+    ['Bain Best Campus Recruit 2024', 'Led PE due-diligence for consumer deal'],
+    ['Excel Modeling', 'Slide-writing', 'Primary Research'],
+    'Modeling jitni shortcut se karoge utna recover karna mehenga padega.',
+    {
+      quote: 'The first draft of your model is always wrong. Iterate ruthlessly.',
+    }
+  ),
+  makeAlumni(
+    23,
+    'Shalini Yadav',
+    '2023',
+    'AI Researcher',
+    'Google DeepMind',
+    'London, UK',
+    'research',
+    3,
+    ['Chevening Scholar 2024', 'Published at ICML', 'Collaborator on foundation-model safety'],
+    ['JAX', 'Reinforcement Learning', 'Safety Research', 'Writing'],
+    'Research me hype-cycle ko ignore karna seekho, baseline methods me mehnat karo.',
+    {
+      featured: true,
+      mentor: true,
+      quote: 'Papers are conversations, not trophies.',
+    }
+  ),
+  makeAlumni(
+    24,
+    'Siddharth Menon',
+    '2021',
+    'Associate Product Manager',
+    'Cred',
+    'Bangalore, India',
+    'product',
+    5,
+    ['Cred Bootcamp Top 3', 'Launched 2 new experiments yielding +7% NPS'],
+    ['Product Sense', 'SQL', 'Amplitude', 'Feature Specs'],
+    'PM roles me listening a superpower hai — kabhi bhi "smart jawab" se pehle 2 questions aur puchho.',
+    {}
+  ),
+  makeAlumni(
+    25,
+    'Divya Menon',
+    '2018',
+    'Head of Design',
+    'Zerodha',
+    'Bangalore, India',
+    'design',
+    8,
+    ['AIGA Honor 2024', 'Scaled design team 3→22', 'Author of Kite design language book'],
+    ['Design Leadership', 'Systems', 'Culture Building', 'Hiring'],
+    'Taste 3 saal me develop hoti hai, sensibility ban\'ne me 10 lagta hai — patient raho.',
+    {
+      featured: true,
+      mentor: true,
+      pledge: 'Run 4 free design bootcamps per year for tier-3 students.',
+    }
+  ),
+  makeAlumni(
+    26,
+    'Rakesh Pandey',
+    '2020',
+    'Senior SRE',
+    'PhonePe',
+    'Bangalore, India',
+    'tech',
+    6,
+    ['PhonePe Technology Excellence', 'Sub-60 sec MTTR for transactions infra'],
+    ['SRE', 'Kafka', 'Scaling', 'Incident Review'],
+    'SRE role me ego checkbox pe chhodo — blameless postmortem culture sirf words me nahi, practice me chahiye.',
+    {}
+  ),
+  makeAlumni(
+    27,
+    'Avni Saxena',
+    '2022',
+    'Impact Investment Analyst',
+    'Omidyar Network India',
+    'Mumbai, India',
+    'impact',
+    4,
+    ['Top Analyst 2024', 'Supported 6 early-stage impact startups'],
+    ['Impact Modeling', 'Due Diligence', 'Portfolio Support'],
+    'Impact measure karo ya mat maapo — par blind faith me invest mat karo.',
+    {
+      mentor: true,
+    }
+  ),
+  makeAlumni(
+    28,
+    'Manish Ahuja',
+    '2019',
+    'Principal Data Scientist',
+    'Walmart Labs',
+    'Bangalore, India',
+    'data',
+    7,
+    ['Walmart CTO Recognition', 'Built demand forecasting engine v4', 'Speaker KDD 2024'],
+    ['Forecasting', 'Causal ML', 'Python', 'Scientific Writing'],
+    'Business value dikhane ke liye pahle problem clearly articulate karo — model baad ki baat hai.',
+    {
+      mentor: true,
+      quote: 'A clean problem statement is half the model.',
+    }
+  ),
+  makeAlumni(
+    29,
+    'Ishita Roy',
+    '2024',
+    'Growth Marketing Lead',
+    'Meesho',
+    'Bangalore, India',
+    'creative',
+    2,
+    ['Meesho Lightspeed Award', 'Led 0→1 creator program'],
+    ['Growth Loops', 'Attribution', 'Creator Ops', 'Content'],
+    'Growth me vanity-metrics se bacho — unit economics aur retention ko always front-and-center rakho.',
+    {}
+  ),
+  makeAlumni(
+    30,
+    'Parth Saluja',
+    '2023',
+    'Full-stack Developer',
+    'Atlan',
+    'Bangalore, India',
+    'tech',
+    3,
+    ['Atlan Hackday Winner 2024', 'Built lineage visualization v2'],
+    ['TypeScript', 'GraphQL', 'Data catalogs', 'UX-engineering'],
+    'Product-engineer banna hai to spec likhna seekho, sirf ticket-execute mat karo.',
+    {}
+  ),
+  makeAlumni(
+    31,
+    'Riya Chauhan',
+    '2021',
+    'Senior Lawyer (Tech & IP)',
+    'Cyril Amarchand Mangaldas',
+    'Mumbai, India',
+    'finance',
+    5,
+    ['Rising Star — Legal 500', 'Advised 3 IPO-track startups'],
+    ['Technology Law', 'IP', 'Contract Drafting', 'Negotiation'],
+    'Legal me shortcut = long term se bahut mehenga — har clause justify kar saktey ho tabhi draft bhejo.',
+    {
+      mentor: true,
+    }
+  ),
+  makeAlumni(
+    32,
+    'Karan Malhotra',
+    '2020',
+    'Founding Engineer',
+    'Turing',
+    'Remote (Bangalore)',
+    'entrepreneur',
+    6,
+    ['Forbes Asia Emerging Builders 2024', 'Built core matching engine'],
+    ['Python', 'Ruby', 'Django', 'Team Building'],
+    'Joining a 5-person company chhoti si family jaisa hai — culture fit skill fit se zyada critical hai.',
+    {
+      quote: 'Employee #1 → Employee #50 is two different universes.',
+    }
+  ),
+  makeAlumni(
+    33,
+    'Neha Bhatt',
+    '2022',
+    'Behavioral Scientist',
+    'Dalberg Design',
+    'Delhi NCR, India',
+    'research',
+    4,
+    ['Dalberg MVP 2024', 'Field research across 6 states'],
+    ['Behavioral Economics', 'Field Research', 'Workshops', 'Synthesis'],
+    'Policy aur design ke beech ka pul hona hota hai — dono ko speak karna padega.',
+    {
+      mentor: true,
+    }
+  ),
+  makeAlumni(
+    34,
+    'Yash Agarwal',
+    '2024',
+    'Software Engineer',
+    'Linear',
+    'Remote (Mumbai)',
+    'tech',
+    2,
+    ['Linear Launch-week contributor'],
+    ['React', 'GraphQL', 'Elixir', 'Product sense'],
+    'Small team = big leverage. Apne bugs khud fix karo, apni launches khud own karo.',
+    {}
+  ),
+  makeAlumni(
+    35,
+    'Lavanya Iyer',
+    '2020',
+    'Director of Operations',
+    'Piramal Foundation',
+    'Mumbai, India',
+    'impact',
+    6,
+    ['Aspire Fellow 2023', 'Scaled rural health programs across 4 states'],
+    ['Operations', 'Government Relations', 'Monitoring & Evaluation'],
+    'Impact operations me data aur humility dono chahiye — yaha sirf spreadsheets se truth nahi milti.',
+    {
+      mentor: true,
+      pledge: 'Design a rural leadership accelerator with 100 cohort slots / year.',
+    }
+  ),
+  makeAlumni(
+    36,
+    'Ankita Mehta',
+    '2019',
+    'Senior Economist',
+    'World Bank',
+    'Washington DC, USA',
+    'research',
+    7,
+    ['Chevening Scholar 2021', '3 World Bank policy papers'],
+    ['Econometrics', 'Policy Analysis', 'Stata', 'Writing'],
+    'Economics ke without politics samjhe kaam adhoora hai — humility rakho data pe.',
+    {
+      featured: true,
+    }
+  ),
+  makeAlumni(
+    37,
+    'Rohan Kapoor',
+    '2021',
+    'AI Platform Engineer',
+    'OpenAI',
+    'San Francisco, USA',
+    'tech',
+    5,
+    ['OpenAI Builder of the Quarter 2025', 'Core author of model-eval framework'],
+    ['Python', 'CUDA', 'Distributed systems', 'Infrastructure'],
+    'Frontier AI companies me prod reliability > research glamour — build boring but solid.',
+    {
+      featured: true,
+      mentor: true,
+      quote: 'The model is the artist. The infra is the stage.',
+    }
+  ),
+  makeAlumni(
+    38,
+    'Sana Fatima',
+    '2023',
+    'Content Strategist',
+    'Netflix',
+    'Mumbai, India',
+    'creative',
+    3,
+    ['Netflix India Rookie 2024', 'Commissioned 2 regional documentaries'],
+    ['Editorial', 'Research', 'Pitch-writing', 'Audience insight'],
+    'Content jo apne audience ko respect karta hai wahi compound karta hai — baaki is churn ka hissa hai.',
+    {}
+  ),
+  makeAlumni(
+    39,
+    'Tejas Sawant',
+    '2018',
+    'Chief of Staff',
+    'Razorpay',
+    'Bangalore, India',
+    'product',
+    8,
+    ['Glue Award for Leadership', 'Built OKR rollout infra', 'Public speaker on operational craft'],
+    ['Operations', 'Program Management', 'Strategy', 'Coaching'],
+    'Chief of staff = leverage through clarity — politics me pado nahi, work speak karne do.',
+    {
+      mentor: true,
+      featured: true,
+    }
+  ),
+  makeAlumni(
+    40,
+    'Geetika Bose',
+    '2020',
+    'Co-founder',
+    'Climafarms',
+    'Kolkata, India',
+    'entrepreneur',
+    6,
+    ['Ashoka Fellow 2024', 'Deployed cleantech on 20k acres of farmland'],
+    ['AgriTech', 'Field Deployment', 'Partnerships', 'Community Building'],
+    'Farmers ke saath baith ke cycle pakdo — MVP hackathon se nahi mitti se banta hai.',
+    {
+      featured: true,
+      pledge: 'Train 1000 women farmers every year on regenerative agriculture.',
+    }
+  ),
+  makeAlumni(
+    41,
+    'Ayaan Sinha',
+    '2022',
+    'Site Reliability Engineer',
+    'Shopify',
+    'Bangalore, India',
+    'tech',
+    4,
+    ['Shopify Shoutout 2024'],
+    ['K8s', 'Go', 'Incident Response', 'Observability'],
+    'Night on-call shift pe khud hi seekhoge: prevention > firefighting.',
+    {}
+  ),
+  makeAlumni(
+    42,
+    'Komal Arya',
+    '2024',
+    'Associate Product Designer',
+    'Paytm',
+    'Noida, India',
+    'design',
+    2,
+    ['Paytm Young Gun 2025'],
+    ['Figma', 'Mobile IA', 'Prototyping'],
+    'Pehla saal portfolio se zyada ek strong mentor find karne me lagaao.',
+    {}
+  ),
+  makeAlumni(
+    43,
+    'Siddharth Nair',
+    '2019',
+    'Partner',
+    'Blume Ventures',
+    'Bangalore, India',
+    'entrepreneur',
+    7,
+    ['Seed backer of 12 unicorn-track startups'],
+    ['Venture Investing', 'Dealflow', 'Founder Coaching'],
+    'VC business me bet thoughts nahi, founders pe lagate hain — chemistry aur craft dono dekho.',
+    {
+      mentor: true,
+    }
+  ),
+  makeAlumni(
+    44,
+    'Priyanshi Jain',
+    '2021',
+    'Lead Copywriter',
+    'Wieden+Kennedy',
+    'Delhi NCR, India',
+    'creative',
+    5,
+    ['Goafest Young Lion 2024'],
+    ['Long-form writing', 'Brand voice', 'Pitches'],
+    'Copy me clarity > cleverness — tagline ke peeche story honi chahiye.',
+    {}
+  ),
+  makeAlumni(
+    45,
+    'Harsh Vardhan',
+    '2018',
+    'Senior Director — Engineering',
+    'Freshworks',
+    'Chennai, India',
+    'tech',
+    8,
+    ['Freshworks Engineering Excellence', 'Scaled platform to 60k+ customers'],
+    ['SaaS', 'Architecture', 'Leadership'],
+    'Senior role me humility chahiye — junior best engineers se seekh sakte ho daily.',
+    {
+      featured: true,
+      mentor: true,
+      timeline: [
+        { year: '2018', role: 'Graduated', company: 'Taru Guardians' },
+        { year: '2018', role: 'Software Engineer', company: 'Freshworks' },
+        { year: '2021', role: 'Engineering Manager', company: 'Freshworks' },
+        { year: '2023', role: 'Director', company: 'Freshworks' },
+        { year: '2025', role: 'Senior Director', company: 'Freshworks' },
+      ],
+    }
+  ),
+  makeAlumni(
+    46,
+    'Nisha Pillai',
+    '2022',
+    'Energy Analyst',
+    'IEA (International Energy Agency)',
+    'Paris, France',
+    'impact',
+    4,
+    ['IEA Young Analyst Program'],
+    ['Energy Modeling', 'Policy Research', 'Writing'],
+    'Sustainability me rich data mil jaati hai — par comms skill zyada matter karta hai.',
+    {
+      mentor: true,
+    }
+  ),
+  makeAlumni(
+    47,
+    'Gaurav Khanna',
+    '2023',
+    'Android Engineer',
+    'Truecaller',
+    'Bangalore, India',
+    'tech',
+    3,
+    ['Truecaller Q3 2024 MVP'],
+    ['Kotlin', 'Compose', 'Performance', 'Play Store hygiene'],
+    'Library churn me phasne se bacho — fundamentals tight rakho (concurrency, memory, render).',
+    {}
+  ),
+  makeAlumni(
+    48,
+    'Sara D\'Souza',
+    '2020',
+    'Diplomatic Fellow',
+    'United Nations Development Programme',
+    'Geneva, Switzerland',
+    'impact',
+    6,
+    ['UN Gender Action Fellowship 2024', '4 cross-country field missions'],
+    ['Policy', 'Multi-lateral negotiation', 'Writing', 'Languages'],
+    'Diplomacy me patience + precision — zor se bolna communication nahi hota.',
+    {
+      featured: true,
+    }
+  ),
+  makeAlumni(
+    49,
+    'Ashish Gowda',
+    '2019',
+    'Principal Product Manager',
+    'Atlassian',
+    'Bangalore, India',
+    'product',
+    7,
+    ['Atlassian PM of the Year 2023'],
+    ['Dev tools', 'B2B SaaS', 'Cross-functional leadership'],
+    'B2B PM role me user != buyer — dono ko genuinely serve karo.',
+    {
+      mentor: true,
+      featured: true,
+    }
+  ),
+  makeAlumni(
+    50,
+    'Ritu Saxena',
+    '2021',
+    'Creative Director',
+    'Scroll.in',
+    'New Delhi, India',
+    'creative',
+    5,
+    ['Ramnath Goenka Award 2024', '3 long-form visual essays shipped'],
+    ['Visual storytelling', 'Editorial', 'Digital publishing'],
+    'Media me trust build karna slow kaam hai — viral hona goal mat banao.',
+    {}
+  ),
+  makeAlumni(
+    51,
+    'Varun Rao',
+    '2024',
+    'Backend Engineer',
+    'Uber',
+    'Bangalore, India',
+    'tech',
+    2,
+    ['Uber Hackathon Winner 2025'],
+    ['Go', 'gRPC', 'Distributed systems', 'Streaming'],
+    'Jab pehla system design review aaye, prepare karke jaana — shortcut nahi chalte.',
+    {}
+  ),
+  makeAlumni(
+    52,
+    'Bhoomika Das',
+    '2018',
+    'VP — Product',
+    'Swiggy',
+    'Bangalore, India',
+    'product',
+    8,
+    ['Swiggy Innovation Trailblazer', 'Scaled food+grocery product org 25→240'],
+    ['Zero-to-one', 'Consumer product', 'Org design'],
+    'VP role me sabse important skill hai delegate-with-trust + tough-decisions-with-kindness.',
+    {
+      featured: true,
+      mentor: true,
+      pledge: 'Mentor 30 women founders each year.',
+    }
+  ),
+];
 
-  const onRefresh = useCallback(() => { setRefreshing(true); setTimeout(() => setRefreshing(false), 2000); }, []);
+// -----------------------------------------------------
+// Aggregates
+// -----------------------------------------------------
 
-  const handleAlumniPress = (alumnus: Alumni) => { setSelectedAlumni(alumnus); setShowAlumniModal(true); };
-  const handleLinkedIn = (alumnus: Alumni) => { if (alumnus.linkedin) Linking.openURL(alumnus.linkedin); };
-  const handleEmail = (alumnus: Alumni) => { Linking.openURL(`mailto:${alumnus.email}`); };
+const uniqueCompanies = Array.from(new Set(ALUMNI_DATA.map((a) => a.company))).sort();
+
+const ALUMNI_STATS: AlumniStats & { avgYoE: number; countries: number; mentors: number } = {
+  totalAlumni: 500,
+  avgExperience: Math.round(
+    (ALUMNI_DATA.reduce((acc, a) => acc + a.experienceYears, 0) / ALUMNI_DATA.length) * 10
+  ) / 10,
+  placementRate: 96,
+  companiesHired: uniqueCompanies.length + 120,
+  avgYoE:
+    Math.round(
+      (ALUMNI_DATA.reduce((acc, a) => acc + a.experienceYears, 0) / ALUMNI_DATA.length) * 10
+    ) / 10,
+  countries: new Set(ALUMNI_DATA.map((a) => a.location.split(',').slice(-1)[0].trim())).size,
+  mentors: ALUMNI_DATA.filter((a) => a.mentor).length,
+};
+
+// -----------------------------------------------------
+// Testimonials / featured quotes
+// -----------------------------------------------------
+
+interface Testimonial {
+  id: string;
+  authorId: string;
+  quote: string;
+  role: string;
+}
+
+const TESTIMONIALS: Testimonial[] = ALUMNI_DATA
+  .filter((a) => !!a.quote)
+  .slice(0, 8)
+  .map((a) => ({
+    id: `t-${a.id}`,
+    authorId: a.id,
+    quote: a.quote!,
+    role: `${a.currentRole} · ${a.company}`,
+  }));
+
+// -----------------------------------------------------
+// Top companies aggregate
+// -----------------------------------------------------
+
+const TOP_COMPANIES = (() => {
+  const map = new Map<string, number>();
+  ALUMNI_DATA.forEach((a) => map.set(a.company, (map.get(a.company) ?? 0) + 1));
+  return Array.from(map.entries())
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 10);
+})();
+
+// -----------------------------------------------------
+// Hall of Fame (featured alumni highlights)
+// -----------------------------------------------------
+
+const HALL_OF_FAME = ALUMNI_DATA.filter((a) => a.featured);
+
+// -----------------------------------------------------
+// Meetups / upcoming alumni events
+// -----------------------------------------------------
+
+interface AlumniMeetup {
+  id: string;
+  title: string;
+  date: string;
+  city: string;
+  mode: 'offline' | 'virtual' | 'hybrid';
+  description: string;
+  capacity: number;
+  registered: number;
+  tags: string[];
+}
+
+const ALUMNI_MEETUPS: AlumniMeetup[] = [
+  {
+    id: 'm1',
+    title: 'Bangalore Alumni Catch-up — Q2 2026',
+    date: '2026-05-17',
+    city: 'Bangalore',
+    mode: 'offline',
+    description:
+      'Casual evening with snacks + lightning talks from 6 alumni across product, tech, sustainability.',
+    capacity: 120,
+    registered: 87,
+    tags: ['networking', 'talks', 'offline'],
+  },
+  {
+    id: 'm2',
+    title: 'Climate Tech Fireside — online',
+    date: '2026-04-30',
+    city: 'Virtual',
+    mode: 'virtual',
+    description:
+      'Alumni working in cleantech share practical lessons on building in the climate space.',
+    capacity: 500,
+    registered: 312,
+    tags: ['cleantech', 'virtual', 'fireside'],
+  },
+  {
+    id: 'm3',
+    title: 'Hyderabad Mentor Night',
+    date: '2026-06-08',
+    city: 'Hyderabad',
+    mode: 'offline',
+    description:
+      'Speed-mentoring with 12 alumni across product, data, design. Open to current students.',
+    capacity: 80,
+    registered: 64,
+    tags: ['mentorship', 'offline'],
+  },
+  {
+    id: 'm4',
+    title: 'Alumni Founders Panel — Mumbai',
+    date: '2026-07-12',
+    city: 'Mumbai',
+    mode: 'hybrid',
+    description:
+      'Panel with alumni founders across edtech, cleantech, fintech — Q&A with students + alumni.',
+    capacity: 200,
+    registered: 143,
+    tags: ['founders', 'panel', 'hybrid'],
+  },
+  {
+    id: 'm5',
+    title: 'Design Systems Masterclass',
+    date: '2026-08-03',
+    city: 'Virtual',
+    mode: 'virtual',
+    description:
+      'Hands-on 3-hour workshop from Head-of-Design alumni. Build a starter design system together.',
+    capacity: 250,
+    registered: 112,
+    tags: ['design', 'workshop'],
+  },
+  {
+    id: 'm6',
+    title: 'Global Alumni Summit 2026',
+    date: '2026-11-20',
+    city: 'Bangalore',
+    mode: 'hybrid',
+    description:
+      'Annual flagship 2-day summit — 40+ speakers, 10 workshops, awards night, campus connect.',
+    capacity: 700,
+    registered: 280,
+    tags: ['summit', 'annual', 'flagship'],
+  },
+];
+
+// -----------------------------------------------------
+// Mentorship spots
+// -----------------------------------------------------
+
+interface MentorshipSlot {
+  id: string;
+  mentorId: string;
+  topic: string;
+  slotsRemaining: number;
+  durationMin: number;
+  format: 'call' | 'chat' | 'in-person';
+}
+
+const MENTORSHIP_SLOTS: MentorshipSlot[] = ALUMNI_DATA
+  .filter((a) => a.mentor)
+  .slice(0, 12)
+  .map((a, idx) => ({
+    id: `ms-${a.id}`,
+    mentorId: a.id,
+    topic: [
+      'Breaking into Product',
+      'System design fundamentals',
+      'Design portfolio review',
+      'Research path after college',
+      'Sustainability career advice',
+      'Founding engineer journey',
+      'Data science interviews',
+      'Finance off-campus prep',
+      'Consulting case workshop',
+      'ML engineering career',
+      'Startup fundraising basics',
+      'Cross-border careers',
+    ][idx % 12],
+    slotsRemaining: 2 + (idx % 4),
+    durationMin: [30, 45, 60][idx % 3],
+    format: (['call', 'chat', 'in-person'] as const)[idx % 3],
+  }));
+
+// -----------------------------------------------------
+// Alumni pledges / sustainability initiatives
+// -----------------------------------------------------
+
+const ALUMNI_PLEDGES = ALUMNI_DATA.filter((a) => !!a.sustainabilityPledge).slice(0, 10);
+
+// =====================================================
+// Component
+// =====================================================
+
+const AlumniScreen: React.FC = () => {
+  // -------------- State ------------------
+  const [selectedBatch, setSelectedBatch] = useState<'all' | string>('all');
+  const [selectedSector, setSelectedSector] = useState<SectorId>('all');
+  const [selectedCompany, setSelectedCompany] = useState<'all' | string>('all');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [sortKey, setSortKey] = useState<SortKey>('recent-batch');
+  const [viewMode, setViewMode] = useState<ViewMode>('list');
+  const [onlyMentors, setOnlyMentors] = useState(false);
+  const [onlyFeatured, setOnlyFeatured] = useState(false);
+  const [selectedAlumni, setSelectedAlumni] = useState<ExtAlumni | null>(null);
+  const [showAlumniModal, setShowAlumniModal] = useState(false);
+  const [showSortMenu, setShowSortMenu] = useState(false);
+  const [showCompanyMenu, setShowCompanyMenu] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  // -------------- Animations -------------
+  const headerAnim = useRef(new Animated.Value(0)).current;
+  const statsAnim = useRef(new Animated.Value(0)).current;
+  const sectorAnim = useRef(new Animated.Value(0)).current;
+  const batchAnim = useRef(new Animated.Value(0)).current;
+  const listAnim = useRef(new Animated.Value(0)).current;
+  const modalScale = useRef(new Animated.Value(0.9)).current;
+  const modalOpacity = useRef(new Animated.Value(0)).current;
+  const testimonialIndex = useRef(new Animated.Value(0)).current;
+
+  // -------------- Effects ----------------
+  useEffect(() => {
+    Animated.stagger(120, [
+      Animated.timing(headerAnim, {
+        toValue: 1,
+        duration: ANIM.duration.slow,
+        easing: ANIM.easing.out,
+        useNativeDriver: true,
+      }),
+      Animated.timing(statsAnim, {
+        toValue: 1,
+        duration: ANIM.duration.slow,
+        easing: ANIM.easing.out,
+        useNativeDriver: true,
+      }),
+      Animated.timing(sectorAnim, {
+        toValue: 1,
+        duration: ANIM.duration.slow,
+        easing: ANIM.easing.out,
+        useNativeDriver: true,
+      }),
+      Animated.timing(batchAnim, {
+        toValue: 1,
+        duration: ANIM.duration.slow,
+        easing: ANIM.easing.out,
+        useNativeDriver: true,
+      }),
+      Animated.timing(listAnim, {
+        toValue: 1,
+        duration: ANIM.duration.slow,
+        easing: ANIM.easing.out,
+        useNativeDriver: true,
+      }),
+    ]).start();
+
+    const timer = setTimeout(() => setLoading(false), 620);
+    return () => clearTimeout(timer);
+  }, [headerAnim, statsAnim, sectorAnim, batchAnim, listAnim]);
+
+  useEffect(() => {
+    if (showAlumniModal) {
+      Animated.parallel([
+        Animated.spring(modalScale, { toValue: 1, useNativeDriver: true, friction: 7 }),
+        Animated.timing(modalOpacity, {
+          toValue: 1,
+          duration: ANIM.duration.fast,
+          useNativeDriver: true,
+        }),
+      ]).start();
+    } else {
+      modalScale.setValue(0.9);
+      modalOpacity.setValue(0);
+    }
+  }, [showAlumniModal, modalScale, modalOpacity]);
+
+  // -------------- Filtering --------------
+  const filteredAlumni = useMemo(() => {
+    let list: ExtAlumni[] = ALUMNI_DATA;
+
+    if (selectedBatch !== 'all') list = list.filter((a) => a.batch === selectedBatch);
+    if (selectedSector !== 'all') list = list.filter((a) => a.sector === selectedSector);
+    if (selectedCompany !== 'all') list = list.filter((a) => a.company === selectedCompany);
+    if (onlyMentors) list = list.filter((a) => a.mentor);
+    if (onlyFeatured) list = list.filter((a) => a.featured);
+
+    const q = searchQuery.trim().toLowerCase();
+    if (q) {
+      list = list.filter(
+        (a) =>
+          a.name.toLowerCase().includes(q) ||
+          a.company.toLowerCase().includes(q) ||
+          a.currentRole.toLowerCase().includes(q) ||
+          a.location.toLowerCase().includes(q) ||
+          a.skills.some((s) => s.toLowerCase().includes(q))
+      );
+    }
+
+    switch (sortKey) {
+      case 'recent-batch':
+        list = [...list].sort((a, b) => Number(b.batch) - Number(a.batch));
+        break;
+      case 'oldest-batch':
+        list = [...list].sort((a, b) => Number(a.batch) - Number(b.batch));
+        break;
+      case 'name-asc':
+        list = [...list].sort((a, b) => a.name.localeCompare(b.name));
+        break;
+      case 'name-desc':
+        list = [...list].sort((a, b) => b.name.localeCompare(a.name));
+        break;
+      case 'company-asc':
+        list = [...list].sort((a, b) => a.company.localeCompare(b.company));
+        break;
+    }
+
+    return list;
+  }, [selectedBatch, selectedSector, selectedCompany, onlyMentors, onlyFeatured, searchQuery, sortKey]);
+
+  const hasFilters =
+    selectedBatch !== 'all' ||
+    selectedSector !== 'all' ||
+    selectedCompany !== 'all' ||
+    onlyMentors ||
+    onlyFeatured ||
+    searchQuery.trim().length > 0;
+
+  // -------------- Handlers ---------------
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => setRefreshing(false), 1200);
+  }, []);
+
+  const openAlumni = useCallback((alumnus: ExtAlumni) => {
+    setSelectedAlumni(alumnus);
+    setShowAlumniModal(true);
+  }, []);
+
+  const closeAlumni = useCallback(() => {
+    Animated.parallel([
+      Animated.timing(modalScale, {
+        toValue: 0.9,
+        duration: ANIM.duration.fast,
+        useNativeDriver: true,
+      }),
+      Animated.timing(modalOpacity, {
+        toValue: 0,
+        duration: ANIM.duration.fast,
+        useNativeDriver: true,
+      }),
+    ]).start(() => {
+      setShowAlumniModal(false);
+      setSelectedAlumni(null);
+    });
+  }, [modalScale, modalOpacity]);
+
+  const handleLinkedIn = useCallback(async (alumnus: ExtAlumni) => {
+    try {
+      await Linking.openURL(alumnus.linkedin);
+    } catch {
+      Alert.alert('Unable to open link', 'LinkedIn link could not be opened.');
+    }
+  }, []);
+
+  const handleEmail = useCallback(async (alumnus: ExtAlumni) => {
+    try {
+      await Linking.openURL(`mailto:${alumnus.email}`);
+    } catch {
+      Alert.alert('Unable to open email', 'Your device cannot open a mail composer.');
+    }
+  }, []);
+
+  const handleShare = useCallback(async (alumnus: ExtAlumni) => {
+    try {
+      await Share.share({
+        message: `Meet ${alumnus.name} — ${alumnus.currentRole} @ ${alumnus.company}. Class of ${alumnus.batch} from Taru Guardians.`,
+      });
+    } catch {
+      // user cancelled
+    }
+  }, []);
+
+  const handleMentorshipRequest = useCallback((alumnus: ExtAlumni) => {
+    Alert.alert(
+      'Request mentorship',
+      `Send a request to ${alumnus.name}? They will receive a short intro template to reply to.`,
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Send request',
+          onPress: () => {
+            Alert.alert('Request sent!', 'The alumnus will reach out within a few days.');
+          },
+        },
+      ]
+    );
+  }, []);
+
+  const clearFilters = useCallback(() => {
+    setSelectedBatch('all');
+    setSelectedSector('all');
+    setSelectedCompany('all');
+    setOnlyMentors(false);
+    setOnlyFeatured(false);
+    setSearchQuery('');
+  }, []);
+
+  // -------------- Sub-renderers ----------
 
   const renderHeader = () => (
-    <Animated.View style={[styles.headerContainer, { opacity: animationValues[0].opacity, transform: [{ translateY: animationValues[0].translateY }] }]}>
-      <LinearGradient colors={[Colors.background.deepBlack, Colors.accent.softGold]} style={styles.headerGradient}>
-        <View style={styles.headerInner}>
-          <Text style={styles.mainTitle}>🎓 Alumni Network</Text>
-          <Text style={styles.subTitle}>Our Successful Graduates</Text>
-          <View style={styles.statsContainer}>
-            <View style={styles.statItem}><Text style={styles.statValue}>{ALUMNI_STATS.totalAlumni}+</Text><Text style={styles.statLabel}>Alumni</Text></View>
-            <View style={styles.statDivider} />
-            <View style={styles.statItem}><Text style={styles.statValue}>{ALUMNI_STATS.placementRate}%</Text><Text style={styles.statLabel}>Placed</Text></View>
-            <View style={styles.statDivider} />
-            <View style={styles.statItem}><Text style={styles.statValue}>{ALUMNI_STATS.companiesHired}+</Text><Text style={styles.statLabel}>Companies</Text></View>
+    <Animated.View
+      style={[
+        styles.headerContainer,
+        {
+          opacity: headerAnim,
+          transform: [
+            {
+              translateY: headerAnim.interpolate({ inputRange: [0, 1], outputRange: [28, 0] }),
+            },
+          ],
+        },
+      ]}
+    >
+      <LinearGradient
+        colors={['#0A1A1F', '#0E2F1F', Colors.accent.softGold + '55']}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={styles.headerGradient}
+      >
+        <View style={styles.headerTopRow}>
+          <View style={styles.headerLeadBlock}>
+            <Text style={styles.headerEyebrow}>🌿 Taru Guardians</Text>
+            <Text style={styles.headerTitle}>Alumni Network</Text>
+            <Text style={styles.headerSubtitle}>
+              500+ alumni · 60+ companies · 12 countries — building tech, climate, product and design.
+            </Text>
           </View>
-          <View style={styles.searchBarContainer}>
-            <Text style={styles.searchIcon}>🔍</Text>
-            <TextInput style={styles.searchInput} placeholder="Search alumni..." placeholderTextColor={Colors.text.muted} value={searchQuery} onChangeText={setSearchQuery} />
-            {searchQuery.length > 0 && <TouchableOpacity onPress={() => setSearchQuery('')}><Text style={styles.clearIcon}>✕</Text></TouchableOpacity>}
+          <View style={styles.headerControls}>
+            <TouchableOpacity
+              accessibilityLabel="Change sort order"
+              style={styles.headerIconBtn}
+              onPress={() => setShowSortMenu(true)}
+            >
+              <Text style={styles.headerIcon}>⇅</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              accessibilityLabel="Toggle view"
+              style={styles.headerIconBtn}
+              onPress={() => setViewMode((m) => (m === 'list' ? 'grid' : 'list'))}
+            >
+              <Text style={styles.headerIcon}>{viewMode === 'list' ? '▦' : '≡'}</Text>
+            </TouchableOpacity>
           </View>
+        </View>
+
+        <Animated.View
+          style={[
+            styles.statsRow,
+            {
+              opacity: statsAnim,
+              transform: [
+                {
+                  translateY: statsAnim.interpolate({ inputRange: [0, 1], outputRange: [18, 0] }),
+                },
+              ],
+            },
+          ]}
+        >
+          <View style={styles.statCell}>
+            <Text style={styles.statValue}>{ALUMNI_STATS.totalAlumni}+</Text>
+            <Text style={styles.statLabel}>Alumni</Text>
+          </View>
+          <View style={styles.statDivider} />
+          <View style={styles.statCell}>
+            <Text style={styles.statValue}>{ALUMNI_STATS.placementRate}%</Text>
+            <Text style={styles.statLabel}>Placed</Text>
+          </View>
+          <View style={styles.statDivider} />
+          <View style={styles.statCell}>
+            <Text style={styles.statValue}>{ALUMNI_STATS.companiesHired}+</Text>
+            <Text style={styles.statLabel}>Companies</Text>
+          </View>
+          <View style={styles.statDivider} />
+          <View style={styles.statCell}>
+            <Text style={styles.statValue}>{ALUMNI_STATS.mentors}</Text>
+            <Text style={styles.statLabel}>Mentors</Text>
+          </View>
+          <View style={styles.statDivider} />
+          <View style={styles.statCell}>
+            <Text style={styles.statValue}>{ALUMNI_STATS.countries}</Text>
+            <Text style={styles.statLabel}>Countries</Text>
+          </View>
+        </Animated.View>
+
+        <View style={styles.searchBar}>
+          <Text style={styles.searchIcon}>🔍</Text>
+          <TextInput
+            style={styles.searchInput}
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+            placeholder="Search by name, company, role, skill, city…"
+            placeholderTextColor={Colors.text.muted}
+            returnKeyType="search"
+          />
+          {searchQuery.length > 0 && (
+            <TouchableOpacity onPress={() => setSearchQuery('')}>
+              <Text style={styles.clearIcon}>✕</Text>
+            </TouchableOpacity>
+          )}
+        </View>
+
+        <View style={styles.quickFilterRow}>
+          <TouchableOpacity
+            onPress={() => setOnlyMentors((v) => !v)}
+            style={[styles.chip, onlyMentors && styles.chipActive]}
+          >
+            <Text style={[styles.chipText, onlyMentors && styles.chipTextActive]}>
+              🤝 Mentors only
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => setOnlyFeatured((v) => !v)}
+            style={[styles.chip, onlyFeatured && styles.chipActive]}
+          >
+            <Text style={[styles.chipText, onlyFeatured && styles.chipTextActive]}>
+              ⭐ Featured
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => setShowCompanyMenu(true)}
+            style={[styles.chip, selectedCompany !== 'all' && styles.chipActive]}
+          >
+            <Text
+              style={[styles.chipText, selectedCompany !== 'all' && styles.chipTextActive]}
+              numberOfLines={1}
+            >
+              🏢 {selectedCompany === 'all' ? 'Company' : selectedCompany}
+            </Text>
+          </TouchableOpacity>
+          {hasFilters && (
+            <TouchableOpacity onPress={clearFilters} style={styles.chipReset}>
+              <Text style={styles.chipResetText}>Reset</Text>
+            </TouchableOpacity>
+          )}
         </View>
       </LinearGradient>
     </Animated.View>
   );
 
-  const renderBatchTabs = () => (
-    <Animated.View style={[styles.batchContainer, { opacity: animationValues[1].opacity, transform: [{ translateY: animationValues[1].translateY }] }]}>
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.batchScroll}>
-        <TouchableOpacity style={[styles.batchChip, selectedBatch === 'all' && styles.activeBatchChip]} onPress={() => setSelectedBatch('all')}>
-          <Text style={[styles.batchName, selectedBatch === 'all' && styles.activeBatchName]}>All Batches</Text>
+  const renderSectorRail = () => (
+    <Animated.View
+      style={{
+        opacity: sectorAnim,
+        transform: [
+          {
+            translateY: sectorAnim.interpolate({ inputRange: [0, 1], outputRange: [16, 0] }),
+          },
+        ],
+      }}
+    >
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.sectorScroll}
+      >
+        {SECTORS.map((s) => {
+          const active = s.id === selectedSector;
+          return (
+            <TouchableOpacity
+              key={s.id}
+              onPress={() => setSelectedSector(s.id)}
+              style={[
+                styles.sectorChip,
+                active && { borderColor: s.color, backgroundColor: s.color + '22' },
+              ]}
+            >
+              <Text style={styles.sectorIcon}>{s.icon}</Text>
+              <Text
+                style={[styles.sectorLabel, active && { color: s.color, fontWeight: '700' }]}
+              >
+                {s.label}
+              </Text>
+            </TouchableOpacity>
+          );
+        })}
+      </ScrollView>
+    </Animated.View>
+  );
+
+  const renderBatchRail = () => (
+    <Animated.View
+      style={{
+        opacity: batchAnim,
+        transform: [
+          {
+            translateY: batchAnim.interpolate({ inputRange: [0, 1], outputRange: [12, 0] }),
+          },
+        ],
+      }}
+    >
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.batchScroll}
+      >
+        <TouchableOpacity
+          onPress={() => setSelectedBatch('all')}
+          style={[styles.batchChip, selectedBatch === 'all' && styles.batchChipActive]}
+        >
+          <Text
+            style={[styles.batchText, selectedBatch === 'all' && styles.batchTextActive]}
+          >
+            All batches
+          </Text>
         </TouchableOpacity>
-        {BATCH_YEARS.map((batch) => (
-          <TouchableOpacity key={batch} style={[styles.batchChip, selectedBatch === batch && styles.activeBatchChip]} onPress={() => setSelectedBatch(batch)}>
-            <Text style={[styles.batchName, selectedBatch === batch && styles.activeBatchName]}>{batch}</Text>
+        {BATCH_YEARS.map((b) => (
+          <TouchableOpacity
+            key={b}
+            onPress={() => setSelectedBatch(b)}
+            style={[styles.batchChip, selectedBatch === b && styles.batchChipActive]}
+          >
+            <Text style={[styles.batchText, selectedBatch === b && styles.batchTextActive]}>
+              {b}
+            </Text>
           </TouchableOpacity>
         ))}
       </ScrollView>
     </Animated.View>
   );
 
-  const renderAlumniList = () => (
-    <View style={styles.alumniListContainer}>
-      {filteredAlumni.length > 0 ? filteredAlumni.map((alumnus, index) => (
-        <Animated.View key={alumnus.id} style={[styles.alumniCardContainer, { opacity: animationValues[index + 2]?.opacity || animationValues[0].opacity }]}>
-          <TouchableOpacity style={styles.alumniCard} onPress={() => handleAlumniPress(alumnus)}>
-            <View style={styles.alumniImageContainer}><View style={styles.alumniImagePlaceholder}><Text style={styles.alumniInitial}>{alumnus.name.charAt(0)}</Text></View></View>
-            <View style={styles.alumniInfo}>
-              <Text style={styles.alumniName}>{alumnus.name}</Text>
-              <Text style={styles.alumniRole}>{alumnus.currentRole} at {alumnus.company}</Text>
-              <Text style={styles.alumniBatch}>Class of {alumnus.batch} • {alumnus.location}</Text>
-            </View>
-            <Text style={styles.alumniArrow}>›</Text>
-          </TouchableOpacity>
-        </Animated.View>
-      )) : (
-        <View style={styles.emptyState}><Text style={styles.emptyIcon}>🎓</Text><Text style={styles.emptyTitle}>No Alumni Found</Text></View>
+  const renderHallOfFame = () => {
+    if (hasFilters) return null;
+    return (
+      <View style={styles.sectionBlock}>
+        <View style={styles.sectionHeaderRow}>
+          <Text style={styles.sectionTitle}>🏆 Hall of Fame</Text>
+          <Text style={styles.sectionCaption}>{HALL_OF_FAME.length} featured alumni</Text>
+        </View>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          snapToInterval={IS_TABLET ? 340 : SCREEN_WIDTH * 0.8}
+          decelerationRate="fast"
+          contentContainerStyle={styles.hofScroll}
+        >
+          {HALL_OF_FAME.map((a) => (
+            <TouchableOpacity
+              key={a.id}
+              onPress={() => openAlumni(a)}
+              style={styles.hofCard}
+              activeOpacity={0.9}
+            >
+              <LinearGradient
+                colors={[
+                  SECTORS.find((s) => s.id === a.sector)?.color + '33' ?? '#00000000',
+                  '#0A0F14',
+                ]}
+                style={styles.hofGradient}
+              >
+                <View style={styles.hofTopRow}>
+                  <View
+                    style={[
+                      styles.avatar,
+                      {
+                        backgroundColor:
+                          (SECTORS.find((s) => s.id === a.sector)?.color ?? Colors.tech.neonBlue) +
+                          '33',
+                      },
+                    ]}
+                  >
+                    <Text style={styles.avatarText}>{a.name.charAt(0)}</Text>
+                  </View>
+                  <View style={{ flex: 1 }}>
+                    <Text style={styles.hofName} numberOfLines={1}>
+                      {a.name}
+                    </Text>
+                    <Text style={styles.hofRole} numberOfLines={1}>
+                      {a.currentRole}
+                    </Text>
+                    <Text style={styles.hofCompany} numberOfLines={1}>
+                      @ {a.company} · {a.batch}
+                    </Text>
+                  </View>
+                </View>
+                {a.quote ? (
+                  <Text style={styles.hofQuote} numberOfLines={3}>
+                    “{a.quote}”
+                  </Text>
+                ) : (
+                  <Text style={styles.hofQuote} numberOfLines={3}>
+                    {a.messageToStudents}
+                  </Text>
+                )}
+                <View style={styles.hofFooter}>
+                  {a.mentor && <Text style={styles.hofBadge}>🤝 Mentor</Text>}
+                  <Text style={styles.hofLoc}>📍 {a.location.split(',')[0]}</Text>
+                </View>
+              </LinearGradient>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+      </View>
+    );
+  };
+
+  const renderTestimonials = () => {
+    if (hasFilters) return null;
+    return (
+      <View style={styles.sectionBlock}>
+        <View style={styles.sectionHeaderRow}>
+          <Text style={styles.sectionTitle}>💬 Alumni Voices</Text>
+          <Text style={styles.sectionCaption}>{TESTIMONIALS.length} quotes</Text>
+        </View>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          snapToInterval={IS_TABLET ? 380 : SCREEN_WIDTH * 0.78}
+          decelerationRate="fast"
+          contentContainerStyle={styles.testimonialScroll}
+        >
+          {TESTIMONIALS.map((t) => {
+            const author = ALUMNI_DATA.find((a) => a.id === t.authorId)!;
+            const c = SECTORS.find((s) => s.id === author.sector)!.color;
+            return (
+              <View key={t.id} style={styles.testimonialCard}>
+                <LinearGradient
+                  colors={[c + '30', '#000000AA']}
+                  style={styles.testimonialGradient}
+                >
+                  <Text style={styles.testimonialQuoteMark}>”</Text>
+                  <Text style={styles.testimonialQuote}>{t.quote}</Text>
+                  <View style={styles.testimonialAuthorRow}>
+                    <View style={[styles.smallAvatar, { backgroundColor: c + '55' }]}>
+                      <Text style={styles.smallAvatarText}>{author.name.charAt(0)}</Text>
+                    </View>
+                    <View style={{ flex: 1 }}>
+                      <Text style={styles.testimonialAuthor}>{author.name}</Text>
+                      <Text style={styles.testimonialRole}>{t.role}</Text>
+                    </View>
+                  </View>
+                </LinearGradient>
+              </View>
+            );
+          })}
+        </ScrollView>
+      </View>
+    );
+  };
+
+  const renderTopCompanies = () => {
+    if (hasFilters) return null;
+    return (
+      <View style={styles.sectionBlock}>
+        <View style={styles.sectionHeaderRow}>
+          <Text style={styles.sectionTitle}>🏢 Top Companies</Text>
+          <Text style={styles.sectionCaption}>Where our alumni work</Text>
+        </View>
+        <View style={styles.companyGrid}>
+          {TOP_COMPANIES.map(([company, count]) => (
+            <TouchableOpacity
+              key={company}
+              onPress={() => setSelectedCompany(company)}
+              style={styles.companyPill}
+              activeOpacity={0.8}
+            >
+              <Text style={styles.companyName} numberOfLines={1}>
+                {company}
+              </Text>
+              <Text style={styles.companyCount}>{count} alumni</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+      </View>
+    );
+  };
+
+  const renderMeetups = () => {
+    if (hasFilters) return null;
+    return (
+      <View style={styles.sectionBlock}>
+        <View style={styles.sectionHeaderRow}>
+          <Text style={styles.sectionTitle}>📅 Upcoming Alumni Meetups</Text>
+          <Text style={styles.sectionCaption}>{ALUMNI_MEETUPS.length} events</Text>
+        </View>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          snapToInterval={IS_TABLET ? 340 : SCREEN_WIDTH * 0.78}
+          decelerationRate="fast"
+          contentContainerStyle={styles.meetupScroll}
+        >
+          {ALUMNI_MEETUPS.map((m) => {
+            const ratio = m.registered / m.capacity;
+            return (
+              <View key={m.id} style={styles.meetupCard}>
+                <LinearGradient
+                  colors={[Colors.tech.neonBlue + '22', '#000000AA']}
+                  style={styles.meetupGradient}
+                >
+                  <Text style={styles.meetupBadge}>
+                    {m.mode === 'offline' ? '📍 Offline' : m.mode === 'virtual' ? '💻 Online' : '🌐 Hybrid'}
+                  </Text>
+                  <Text style={styles.meetupTitle}>{m.title}</Text>
+                  <Text style={styles.meetupMeta}>
+                    {m.date} · {m.city}
+                  </Text>
+                  <Text style={styles.meetupDescription} numberOfLines={3}>
+                    {m.description}
+                  </Text>
+                  <View style={styles.meetupBar}>
+                    <View style={[styles.meetupBarFill, { width: `${ratio * 100}%` }]} />
+                  </View>
+                  <Text style={styles.meetupCapacity}>
+                    {m.registered} / {m.capacity} registered
+                  </Text>
+                  <View style={styles.meetupTagRow}>
+                    {m.tags.map((tag) => (
+                      <View key={tag} style={styles.meetupTag}>
+                        <Text style={styles.meetupTagText}>#{tag}</Text>
+                      </View>
+                    ))}
+                  </View>
+                </LinearGradient>
+              </View>
+            );
+          })}
+        </ScrollView>
+      </View>
+    );
+  };
+
+  const renderMentorshipSlots = () => {
+    if (hasFilters) return null;
+    return (
+      <View style={styles.sectionBlock}>
+        <View style={styles.sectionHeaderRow}>
+          <Text style={styles.sectionTitle}>🧭 Mentorship Slots</Text>
+          <Text style={styles.sectionCaption}>Open right now</Text>
+        </View>
+        <View style={styles.mentorshipList}>
+          {MENTORSHIP_SLOTS.map((m) => {
+            const alumnus = ALUMNI_DATA.find((a) => a.id === m.mentorId);
+            if (!alumnus) return null;
+            const c = SECTORS.find((s) => s.id === alumnus.sector)!.color;
+            return (
+              <TouchableOpacity
+                key={m.id}
+                onPress={() => openAlumni(alumnus)}
+                style={styles.mentorshipItem}
+                activeOpacity={0.85}
+              >
+                <View style={[styles.mentorshipDot, { backgroundColor: c }]} />
+                <View style={{ flex: 1 }}>
+                  <Text style={styles.mentorshipTopic} numberOfLines={1}>
+                    {m.topic}
+                  </Text>
+                  <Text style={styles.mentorshipMeta} numberOfLines={1}>
+                    {alumnus.name} · {alumnus.currentRole} @ {alumnus.company}
+                  </Text>
+                  <Text style={styles.mentorshipFormat}>
+                    {m.durationMin} min · {m.format} · {m.slotsRemaining} slot(s) left
+                  </Text>
+                </View>
+                <Text style={styles.mentorshipArrow}>›</Text>
+              </TouchableOpacity>
+            );
+          })}
+        </View>
+      </View>
+    );
+  };
+
+  const renderPledges = () => {
+    if (hasFilters) return null;
+    return (
+      <View style={styles.sectionBlock}>
+        <View style={styles.sectionHeaderRow}>
+          <Text style={styles.sectionTitle}>🌱 Sustainability Pledges</Text>
+          <Text style={styles.sectionCaption}>{ALUMNI_PLEDGES.length} alumni pledges</Text>
+        </View>
+        <View>
+          {ALUMNI_PLEDGES.map((a) => (
+            <TouchableOpacity
+              key={`pl-${a.id}`}
+              onPress={() => openAlumni(a)}
+              style={styles.pledgeItem}
+              activeOpacity={0.85}
+            >
+              <Text style={styles.pledgeLeaf}>🍃</Text>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.pledgeAuthor}>
+                  {a.name} · {a.currentRole} @ {a.company}
+                </Text>
+                <Text style={styles.pledgeText} numberOfLines={3}>
+                  {a.sustainabilityPledge}
+                </Text>
+              </View>
+            </TouchableOpacity>
+          ))}
+        </View>
+      </View>
+    );
+  };
+
+  const renderAlumniListHeader = () => (
+    <View style={styles.listHeaderRow}>
+      <Text style={styles.listHeaderTitle}>
+        {filteredAlumni.length} alumni
+        {selectedBatch !== 'all' ? ` · batch ${selectedBatch}` : ''}
+        {selectedSector !== 'all'
+          ? ` · ${SECTORS.find((s) => s.id === selectedSector)!.label}`
+          : ''}
+      </Text>
+      {hasFilters && (
+        <TouchableOpacity onPress={clearFilters}>
+          <Text style={styles.listHeaderReset}>Reset filters</Text>
+        </TouchableOpacity>
       )}
     </View>
   );
 
-  const renderAlumniModal = () => (
-    <Modal visible={showAlumniModal} animationType="slide" transparent onRequestClose={() => setShowAlumniModal(false)}>
-      <View style={styles.modalOverlay}>
-        <View style={styles.modalContent}>
-          <View style={styles.modalHeader}>
-            <Text style={styles.modalTitle}>Alumni Profile</Text>
-            <TouchableOpacity style={styles.modalCloseButton} onPress={() => setShowAlumniModal(false)}><Text style={styles.modalCloseText}>✕</Text></TouchableOpacity>
+  const renderAlumniRow = ({ item, index }: { item: ExtAlumni; index: number }) => {
+    const c = SECTORS.find((s) => s.id === item.sector)!.color;
+    if (viewMode === 'list') {
+      return (
+        <Animated.View
+          style={[
+            styles.alumniCard,
+            {
+              opacity: listAnim,
+              transform: [
+                {
+                  translateY: listAnim.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [12 + (index % 5) * 2, 0],
+                  }),
+                },
+              ],
+            },
+          ]}
+        >
+          <Pressable
+            onPress={() => openAlumni(item)}
+            android_ripple={{ color: c + '22' }}
+            style={({ pressed }) => [
+              styles.alumniInner,
+              pressed && { opacity: 0.9 },
+            ]}
+          >
+            <LinearGradient
+              colors={[c + '18', '#0A0F14']}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.alumniGradient}
+            >
+              <View style={[styles.avatar, { backgroundColor: c + '33' }]}>
+                <Text style={styles.avatarText}>{item.name.charAt(0)}</Text>
+              </View>
+              <View style={styles.alumniMeta}>
+                <View style={styles.alumniMetaRow}>
+                  <Text style={styles.alumniName} numberOfLines={1}>
+                    {item.name}
+                  </Text>
+                  {item.featured && <Text style={styles.featuredPill}>⭐</Text>}
+                  {item.mentor && <Text style={styles.mentorPill}>🤝</Text>}
+                </View>
+                <Text style={styles.alumniRole} numberOfLines={1}>
+                  {item.currentRole}
+                </Text>
+                <Text style={styles.alumniCompany} numberOfLines={1}>
+                  @ {item.company}
+                </Text>
+                <Text style={styles.alumniLoc} numberOfLines={1}>
+                  📍 {item.location} · Class of {item.batch}
+                </Text>
+              </View>
+              <Text style={styles.alumniArrow}>›</Text>
+            </LinearGradient>
+          </Pressable>
+        </Animated.View>
+      );
+    }
+
+    // grid variant
+    return (
+      <View style={styles.gridItem}>
+        <Pressable
+          onPress={() => openAlumni(item)}
+          android_ripple={{ color: c + '22' }}
+          style={styles.gridInner}
+        >
+          <LinearGradient colors={[c + '22', '#0A0F14']} style={styles.gridGradient}>
+            <View style={[styles.avatarLarge, { backgroundColor: c + '44' }]}>
+              <Text style={styles.avatarLargeText}>{item.name.charAt(0)}</Text>
+            </View>
+            <Text style={styles.gridName} numberOfLines={1}>
+              {item.name}
+            </Text>
+            <Text style={styles.gridRole} numberOfLines={1}>
+              {item.currentRole}
+            </Text>
+            <Text style={styles.gridCompany} numberOfLines={1}>
+              @ {item.company}
+            </Text>
+            <View style={styles.gridBadges}>
+              {item.mentor && <Text style={styles.gridBadge}>🤝</Text>}
+              {item.featured && <Text style={styles.gridBadge}>⭐</Text>}
+            </View>
+          </LinearGradient>
+        </Pressable>
+      </View>
+    );
+  };
+
+  const renderEmpty = () => (
+    <View style={styles.emptyState}>
+      <Text style={styles.emptyIcon}>🔍</Text>
+      <Text style={styles.emptyTitle}>No alumni match these filters</Text>
+      <Text style={styles.emptySubtitle}>Try widening your search or reset all filters.</Text>
+      <TouchableOpacity style={styles.emptyButton} onPress={clearFilters}>
+        <Text style={styles.emptyButtonText}>Reset filters</Text>
+      </TouchableOpacity>
+    </View>
+  );
+
+  const renderSkeletonList = () => (
+    <View>
+      {[1, 2, 3, 4].map((i) => (
+        <View key={i} style={[styles.alumniCard, styles.skeletonCard]}>
+          <View style={styles.skeletonAvatar} />
+          <View style={{ flex: 1 }}>
+            <View style={[styles.skeletonLine, { width: '55%' }]} />
+            <View style={[styles.skeletonLine, { width: '80%' }]} />
+            <View style={[styles.skeletonLine, { width: '40%' }]} />
           </View>
-          {selectedAlumni && (
-            <ScrollView style={styles.modalBody}>
-              <View style={styles.modalProfileHeader}>
-                <View style={styles.modalProfileImage}><Text style={styles.modalProfileInitial}>{selectedAlumni.name.charAt(0)}</Text></View>
-                <Text style={styles.modalAlumniName}>{selectedAlumni.name}</Text>
-                <Text style={styles.modalAlumniRole}>{selectedAlumni.currentRole}</Text>
-                <Text style={styles.modalAlumniCompany}>🏢 {selectedAlumni.company}</Text>
-                <Text style={styles.modalAlumniLocation}>📍 {selectedAlumni.location}</Text>
-              </View>
-              <View style={styles.modalSection}>
-                <Text style={styles.modalSectionTitle}>Batch</Text>
-                <Text style={styles.modalText}>Class of {selectedAlumni.batch}</Text>
-              </View>
-              <View style={styles.modalSection}>
-                <Text style={styles.modalSectionTitle}>Message to Students</Text>
-                <Text style={styles.modalMessage}>"{selectedAlumni.messageToStudents}"</Text>
-              </View>
-              <View style={styles.modalActions}>
-                <TouchableOpacity style={styles.modalActionButton} onPress={() => handleLinkedIn(selectedAlumni)}><Text style={styles.modalActionIcon}>💼</Text><Text style={styles.modalActionText}>LinkedIn</Text></TouchableOpacity>
-                <TouchableOpacity style={styles.modalActionButton} onPress={() => handleEmail(selectedAlumni)}><Text style={styles.modalActionIcon}>📧</Text><Text style={styles.modalActionText}>Email</Text></TouchableOpacity>
-              </View>
-            </ScrollView>
-          )}
         </View>
+      ))}
+    </View>
+  );
+
+  const renderFooter = () => (
+    <View style={styles.footer}>
+      <Text style={styles.footerText}>
+        Showing {filteredAlumni.length} of {ALUMNI_DATA.length} curated alumni profiles
+      </Text>
+      <Text style={styles.footerText}>🌿 Tech + climate · 500+ network strong</Text>
+    </View>
+  );
+
+  // -------------- Modals -----------------
+  const renderAlumniModal = () => {
+    if (!selectedAlumni) return null;
+    const a = selectedAlumni;
+    const c = SECTORS.find((s) => s.id === a.sector)!.color;
+    return (
+      <Modal
+        visible={showAlumniModal}
+        transparent
+        animationType="none"
+        onRequestClose={closeAlumni}
+      >
+        <Animated.View style={[styles.modalOverlay, { opacity: modalOpacity }]}>
+          <Pressable style={StyleSheet.absoluteFill} onPress={closeAlumni} />
+          <Animated.View
+            style={[
+              styles.modalContent,
+              {
+                transform: [{ scale: modalScale }],
+                opacity: modalOpacity,
+              },
+            ]}
+          >
+            <LinearGradient
+              colors={[c + '33', '#0A0F14']}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.modalHero}
+            >
+              <View style={styles.modalHeroRow}>
+                <View style={[styles.avatarHero, { backgroundColor: c + '55' }]}>
+                  <Text style={styles.avatarHeroText}>{a.name.charAt(0)}</Text>
+                </View>
+                <View style={{ flex: 1 }}>
+                  <Text style={styles.modalName}>{a.name}</Text>
+                  <Text style={styles.modalCurrent}>{a.currentRole}</Text>
+                  <Text style={styles.modalCompany}>@ {a.company}</Text>
+                  <Text style={styles.modalLoc}>
+                    📍 {a.location} · Class of {a.batch} · {a.experienceYears}y exp
+                  </Text>
+                  <View style={styles.modalBadgeRow}>
+                    {a.mentor && <Text style={styles.modalBadge}>🤝 Mentor</Text>}
+                    {a.featured && <Text style={styles.modalBadge}>⭐ Featured</Text>}
+                    <Text style={[styles.modalBadge, { backgroundColor: c + '33', borderColor: c }]}>
+                      {SECTORS.find((s) => s.id === a.sector)!.icon}{' '}
+                      {SECTORS.find((s) => s.id === a.sector)!.label}
+                    </Text>
+                  </View>
+                </View>
+              </View>
+              <TouchableOpacity
+                accessibilityLabel="Close profile"
+                onPress={closeAlumni}
+                style={styles.modalClose}
+              >
+                <Text style={styles.modalCloseText}>✕</Text>
+              </TouchableOpacity>
+            </LinearGradient>
+
+            <ScrollView
+              style={styles.modalScroll}
+              contentContainerStyle={styles.modalScrollContent}
+              showsVerticalScrollIndicator={false}
+            >
+              <View style={styles.modalSection}>
+                <Text style={styles.modalSectionTitle}>Message to students</Text>
+                <Text style={styles.modalSectionBody}>{a.messageToStudents}</Text>
+              </View>
+
+              {a.quote ? (
+                <View style={styles.modalSection}>
+                  <Text style={styles.modalSectionTitle}>Favourite line</Text>
+                  <View style={styles.modalQuoteBlock}>
+                    <Text style={styles.modalQuoteMark}>”</Text>
+                    <Text style={styles.modalQuote}>{a.quote}</Text>
+                  </View>
+                </View>
+              ) : null}
+
+              {a.skills.length > 0 ? (
+                <View style={styles.modalSection}>
+                  <Text style={styles.modalSectionTitle}>Skills</Text>
+                  <View style={styles.skillWrap}>
+                    {a.skills.map((s) => (
+                      <View key={s} style={[styles.skillChip, { borderColor: c }]}>
+                        <Text style={[styles.skillText, { color: c }]}>{s}</Text>
+                      </View>
+                    ))}
+                  </View>
+                </View>
+              ) : null}
+
+              {a.achievements.length > 0 ? (
+                <View style={styles.modalSection}>
+                  <Text style={styles.modalSectionTitle}>Achievements</Text>
+                  {a.achievements.map((ach) => (
+                    <View key={ach} style={styles.bullet}>
+                      <Text style={styles.bulletDot}>•</Text>
+                      <Text style={styles.bulletText}>{ach}</Text>
+                    </View>
+                  ))}
+                </View>
+              ) : null}
+
+              {a.timeline.length > 0 ? (
+                <View style={styles.modalSection}>
+                  <Text style={styles.modalSectionTitle}>Career timeline</Text>
+                  <View style={styles.timeline}>
+                    {a.timeline.map((t, idx) => (
+                      <View key={idx} style={styles.timelineRow}>
+                        <View style={styles.timelineLeftCol}>
+                          <Text style={styles.timelineYear}>{t.year}</Text>
+                          <View
+                            style={[
+                              styles.timelineDot,
+                              { backgroundColor: c },
+                              idx === 0 && styles.timelineDotFirst,
+                            ]}
+                          />
+                          {idx < a.timeline.length - 1 && (
+                            <View style={styles.timelineLine} />
+                          )}
+                        </View>
+                        <View style={styles.timelineRightCol}>
+                          <Text style={styles.timelineRole}>{t.role}</Text>
+                          <Text style={styles.timelineCompany}>{t.company}</Text>
+                        </View>
+                      </View>
+                    ))}
+                  </View>
+                </View>
+              ) : null}
+
+              {a.sustainabilityPledge ? (
+                <View style={styles.modalSection}>
+                  <Text style={styles.modalSectionTitle}>🌱 Sustainability pledge</Text>
+                  <Text style={styles.modalSectionBody}>{a.sustainabilityPledge}</Text>
+                </View>
+              ) : null}
+            </ScrollView>
+
+            <View style={styles.modalActionRow}>
+              <TouchableOpacity
+                onPress={() => handleLinkedIn(a)}
+                style={[styles.modalAction, { backgroundColor: '#0A66C2' }]}
+              >
+                <Text style={styles.modalActionText}>LinkedIn</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => handleEmail(a)}
+                style={[styles.modalAction, { backgroundColor: Colors.tech.neonBlue }]}
+              >
+                <Text style={styles.modalActionText}>Email</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => handleShare(a)}
+                style={[styles.modalAction, { backgroundColor: '#333' }]}
+              >
+                <Text style={styles.modalActionText}>Share</Text>
+              </TouchableOpacity>
+              {a.mentor && (
+                <TouchableOpacity
+                  onPress={() => handleMentorshipRequest(a)}
+                  style={[styles.modalAction, { backgroundColor: '#16A34A' }]}
+                >
+                  <Text style={styles.modalActionText}>Mentorship</Text>
+                </TouchableOpacity>
+              )}
+            </View>
+          </Animated.View>
+        </Animated.View>
+      </Modal>
+    );
+  };
+
+  const renderSortSheet = () => (
+    <Modal
+      visible={showSortMenu}
+      transparent
+      animationType="fade"
+      onRequestClose={() => setShowSortMenu(false)}
+    >
+      <Pressable style={styles.sheetBackdrop} onPress={() => setShowSortMenu(false)} />
+      <View style={styles.sheet}>
+        <Text style={styles.sheetTitle}>Sort alumni by</Text>
+        {SORT_OPTIONS.map((opt) => (
+          <TouchableOpacity
+            key={opt.key}
+            onPress={() => {
+              setSortKey(opt.key);
+              setShowSortMenu(false);
+            }}
+            style={styles.sheetRow}
+          >
+            <Text style={styles.sheetIcon}>{opt.icon}</Text>
+            <Text style={[styles.sheetLabel, sortKey === opt.key && styles.sheetLabelActive]}>
+              {opt.label}
+            </Text>
+            {sortKey === opt.key && <Text style={styles.sheetCheck}>✓</Text>}
+          </TouchableOpacity>
+        ))}
       </View>
     </Modal>
   );
 
-  return (
-    <View style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor={Colors.background.deepBlack} />
+  const renderCompanySheet = () => (
+    <Modal
+      visible={showCompanyMenu}
+      transparent
+      animationType="fade"
+      onRequestClose={() => setShowCompanyMenu(false)}
+    >
+      <Pressable style={styles.sheetBackdrop} onPress={() => setShowCompanyMenu(false)} />
+      <View style={[styles.sheet, styles.sheetTall]}>
+        <Text style={styles.sheetTitle}>Filter by company</Text>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <TouchableOpacity
+            onPress={() => {
+              setSelectedCompany('all');
+              setShowCompanyMenu(false);
+            }}
+            style={styles.sheetRow}
+          >
+            <Text style={[styles.sheetLabel, selectedCompany === 'all' && styles.sheetLabelActive]}>
+              All companies
+            </Text>
+            {selectedCompany === 'all' && <Text style={styles.sheetCheck}>✓</Text>}
+          </TouchableOpacity>
+          {uniqueCompanies.map((company) => (
+            <TouchableOpacity
+              key={company}
+              onPress={() => {
+                setSelectedCompany(company);
+                setShowCompanyMenu(false);
+              }}
+              style={styles.sheetRow}
+            >
+              <Text
+                style={[
+                  styles.sheetLabel,
+                  selectedCompany === company && styles.sheetLabelActive,
+                ]}
+              >
+                {company}
+              </Text>
+              {selectedCompany === company && <Text style={styles.sheetCheck}>✓</Text>}
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+      </View>
+    </Modal>
+  );
+
+  // -------------- Main render ------------
+  const headerComponent = (
+    <View>
       {renderHeader()}
-      {renderBatchTabs()}
-      <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={Colors.accent.softGold} />}>
-        {renderAlumniList()}
-      </ScrollView>
-      {renderAlumniModal()}
+      {renderSectorRail()}
+      {renderBatchRail()}
+      {renderHallOfFame()}
+      {renderTestimonials()}
+      {renderTopCompanies()}
+      {renderMeetups()}
+      {renderMentorshipSlots()}
+      {renderPledges()}
+      {renderAlumniListHeader()}
     </View>
+  );
+
+  return (
+    <SafeAreaView style={styles.container} edges={['top']}>
+      <StatusBar
+        barStyle="light-content"
+        backgroundColor={Colors.background.deepBlack}
+        translucent={Platform.OS === 'android'}
+      />
+      {loading ? (
+        <ScrollView style={styles.scrollRoot}>
+          {renderHeader()}
+          {renderSkeletonList()}
+        </ScrollView>
+      ) : (
+        <FlatList
+          data={filteredAlumni}
+          keyExtractor={(item) => item.id}
+          renderItem={renderAlumniRow}
+          key={viewMode}
+          numColumns={viewMode === 'grid' ? 2 : 1}
+          columnWrapperStyle={viewMode === 'grid' ? styles.gridRow : undefined}
+          contentContainerStyle={styles.listContent}
+          ListHeaderComponent={headerComponent}
+          ListEmptyComponent={renderEmpty}
+          ListFooterComponent={renderFooter}
+          initialNumToRender={10}
+          windowSize={9}
+          removeClippedSubviews={Platform.OS === 'android'}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+              tintColor={Colors.tech.neonBlue}
+              colors={[Colors.tech.neonBlue]}
+            />
+          }
+        />
+      )}
+      {renderAlumniModal()}
+      {renderSortSheet()}
+      {renderCompanySheet()}
+    </SafeAreaView>
   );
 };
 
+// =====================================================
+// Styles
+// =====================================================
+
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: Colors.background.deepBlack },
-  scrollView: { flex: 1 },
-  scrollContent: { paddingBottom: 100, paddingHorizontal: 20 },
-  headerContainer: { marginBottom: 15 },
-  headerGradient: { paddingTop: Platform.OS === 'ios' ? 60 : 40, paddingBottom: 20, paddingHorizontal: 20 },
-  headerInner: { alignItems: 'flex-start' },
-  mainTitle: { fontSize: isSmallScreen ? 26 : 30, fontWeight: '700', color: Colors.text.primary },
-  subTitle: { fontSize: 14, color: Colors.text.secondary, marginTop: 4, marginBottom: 20 },
-  statsContainer: { flexDirection: 'row', justifyContent: 'space-around', backgroundColor: 'rgba(255,255,255,0.05)', borderRadius: 12, paddingVertical: 15, marginBottom: 20 },
-  statItem: { alignItems: 'center' },
-  statValue: { fontSize: isSmallScreen ? 22 : 26, fontWeight: '700', color: Colors.accent.softGold },
-  statLabel: { fontSize: 12, color: Colors.text.tertiary, marginTop: 4 },
-  statDivider: { width: 1, backgroundColor: Colors.text.muted, opacity: 0.3 },
-  searchBarContainer: { flexDirection: 'row', alignItems: 'center', backgroundColor: Colors.background.darkGreen, borderRadius: 12, paddingHorizontal: 15, paddingVertical: 10 },
-  searchIcon: { fontSize: 18, marginRight: 10 },
-  searchInput: { flex: 1, fontSize: 15, color: Colors.text.primary },
-  clearIcon: { fontSize: 16, color: Colors.text.secondary, padding: 5 },
-  batchContainer: { marginBottom: 20 },
-  batchScroll: { paddingHorizontal: 20 },
-  batchChip: { paddingHorizontal: 15, paddingVertical: 10, borderRadius: 20, backgroundColor: Colors.background.darkGreen, marginRight: 10 },
-  activeBatchChip: { backgroundColor: Colors.accent.softGold },
-  batchName: { fontSize: 13, fontWeight: '600', color: Colors.text.secondary },
-  activeBatchName: { color: Colors.background.deepBlack },
-  alumniListContainer: {},
-  alumniCardContainer: { marginBottom: 12 },
-  alumniCard: { flexDirection: 'row', alignItems: 'center', backgroundColor: Colors.background.darkGreen, borderRadius: 15, padding: 15 },
-  alumniImageContainer: { marginRight: 15 },
-  alumniImagePlaceholder: { width: 55, height: 55, borderRadius: 28, backgroundColor: Colors.primary.deepGreen, justifyContent: 'center', alignItems: 'center' },
-  alumniInitial: { fontSize: 22, fontWeight: '700', color: Colors.text.primary },
-  alumniInfo: { flex: 1 },
-  alumniName: { fontSize: 16, fontWeight: '600', color: Colors.text.primary },
-  alumniRole: { fontSize: 13, color: Colors.text.secondary, marginTop: 3 },
-  alumniBatch: { fontSize: 12, color: Colors.text.tertiary, marginTop: 3 },
-  alumniArrow: { fontSize: 24, color: Colors.text.tertiary },
-  emptyState: { alignItems: 'center', paddingVertical: 40 },
-  emptyIcon: { fontSize: 50, marginBottom: 10 },
-  emptyTitle: { fontSize: 18, fontWeight: '600', color: Colors.text.primary },
-  modalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.85)', justifyContent: 'flex-end' },
-  modalContent: { backgroundColor: Colors.background.darkGreen, borderTopLeftRadius: 25, borderTopRightRadius: 25, maxHeight: SCREEN_HEIGHT * 0.85 },
-  modalHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 20, borderBottomWidth: 1, borderBottomColor: Colors.text.muted },
-  modalTitle: { fontSize: 18, fontWeight: '700', color: Colors.text.primary },
-  modalCloseButton: { width: 35, height: 35, borderRadius: 18, backgroundColor: Colors.background.deepBlack, justifyContent: 'center', alignItems: 'center' },
-  modalCloseText: { fontSize: 18, color: Colors.text.secondary },
-  modalBody: { padding: 20 },
-  modalProfileHeader: { alignItems: 'center', marginBottom: 20 },
-  modalProfileImage: { width: 80, height: 80, borderRadius: 40, backgroundColor: Colors.primary.deepGreen, justifyContent: 'center', alignItems: 'center', marginBottom: 15 },
-  modalProfileInitial: { fontSize: 32, fontWeight: '700', color: Colors.text.primary },
-  modalAlumniName: { fontSize: 22, fontWeight: '700', color: Colors.text.primary, marginBottom: 5 },
-  modalAlumniRole: { fontSize: 15, color: Colors.text.secondary, marginBottom: 3 },
-  modalAlumniCompany: { fontSize: 14, color: Colors.accent.softGold, marginBottom: 3 },
-  modalAlumniLocation: { fontSize: 13, color: Colors.text.tertiary },
-  modalSection: { marginBottom: 20 },
-  modalSectionTitle: { fontSize: 16, fontWeight: '700', color: Colors.text.primary, marginBottom: 8 },
-  modalText: { fontSize: 14, color: Colors.text.secondary },
-  modalMessage: { fontSize: 14, color: Colors.text.secondary, fontStyle: 'italic', lineHeight: 22 },
-  modalActions: { flexDirection: 'row', justifyContent: 'space-around', marginBottom: 30 },
-  modalActionButton: { alignItems: 'center', backgroundColor: Colors.background.deepBlack, borderRadius: 12, padding: 15, width: 100 },
-  modalActionIcon: { fontSize: 24, marginBottom: 5 },
-  modalActionText: { fontSize: 12, color: Colors.text.secondary },
+  scrollRoot: { flex: 1 },
+  listContent: { paddingBottom: 80 },
+
+  // Header
+  headerContainer: { overflow: 'hidden', marginBottom: 4 },
+  headerGradient: {
+    paddingTop: Platform.OS === 'ios' ? 16 : 28,
+    paddingBottom: 20,
+    paddingHorizontal: HORIZONTAL_PADDING,
+    borderBottomLeftRadius: 28,
+    borderBottomRightRadius: 28,
+  },
+  headerTopRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    justifyContent: 'space-between',
+    marginBottom: 14,
+  },
+  headerLeadBlock: { flex: 1, paddingRight: 10 },
+  headerEyebrow: {
+    fontSize: 12,
+    color: Colors.accent.softGold,
+    fontWeight: '700',
+    letterSpacing: 1.1,
+    marginBottom: 4,
+  },
+  headerTitle: {
+    fontSize: IS_SMALL ? 26 : 30,
+    color: Colors.text.primary,
+    fontWeight: '800',
+    marginBottom: 6,
+  },
+  headerSubtitle: {
+    fontSize: 13,
+    color: Colors.text.secondary,
+    lineHeight: 18,
+  },
+  headerControls: { flexDirection: 'row', alignItems: 'center' },
+  headerIconBtn: {
+    width: 40,
+    height: 40,
+    borderRadius: 12,
+    backgroundColor: '#ffffff12',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginLeft: 8,
+    borderWidth: 1,
+    borderColor: '#ffffff22',
+  },
+  headerIcon: { fontSize: 18, color: Colors.text.primary },
+
+  // Stats
+  statsRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#ffffff0A',
+    borderRadius: 18,
+    paddingVertical: 12,
+    paddingHorizontal: 6,
+    marginBottom: 12,
+    borderWidth: 1,
+    borderColor: '#ffffff1A',
+  },
+  statCell: { flex: 1, alignItems: 'center' },
+  statDivider: { width: 1, height: 28, backgroundColor: '#ffffff1F' },
+  statValue: { fontSize: IS_SMALL ? 15 : 17, fontWeight: '800', color: Colors.text.primary },
+  statLabel: { fontSize: 10, color: Colors.text.secondary, marginTop: 2 },
+
+  // Search bar
+  searchBar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#ffffff12',
+    borderRadius: 14,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    marginBottom: 12,
+    borderWidth: 1,
+    borderColor: '#ffffff22',
+  },
+  searchIcon: { fontSize: 16, marginRight: 8 },
+  searchInput: {
+    flex: 1,
+    color: Colors.text.primary,
+    fontSize: 14,
+    padding: 0,
+  },
+  clearIcon: { fontSize: 14, color: Colors.text.muted, paddingHorizontal: 6 },
+
+  // Chips
+  quickFilterRow: { flexDirection: 'row', flexWrap: 'wrap' },
+  chip: {
+    backgroundColor: '#ffffff0F',
+    borderWidth: 1,
+    borderColor: '#ffffff22',
+    paddingHorizontal: 12,
+    paddingVertical: 7,
+    borderRadius: 20,
+    marginRight: 8,
+    marginBottom: 8,
+    maxWidth: 180,
+  },
+  chipActive: { borderColor: Colors.tech.neonBlue, backgroundColor: Colors.tech.neonBlue + '22' },
+  chipText: { color: Colors.text.secondary, fontSize: 12, fontWeight: '600' },
+  chipTextActive: { color: Colors.tech.neonBlue },
+  chipReset: {
+    paddingHorizontal: 12,
+    paddingVertical: 7,
+    borderRadius: 20,
+    marginRight: 8,
+    marginBottom: 8,
+    backgroundColor: '#4A1A1A',
+  },
+  chipResetText: { color: '#FBA5A5', fontSize: 12, fontWeight: '700' },
+
+  // Sector rail
+  sectorScroll: { paddingHorizontal: HORIZONTAL_PADDING, paddingTop: 14, paddingBottom: 6 },
+  sectorChip: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#ffffff0A',
+    borderWidth: 1,
+    borderColor: '#ffffff22',
+    borderRadius: 999,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    marginRight: 8,
+  },
+  sectorIcon: { fontSize: 14, marginRight: 6 },
+  sectorLabel: { color: Colors.text.secondary, fontSize: 12, fontWeight: '600' },
+
+  // Batch rail
+  batchScroll: { paddingHorizontal: HORIZONTAL_PADDING, paddingTop: 10, paddingBottom: 4 },
+  batchChip: {
+    backgroundColor: '#ffffff0A',
+    borderRadius: 12,
+    paddingVertical: 6,
+    paddingHorizontal: 14,
+    marginRight: 8,
+    borderWidth: 1,
+    borderColor: '#ffffff1A',
+  },
+  batchChipActive: {
+    backgroundColor: Colors.accent.softGold + '33',
+    borderColor: Colors.accent.softGold,
+  },
+  batchText: { color: Colors.text.secondary, fontSize: 13, fontWeight: '600' },
+  batchTextActive: { color: Colors.accent.softGold, fontWeight: '800' },
+
+  // Section blocks
+  sectionBlock: { paddingTop: 18, paddingBottom: 4 },
+  sectionHeaderRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
+    paddingHorizontal: HORIZONTAL_PADDING,
+    marginBottom: 10,
+  },
+  sectionTitle: {
+    color: Colors.text.primary,
+    fontSize: 16,
+    fontWeight: '800',
+    letterSpacing: 0.3,
+  },
+  sectionCaption: { color: Colors.text.muted, fontSize: 12 },
+
+  // Hall of fame
+  hofScroll: { paddingHorizontal: HORIZONTAL_PADDING, paddingRight: HORIZONTAL_PADDING * 2 },
+  hofCard: {
+    width: IS_TABLET ? 320 : SCREEN_WIDTH * 0.78,
+    marginRight: 12,
+    borderRadius: CARD_RADIUS,
+    overflow: 'hidden',
+  },
+  hofGradient: {
+    padding: 16,
+    borderRadius: CARD_RADIUS,
+    minHeight: 180,
+    borderWidth: 1,
+    borderColor: '#ffffff12',
+  },
+  hofTopRow: { flexDirection: 'row', alignItems: 'center', marginBottom: 10 },
+  avatar: {
+    width: AVATAR_SIZE,
+    height: AVATAR_SIZE,
+    borderRadius: AVATAR_SIZE / 2,
+    marginRight: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: '#ffffff22',
+  },
+  avatarText: { color: Colors.text.primary, fontSize: 22, fontWeight: '800' },
+  hofName: { color: Colors.text.primary, fontSize: 16, fontWeight: '800' },
+  hofRole: { color: Colors.text.secondary, fontSize: 13, marginTop: 2 },
+  hofCompany: { color: Colors.text.muted, fontSize: 12, marginTop: 2 },
+  hofQuote: {
+    color: Colors.text.primary,
+    fontSize: 13,
+    fontStyle: 'italic',
+    lineHeight: 18,
+    marginTop: 6,
+    marginBottom: 8,
+  },
+  hofFooter: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 6,
+  },
+  hofBadge: {
+    color: '#4ADE80',
+    fontSize: 11,
+    fontWeight: '700',
+    backgroundColor: '#4ADE8022',
+    paddingVertical: 2,
+    paddingHorizontal: 6,
+    borderRadius: 8,
+  },
+  hofLoc: { color: Colors.text.muted, fontSize: 11 },
+
+  // Testimonials
+  testimonialScroll: { paddingHorizontal: HORIZONTAL_PADDING, paddingRight: HORIZONTAL_PADDING * 2 },
+  testimonialCard: {
+    width: IS_TABLET ? 360 : SCREEN_WIDTH * 0.76,
+    marginRight: 12,
+    borderRadius: CARD_RADIUS,
+    overflow: 'hidden',
+  },
+  testimonialGradient: {
+    padding: 16,
+    borderRadius: CARD_RADIUS,
+    minHeight: 180,
+    borderWidth: 1,
+    borderColor: '#ffffff12',
+  },
+  testimonialQuoteMark: {
+    color: Colors.accent.softGold,
+    fontSize: 42,
+    fontWeight: '900',
+    marginTop: -6,
+  },
+  testimonialQuote: {
+    color: Colors.text.primary,
+    fontSize: 14,
+    lineHeight: 20,
+    fontStyle: 'italic',
+  },
+  testimonialAuthorRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 14,
+  },
+  smallAvatar: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    marginRight: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: '#ffffff22',
+  },
+  smallAvatarText: { color: Colors.text.primary, fontWeight: '800' },
+  testimonialAuthor: { color: Colors.text.primary, fontSize: 13, fontWeight: '700' },
+  testimonialRole: { color: Colors.text.muted, fontSize: 11, marginTop: 2 },
+
+  // Top companies
+  companyGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    paddingHorizontal: HORIZONTAL_PADDING,
+  },
+  companyPill: {
+    backgroundColor: '#ffffff0A',
+    borderColor: '#ffffff22',
+    borderWidth: 1,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderRadius: 14,
+    marginRight: 8,
+    marginBottom: 8,
+    maxWidth: '48%',
+  },
+  companyName: { color: Colors.text.primary, fontSize: 13, fontWeight: '700' },
+  companyCount: { color: Colors.text.muted, fontSize: 11, marginTop: 2 },
+
+  // Meetups
+  meetupScroll: { paddingHorizontal: HORIZONTAL_PADDING, paddingRight: HORIZONTAL_PADDING * 2 },
+  meetupCard: {
+    width: IS_TABLET ? 340 : SCREEN_WIDTH * 0.78,
+    marginRight: 12,
+    borderRadius: CARD_RADIUS,
+    overflow: 'hidden',
+  },
+  meetupGradient: {
+    padding: 16,
+    borderRadius: CARD_RADIUS,
+    minHeight: 220,
+    borderWidth: 1,
+    borderColor: '#ffffff12',
+  },
+  meetupBadge: {
+    alignSelf: 'flex-start',
+    color: Colors.tech.neonBlue,
+    backgroundColor: Colors.tech.neonBlue + '22',
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 10,
+    fontSize: 11,
+    fontWeight: '700',
+    marginBottom: 8,
+  },
+  meetupTitle: { color: Colors.text.primary, fontSize: 15, fontWeight: '800' },
+  meetupMeta: { color: Colors.text.muted, fontSize: 12, marginTop: 2 },
+  meetupDescription: { color: Colors.text.secondary, fontSize: 12, marginTop: 8, lineHeight: 18 },
+  meetupBar: {
+    height: 6,
+    borderRadius: 4,
+    backgroundColor: '#ffffff18',
+    marginTop: 10,
+    overflow: 'hidden',
+  },
+  meetupBarFill: { height: 6, backgroundColor: Colors.tech.neonBlue },
+  meetupCapacity: { color: Colors.text.muted, fontSize: 11, marginTop: 4 },
+  meetupTagRow: { flexDirection: 'row', flexWrap: 'wrap', marginTop: 8 },
+  meetupTag: {
+    backgroundColor: '#ffffff12',
+    borderRadius: 8,
+    paddingVertical: 3,
+    paddingHorizontal: 8,
+    marginRight: 6,
+    marginBottom: 4,
+  },
+  meetupTagText: { color: Colors.text.secondary, fontSize: 10 },
+
+  // Mentorship list
+  mentorshipList: { paddingHorizontal: HORIZONTAL_PADDING },
+  mentorshipItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ffffff0F',
+  },
+  mentorshipDot: { width: 10, height: 10, borderRadius: 5, marginRight: 12 },
+  mentorshipTopic: { color: Colors.text.primary, fontSize: 14, fontWeight: '700' },
+  mentorshipMeta: { color: Colors.text.secondary, fontSize: 12, marginTop: 2 },
+  mentorshipFormat: { color: Colors.text.muted, fontSize: 11, marginTop: 2 },
+  mentorshipArrow: { color: Colors.text.muted, fontSize: 22, marginLeft: 8 },
+
+  // Pledges
+  pledgeItem: {
+    flexDirection: 'row',
+    paddingVertical: 10,
+    paddingHorizontal: HORIZONTAL_PADDING,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ffffff0F',
+  },
+  pledgeLeaf: { fontSize: 22, marginRight: 10 },
+  pledgeAuthor: { color: Colors.text.primary, fontSize: 13, fontWeight: '700' },
+  pledgeText: { color: Colors.text.secondary, fontSize: 12, marginTop: 3, lineHeight: 18 },
+
+  // Alumni list
+  listHeaderRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: HORIZONTAL_PADDING,
+    paddingTop: 18,
+    paddingBottom: 6,
+  },
+  listHeaderTitle: { color: Colors.text.primary, fontSize: 14, fontWeight: '700', flex: 1 },
+  listHeaderReset: { color: '#FBA5A5', fontSize: 12, fontWeight: '700' },
+
+  alumniCard: {
+    paddingHorizontal: HORIZONTAL_PADDING,
+    marginTop: 8,
+  },
+  alumniInner: { borderRadius: CARD_RADIUS, overflow: 'hidden' },
+  alumniGradient: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 14,
+    borderRadius: CARD_RADIUS,
+    borderWidth: 1,
+    borderColor: '#ffffff12',
+  },
+  alumniMeta: { flex: 1, paddingRight: 10 },
+  alumniMetaRow: { flexDirection: 'row', alignItems: 'center' },
+  alumniName: { color: Colors.text.primary, fontSize: 15, fontWeight: '800' },
+  featuredPill: { marginLeft: 6, fontSize: 13 },
+  mentorPill: { marginLeft: 4, fontSize: 13 },
+  alumniRole: { color: Colors.text.secondary, fontSize: 13, marginTop: 2 },
+  alumniCompany: { color: Colors.text.primary, fontSize: 12, marginTop: 2 },
+  alumniLoc: { color: Colors.text.muted, fontSize: 11, marginTop: 2 },
+  alumniArrow: { color: Colors.text.muted, fontSize: 22 },
+
+  // Grid
+  gridRow: { justifyContent: 'space-between', paddingHorizontal: HORIZONTAL_PADDING },
+  gridItem: {
+    width: (SCREEN_WIDTH - HORIZONTAL_PADDING * 2 - 10) / 2,
+    marginTop: 10,
+  },
+  gridInner: { borderRadius: CARD_RADIUS, overflow: 'hidden' },
+  gridGradient: {
+    padding: 14,
+    borderRadius: CARD_RADIUS,
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#ffffff12',
+  },
+  avatarLarge: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 10,
+    borderWidth: 1,
+    borderColor: '#ffffff22',
+  },
+  avatarLargeText: { color: Colors.text.primary, fontSize: 26, fontWeight: '800' },
+  gridName: { color: Colors.text.primary, fontSize: 13, fontWeight: '800' },
+  gridRole: { color: Colors.text.secondary, fontSize: 11, marginTop: 2, textAlign: 'center' },
+  gridCompany: { color: Colors.text.muted, fontSize: 11, marginTop: 2 },
+  gridBadges: { flexDirection: 'row', marginTop: 6 },
+  gridBadge: { fontSize: 13, marginHorizontal: 2 },
+
+  // Empty
+  emptyState: { alignItems: 'center', paddingVertical: 40, paddingHorizontal: 20 },
+  emptyIcon: { fontSize: 44, marginBottom: 10 },
+  emptyTitle: { color: Colors.text.primary, fontSize: 16, fontWeight: '700', marginBottom: 4 },
+  emptySubtitle: { color: Colors.text.muted, fontSize: 13, textAlign: 'center', marginBottom: 14 },
+  emptyButton: {
+    backgroundColor: Colors.tech.neonBlue,
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    borderRadius: 14,
+  },
+  emptyButtonText: { color: '#000', fontWeight: '800' },
+
+  // Skeleton
+  skeletonCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: HORIZONTAL_PADDING,
+    paddingVertical: 12,
+  },
+  skeletonAvatar: {
+    width: AVATAR_SIZE,
+    height: AVATAR_SIZE,
+    borderRadius: AVATAR_SIZE / 2,
+    backgroundColor: '#ffffff15',
+    marginRight: 12,
+  },
+  skeletonLine: {
+    height: 10,
+    borderRadius: 5,
+    backgroundColor: '#ffffff12',
+    marginVertical: 4,
+  },
+
+  // Footer
+  footer: { alignItems: 'center', paddingTop: 18, paddingBottom: 30 },
+  footerText: { color: Colors.text.muted, fontSize: 11, marginVertical: 2 },
+
+  // Modal
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: '#000000CC',
+    justifyContent: 'flex-end',
+  },
+  modalContent: {
+    maxHeight: SCREEN_HEIGHT * 0.92,
+    backgroundColor: '#0A0F14',
+    borderTopLeftRadius: 32,
+    borderTopRightRadius: 32,
+    overflow: 'hidden',
+  },
+  modalHero: {
+    padding: 18,
+    paddingTop: 22,
+    borderTopLeftRadius: 32,
+    borderTopRightRadius: 32,
+  },
+  modalHeroRow: { flexDirection: 'row', alignItems: 'center' },
+  avatarHero: {
+    width: 76,
+    height: 76,
+    borderRadius: 38,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 12,
+    borderWidth: 1,
+    borderColor: '#ffffff33',
+  },
+  avatarHeroText: { color: Colors.text.primary, fontSize: 30, fontWeight: '900' },
+  modalName: { color: Colors.text.primary, fontSize: 20, fontWeight: '800' },
+  modalCurrent: { color: Colors.text.primary, fontSize: 14, marginTop: 2 },
+  modalCompany: { color: Colors.text.secondary, fontSize: 13, marginTop: 2 },
+  modalLoc: { color: Colors.text.muted, fontSize: 11, marginTop: 4 },
+  modalBadgeRow: { flexDirection: 'row', flexWrap: 'wrap', marginTop: 10 },
+  modalBadge: {
+    color: Colors.text.primary,
+    fontSize: 10,
+    fontWeight: '700',
+    backgroundColor: '#ffffff14',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 8,
+    marginRight: 6,
+    marginBottom: 4,
+    borderWidth: 1,
+    borderColor: '#ffffff22',
+  },
+  modalClose: {
+    position: 'absolute',
+    top: 14,
+    right: 14,
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: '#00000088',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  modalCloseText: { color: Colors.text.primary, fontSize: 16 },
+
+  modalScroll: { flexGrow: 0 },
+  modalScrollContent: { padding: 16, paddingBottom: 24 },
+  modalSection: { marginBottom: 18 },
+  modalSectionTitle: {
+    color: Colors.text.primary,
+    fontSize: 13,
+    fontWeight: '800',
+    letterSpacing: 0.4,
+    marginBottom: 6,
+  },
+  modalSectionBody: { color: Colors.text.secondary, fontSize: 13, lineHeight: 20 },
+  modalQuoteBlock: {
+    padding: 12,
+    backgroundColor: '#ffffff08',
+    borderLeftWidth: 3,
+    borderLeftColor: Colors.accent.softGold,
+    borderRadius: 10,
+  },
+  modalQuoteMark: {
+    color: Colors.accent.softGold,
+    fontSize: 30,
+    fontWeight: '900',
+    marginTop: -8,
+  },
+  modalQuote: { color: Colors.text.primary, fontSize: 13, fontStyle: 'italic', lineHeight: 20 },
+
+  skillWrap: { flexDirection: 'row', flexWrap: 'wrap' },
+  skillChip: {
+    borderWidth: 1,
+    borderRadius: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    marginRight: 6,
+    marginBottom: 6,
+  },
+  skillText: { fontSize: 11, fontWeight: '700' },
+
+  bullet: { flexDirection: 'row', alignItems: 'flex-start', marginBottom: 4 },
+  bulletDot: { color: Colors.accent.softGold, marginRight: 6, fontSize: 14 },
+  bulletText: { color: Colors.text.secondary, fontSize: 13, lineHeight: 20, flex: 1 },
+
+  timeline: { marginTop: 4 },
+  timelineRow: { flexDirection: 'row', marginBottom: 12 },
+  timelineLeftCol: { width: 70, alignItems: 'center' },
+  timelineYear: { color: Colors.text.muted, fontSize: 11, marginBottom: 4 },
+  timelineDot: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    borderWidth: 2,
+    borderColor: '#ffffff44',
+  },
+  timelineDotFirst: { borderColor: Colors.accent.softGold },
+  timelineLine: { flex: 1, width: 2, backgroundColor: '#ffffff22', marginTop: 2 },
+  timelineRightCol: { flex: 1, paddingLeft: 10 },
+  timelineRole: { color: Colors.text.primary, fontSize: 13, fontWeight: '700' },
+  timelineCompany: { color: Colors.text.muted, fontSize: 12 },
+
+  modalActionRow: {
+    flexDirection: 'row',
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    borderTopWidth: 1,
+    borderTopColor: '#ffffff18',
+    flexWrap: 'wrap',
+  },
+  modalAction: {
+    paddingVertical: 10,
+    paddingHorizontal: 14,
+    borderRadius: 12,
+    marginRight: 8,
+    marginBottom: 6,
+  },
+  modalActionText: { color: '#fff', fontSize: 13, fontWeight: '800' },
+
+  // Sheets
+  sheetBackdrop: { flex: 1, backgroundColor: '#000000AA' },
+  sheet: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: '#0A0F14',
+    borderTopLeftRadius: 28,
+    borderTopRightRadius: 28,
+    padding: 18,
+    borderTopWidth: 1,
+    borderColor: '#ffffff18',
+  },
+  sheetTall: { maxHeight: SCREEN_HEIGHT * 0.7 },
+  sheetTitle: { color: Colors.text.primary, fontSize: 15, fontWeight: '800', marginBottom: 10 },
+  sheetRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ffffff0F',
+  },
+  sheetIcon: { fontSize: 16, marginRight: 10 },
+  sheetLabel: { flex: 1, color: Colors.text.secondary, fontSize: 13 },
+  sheetLabelActive: { color: Colors.tech.neonBlue, fontWeight: '800' },
+  sheetCheck: { color: Colors.tech.neonBlue, fontSize: 16, fontWeight: '800' },
 });
 
 export default AlumniScreen;
