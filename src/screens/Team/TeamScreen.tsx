@@ -1487,6 +1487,111 @@ const TEAM_FIELD_NOTES: TeamFieldNote[] = [
   { id: 'tfn-7', note: 'Say the quiet part out loud · especially the appreciation · it\'s the only way the culture compounds.',                                        writtenBy: 'Ritika B. · 2019',       occasion: 'Farewell note · 2023',       color: '#F472B6', emoji: '📣' },
 ];
 
+// =====================================================
+// Phase 3ap: deeper team structures — round 4
+// =====================================================
+
+interface TeamPairingPlan {
+  id: string;
+  pair: string;
+  focus: string;
+  cadence: string;
+  outcome: string;
+  color: string;
+  emoji: string;
+}
+
+const TEAM_PAIRING_PLANS: TeamPairingPlan[] = [
+  { id: 'tpp-1', pair: 'Content lead ↔ PR lead',                focus: 'Weekly press-angle pitch · cross-pollinate voice.',                    cadence: 'Tuesday · 45 min',    outcome: '2 landed pieces per month · consistent brand voice across.',                  color: '#F59E0B', emoji: '🤝' },
+  { id: 'tpp-2', pair: 'Web lead ↔ Photo lead',                  focus: 'Site gallery · image pipeline · caption standards.',                     cadence: 'Fortnightly · 60 min', outcome: 'Crisp image CDN · captions consistent · alt text complete.',                   color: '#00D4FF', emoji: '🖼️' },
+  { id: 'tpp-3', pair: 'GD lead ↔ Video lead',                   focus: 'Title cards · lower-thirds · motion grammar.',                            cadence: 'Weekly · 60 min',      outcome: 'Motion-title set shared · 4 templates · reused for a year.',                   color: '#F472B6', emoji: '🎞️' },
+  { id: 'tpp-4', pair: 'Founder ↔ Incoming lead',                 focus: 'Succession · context transfer · institutional memory.',                    cadence: 'Monthly · 90 min',       outcome: 'Playbook updated · tacit knowledge surfaced · mistakes avoided.',               color: '#A78BFA', emoji: '📜' },
+  { id: 'tpp-5', pair: 'Council ↔ Ops',                            focus: 'Budget reality · spend rhythm · surprise prevention.',                      cadence: 'Weekly · 30 min',         outcome: 'No surprise invoices · cash-flow calm · every purchase logged.',                 color: '#FFD166', emoji: '🧾' },
+  { id: 'tpp-6', pair: 'Alumni advisor ↔ First-year buddy',        focus: 'Onramp experience · is it kind · is it clear.',                              cadence: 'Quarterly · 60 min',       outcome: 'Onramp doc updated yearly · first-years find footing quicker.',                   color: '#22C55E', emoji: '🫂' },
+  { id: 'tpp-7', pair: 'Mentor ↔ Mentee (opt-in)',                   focus: 'One craft goal per quarter · honest check-ins.',                              cadence: 'Monthly · 60 min',          outcome: 'Portfolio grew · confidence grew · reflection noted in journal.',                   color: '#EF4444', emoji: '🎓' },
+];
+
+interface TeamHealthDashboard {
+  id: string;
+  metric: string;
+  greenZone: string;
+  yellowZone: string;
+  redZone: string;
+  keeper: string;
+  color: string;
+  emoji: string;
+}
+
+const TEAM_HEALTH_DASHBOARD: TeamHealthDashboard[] = [
+  { id: 'thd-1', metric: 'Weekly working hours per member',              greenZone: '20-30 hrs',    yellowZone: '30-40 hrs',    redZone: '40+ hrs',    keeper: 'Wellness lead · weekly pulse',      color: '#22C55E', emoji: '⏱️' },
+  { id: 'thd-2', metric: 'Mentor-call completion rate',                   greenZone: '≥ 90%',         yellowZone: '70–89%',        redZone: '< 70%',      keeper: 'Mentorship lead · monthly',         color: '#00D4FF', emoji: '🎓' },
+  { id: 'thd-3', metric: 'Feedback-loop latency · request → answer',        greenZone: '< 48 hrs',       yellowZone: '48–96 hrs',       redZone: '> 96 hrs',    keeper: 'Wing leads · rolling',               color: '#F59E0B', emoji: '🔁' },
+  { id: 'thd-4', metric: 'Shipping cadence · per wing per week',             greenZone: '≥ 2 ships',       yellowZone: '1 ship',           redZone: '0 ships',     keeper: 'Wing leads + council',                 color: '#A78BFA', emoji: '🚢' },
+  { id: 'thd-5', metric: 'Retrospective honesty (self-reported)',               greenZone: '≥ 4/5',           yellowZone: '3/5',              redZone: '< 3/5',       keeper: 'Retro facilitator · quarterly',         color: '#F472B6', emoji: '🗣️' },
+  { id: 'thd-6', metric: 'Sleep (self-reported · anonymous)',                      greenZone: '≥ 7 hrs avg',     yellowZone: '5.5–7 hrs',         redZone: '< 5.5 hrs',   keeper: 'Wellness lead · anonymous form',         color: '#FFD166', emoji: '😴' },
+  { id: 'thd-7', metric: 'Volunteer gratitude (yes/no: felt thanked this month)',   greenZone: '≥ 95% yes',       yellowZone: '80–94% yes',        redZone: '< 80% yes',    keeper: 'Community · monthly',                     color: '#EF4444', emoji: '🫶' },
+];
+
+interface TeamOneOnOne {
+  id: string;
+  cadence: string;
+  attendees: string;
+  prompt: string;
+  offLimits: string;
+  color: string;
+  emoji: string;
+}
+
+const TEAM_ONE_ON_ONES: TeamOneOnOne[] = [
+  { id: 'too-1', cadence: 'Weekly · first-year buddy',            attendees: 'Buddy + first-year · 20 min',             prompt: 'What is one thing I can take off your plate this week? · What did you do that you\'re secretly proud of?',                    offLimits: 'No performance review · no comparisons · no family questions.',                   color: '#F59E0B', emoji: '☕' },
+  { id: 'too-2', cadence: 'Fortnightly · wing lead',                 attendees: 'Wing lead + member · 30 min',              prompt: 'Where are you stuck? · What is working well? · What do you want to learn next?',                                                 offLimits: 'No ambush feedback · no surprise promotion talks · no gossip.',                     color: '#00D4FF', emoji: '💬' },
+  { id: 'too-3', cadence: 'Monthly · council',                         attendees: 'Council member + anyone · 45 min',          prompt: 'How is the club feeling from where you sit? · One rule you would change today?',                                                offLimits: 'No punitive questions · no political pressure · no private accusations.',         color: '#A78BFA', emoji: '🫖' },
+  { id: 'too-4', cadence: 'Quarterly · mentor',                         attendees: 'Mentor + mentee · 60 min',                   prompt: 'Craft-wise · where are you compared to last quarter? · What portfolio piece next?',                                               offLimits: 'No life-plan interrogation · no comparative shaming · no "you should".',             color: '#F472B6', emoji: '🎓' },
+  { id: 'too-5', cadence: 'Bi-annual · alumni advisor',                    attendees: 'Alumni + senior member · 60 min',              prompt: 'What is one mistake we are about to repeat? · One thing we are not seeing?',                                                     offLimits: 'No rehashing old grievances · no "in my day" lectures · alumni listen more than talk.', color: '#FFD166', emoji: '📞' },
+  { id: 'too-6', cadence: 'As-needed · wellness',                              attendees: 'Wellness lead + anyone · 60 min',                 prompt: 'How are you actually? · What would a weekend off look like? · Is sleep okay?',                                                     offLimits: 'No diagnoses · no gossip · what is said stays with wellness lead unless there is risk.', color: '#22C55E', emoji: '🫶' },
+  { id: 'too-7', cadence: 'Exit · outgoing member',                               attendees: 'Wing lead + outgoing member · 60 min',              prompt: 'What do you wish you had known earlier? · What should next person not have to figure out?',                                        offLimits: 'No pressure to stay · no guilt · exit interview is for listening not convincing.', color: '#EF4444', emoji: '📨' },
+];
+
+interface TeamWellnessPillar {
+  id: string;
+  pillar: string;
+  signals: string;
+  practice: string;
+  support: string;
+  color: string;
+  emoji: string;
+}
+
+const TEAM_WELLNESS_PILLARS: TeamWellnessPillar[] = [
+  { id: 'twp-1', pillar: 'Sleep',               signals: 'Yawning in meetings · typos in chat · slower replies.',                     practice: 'Sleep hygiene card · shared daily-rhythm · lamp-light reading hour.',                       support: 'Bed-time prompt · quiet quarterly retreat · screen-off after 10 PM.',                   color: '#A78BFA', emoji: '😴' },
+  { id: 'twp-2', pillar: 'Breath',               signals: 'Short breath during crits · chest tightness · sighs mid-sentence.',           practice: 'Two-minute box-breath before meetings · open-window break every 90 min.',                   support: 'Wellness buddy shares a breath card · we stop and breathe together · no comment.',      color: '#00D4FF', emoji: '🌬️' },
+  { id: 'twp-3', pillar: 'Body',                  signals: 'Stiffness · headaches · desk-slump photos.',                                    practice: 'Walk-and-talk meetings · 5-min stretch · weekly campus walk together.',                        support: 'Yoga room · open all hours · mat per person · no booking required.',                     color: '#22C55E', emoji: '🧘' },
+  { id: 'twp-4', pillar: 'Connection',                signals: 'Fewer "how are you" · lunch taken alone · solo-streak in Slack.',                 practice: 'Pair-lunch Fridays · open-door hour per lead per week.',                                      support: 'Community lead ensures no one is alone for two Fridays in a row.',                         color: '#F472B6', emoji: '🫂' },
+  { id: 'twp-5', pillar: 'Mind',                      signals: 'Brain fog · re-reading the same line · drafts that never ship.',                      practice: 'No-screen morning ritual · one book of fiction going · 20-min journal window.',                  support: 'Reading corner with lamps · book recommendations from alumni pinned weekly.',             color: '#FFD166', emoji: '📖' },
+  { id: 'twp-6', pillar: 'Nourishment',                   signals: 'Skipping meals · vending-machine food · caffeine instead of water.',                     practice: 'Slow-lunch rule · no working through lunch · fruit basket always full.',                              support: 'Kitchen stocked with chickpeas · fruits · dark chocolate · one hot meal at noon.',           color: '#F59E0B', emoji: '🍲' },
+  { id: 'twp-7', pillar: 'Time off',                           signals: 'No "out of office" · checking Slack from vacations · over-apologising for pauses.',        practice: 'One paid rest-day per month · four "I need a quiet week" cards per year · no questions.',              support: 'Council enforces · wing leads plan coverage · no one asked to explain their rest.',           color: '#EF4444', emoji: '🏝️' },
+];
+
+interface TeamGrievancePath {
+  id: string;
+  step: string;
+  owner: string;
+  slaDays: string;
+  safeguard: string;
+  color: string;
+  emoji: string;
+}
+
+const TEAM_GRIEVANCE_PATH: TeamGrievancePath[] = [
+  { id: 'tgp-1', step: 'First voice · you can talk to anyone on the grievance circle',             owner: 'Grievance circle · 4 named members',         slaDays: 'Same day reply',      safeguard: 'Confidential by default · only escalate with consent.',                                    color: '#F59E0B', emoji: '🫂' },
+  { id: 'tgp-2', step: 'Informal check · is this a misunderstanding · can we clear it',              owner: 'Grievance circle member + you',                   slaDays: '7 days',                   safeguard: 'No record filed yet · no assumptions · 60 min conversation minimum.',                           color: '#00D4FF', emoji: '💬' },
+  { id: 'tgp-3', step: 'Formal log · if it rises · it is documented with your consent',               owner: 'Grievance lead · council observer',                slaDays: '14 days',                 safeguard: 'You own the document · redacted sharing · no public airing.',                                  color: '#F472B6', emoji: '📓' },
+  { id: 'tgp-4', step: 'Mediation · both parties sit with a neutral facilitator',                      owner: 'External alumni facilitator',                         slaDays: '21 days',                  safeguard: 'Facilitator is a trained alumna · no current-year council present · no recordings.',             color: '#A78BFA', emoji: '🤝' },
+  { id: 'tgp-5', step: 'Council action · if mediation does not resolve · council acts',                  owner: 'Full council · vote required',                         slaDays: '30 days',                   safeguard: 'Action proportionate · appeal path exists · no vigilante reactions.',                             color: '#FFD166', emoji: '⚖️' },
+  { id: 'tgp-6', step: 'Appeal · alumni advisor circle reviews',                                           owner: 'Alumni advisor circle · 3 members',                        slaDays: '45 days',                    safeguard: 'Independent of council · decisions can be overturned · written reasoning.',                         color: '#22C55E', emoji: '✒️' },
+  { id: 'tgp-7', step: 'Care plan · person-first support · regardless of outcome',                         owner: 'Wellness lead',                                          slaDays: 'Rolling · as long as needed', safeguard: 'Check-ins · counselling referral · re-integration plan · no ghosting.',                           color: '#EF4444', emoji: '🫖' },
+];
+
 const TeamScreen: React.FC = () => {
   // ------ State ------
   const [selectedDept, setSelectedDept] = useState<DeptId>('all');
@@ -3401,6 +3506,124 @@ const TeamScreen: React.FC = () => {
     </View>
   );
 
+  // ------ Phase 3ap: round 4 team blocks ------
+  const renderTeamPairingPlans = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🤝 Pairing plans · how leads teach each other</Text>
+        <Text style={styles.sectionCaption}>{TEAM_PAIRING_PLANS.length} pairs</Text>
+      </View>
+      {TEAM_PAIRING_PLANS.map((p) => (
+        <View key={p.id} style={[styles.tppCard, { borderLeftColor: p.color }]}>
+          <View style={styles.tppTopRow}>
+            <Text style={styles.tppEmoji}>{p.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.tppPair} numberOfLines={1}>{p.pair}</Text>
+              <Text style={[styles.tppCadence, { color: p.color }]}>{p.cadence}</Text>
+            </View>
+          </View>
+          <Text style={styles.tppFocus} numberOfLines={2}>focus · {p.focus}</Text>
+          <Text style={styles.tppOutcome} numberOfLines={3}>outcome · {p.outcome}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderTeamHealthDashboard = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🫁 Health dashboard · what we measure · not just what we ship</Text>
+        <Text style={styles.sectionCaption}>{TEAM_HEALTH_DASHBOARD.length} metrics</Text>
+      </View>
+      {TEAM_HEALTH_DASHBOARD.map((h) => (
+        <View key={h.id} style={[styles.thdCard, { borderLeftColor: h.color }]}>
+          <View style={styles.thdTopRow}>
+            <Text style={styles.thdEmoji}>{h.emoji}</Text>
+            <Text style={styles.thdMetric} numberOfLines={2}>{h.metric}</Text>
+          </View>
+          <View style={styles.thdZoneRow}>
+            <View style={[styles.thdZone, { backgroundColor: 'rgba(34,197,94,0.12)' }]}>
+              <Text style={[styles.thdZoneLabel, { color: '#22C55E' }]}>GREEN</Text>
+              <Text style={styles.thdZoneValue} numberOfLines={1}>{h.greenZone}</Text>
+            </View>
+            <View style={[styles.thdZone, { backgroundColor: 'rgba(245,158,11,0.12)' }]}>
+              <Text style={[styles.thdZoneLabel, { color: '#F59E0B' }]}>YELLOW</Text>
+              <Text style={styles.thdZoneValue} numberOfLines={1}>{h.yellowZone}</Text>
+            </View>
+            <View style={[styles.thdZone, { backgroundColor: 'rgba(239,68,68,0.12)' }]}>
+              <Text style={[styles.thdZoneLabel, { color: '#EF4444' }]}>RED</Text>
+              <Text style={styles.thdZoneValue} numberOfLines={1}>{h.redZone}</Text>
+            </View>
+          </View>
+          <Text style={styles.thdKeeper} numberOfLines={1}>keeper · {h.keeper}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderTeamOneOnOnes = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>☕ One-on-ones · the table where trust compounds</Text>
+        <Text style={styles.sectionCaption}>{TEAM_ONE_ON_ONES.length} cadences</Text>
+      </View>
+      {TEAM_ONE_ON_ONES.map((o) => (
+        <View key={o.id} style={[styles.tooCard, { borderLeftColor: o.color }]}>
+          <View style={styles.tooTopRow}>
+            <Text style={styles.tooEmoji}>{o.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.tooCadence} numberOfLines={1}>{o.cadence}</Text>
+              <Text style={[styles.tooAttendees, { color: o.color }]} numberOfLines={1}>{o.attendees}</Text>
+            </View>
+          </View>
+          <Text style={styles.tooPrompt} numberOfLines={3}>prompt · {o.prompt}</Text>
+          <Text style={styles.tooOffLimits} numberOfLines={2}>off-limits · {o.offLimits}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderTeamWellnessPillars = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🫖 Wellness pillars · what we tend before we tend output</Text>
+        <Text style={styles.sectionCaption}>{TEAM_WELLNESS_PILLARS.length} pillars</Text>
+      </View>
+      {TEAM_WELLNESS_PILLARS.map((w) => (
+        <View key={w.id} style={[styles.twpCard, { borderLeftColor: w.color }]}>
+          <View style={styles.twpTopRow}>
+            <Text style={styles.twpEmoji}>{w.emoji}</Text>
+            <Text style={styles.twpPillar} numberOfLines={1}>{w.pillar}</Text>
+          </View>
+          <Text style={[styles.twpSignals, { color: w.color }]} numberOfLines={2}>signals · {w.signals}</Text>
+          <Text style={styles.twpPractice} numberOfLines={3}>practice · {w.practice}</Text>
+          <Text style={styles.twpSupport} numberOfLines={3}>support · {w.support}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderTeamGrievancePath = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>⚖️ Grievance path · what to do if something is not okay</Text>
+        <Text style={styles.sectionCaption}>{TEAM_GRIEVANCE_PATH.length} steps</Text>
+      </View>
+      {TEAM_GRIEVANCE_PATH.map((g, i) => (
+        <View key={g.id} style={[styles.tgp2Card, { borderLeftColor: g.color }]}>
+          <View style={styles.tgp2TopRow}>
+            <Text style={[styles.tgp2StepNum, { color: g.color }]}>{String(i + 1).padStart(2, '0')}</Text>
+            <Text style={styles.tgp2Emoji}>{g.emoji}</Text>
+            <Text style={styles.tgp2Step} numberOfLines={2}>{g.step}</Text>
+          </View>
+          <Text style={styles.tgp2Owner} numberOfLines={1}>owner · {g.owner}</Text>
+          <Text style={styles.tgp2Sla} numberOfLines={1}>SLA · {g.slaDays}</Text>
+          <Text style={styles.tgp2Safeguard} numberOfLines={3}>safeguard · {g.safeguard}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
   // ------ Main ------
   const listHeader = (
     <View>
@@ -3438,6 +3661,11 @@ const TeamScreen: React.FC = () => {
       {renderTeamThankYous()}
       {renderTeamKindnesses()}
       {renderTeamFieldNotes()}
+      {renderTeamPairingPlans()}
+      {renderTeamHealthDashboard()}
+      {renderTeamOneOnOnes()}
+      {renderTeamWellnessPillars()}
+      {renderTeamGrievancePath()}
       {renderThanks()}
       {renderTeamGoodbye()}
       {renderApplyToJoin()}
@@ -4743,6 +4971,54 @@ const styles = StyleSheet.create({
   tfnOccasion: { color: Colors.text.muted, fontSize: 10, fontWeight: '900', letterSpacing: 1, textTransform: 'uppercase' },
   tfnNote: { color: Colors.text.primary, fontSize: 13, lineHeight: 18, marginTop: 8, paddingLeft: 32, fontStyle: 'italic' },
   tfnAuthor: { fontSize: 11, fontWeight: '800', marginTop: 6, paddingLeft: 32 },
+
+  // --- Phase 3ap: pairing plans ---
+  tppCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  tppTopRow: { flexDirection: 'row', alignItems: 'center' },
+  tppEmoji: { fontSize: 22, marginRight: 10 },
+  tppPair: { color: Colors.text.primary, fontSize: 13, fontWeight: '900' },
+  tppCadence: { fontSize: 11, fontWeight: '700', marginTop: 2 },
+  tppFocus: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8, paddingLeft: 32 },
+  tppOutcome: { color: Colors.text.muted, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32, fontStyle: 'italic' },
+
+  // --- Phase 3ap: health dashboard ---
+  thdCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  thdTopRow: { flexDirection: 'row', alignItems: 'center' },
+  thdEmoji: { fontSize: 22, marginRight: 10 },
+  thdMetric: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', flex: 1, lineHeight: 17 },
+  thdZoneRow: { flexDirection: 'row', marginTop: 10, gap: 6 },
+  thdZone: { flex: 1, borderRadius: 8, padding: 8, alignItems: 'center' },
+  thdZoneLabel: { fontSize: 9, fontWeight: '900', letterSpacing: 0.5, marginBottom: 2 },
+  thdZoneValue: { color: Colors.text.primary, fontSize: 11, fontWeight: '700', textAlign: 'center' },
+  thdKeeper: { color: Colors.text.muted, fontSize: 11, marginTop: 8, fontStyle: 'italic' },
+
+  // --- Phase 3ap: one-on-ones ---
+  tooCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  tooTopRow: { flexDirection: 'row', alignItems: 'center' },
+  tooEmoji: { fontSize: 22, marginRight: 10 },
+  tooCadence: { color: Colors.text.primary, fontSize: 13, fontWeight: '900' },
+  tooAttendees: { fontSize: 11, fontWeight: '700', marginTop: 2 },
+  tooPrompt: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8, paddingLeft: 32 },
+  tooOffLimits: { color: '#F87171', fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32, fontStyle: 'italic' },
+
+  // --- Phase 3ap: wellness pillars ---
+  twpCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  twpTopRow: { flexDirection: 'row', alignItems: 'center' },
+  twpEmoji: { fontSize: 24, marginRight: 10 },
+  twpPillar: { color: Colors.text.primary, fontSize: 14, fontWeight: '900', letterSpacing: 0.5 },
+  twpSignals: { fontSize: 11, lineHeight: 15, marginTop: 8, paddingLeft: 34, fontWeight: '700' },
+  twpPractice: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 34 },
+  twpSupport: { color: Colors.text.muted, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 34 },
+
+  // --- Phase 3ap: grievance path ---
+  tgp2Card: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  tgp2TopRow: { flexDirection: 'row', alignItems: 'center' },
+  tgp2StepNum: { fontSize: 18, fontWeight: '900', marginRight: 10, minWidth: 26 },
+  tgp2Emoji: { fontSize: 20, marginRight: 10 },
+  tgp2Step: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', flex: 1, lineHeight: 17 },
+  tgp2Owner: { color: Colors.text.muted, fontSize: 11, marginTop: 8, paddingLeft: 46 },
+  tgp2Sla: { color: Colors.accent.softGold, fontSize: 11, marginTop: 3, paddingLeft: 46, fontWeight: '700' },
+  tgp2Safeguard: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 46, fontStyle: 'italic' },
 });
 
 export default TeamScreen;
