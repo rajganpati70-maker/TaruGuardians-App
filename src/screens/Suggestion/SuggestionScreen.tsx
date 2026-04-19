@@ -1078,6 +1078,171 @@ const TRACKED_SUBMISSIONS: TrackedSubmission[] = [
 ];
 
 // =====================================================
+// Quarterly retrospective (what worked, what didn't)
+// =====================================================
+
+interface RetroBlock {
+  id: string;
+  quarter: string;
+  theme: string;
+  worked: string[];
+  missed: string[];
+  keeping: string[];
+  dropping: string[];
+  oneBigBet: string;
+  color: string;
+  emoji: string;
+}
+
+const QUARTERLY_RETRO: RetroBlock[] = [
+  {
+    id: 'qr-1',
+    quarter: 'Q1 2026 · Jan–Mar',
+    theme: 'Fewer things, finished well',
+    emoji: '🧭',
+    color: '#22C55E',
+    worked: [
+      'Two-lane release schedule · weekly + monthly, predictable.',
+      'Open crit on Fridays · first-timers stopped self-filtering.',
+      'Sapling survival dashboard · actual numbers, not vibes.',
+      'Alumni-to-student intros via a 3-question form, not Discord pings.',
+    ],
+    missed: [
+      'Hackathon slipped · tried to fold in three sponsors, lost the thread.',
+      'Newsletter died in Feb · nobody owned it, everybody felt guilty.',
+      'Sustainability scorecard shipped without the data team on the call.',
+    ],
+    keeping: [
+      'Weekly crit · one non-negotiable meeting per wing.',
+      'Monthly repair café with e-waste drop-off.',
+      'The three-sentence meeting-notes template.',
+    ],
+    dropping: [
+      '48h hackathons · becoming 60h for too many first-timers.',
+      'Co-authored newsletters · moving to one editor per issue.',
+      'Multi-wing ‘big bets’ · too much stitching, not enough shipping.',
+    ],
+    oneBigBet:
+      'In Q2, the club takes one real bet — a month-long field residency with three villages, no sponsor deck, no press. Just the work.',
+  },
+  {
+    id: 'qr-2',
+    quarter: 'Q4 2025 · Oct–Dec',
+    theme: 'Get better at saying no',
+    emoji: '🧱',
+    color: '#38BDF8',
+    worked: [
+      'Splash rewrite · nature vibe, paced, never rushes the user.',
+      'First alumni relocation grant · ₹18k, four recipients, zero drama.',
+      'Pairing junior and senior photographers on every shoot.',
+      'Weekly ship-log across wings · read in 90 seconds or skipped.',
+    ],
+    missed: [
+      'Said yes to three campus-wide events in the same week. Nobody ate.',
+      'Over-promised on a film crew we didn\'t actually have.',
+      'Let a single loud reviewer hold up two design tokens PRs.',
+    ],
+    keeping: [
+      'Public ship-log · one paragraph per wing per week.',
+      'Alumni relocation fund · trust-based, private, no form.',
+      'Pairing on every shoot · senior owns frame, junior owns pace.',
+    ],
+    dropping: [
+      'Back-to-back events with no room for sleep.',
+      'Solo ownership on anything public-facing.',
+      'Design reviews with no written ‘walk-away’ option.',
+    ],
+    oneBigBet:
+      'Q1 is going to be about finishing things we already started — not opening new rooms. One residency. One real book.',
+  },
+  {
+    id: 'qr-3',
+    quarter: 'Q3 2025 · Jul–Sep',
+    theme: 'Make the boring parts visible',
+    emoji: '🔦',
+    color: '#A78BFA',
+    worked: [
+      'Published a public finance sheet · what the club spent and why.',
+      'Shipped a ‘how we make decisions’ doc · no more inbox politics.',
+      'Moved onboarding to 8 weeks with clear weekly deliverables.',
+      'First mentorship circles · 6 circles, 41 participants.',
+    ],
+    missed: [
+      'Finance sheet wasn\'t updated in August · trust dipped.',
+      'Onboarding week 7 fell off · nobody audited the handoff.',
+      'Two circles never met after week 3.',
+    ],
+    keeping: [
+      'Quarterly public finance updates · no surprises, ever.',
+      '8-week structured onboarding · single doc, single owner.',
+      'Circles that meet · we close the ones that don\'t.',
+    ],
+    dropping: [
+      'Circles that exist on paper only.',
+      'Onboarding owned by five different people.',
+      'Decisions made in DMs.',
+    ],
+    oneBigBet:
+      'Q4 was about saying no. Not about building more. Turns out we needed the no more than the more.',
+  },
+];
+
+// =====================================================
+// Ownership map (who owns which ongoing commitments)
+// =====================================================
+
+interface OwnershipMapEntry {
+  id: string;
+  area: string;
+  primaryOwner: string;
+  backupOwner: string;
+  cadence: string;
+  dueDay: string;
+  escalation: string;
+  color: string;
+  emoji: string;
+}
+
+const OWNERSHIP_MAP: OwnershipMapEntry[] = [
+  { id: 'om-1', area: 'Weekly ship-log publication',        primaryOwner: 'Ananya P.',  backupOwner: 'Nivedita R.',   cadence: 'Weekly',   dueDay: 'Fri 17:00', escalation: 'Slack #leads if not shipped by 19:00 · Meera steps in.',                                                                                                     emoji: '📰', color: '#4CAF50' },
+  { id: 'om-2', area: 'Monthly sapling-survival audit',     primaryOwner: 'Aditi P.',    backupOwner: 'Rohan M.',      cadence: 'Monthly',  dueDay: '1st Sat',   escalation: 'Data team call · if audit is 5+ days late, published numbers get a ‘stale’ banner.',                                                                        emoji: '🌱', color: '#22C55E' },
+  { id: 'om-3', area: 'Release rotations · web/app',         primaryOwner: 'Rohit B.',    backupOwner: 'Meera I.',       cadence: 'Weekly',   dueDay: 'Thu 18:00', escalation: 'On-call DM · if release is not shipped by Fri 12:00 the backup owns the next two releases.',                                                                     emoji: '🚢', color: '#00D4FF' },
+  { id: 'om-4', area: 'Repair café + e-waste drop-off',       primaryOwner: 'Aarav M.',    backupOwner: 'Farhan S.',      cadence: 'Monthly',  dueDay: 'Last Sun',  escalation: 'Vendor call · if no slot by 20th, skip month + publish why.',                                                                                                 emoji: '♻️', color: '#16A34A' },
+  { id: 'om-5', area: 'Weekly design crit',                   primaryOwner: 'Ishita K.',    backupOwner: 'Tanvi S. (alumni)', cadence: 'Weekly', dueDay: 'Fri 16:00', escalation: 'Crit moves to async review in Figma · owner must post by Sun 20:00.',                                                                                         emoji: '🎨', color: '#F472B6' },
+  { id: 'om-6', area: 'Monthly public finance sheet',          primaryOwner: 'Kanishka A. (alumni)', backupOwner: 'Anaya V.',   cadence: 'Monthly',  dueDay: '5th',        escalation: 'Finance chat · if 5 days late, leadership pauses new spends till published.',                                                                               emoji: '💸', color: '#F59E0B' },
+  { id: 'om-7', area: 'Mentorship circle health-check',        primaryOwner: 'Nivedita R.',  backupOwner: 'Ananya P.',      cadence: 'Monthly',  dueDay: '1st Mon',    escalation: 'Any circle with 0 meetings in 3 weeks is sunset with thanks · no guilt.',                                                                                      emoji: '🫂', color: '#A78BFA' },
+  { id: 'om-8', area: 'Alumni grant committee review',         primaryOwner: 'Varun M. (alumni)', backupOwner: 'Saanvi R. (alumni)', cadence: 'Quarterly', dueDay: 'End-quarter', escalation: 'If review misses quarter, committee publishes a ‘delayed’ note + new deadline within 5 days.',                                                                emoji: '🛟', color: '#F59E0B' },
+  { id: 'om-9', area: 'Newsletter · one editor per issue',     primaryOwner: 'Rotating',      backupOwner: 'Editor-at-large', cadence: 'Monthly',  dueDay: '15th',       escalation: 'Editor-at-large ships a 500-word issue · no co-authors, no excuses.',                                                                                           emoji: '📝', color: '#64748B' },
+  { id: 'om-10', area: 'Photo + video archive · weekly dump', primaryOwner: 'Dhruv R.',      backupOwner: 'Akshara N.',     cadence: 'Weekly',   dueDay: 'Sun 20:00',   escalation: 'If archive is 2+ weeks behind, new shoots pause till archive is current.',                                                                                     emoji: '📸', color: '#F87171' },
+];
+
+// =====================================================
+// Feedback loop (how feedback becomes change)
+// =====================================================
+
+interface FeedbackLoopStage {
+  id: string;
+  stage: string;
+  what: string;
+  sla: string;
+  who: string;
+  example: string;
+  color: string;
+  emoji: string;
+  order: number;
+}
+
+const FEEDBACK_LOOP: FeedbackLoopStage[] = [
+  { id: 'fl-1', order: 1, stage: 'Capture',             what: 'Anyone can drop a suggestion · app, paper slip at events, or DM to any lead.',                 sla: 'Same day · acknowledged in 24h.', who: 'Any member · routed to a single inbox.',          example: 'Paper slip · ‘Open the Friday crit to first-timers before they self-filter out.’',  emoji: '📥', color: '#38BDF8' },
+  { id: 'fl-2', order: 2, stage: 'Sort',                 what: 'Triage team reads the full inbox on Mondays · labels by area + priority · no silent drops.',     sla: 'Within 5 working days.',         who: 'Rotating triage pair · never the same pair twice in a row.', example: 'Crit suggestion → labelled ‘Design · improvement · low-cost’.',                         emoji: '🗂️', color: '#A78BFA' },
+  { id: 'fl-3', order: 3, stage: 'Owner',                what: 'Each accepted idea gets an owner · a real name, a real deadline · never ‘the team’.',            sla: 'Within 10 working days of capture.', who: 'Wing lead for the area.',                     example: 'Owner: Ishita K. · deadline: two Fridays out.',                                         emoji: '🧭', color: '#F59E0B' },
+  { id: 'fl-4', order: 4, stage: 'Test',                 what: 'Test once, cheaply · a single trial run, not a season-long rollout.',                             sla: 'Within 30 days of owner assignment.', who: 'Owner + one reviewer.',                        example: 'Trial · one Friday · open crit + written feedback · count first-timer submissions.', emoji: '🧪', color: '#22C55E' },
+  { id: 'fl-5', order: 5, stage: 'Decide',               what: 'Keep, kill, or keep-with-changes · a written note with numbers · no ambiguous ‘let\'s see’.',    sla: 'Within 10 days of the test.',   who: 'Owner + wing lead · published in the digest.',    example: 'Keep with changes · widen to all three wings · retire gatekeeping language.',            emoji: '🧱', color: '#F472B6' },
+  { id: 'fl-6', order: 6, stage: 'Publish',              what: 'The full loop is written up in the monthly digest · who suggested, what changed, what didn\'t.', sla: 'Next monthly digest after the decision.', who: 'Digest editor · one name on it.',          example: 'Monthly digest · ‘Crit is now open to first-timers · suggested by Ishita K. in Jan.’',  emoji: '📰', color: '#64748B' },
+  { id: 'fl-7', order: 7, stage: 'Retire',               what: 'Ideas that didn\'t work are retired with a written reason · archive, not a bin.',                  sla: 'Within a quarter of the decision.', who: 'Wing lead · sign-off from leadership.',      example: '‘Solo newsletter’ retired · replaced by one-editor-per-issue model.',                   emoji: '🪦', color: '#EF4444' },
+];
+
+// =====================================================
 // Component
 // =====================================================
 
@@ -2544,6 +2709,122 @@ const SuggestionScreen: React.FC = () => {
   );
 
   // -------------- Main render ------------
+  const renderQuarterlyRetro = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🧭 Quarterly retrospective</Text>
+        <Text style={styles.sectionCaption}>What worked · what didn't</Text>
+      </View>
+      {QUARTERLY_RETRO.map((r) => (
+        <View key={r.id} style={[styles.retroCard, { borderLeftColor: r.color }]}>
+          <View style={styles.retroHeaderRow}>
+            <Text style={styles.retroEmoji}>{r.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.retroQuarter}>{r.quarter}</Text>
+              <Text style={styles.retroTheme} numberOfLines={2}>{r.theme}</Text>
+            </View>
+          </View>
+
+          <Text style={[styles.retroGroupLabel, { color: '#22C55E' }]}>WORKED</Text>
+          {r.worked.map((w, i) => (
+            <View key={`w-${i}`} style={styles.retroItemRow}>
+              <Text style={[styles.retroBullet, { color: '#22C55E' }]}>•</Text>
+              <Text style={styles.retroItemText}>{w}</Text>
+            </View>
+          ))}
+
+          <Text style={[styles.retroGroupLabel, { color: '#F87171' }]}>MISSED</Text>
+          {r.missed.map((m, i) => (
+            <View key={`m-${i}`} style={styles.retroItemRow}>
+              <Text style={[styles.retroBullet, { color: '#F87171' }]}>•</Text>
+              <Text style={styles.retroItemText}>{m}</Text>
+            </View>
+          ))}
+
+          <View style={styles.retroSplitRow}>
+            <View style={styles.retroSplitCol}>
+              <Text style={[styles.retroGroupLabel, { color: '#38BDF8' }]}>KEEPING</Text>
+              {r.keeping.map((k, i) => (
+                <Text key={`k-${i}`} style={styles.retroSplitText} numberOfLines={3}>• {k}</Text>
+              ))}
+            </View>
+            <View style={styles.retroSplitCol}>
+              <Text style={[styles.retroGroupLabel, { color: '#F472B6' }]}>DROPPING</Text>
+              {r.dropping.map((d, i) => (
+                <Text key={`d-${i}`} style={styles.retroSplitText} numberOfLines={3}>• {d}</Text>
+              ))}
+            </View>
+          </View>
+
+          <View style={[styles.retroBetBox, { borderColor: r.color + '55' }]}>
+            <Text style={[styles.retroBetLabel, { color: r.color }]}>ONE BIG BET</Text>
+            <Text style={styles.retroBetText}>{r.oneBigBet}</Text>
+          </View>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderOwnershipMap = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🗺️ Ownership map</Text>
+        <Text style={styles.sectionCaption}>Who owns what · no ‘the team’</Text>
+      </View>
+      {OWNERSHIP_MAP.map((o) => (
+        <View key={o.id} style={[styles.ownerRow, { borderLeftColor: o.color }]}>
+          <Text style={styles.ownerEmoji}>{o.emoji}</Text>
+          <View style={{ flex: 1 }}>
+            <View style={styles.ownerHeaderRow}>
+              <Text style={styles.ownerArea} numberOfLines={2}>{o.area}</Text>
+              <Text style={[styles.ownerCadence, { color: o.color }]}>{o.cadence}</Text>
+            </View>
+            <Text style={styles.ownerNames}>
+              <Text style={styles.ownerLabelText}>Owner · </Text>
+              {o.primaryOwner} <Text style={styles.ownerLabelText}>·  backup ·</Text> {o.backupOwner}
+            </Text>
+            <Text style={styles.ownerDue}>Due: {o.dueDay}</Text>
+            <Text style={styles.ownerEscalation} numberOfLines={3}>↳ {o.escalation}</Text>
+          </View>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderFeedbackLoop = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🔁 Feedback loop</Text>
+        <Text style={styles.sectionCaption}>How a slip becomes a change</Text>
+      </View>
+      {FEEDBACK_LOOP.map((f, idx) => (
+        <View key={f.id} style={styles.loopCard}>
+          <View style={styles.loopRailCol}>
+            <View style={[styles.loopDot, { backgroundColor: f.color }]}>
+              <Text style={styles.loopDotNum}>{f.order}</Text>
+            </View>
+            {idx < FEEDBACK_LOOP.length - 1 ? (
+              <View style={[styles.loopConnector, { backgroundColor: f.color + '44' }]} />
+            ) : null}
+          </View>
+          <View style={[styles.loopBody, { borderLeftColor: f.color }]}>
+            <View style={styles.loopHeaderRow}>
+              <Text style={styles.loopEmoji}>{f.emoji}</Text>
+              <Text style={styles.loopStage}>{f.stage}</Text>
+              <Text style={[styles.loopSla, { color: f.color }]}>{f.sla}</Text>
+            </View>
+            <Text style={styles.loopWhat} numberOfLines={4}>{f.what}</Text>
+            <Text style={styles.loopWho}>Who · {f.who}</Text>
+            <View style={styles.loopExampleBox}>
+              <Text style={styles.loopExampleLabel}>EXAMPLE</Text>
+              <Text style={styles.loopExample} numberOfLines={3}>{f.example}</Text>
+            </View>
+          </View>
+        </View>
+      ))}
+    </View>
+  );
+
   const listHeader = (
     <View>
       {renderHeader()}
@@ -2556,6 +2837,9 @@ const SuggestionScreen: React.FC = () => {
       {renderVelocity()}
       {renderMonthlyDigest()}
       {renderTracking()}
+      {renderQuarterlyRetro()}
+      {renderOwnershipMap()}
+      {renderFeedbackLoop()}
       {renderRoadmap()}
       {renderListHeader()}
     </View>
@@ -3350,6 +3634,145 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
   },
   trackNextText: { color: Colors.text.secondary, fontSize: 12, marginTop: 3, lineHeight: 16 },
+
+  // Quarterly retro
+  retroCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 16,
+    padding: 14,
+    marginBottom: 14,
+    borderLeftWidth: 3,
+  },
+  retroHeaderRow: { flexDirection: 'row', alignItems: 'flex-start', marginBottom: 10 },
+  retroEmoji: { fontSize: 22, marginRight: 10 },
+  retroQuarter: { color: Colors.text.primary, fontSize: 13, fontWeight: '800' },
+  retroTheme: { color: Colors.text.secondary, fontSize: 12, marginTop: 2, fontStyle: 'italic' },
+  retroGroupLabel: {
+    fontSize: 9,
+    fontWeight: '800',
+    letterSpacing: 1.2,
+    marginTop: 10,
+    marginBottom: 4,
+  },
+  retroItemRow: { flexDirection: 'row', alignItems: 'flex-start', marginBottom: 4 },
+  retroBullet: { fontSize: 12, marginRight: 6, marginTop: 1 },
+  retroItemText: {
+    flex: 1,
+    color: Colors.text.secondary,
+    fontSize: 11,
+    lineHeight: 15,
+  },
+  retroSplitRow: { flexDirection: 'row', marginTop: 8, marginHorizontal: -6 },
+  retroSplitCol: { flex: 1, paddingHorizontal: 6 },
+  retroSplitText: {
+    color: Colors.text.secondary,
+    fontSize: 11,
+    lineHeight: 15,
+    marginBottom: 4,
+  },
+  retroBetBox: {
+    marginTop: 12,
+    borderWidth: 1,
+    borderRadius: 12,
+    padding: 10,
+  },
+  retroBetLabel: {
+    fontSize: 9,
+    fontWeight: '800',
+    letterSpacing: 1.2,
+  },
+  retroBetText: {
+    color: Colors.text.primary,
+    fontSize: 12,
+    lineHeight: 17,
+    marginTop: 4,
+  },
+
+  // Ownership map
+  ownerRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    backgroundColor: '#0D141B',
+    borderRadius: 12,
+    padding: 12,
+    marginBottom: 8,
+    borderLeftWidth: 3,
+  },
+  ownerEmoji: { fontSize: 20, marginRight: 10, marginTop: 2 },
+  ownerHeaderRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  ownerArea: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', flex: 1 },
+  ownerCadence: { fontSize: 10, fontWeight: '800', letterSpacing: 0.5, marginLeft: 6 },
+  ownerNames: { color: Colors.text.secondary, fontSize: 12, marginTop: 4 },
+  ownerLabelText: { color: Colors.text.muted, fontSize: 11, fontWeight: '700' },
+  ownerDue: { color: Colors.text.muted, fontSize: 11, marginTop: 2 },
+  ownerEscalation: {
+    color: Colors.text.secondary,
+    fontSize: 11,
+    lineHeight: 15,
+    marginTop: 6,
+  },
+
+  // Feedback loop
+  loopCard: {
+    flexDirection: 'row',
+    marginBottom: 0,
+  },
+  loopRailCol: {
+    width: 32,
+    alignItems: 'center',
+  },
+  loopDot: {
+    width: 26,
+    height: 26,
+    borderRadius: 13,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 12,
+  },
+  loopDotNum: { color: '#001018', fontSize: 11, fontWeight: '900' },
+  loopConnector: { flex: 1, width: 2, marginTop: 2 },
+  loopBody: {
+    flex: 1,
+    backgroundColor: '#0D141B',
+    borderRadius: 12,
+    padding: 12,
+    marginBottom: 10,
+    marginLeft: 6,
+    borderLeftWidth: 3,
+  },
+  loopHeaderRow: { flexDirection: 'row', alignItems: 'center' },
+  loopEmoji: { fontSize: 16, marginRight: 6 },
+  loopStage: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', flex: 1 },
+  loopSla: { fontSize: 10, fontWeight: '800', letterSpacing: 0.5 },
+  loopWhat: {
+    color: Colors.text.secondary,
+    fontSize: 12,
+    lineHeight: 16,
+    marginTop: 6,
+  },
+  loopWho: { color: Colors.text.muted, fontSize: 11, marginTop: 4 },
+  loopExampleBox: {
+    marginTop: 8,
+    backgroundColor: 'rgba(255,255,255,0.03)',
+    borderRadius: 8,
+    padding: 8,
+  },
+  loopExampleLabel: {
+    color: Colors.tech.neonBlue,
+    fontSize: 9,
+    fontWeight: '800',
+    letterSpacing: 1,
+  },
+  loopExample: {
+    color: Colors.text.secondary,
+    fontSize: 11,
+    lineHeight: 15,
+    marginTop: 4,
+  },
 });
 
 export default SuggestionScreen;
