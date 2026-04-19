@@ -1517,6 +1517,157 @@ const MENTOR_BOARD: MentorBoardSeat[] = [
 ];
 
 // =====================================================
+// Fireside recaps (past events with guest stories)
+// =====================================================
+
+interface FiresideRecap {
+  id: string;
+  title: string;
+  date: string;
+  host: string;
+  guests: string[];
+  attendance: number;
+  highlight: string;
+  quote: string;
+  quoteAuthor: string;
+  color: string;
+  emoji: string;
+}
+
+const FIRESIDE_RECAPS: FiresideRecap[] = [
+  { id: 'fr-1', title: 'Fireside · ‘Fieldwork that doesn\'t break you’',             date: 'Mar 15, 2026', host: 'Aditi Pawar',       guests: ['Aditi Pawar', 'Farhan Siddiqui'],        attendance: 142, highlight: 'Two researchers mapped the line between rigour and self-care. The room stayed quiet for a long time after.', quote: 'If the research breaks you, it wasn\'t honest research. It was extraction from the inside out.',            quoteAuthor: 'Aditi Pawar',       color: '#A78BFA', emoji: '🔥' },
+  { id: 'fr-2', title: 'Fireside · ‘Designing for the last user, not the first’',     date: 'Feb 22, 2026', host: 'Tanvi Shah',        guests: ['Tanvi Shah', 'Mira Jain'],               attendance: 118, highlight: 'A designer\'s case for the slow, quiet polish that the loudest users never see.',                                            quote: 'Beautiful onboarding is easy. The hard work is the 400th screen. That\'s the one that teaches you to design.', quoteAuthor: 'Tanvi Shah',        color: '#F472B6', emoji: '🔥' },
+  { id: 'fr-3', title: 'Fireside · ‘Funding without selling your soul’',              date: 'Jan 28, 2026', host: 'Kanishka Arora',    guests: ['Kanishka Arora', 'Vishwas Kapoor'],      attendance: 156, highlight: 'How small climate orgs raise money without warping their work. The honest answer: slowly.',                                 quote: 'The best grant I ever wrote started with a line our CEO crossed out three times: ‘what we got wrong last year.’', quoteAuthor: 'Kanishka Arora',  color: '#F59E0B', emoji: '🔥' },
+  { id: 'fr-4', title: 'Fireside · ‘Writing for readers who don\'t have time’',        date: 'Dec 12, 2025', host: 'Ishaan Kulkarni',   guests: ['Ishaan Kulkarni', 'Ananya Prasad'],      attendance: 204, highlight: 'A data journalist on the discipline of writing for people who will give you 90 seconds and no longer.',                       quote: 'If your lede doesn\'t survive the lift, the whole piece dies in a coat pocket.',                                      quoteAuthor: 'Ishaan Kulkarni',   color: '#F87171', emoji: '🔥' },
+  { id: 'fr-5', title: 'Fireside · ‘Open-source as a village discipline’',             date: 'Nov 30, 2025', host: 'Meera Iyer',        guests: ['Meera Iyer', 'Rohit Bhatt'],             attendance: 187, highlight: 'Two engineers on treating an OSS project like a village: the maintainers, the outsiders, the elders, the kids.',           quote: 'An issue backlog is a memory. You weed it. You don\'t let it become a landfill.',                                  quoteAuthor: 'Meera Iyer',        color: '#38BDF8', emoji: '🔥' },
+  { id: 'fr-6', title: 'Fireside · ‘Career pivots we don\'t regret’',                   date: 'Oct 18, 2025', host: 'Varun Mehta',       guests: ['Varun Mehta', 'Saanvi Rao', 'Rehan Qureshi'], attendance: 234, highlight: 'Three alumni on leaving jobs that looked right on paper. No villains. Just honest reasons.',                                 quote: 'The day I stopped defending the thing I was doing is the day I learned I had already left it.',                      quoteAuthor: 'Saanvi Rao',         color: '#22C55E', emoji: '🔥' },
+];
+
+// =====================================================
+// Relocation grants (alumni-funded support)
+// =====================================================
+
+interface RelocationGrant {
+  id: string;
+  name: string;
+  amount: string;
+  cadence: string;
+  usedFor: string;
+  eligibility: string;
+  deadline: string;
+  color: string;
+}
+
+const RELOCATION_GRANTS: RelocationGrant[] = [
+  { id: 'rg-1', name: 'First-month floor grant',        amount: '₹18,000',   cadence: 'One-off',      usedFor: 'Deposit + first-month rent for alumni moving to a new city for their first role.',          eligibility: 'Any alumni within 12 months of graduation · first move.',   deadline: 'Rolling',         color: '#22C55E' },
+  { id: 'rg-2', name: 'Climate-job travel stipend',     amount: '₹12,500',   cadence: 'Bi-annual',    usedFor: 'Travel + 3 nights of stay for in-person interviews at climate-sector employers.',             eligibility: 'Interview invite from a verified climate org.',              deadline: 'Mar 31 / Sep 30', color: '#F59E0B' },
+  { id: 'rg-3', name: 'Field-research microgrant',       amount: '₹22,000',   cadence: 'Quarterly',    usedFor: 'Field-travel, stay, and a 30-day data plan for alumni doing first-time primary research.',   eligibility: 'Alumni + 1 mentor co-signed · open proposal form.',          deadline: 'Apr 30',          color: '#A78BFA' },
+  { id: 'rg-4', name: 'Gear-return buy-back',             amount: '₹4,500 avg', cadence: 'Rolling',     usedFor: 'Buy-back on cameras / mics / second laptops returning to the club pool from alumni.',        eligibility: 'Gear bought with alumni\'s own money during club years.',     deadline: 'Rolling',         color: '#38BDF8' },
+  { id: 'rg-5', name: 'Legal / taxes first-time',         amount: 'Free',       cadence: 'Bi-annual',    usedFor: 'A 45-min session with a CA + a lawyer on first-time tax filing, NDA reviews, and offers.',   eligibility: 'First-year after graduation.',                                deadline: 'Jul 31',          color: '#F472B6' },
+  { id: 'rg-6', name: 'Emergency food-and-rent',          amount: '₹6,000',    cadence: 'On request',   usedFor: 'Private fund for alumni in a 2-4 week rough patch. No form. A quick call. Trust-based.',     eligibility: 'Any alumni · confidential · never published.',                deadline: 'Rolling',         color: '#EF4444' },
+];
+
+// =====================================================
+// Alumni polls (quarterly pulse)
+// =====================================================
+
+interface AlumniPoll {
+  id: string;
+  question: string;
+  total: number;
+  answers: { label: string; pct: number; color: string }[];
+  finishedAt: string;
+  commentary: string;
+}
+
+const ALUMNI_POLLS: AlumniPoll[] = [
+  {
+    id: 'ap-1',
+    question: 'What do you wish you\'d learned in your last semester?',
+    total: 148,
+    finishedAt: 'Q1 2026',
+    commentary: 'Negotiating offers beat ‘another framework’ by a wide margin — and it\'s been the same answer three quarters in a row.',
+    answers: [
+      { label: 'Negotiating offers + compensation',        pct: 38, color: '#22C55E' },
+      { label: 'Managing up · working with seniors',        pct: 22, color: '#38BDF8' },
+      { label: 'Writing clearly in email / docs',          pct: 17, color: '#A78BFA' },
+      { label: 'Tax / legal / relocation basics',          pct: 14, color: '#F59E0B' },
+      { label: 'Another technical framework',              pct: 9,  color: '#F472B6' },
+    ],
+  },
+  {
+    id: 'ap-2',
+    question: 'How often do you still talk to your club batch?',
+    total: 162,
+    finishedAt: 'Q1 2026',
+    commentary: 'A long tail of alumni still message their batch weekly — even 4 years in. The app helps · in-person helps more.',
+    answers: [
+      { label: 'Weekly · group is still active',           pct: 28, color: '#22C55E' },
+      { label: 'Monthly · on a call / meetup',             pct: 34, color: '#38BDF8' },
+      { label: 'Quarterly · only at chapter meetups',      pct: 22, color: '#A78BFA' },
+      { label: 'Rarely · but I want to more',              pct: 12, color: '#F59E0B' },
+      { label: 'Never',                                     pct: 4,  color: '#F472B6' },
+    ],
+  },
+  {
+    id: 'ap-3',
+    question: 'Which support from the club mattered most?',
+    total: 134,
+    finishedAt: 'Q4 2025',
+    commentary: 'Alumni-to-alumni support outranks official mentorship. We\'re getting better at scaffolding it.',
+    answers: [
+      { label: 'Alumni-to-alumni introductions',           pct: 32, color: '#22C55E' },
+      { label: 'Formal mentorship · paired',               pct: 24, color: '#38BDF8' },
+      { label: 'Relocation / grant support',               pct: 18, color: '#A78BFA' },
+      { label: 'Mock interviews + portfolio reviews',      pct: 16, color: '#F59E0B' },
+      { label: 'Nothing specific · just the community',    pct: 10, color: '#F472B6' },
+    ],
+  },
+  {
+    id: 'ap-4',
+    question: 'If you could add one more alumni service, what would it be?',
+    total: 118,
+    finishedAt: 'Q4 2025',
+    commentary: 'A dedicated therapy stipend is now the top write-in · leadership is exploring it for Q3.',
+    answers: [
+      { label: 'Subsidised therapy · mental health support', pct: 34, color: '#22C55E' },
+      { label: 'Alumni-to-alumni lending circle',            pct: 21, color: '#38BDF8' },
+      { label: 'Job-hunting cohort · 6-week structured',     pct: 18, color: '#A78BFA' },
+      { label: 'More in-person city meetups',                 pct: 16, color: '#F59E0B' },
+      { label: 'Online-only · less in-person please',          pct: 11, color: '#F472B6' },
+    ],
+  },
+];
+
+// =====================================================
+// Alumni publications (writing & research credits)
+// =====================================================
+
+interface Publication {
+  id: string;
+  alumniId: string;
+  author: string;
+  title: string;
+  venue: string;
+  year: number;
+  kind: 'paper' | 'essay' | 'book' | 'talk';
+  color: string;
+}
+
+const PUBLICATIONS: Publication[] = [
+  { id: 'pub-1',  alumniId: 'al-1',  author: 'Meera Iyer',        title: 'Field-first data pipelines · a pattern library',          venue: 'Open-Source Climate Journal',       year: 2025, kind: 'paper', color: '#38BDF8' },
+  { id: 'pub-2',  alumniId: 'al-3',  author: 'Tanvi Shah',         title: 'Design tokens for low-bandwidth apps',                   venue: 'SmashingConf · Freiburg',             year: 2025, kind: 'talk',  color: '#F472B6' },
+  { id: 'pub-3',  alumniId: 'al-5',  author: 'Kanishka Arora',     title: 'Writing a climate grant without lying',                  venue: 'India Impact Review',                 year: 2024, kind: 'essay', color: '#F59E0B' },
+  { id: 'pub-4',  alumniId: 'al-7',  author: 'Aditi Pawar',        title: 'Consent protocols in village field research',            venue: 'Journal of Applied Anthropology',     year: 2024, kind: 'paper', color: '#A78BFA' },
+  { id: 'pub-5',  alumniId: 'al-9',  author: 'Farhan Siddiqui',    title: 'Teacher trust is the curriculum',                        venue: 'Ed-tech Stories Anthology',           year: 2025, kind: 'book',  color: '#22C55E' },
+  { id: 'pub-6',  alumniId: 'al-11', author: 'Ishaan Kulkarni',    title: 'A data-journalist\'s rough-draft notebook',              venue: 'Personal · open repo',                year: 2024, kind: 'essay', color: '#F87171' },
+  { id: 'pub-7',  alumniId: 'al-1',  author: 'Meera Iyer',         title: 'What release rotations taught a tiny open-source team',  venue: 'GitHub Universe',                      year: 2024, kind: 'talk',  color: '#38BDF8' },
+  { id: 'pub-8',  alumniId: 'al-3',  author: 'Tanvi Shah',         title: 'Designing for the last user',                            venue: 'Config · Figma',                        year: 2026, kind: 'talk',  color: '#F472B6' },
+  { id: 'pub-9',  alumniId: 'al-5',  author: 'Kanishka Arora',     title: 'The quiet grant · an anatomy',                          venue: 'Stanford Social Innovation Review',    year: 2025, kind: 'essay', color: '#F59E0B' },
+  { id: 'pub-10', alumniId: 'al-7',  author: 'Aditi Pawar',        title: 'Rain on the landslide · a 5-village study',             venue: 'Environment & Urbanization',          year: 2025, kind: 'paper', color: '#A78BFA' },
+];
+
+// =====================================================
 // Component
 // =====================================================
 
@@ -2751,6 +2902,126 @@ const AlumniScreen: React.FC = () => {
   );
 
   // -------------- Main render ------------
+  const renderFiresides = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🔥 Fireside recaps</Text>
+        <Text style={styles.sectionCaption}>Recent alumni conversations</Text>
+      </View>
+      {FIRESIDE_RECAPS.map((f) => (
+        <View key={f.id} style={[styles.firesideCard, { borderLeftColor: f.color }]}>
+          <View style={styles.firesideHeaderRow}>
+            <Text style={styles.firesideEmoji}>{f.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.firesideTitle} numberOfLines={2}>{f.title}</Text>
+              <Text style={styles.firesideMeta}>
+                {f.date} · {f.attendance} attended · host {f.host}
+              </Text>
+            </View>
+          </View>
+          <Text style={styles.firesideHighlight} numberOfLines={4}>{f.highlight}</Text>
+          <View style={styles.firesideQuoteBox}>
+            <Text style={styles.firesideQuote}>“{f.quote}”</Text>
+            <Text style={styles.firesideQuoteAuthor}>— {f.quoteAuthor}</Text>
+          </View>
+          <View style={styles.firesideGuestRow}>
+            {f.guests.map((g) => (
+              <View key={g} style={[styles.firesideGuestPill, { borderColor: f.color + '55' }]}>
+                <Text style={[styles.firesideGuestText, { color: f.color }]}>{g}</Text>
+              </View>
+            ))}
+          </View>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderRelocationGrants = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🛟 Relocation grants</Text>
+        <Text style={styles.sectionCaption}>Alumni-funded · trust-based</Text>
+      </View>
+      {RELOCATION_GRANTS.map((g) => (
+        <View key={g.id} style={[styles.grantCard, { borderLeftColor: g.color }]}>
+          <View style={styles.grantHeaderRow}>
+            <Text style={styles.grantName}>{g.name}</Text>
+            <Text style={[styles.grantAmount, { color: g.color }]}>{g.amount}</Text>
+          </View>
+          <Text style={styles.grantUsedFor}>{g.usedFor}</Text>
+          <View style={styles.grantMetaRow}>
+            <Text style={styles.grantMetaLabel}>Eligibility</Text>
+            <Text style={styles.grantMeta}>{g.eligibility}</Text>
+          </View>
+          <View style={styles.grantFootRow}>
+            <Text style={styles.grantCadence}>{g.cadence}</Text>
+            <Text style={styles.grantDeadline}>Deadline: {g.deadline}</Text>
+          </View>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderAlumniPolls = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>📊 Alumni polls</Text>
+        <Text style={styles.sectionCaption}>Quarterly pulse</Text>
+      </View>
+      {ALUMNI_POLLS.map((p) => (
+        <View key={p.id} style={styles.pollCard}>
+          <View style={styles.pollHeaderRow}>
+            <Text style={styles.pollQuestion} numberOfLines={3}>{p.question}</Text>
+            <Text style={styles.pollTotal}>{p.total} voted · {p.finishedAt}</Text>
+          </View>
+          {p.answers.map((a) => (
+            <View key={a.label} style={styles.pollRow}>
+              <View style={styles.pollLabelRow}>
+                <Text style={styles.pollLabel} numberOfLines={2}>{a.label}</Text>
+                <Text style={[styles.pollPct, { color: a.color }]}>{a.pct}%</Text>
+              </View>
+              <View style={styles.pollTrack}>
+                <View
+                  style={[
+                    styles.pollFill,
+                    { width: `${a.pct}%`, backgroundColor: a.color },
+                  ]}
+                />
+              </View>
+            </View>
+          ))}
+          <Text style={styles.pollCommentary}>{p.commentary}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderPublications = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>📝 Publications + talks</Text>
+        <Text style={styles.sectionCaption}>What alumni put out this year</Text>
+      </View>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.publicationScroll}
+      >
+        {PUBLICATIONS.map((p) => (
+          <View key={p.id} style={[styles.pubCard, { borderLeftColor: p.color }]}>
+            <Text style={[styles.pubKind, { color: p.color }]}>{p.kind.toUpperCase()}</Text>
+            <Text style={styles.pubTitle} numberOfLines={3}>{p.title}</Text>
+            <Text style={styles.pubVenue} numberOfLines={2}>{p.venue}</Text>
+            <View style={styles.pubFootRow}>
+              <Text style={styles.pubAuthor}>{p.author}</Text>
+              <Text style={styles.pubYear}>{p.year}</Text>
+            </View>
+          </View>
+        ))}
+      </ScrollView>
+    </View>
+  );
+
   const headerComponent = (
     <View>
       {renderHeader()}
@@ -2761,9 +3032,13 @@ const AlumniScreen: React.FC = () => {
       {renderTopCompanies()}
       {renderChapters()}
       {renderMeetups()}
+      {renderFiresides()}
       {renderMentorBoard()}
       {renderMentorshipSlots()}
       {renderCareerPivots()}
+      {renderRelocationGrants()}
+      {renderAlumniPolls()}
+      {renderPublications()}
       {renderPledges()}
       {renderAlumniListHeader()}
     </View>
@@ -3575,6 +3850,146 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   boardHoursText: { fontSize: 10, fontWeight: '800' },
+
+  // Fireside recaps
+  firesideCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 14,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  firesideHeaderRow: { flexDirection: 'row', alignItems: 'flex-start' },
+  firesideEmoji: { fontSize: 20, marginRight: 10, marginTop: 2 },
+  firesideTitle: { color: Colors.text.primary, fontSize: 14, fontWeight: '800', lineHeight: 18 },
+  firesideMeta: { color: Colors.text.muted, fontSize: 11, marginTop: 3 },
+  firesideHighlight: {
+    color: Colors.text.secondary,
+    fontSize: 12,
+    lineHeight: 17,
+    marginTop: 10,
+  },
+  firesideQuoteBox: {
+    backgroundColor: 'rgba(255,255,255,0.03)',
+    borderRadius: 10,
+    padding: 10,
+    marginTop: 10,
+  },
+  firesideQuote: {
+    color: Colors.text.primary,
+    fontSize: 12,
+    lineHeight: 17,
+    fontStyle: 'italic',
+  },
+  firesideQuoteAuthor: {
+    color: Colors.text.muted,
+    fontSize: 11,
+    marginTop: 4,
+    fontWeight: '700',
+  },
+  firesideGuestRow: { flexDirection: 'row', flexWrap: 'wrap', marginTop: 10 },
+  firesideGuestPill: {
+    borderWidth: 1,
+    borderRadius: 999,
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    marginRight: 6,
+    marginBottom: 6,
+  },
+  firesideGuestText: { fontSize: 10, fontWeight: '800' },
+
+  // Relocation grants
+  grantCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 14,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  grantHeaderRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  grantName: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', flex: 1 },
+  grantAmount: { fontSize: 14, fontWeight: '900', marginLeft: 8 },
+  grantUsedFor: {
+    color: Colors.text.secondary,
+    fontSize: 12,
+    lineHeight: 16,
+    marginTop: 6,
+  },
+  grantMetaRow: { marginTop: 8 },
+  grantMetaLabel: {
+    color: Colors.tech.neonBlue,
+    fontSize: 9,
+    fontWeight: '800',
+    letterSpacing: 1,
+  },
+  grantMeta: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 2 },
+  grantFootRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  grantCadence: { color: Colors.text.primary, fontSize: 11, fontWeight: '800' },
+  grantDeadline: { color: Colors.text.muted, fontSize: 10 },
+
+  // Polls
+  pollCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 14,
+    marginBottom: 12,
+  },
+  pollHeaderRow: { marginBottom: 10 },
+  pollQuestion: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', lineHeight: 17 },
+  pollTotal: { color: Colors.text.muted, fontSize: 10, marginTop: 4 },
+  pollRow: { marginBottom: 8 },
+  pollLabelRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  pollLabel: { color: Colors.text.secondary, fontSize: 11, flex: 1, marginRight: 8 },
+  pollPct: { fontSize: 11, fontWeight: '800' },
+  pollTrack: {
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: 'rgba(255,255,255,0.06)',
+    marginTop: 4,
+    overflow: 'hidden',
+  },
+  pollFill: { height: '100%', borderRadius: 3 },
+  pollCommentary: {
+    color: Colors.text.muted,
+    fontSize: 11,
+    lineHeight: 15,
+    marginTop: 10,
+    fontStyle: 'italic',
+  },
+
+  // Publications
+  publicationScroll: { paddingHorizontal: 2, paddingBottom: 6 },
+  pubCard: {
+    width: 200,
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginRight: 10,
+    borderLeftWidth: 3,
+  },
+  pubKind: { fontSize: 9, fontWeight: '800', letterSpacing: 1.2 },
+  pubTitle: {
+    color: Colors.text.primary,
+    fontSize: 12,
+    fontWeight: '800',
+    lineHeight: 16,
+    marginTop: 6,
+    minHeight: 48,
+  },
+  pubVenue: { color: Colors.text.secondary, fontSize: 11, marginTop: 6 },
+  pubFootRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 8,
+  },
+  pubAuthor: { color: Colors.text.primary, fontSize: 10, fontWeight: '800' },
+  pubYear: { color: Colors.text.muted, fontSize: 10 },
 });
 
 export default AlumniScreen;
