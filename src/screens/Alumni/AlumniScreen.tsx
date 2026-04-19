@@ -2214,6 +2214,111 @@ const ALUMNI_CRAFT_ARCHIVES: AlumniCraftArchive[] = [
   { id: 'aca-7', archive: 'Handwritten journal stack',           period: '1998–2008', keeper: 'Founding circle',          size: '12 notebooks · fragile',     status: 'Archive-safe box · read-only visits by appointment.', color: '#EF4444', emoji: '📓' },
 ];
 
+// =====================================================
+// Phase 3aq: deeper alumni structures — round 4
+// =====================================================
+
+interface AlumniCareerLetter {
+  id: string;
+  year: string;
+  excerpt: string;
+  writer: string;
+  role: string;
+  color: string;
+  emoji: string;
+}
+
+const ALUMNI_CAREER_LETTERS: AlumniCareerLetter[] = [
+  { id: 'acl-1', year: '2014', excerpt: 'First job · copywriting at a tiny agency · 12k a month · one room · one window. I rewrote brochures nobody asked for · at night · for practice. Ten years later · I run content at a firm I admire. The boredom was the curriculum.',        writer: 'Rhea N.', role: 'Head of content · edtech',                   color: '#F59E0B', emoji: '🪔' },
+  { id: 'acl-2', year: '2015', excerpt: 'First offer · rejected · for a scholarship that never came. Spent a year tutoring · coding at midnight · doubting everything. The second job came from a LinkedIn message from someone who liked my portfolio. Portfolio was the raft.',     writer: 'Dev P.',  role: 'Staff engineer · fintech',                    color: '#00D4FF', emoji: '🛟' },
+  { id: 'acl-3', year: '2017', excerpt: 'I cried in a pantry after my first review. The feedback was right. I took it home · wrote it down · kept one page of it in a notebook. Every year I re-read it. It is still sharp · I am still reading it. Feedback that lands is rare.',    writer: 'Zara S.', role: 'Design lead · healthcare',                    color: '#F472B6', emoji: '🗒️' },
+  { id: 'acl-4', year: '2018', excerpt: 'Left the big firm after 18 months. It was the right place · and also not for me. No drama · just clarity. A year of freelancing · a year of quiet · the firm I run now started as a tax rebate and a single client who trusted me.',          writer: 'Arjun K.', role: 'Founder · independent studio',                color: '#A78BFA', emoji: '🛠️' },
+  { id: 'acl-5', year: '2020', excerpt: 'Hospital hallways · in a city I did not know · phone low · afraid. My alumni group fund paid three months of rent. I did not ask · they noticed. I will spend my life making sure someone after me does not have to ask either.',                writer: 'Meera V.', role: 'Program lead · public health',               color: '#22C55E', emoji: '🫂' },
+  { id: 'acl-6', year: '2021', excerpt: 'Remote job · different timezone · slow learning · lots of lonely lunches. Found a running group in the neighbourhood · met a mentor at a bakery · life opened slowly · not in the job at all. Jobs are · sometimes · not where the life is.', writer: 'Rehan Q.', role: 'Product manager · climate',                   color: '#FFD166', emoji: '🏃' },
+  { id: 'acl-7', year: '2023', excerpt: 'Teaching a Saturday class at a government school · twelve months in. One kid asked me why I travel every weekend. Said I missed my school. Was not quite true · but the longing was. The club was the closest I had to a school that saw me.', writer: 'Nidhi P.', role: 'Associate · policy · volunteer teacher',        color: '#EF4444', emoji: '📚' },
+];
+
+interface AlumniVillageFund {
+  id: string;
+  circle: string;
+  purpose: string;
+  corpus: string;
+  active: string;
+  steward: string;
+  color: string;
+  emoji: string;
+}
+
+const ALUMNI_VILLAGE_FUNDS: AlumniVillageFund[] = [
+  { id: 'avf-1', circle: 'Tuition top-ups',                purpose: 'Tuition gap · small amounts · fast · no interview.',                   corpus: '~₹8,40,000',    active: 'Open · disburse monthly',       steward: 'Alumni · 3-member panel',           color: '#00D4FF', emoji: '🎓' },
+  { id: 'avf-2', circle: 'Medical emergency',                purpose: 'Emergency medical · up to ₹50,000 · same-day transfers.',                 corpus: '~₹11,60,000',   active: 'Rolling · 24 hr response',         steward: 'Medical-duty alumni pair',             color: '#EF4444', emoji: '🩺' },
+  { id: 'avf-3', circle: 'Rent buffer',                        purpose: 'Two months\' rent for alumni in transition · repay when able.',              corpus: '~₹4,20,000',     active: 'Open · quiet · no paperwork',         steward: 'Alumni · anonymous pair',               color: '#F472B6', emoji: '🏠' },
+  { id: 'avf-4', circle: 'Travel for interviews',                   purpose: 'Flights · buses · stay during final-round interviews.',                      corpus: '~₹2,60,000',      active: 'Open · flexible · simple form',           steward: 'Career-services alumni',                      color: '#FFD166', emoji: '✈️' },
+  { id: 'avf-5', circle: 'Seed for first venture',                      purpose: '₹25,000 to ₹1,00,000 · for alumni starting something small.',                    corpus: '~₹6,80,000',      active: 'Quarterly cycle · 3 rounds',                steward: 'Venture alumni · 4 reviewers',                color: '#A78BFA', emoji: '🌱' },
+  { id: 'avf-6', circle: 'Rest fund',                                   purpose: 'Pay for a week of actual rest · groceries · no work · no guilt.',                    corpus: '~₹3,40,000',       active: 'Open · anonymous · self-nominate',          steward: 'Wellness alumni lead',                         color: '#22C55E', emoji: '🏝️' },
+  { id: 'avf-7', circle: 'Family fund',                                     purpose: 'One-off help · family events · funerals · weddings · small amounts.',                 corpus: '~₹5,20,000',       active: 'Open · private · caring-hand response',        steward: 'Alumni · community lead',                         color: '#F59E0B', emoji: '🫱' },
+];
+
+interface AlumniLineage {
+  id: string;
+  ancestor: string;
+  inheritor: string;
+  craft: string;
+  whatPassed: string;
+  color: string;
+  emoji: string;
+}
+
+const ALUMNI_LINEAGES: AlumniLineage[] = [
+  { id: 'aln-1', ancestor: 'Shreya R. · 1998',           inheritor: 'Priya N. · 2008',             craft: 'Content voice · long-form essays',                 whatPassed: 'A drafting template · a reading list · "cut the first three paragraphs" rule.',          color: '#F59E0B', emoji: '✍️' },
+  { id: 'aln-2', ancestor: 'Arjun M. · 2001',              inheritor: 'Rhea T. · 2014',               craft: 'Photography · grove chronicles',                     whatPassed: 'A beat-up Pentax · an unwritten rule to photograph slowly · without flash · without demanding.',   color: '#00D4FF', emoji: '📷' },
+  { id: 'aln-3', ancestor: 'Priya N. · 2005',                inheritor: 'Kabir S. · 2018',               craft: 'Council leadership · quiet dissent',                    whatPassed: 'A notebook of "things I got wrong" · and a copy of "Rest is Resistance" marked in margins.', color: '#A78BFA', emoji: '🪔' },
+  { id: 'aln-4', ancestor: 'Dev P. · 2008',                     inheritor: 'Sameer M. · 2019',                 craft: 'Web · accessibility-first',                                whatPassed: 'A PR checklist · a list of 40 screen-reader users who reviewed work · humility about defaults.',  color: '#F472B6', emoji: '♿' },
+  { id: 'aln-5', ancestor: 'Meera V. · 2010',                       inheritor: 'Ria B. · 2021',                       craft: 'Public health · rural deployment',                              whatPassed: 'A two-bag packing list · 16 field-learnt phrases · a trust-first interview template.',               color: '#22C55E', emoji: '🩺' },
+  { id: 'aln-6', ancestor: 'Zara S. · 2013',                             inheritor: 'Isha L. · 2023',                           craft: 'Design systems · maintainable',                                  whatPassed: 'A Figma library named "grandmother" · governance doc · one-line rule: "names outlive designs."',     color: '#FFD166', emoji: '🎨' },
+  { id: 'aln-7', ancestor: 'Kabir S. · 2015',                                inheritor: 'Nidhi P. · 2024',                              craft: 'Alumni stewardship',                                               whatPassed: 'A phone-list of 200 alumni · a note about who to call in what situation · privacy commitments.',        color: '#EF4444', emoji: '📞' },
+];
+
+interface AlumniAdvisoryTrack {
+  id: string;
+  track: string;
+  audience: string;
+  cadence: string;
+  format: string;
+  color: string;
+  emoji: string;
+}
+
+const ALUMNI_ADVISORY_TRACKS: AlumniAdvisoryTrack[] = [
+  { id: 'aat-1', track: 'Resume · portfolio review',                   audience: 'Final-year students + 1-2 yr alumni',                 cadence: 'Every 2 weeks',               format: 'Two 30-min slots · written feedback sent within 72 hrs.',                      color: '#00D4FF', emoji: '📄' },
+  { id: 'aat-2', track: 'Interview rehearsal · mock interviews',           audience: 'Students in final rounds',                             cadence: 'Weekly during hiring',             format: '45 min · 3 questions · recorded with consent · reviewed together.',                 color: '#F59E0B', emoji: '🎤' },
+  { id: 'aat-3', track: 'Founder office hours',                               audience: 'Any alumni building a venture',                            cadence: 'Monthly · first Saturday',             format: 'Public agenda · open · small group · pair founders with mentors.',                     color: '#A78BFA', emoji: '🌱' },
+  { id: 'aat-4', track: 'Grad-school planning',                                  audience: 'Aspirants for Masters · PhD',                                    cadence: 'Quarterly',                              format: 'Panel · 4 alumni from different programs · Q&A · shared doc with links.',                 color: '#F472B6', emoji: '🎓' },
+  { id: 'aat-5', track: 'Switch-career conversations',                               audience: 'Alumni considering a pivot',                                      cadence: 'Monthly',                                  format: '1:1 · confidential · no obligation · one hour · active listening first.',                    color: '#FFD166', emoji: '🔀' },
+  { id: 'aat-6', track: 'Life-design clinic',                                             audience: 'Alumni in 30s reassessing',                                          cadence: 'Bi-annual · weekend retreat',                   format: 'Two days · 8 alumni · facilitator · daily walk · one quiet meal.',                             color: '#22C55E', emoji: '🧭' },
+  { id: 'aat-7', track: 'Visa + relocation prep',                                               audience: 'Alumni moving abroad',                                                    cadence: 'On demand',                                         format: 'Checklist · document templates · alumni-in-country connects · culture notes.',                   color: '#EF4444', emoji: '🌍' },
+];
+
+interface AlumniRememberedAtPark {
+  id: string;
+  name: string;
+  marker: string;
+  visitedBy: string;
+  note: string;
+  color: string;
+  emoji: string;
+}
+
+const ALUMNI_REMEMBERED: AlumniRememberedAtPark[] = [
+  { id: 'arp-1', name: 'Aditi V. · 2002',        marker: 'Pipal tree near library steps',                        visitedBy: 'Every reunion · class of 2002',                note: 'Taught us that editing is love · we sit under her tree and read a page each.',                         color: '#22C55E', emoji: '🌳' },
+  { id: 'arp-2', name: 'Rahul M. · 2006',            marker: 'Bench by the walkway',                                     visitedBy: 'Monthly · sustainability wing',                     note: 'Sat here every morning · fed two stray cats · we still bring biscuits.',                                color: '#F59E0B', emoji: '🪑' },
+  { id: 'arp-3', name: 'Pragya B. · 2011',                 marker: 'Gulmohar at the north gate',                                visitedBy: 'Every spring · when it flowers',                          note: 'Her handwriting is engraved on a stone at its base · quote she wrote in a margin at 19.',                 color: '#EF4444', emoji: '🌺' },
+  { id: 'arp-4', name: 'Karan J. · 2013',                      marker: 'Reading room corner · window seat',                            visitedBy: 'Finals week · quietly · alone',                             note: 'Studied here every evening · someone left a bookmark of his here · we\'ve kept it clipped on the window.', color: '#00D4FF', emoji: '📖' },
+  { id: 'arp-5', name: 'Sana K. · 2015',                           marker: 'Mess kitchen · little blackboard',                                   visitedBy: 'Before big cook-offs · always',                                  note: 'Favourite recipe written in chalk · never erased · we trace over it each year.',                            color: '#F472B6', emoji: '🍳' },
+  { id: 'arp-6', name: 'Aryan T. · 2017',                               marker: 'Running track · mile-2 marker',                                          visitedBy: 'Every run-club · mile-2 silence',                                     note: 'Ran here every morning · we keep 30 seconds of quiet at mile 2 · his pace.',                                  color: '#A78BFA', emoji: '🏃' },
+  { id: 'arp-7', name: 'Iman F. · 2019',                                    marker: 'Amphitheatre · left side · row 3 · seat 4',                                        visitedBy: 'Every event · chair kept empty',                                          note: 'Hated being centre-stage · loved being in the audience · we keep her seat open · always.',                        color: '#FFD166', emoji: '🎭' },
+];
+
 const AlumniScreen: React.FC = () => {
   // -------------- State ------------------
   const [selectedBatch, setSelectedBatch] = useState<'all' | string>('all');
@@ -4220,6 +4325,111 @@ const AlumniScreen: React.FC = () => {
     </View>
   );
 
+  // ------ Phase 3aq: round 4 alumni blocks ------
+  const renderAlumniCareerLetters = () => (
+    <View style={[styles.sectionBlock, { paddingHorizontal: HORIZONTAL_PADDING }]}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>✉️ Career letters · what the first ten years felt like</Text>
+        <Text style={styles.sectionCaption}>{ALUMNI_CAREER_LETTERS.length} letters</Text>
+      </View>
+      {ALUMNI_CAREER_LETTERS.map((l) => (
+        <View key={l.id} style={[styles.aclCard, { borderLeftColor: l.color }]}>
+          <View style={styles.aclTopRow}>
+            <Text style={[styles.aclYear, { color: l.color }]}>{l.year}</Text>
+            <Text style={styles.aclEmoji}>{l.emoji}</Text>
+          </View>
+          <Text style={styles.aclExcerpt} numberOfLines={7}>&ldquo;{l.excerpt}&rdquo;</Text>
+          <Text style={styles.aclWriter} numberOfLines={1}>— {l.writer} · <Text style={styles.aclRole}>{l.role}</Text></Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderAlumniVillageFunds = () => (
+    <View style={[styles.sectionBlock, { paddingHorizontal: HORIZONTAL_PADDING }]}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🫱 Village funds · small pots · quick hands · no paperwork</Text>
+        <Text style={styles.sectionCaption}>{ALUMNI_VILLAGE_FUNDS.length} circles</Text>
+      </View>
+      {ALUMNI_VILLAGE_FUNDS.map((f) => (
+        <View key={f.id} style={[styles.avfCard, { borderLeftColor: f.color }]}>
+          <View style={styles.avfTopRow}>
+            <Text style={styles.avfEmoji}>{f.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.avfCircle} numberOfLines={1}>{f.circle}</Text>
+              <Text style={[styles.avfCorpus, { color: f.color }]}>{f.corpus}</Text>
+            </View>
+          </View>
+          <Text style={styles.avfPurpose} numberOfLines={3}>{f.purpose}</Text>
+          <Text style={styles.avfActive} numberOfLines={1}>active · {f.active}</Text>
+          <Text style={styles.avfSteward} numberOfLines={1}>steward · {f.steward}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderAlumniLineages = () => (
+    <View style={[styles.sectionBlock, { paddingHorizontal: HORIZONTAL_PADDING }]}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🪔 Lineages · who passed what to whom</Text>
+        <Text style={styles.sectionCaption}>{ALUMNI_LINEAGES.length} lineages</Text>
+      </View>
+      {ALUMNI_LINEAGES.map((l) => (
+        <View key={l.id} style={[styles.alnCard, { borderLeftColor: l.color }]}>
+          <View style={styles.alnTopRow}>
+            <Text style={styles.alnEmoji}>{l.emoji}</Text>
+            <Text style={styles.alnCraft} numberOfLines={1}>{l.craft}</Text>
+          </View>
+          <Text style={styles.alnFrom} numberOfLines={1}>from · {l.ancestor}</Text>
+          <Text style={[styles.alnTo, { color: l.color }]} numberOfLines={1}>to · {l.inheritor}</Text>
+          <Text style={styles.alnPassed} numberOfLines={3}>{l.whatPassed}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderAlumniAdvisoryTracks = () => (
+    <View style={[styles.sectionBlock, { paddingHorizontal: HORIZONTAL_PADDING }]}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🧭 Advisory tracks · how alumni show up for each other</Text>
+        <Text style={styles.sectionCaption}>{ALUMNI_ADVISORY_TRACKS.length} tracks</Text>
+      </View>
+      {ALUMNI_ADVISORY_TRACKS.map((a) => (
+        <View key={a.id} style={[styles.aatCard, { borderLeftColor: a.color }]}>
+          <View style={styles.aatTopRow}>
+            <Text style={styles.aatEmoji}>{a.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.aatTrack} numberOfLines={1}>{a.track}</Text>
+              <Text style={[styles.aatCadence, { color: a.color }]}>{a.cadence}</Text>
+            </View>
+          </View>
+          <Text style={styles.aatAudience} numberOfLines={2}>for · {a.audience}</Text>
+          <Text style={styles.aatFormat} numberOfLines={3}>format · {a.format}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderAlumniRemembered = () => (
+    <View style={[styles.sectionBlock, { paddingHorizontal: HORIZONTAL_PADDING }]}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🕯️ Remembered · alumni we keep close</Text>
+        <Text style={styles.sectionCaption}>{ALUMNI_REMEMBERED.length} markers</Text>
+      </View>
+      {ALUMNI_REMEMBERED.map((r) => (
+        <View key={r.id} style={[styles.arp2Card, { borderLeftColor: r.color }]}>
+          <View style={styles.arp2TopRow}>
+            <Text style={styles.arp2Emoji}>{r.emoji}</Text>
+            <Text style={styles.arp2Name} numberOfLines={1}>{r.name}</Text>
+          </View>
+          <Text style={[styles.arp2Marker, { color: r.color }]} numberOfLines={1}>marker · {r.marker}</Text>
+          <Text style={styles.arp2Visited} numberOfLines={1}>visited · {r.visitedBy}</Text>
+          <Text style={styles.arp2Note} numberOfLines={4}>{r.note}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
   const headerComponent = (
     <View>
       {renderHeader()}
@@ -4263,6 +4473,11 @@ const AlumniScreen: React.FC = () => {
       {renderAlumniLettersHome()}
       {renderAlumniRegionCircles()}
       {renderAlumniCraftArchives()}
+      {renderAlumniCareerLetters()}
+      {renderAlumniVillageFunds()}
+      {renderAlumniLineages()}
+      {renderAlumniAdvisoryTracks()}
+      {renderAlumniRemembered()}
       {renderAlumniListHeader()}
     </View>
   );
@@ -5631,6 +5846,52 @@ const styles = StyleSheet.create({
   acaKeeper: { color: Colors.text.muted, fontSize: 11, marginTop: 8, paddingLeft: 32 },
   acaSize: { color: Colors.text.secondary, fontSize: 11, marginTop: 2, paddingLeft: 32 },
   acaStatus: { color: Colors.accent.softGold, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32, fontStyle: 'italic' },
+
+  // --- Phase 3aq: career letters ---
+  aclCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 14, marginBottom: 10, borderLeftWidth: 3 },
+  aclTopRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+  aclYear: { fontSize: 14, fontWeight: '900', letterSpacing: 1 },
+  aclEmoji: { fontSize: 22 },
+  aclExcerpt: { color: Colors.text.primary, fontSize: 13, lineHeight: 19, marginTop: 10, fontStyle: 'italic' },
+  aclWriter: { color: Colors.accent.softGold, fontSize: 11, marginTop: 8, fontWeight: '800' },
+  aclRole: { color: Colors.text.muted, fontWeight: '600' },
+
+  // --- Phase 3aq: village funds ---
+  avfCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginBottom: 10, borderLeftWidth: 3 },
+  avfTopRow: { flexDirection: 'row', alignItems: 'center' },
+  avfEmoji: { fontSize: 22, marginRight: 10 },
+  avfCircle: { color: Colors.text.primary, fontSize: 13, fontWeight: '900' },
+  avfCorpus: { fontSize: 11, fontWeight: '800', marginTop: 2 },
+  avfPurpose: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8, paddingLeft: 32 },
+  avfActive: { color: Colors.accent.softGold, fontSize: 11, marginTop: 3, paddingLeft: 32, fontWeight: '700' },
+  avfSteward: { color: Colors.text.muted, fontSize: 11, marginTop: 3, paddingLeft: 32, fontStyle: 'italic' },
+
+  // --- Phase 3aq: lineages ---
+  alnCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginBottom: 10, borderLeftWidth: 3 },
+  alnTopRow: { flexDirection: 'row', alignItems: 'center' },
+  alnEmoji: { fontSize: 22, marginRight: 10 },
+  alnCraft: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', flex: 1 },
+  alnFrom: { color: Colors.text.muted, fontSize: 11, marginTop: 8, paddingLeft: 32 },
+  alnTo: { fontSize: 11, marginTop: 3, paddingLeft: 32, fontWeight: '800' },
+  alnPassed: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 6, paddingLeft: 32, fontStyle: 'italic' },
+
+  // --- Phase 3aq: advisory tracks ---
+  aatCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginBottom: 10, borderLeftWidth: 3 },
+  aatTopRow: { flexDirection: 'row', alignItems: 'center' },
+  aatEmoji: { fontSize: 22, marginRight: 10 },
+  aatTrack: { color: Colors.text.primary, fontSize: 13, fontWeight: '900' },
+  aatCadence: { fontSize: 11, fontWeight: '700', marginTop: 2 },
+  aatAudience: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8, paddingLeft: 32 },
+  aatFormat: { color: Colors.text.muted, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32 },
+
+  // --- Phase 3aq: remembered ---
+  arp2Card: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginBottom: 10, borderLeftWidth: 3 },
+  arp2TopRow: { flexDirection: 'row', alignItems: 'center' },
+  arp2Emoji: { fontSize: 22, marginRight: 10 },
+  arp2Name: { color: Colors.text.primary, fontSize: 13, fontWeight: '900', flex: 1 },
+  arp2Marker: { fontSize: 11, fontWeight: '700', marginTop: 8, paddingLeft: 32 },
+  arp2Visited: { color: Colors.text.muted, fontSize: 11, marginTop: 3, paddingLeft: 32 },
+  arp2Note: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 6, paddingLeft: 32, fontStyle: 'italic' },
 });
 
 export default AlumniScreen;
