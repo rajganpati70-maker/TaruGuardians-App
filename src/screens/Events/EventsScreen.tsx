@@ -745,6 +745,204 @@ const ACCESSIBILITY_OPTIONS: AccessibilityOption[] = [
   { id: 'a-6', label: 'Gender-neutral restrooms', body: 'Available at all four main venues.', icon: '🚻' },
 ];
 
+// -----------------------------------------------------
+// Travel & accommodation
+// -----------------------------------------------------
+
+interface TravelOption {
+  id: string;
+  mode: string;
+  emoji: string;
+  color: string;
+  details: string;
+  costHint: string;
+  eta: string;
+}
+
+const TRAVEL_OPTIONS: TravelOption[] = [
+  { id: 'tv-1', mode: 'Campus shuttle',       emoji: '🚌', color: '#22C55E', details: 'Free club shuttle from main gate to venue · every 20 min.', costHint: 'Free', eta: '12 min' },
+  { id: 'tv-2', mode: 'Metro · Purple line',  emoji: '🚇', color: '#A78BFA', details: 'Get off at Saplings Station · 4 min walk · step-free exit.', costHint: '₹20–₹40', eta: '18 min' },
+  { id: 'tv-3', mode: 'City bus · 206',       emoji: '🚏', color: '#38BDF8', details: 'Bus 206 stops right outside Gate 4 · avoid 8–10am crush.',    costHint: '₹10',    eta: '26 min' },
+  { id: 'tv-4', mode: 'Cycle lane + parking', emoji: '🚲', color: '#F59E0B', details: 'Protected lane from east campus · 40 guarded cycle racks.',    costHint: 'Free', eta: '14 min' },
+  { id: 'tv-5', mode: 'Auto / cab',           emoji: '🛺', color: '#F472B6', details: 'Drop off at Gate 3 · Gate 1 is reserved for accessibility.',   costHint: '₹60–₹120', eta: '9 min' },
+  { id: 'tv-6', mode: 'Carpool board',        emoji: '🚗', color: '#6366F1', details: 'Post in #carpool the night before. Drivers post seat counts.',  costHint: 'Split fuel', eta: 'varies' },
+];
+
+interface StayOption {
+  id: string;
+  name: string;
+  type: 'hostel' | 'hotel' | 'home-stay';
+  emoji: string;
+  color: string;
+  walk: string;
+  perks: string[];
+  priceHint: string;
+}
+
+const STAY_OPTIONS: StayOption[] = [
+  { id: 'st-1', name: 'Neem Guest Hostel',      type: 'hostel',   emoji: '🛏️', color: '#22C55E', walk: '7 min walk',  perks: ['Dorm beds', 'Shared kitchen', 'Cycle rentals'],     priceHint: '₹450–₹900/night' },
+  { id: 'st-2', name: 'Banyan Homestay Circle', type: 'home-stay', emoji: '🏠', color: '#F59E0B', walk: '15 min cab',  perks: ['Alumni hosts', 'Home-cooked meals', 'Laundry'],     priceHint: '₹800–₹1,600/night' },
+  { id: 'st-3', name: 'Canopy Boutique Hotel',  type: 'hotel',    emoji: '🏨', color: '#A78BFA', walk: '10 min walk', perks: ['Quiet workspace', 'Shuttle to venue', '24×7 desk'], priceHint: '₹2,200–₹4,500/night' },
+  { id: 'st-4', name: 'Sapling Hostel (budget)', type: 'hostel',  emoji: '🛌', color: '#38BDF8', walk: '20 min bus',  perks: ['Bunk beds', 'Free Wi-Fi', 'Common lounge'],          priceHint: '₹350–₹700/night' },
+];
+
+// -----------------------------------------------------
+// Past-event recaps
+// -----------------------------------------------------
+
+interface EventRecap {
+  id: string;
+  title: string;
+  date: string;
+  emoji: string;
+  color: string;
+  attended: number;
+  signups: number;
+  highlight: string;
+  metrics: { label: string; value: string }[];
+  quote: string;
+  quoteAuthor: string;
+}
+
+const EVENT_RECAPS: EventRecap[] = [
+  {
+    id: 'er-1',
+    title: 'Sapling Hack · Spring',
+    date: 'Mar 14, 2026',
+    emoji: '🌱',
+    color: '#22C55E',
+    attended: 412,
+    signups: 540,
+    highlight: '24 teams · 16 demos · 3 field pilots greenlit for Q3.',
+    metrics: [
+      { label: 'Saplings planted on day 2', value: '320' },
+      { label: 'E-waste collected', value: '88 kg' },
+      { label: 'Mentor hours logged', value: '168 hrs' },
+    ],
+    quote: 'I came in knowing nothing about RN. I left with a merged PR and a mentor.',
+    quoteAuthor: 'Riya G. · first-year',
+  },
+  {
+    id: 'er-2',
+    title: 'Campus Cleanup Drive',
+    date: 'Feb 22, 2026',
+    emoji: '♻️',
+    color: '#38BDF8',
+    attended: 188,
+    signups: 240,
+    highlight: '4 zones swept · 214 kg waste segregated · 28 bags composted on-site.',
+    metrics: [
+      { label: 'Volunteers', value: '188' },
+      { label: 'Recyclables sent to MRF', value: '126 kg' },
+      { label: 'Compost started', value: '4 bins' },
+    ],
+    quote: 'We thought the south lawn was clean. It absolutely was not. Now it actually is.',
+    quoteAuthor: 'Arjun K. · ops lead',
+  },
+  {
+    id: 'er-3',
+    title: 'Design Critique Night',
+    date: 'Jan 18, 2026',
+    emoji: '🎨',
+    color: '#F472B6',
+    attended: 94,
+    signups: 110,
+    highlight: '11 portfolios reviewed · 3 speaker invites · 1 full internship lead.',
+    metrics: [
+      { label: 'Portfolios reviewed', value: '11' },
+      { label: 'First-time presenters', value: '7' },
+      { label: 'Mentors on panel', value: '6' },
+    ],
+    quote: 'Three drafts in, my posters stopped looking like homework.',
+    quoteAuthor: 'Neha P. · poster designer',
+  },
+  {
+    id: 'er-4',
+    title: 'Alumni Fireside · Climate',
+    date: 'Dec 09, 2025',
+    emoji: '🔥',
+    color: '#F59E0B',
+    attended: 156,
+    signups: 210,
+    highlight: '3 alumni · 90 min · 11 students connected to mentors post-session.',
+    metrics: [
+      { label: 'Alumni speakers', value: '3' },
+      { label: 'Questions from floor', value: '38' },
+      { label: 'Follow-up intros', value: '11' },
+    ],
+    quote: 'The honesty about failed launches is the part I needed most.',
+    quoteAuthor: 'Aditi S. · prefinal',
+  },
+];
+
+// -----------------------------------------------------
+// Volunteer roles
+// -----------------------------------------------------
+
+interface VolunteerRole {
+  id: string;
+  name: string;
+  emoji: string;
+  color: string;
+  spots: number;
+  filled: number;
+  time: string;
+  responsibilities: string[];
+}
+
+const VOLUNTEER_ROLES: VolunteerRole[] = [
+  { id: 'vr-1', name: 'Registration desk',     emoji: '📋', color: '#38BDF8', spots: 12, filled: 8,  time: 'Day-1 · 07:30–11:00', responsibilities: ['Check-in flow', 'Badge handouts', 'Welcome newcomers'] },
+  { id: 'vr-2', name: 'Floor ops',             emoji: '📣', color: '#F59E0B', spots: 14, filled: 10, time: 'All-day · rotations', responsibilities: ['Crowd flow', 'Signage', 'Runner tasks'] },
+  { id: 'vr-3', name: 'AV · main stage',       emoji: '🎚️', color: '#A78BFA', spots: 6,  filled: 4,  time: 'Tech rehearsal + live', responsibilities: ['Mic runs', 'Slides cue', 'Live-stream ops'] },
+  { id: 'vr-4', name: 'Hospitality',           emoji: '☕', color: '#22C55E', spots: 10, filled: 7,  time: 'Breaks + lunch',       responsibilities: ['Refreshments', 'Speaker care', 'Vendor coord'] },
+  { id: 'vr-5', name: 'Photography',           emoji: '📷', color: '#F472B6', spots: 5,  filled: 3,  time: 'All-day',              responsibilities: ['Consent badges', 'Shot-list', 'Dropbox uploads'] },
+  { id: 'vr-6', name: 'Accessibility buddy',   emoji: '🤝', color: '#6366F1', spots: 6,  filled: 2,  time: 'All-day',              responsibilities: ['Wheelchair assistance', 'Low-sensory escorts', 'On-call help'] },
+  { id: 'vr-7', name: 'Sustainability crew',   emoji: '🌿', color: '#16A34A', spots: 8,  filled: 5,  time: 'All-day',              responsibilities: ['Waste segregation', 'Compost bins', 'Zero-waste badges'] },
+  { id: 'vr-8', name: 'Night shift · venue',   emoji: '🌙', color: '#0EA5E9', spots: 4,  filled: 2,  time: '22:00–06:00',          responsibilities: ['Overnight reset', 'Stock count', 'Morning handover'] },
+];
+
+// -----------------------------------------------------
+// Live-stream & recording
+// -----------------------------------------------------
+
+interface StreamDetail {
+  id: string;
+  track: string;
+  where: string;
+  time: string;
+  platform: string;
+  caption: boolean;
+  recording: boolean;
+  color: string;
+}
+
+const STREAM_DETAILS: StreamDetail[] = [
+  { id: 'sd-1', track: 'Main stage',       where: 'Lawn Amphitheatre',     time: '10:00–18:00 IST', platform: 'YouTube Live + website', caption: true,  recording: true,  color: '#22C55E' },
+  { id: 'sd-2', track: 'Hacker track',     where: 'Seminar Hall 2',        time: '11:00–20:00 IST', platform: 'YouTube Live',           caption: true,  recording: true,  color: '#38BDF8' },
+  { id: 'sd-3', track: 'Design lab',       where: 'Studio B (basement)',   time: '12:00–16:00 IST', platform: 'Twitch + replay link',   caption: false, recording: true,  color: '#F472B6' },
+  { id: 'sd-4', track: 'Alumni fireside',  where: 'Heritage Library',      time: '18:00–20:00 IST', platform: 'YouTube Live',           caption: true,  recording: false, color: '#F59E0B' },
+];
+
+// -----------------------------------------------------
+// Photo / video consent
+// -----------------------------------------------------
+
+interface ConsentRule {
+  id: string;
+  tone: 'good' | 'ask' | 'never';
+  emoji: string;
+  title: string;
+  body: string;
+}
+
+const CONSENT_RULES: ConsentRule[] = [
+  { id: 'cr-1', tone: 'good',  emoji: '🟢', title: 'Green badge = yes',        body: 'Fine to photograph, post, tag. Candid shots welcome.' },
+  { id: 'cr-2', tone: 'ask',   emoji: '🟡', title: 'Yellow badge = ask first', body: 'Please ask verbally before any photo or video. We will remind you.' },
+  { id: 'cr-3', tone: 'never', emoji: '🔴', title: 'Red badge = no',           body: 'Never photograph or film. Respect it quietly. No exceptions.' },
+  { id: 'cr-4', tone: 'good',  emoji: '🟦', title: 'Kids on site',             body: 'Guardians must sign the kids-photo waiver at the registration desk.' },
+  { id: 'cr-5', tone: 'ask',   emoji: '🟣', title: 'Takedown requests',        body: 'Email hello@taruguardians.org · we honour within 48 hours. Always.' },
+];
+
 // =====================================================
 // COMPONENT
 // =====================================================
@@ -2199,6 +2397,210 @@ const EventsScreen: React.FC = () => {
     </View>
   );
 
+  const renderTravelSection = () => (
+    <View style={styles.extrasSection}>
+      <View style={styles.extrasHeaderRow}>
+        <Text style={styles.extrasTitle}>🧭 Getting here</Text>
+        <Text style={styles.extrasSubtitle}>{TRAVEL_OPTIONS.length} ways</Text>
+      </View>
+      <View style={styles.travelGrid}>
+        {TRAVEL_OPTIONS.map((t) => (
+          <View key={t.id} style={styles.travelCard}>
+            <View style={[styles.travelIconWrap, { backgroundColor: t.color + '2A' }]}>
+              <Text style={styles.travelIcon}>{t.emoji}</Text>
+            </View>
+            <Text style={styles.travelMode}>{t.mode}</Text>
+            <Text style={styles.travelDetails} numberOfLines={3}>{t.details}</Text>
+            <View style={styles.travelFootRow}>
+              <Text style={[styles.travelCost, { color: t.color }]}>{t.costHint}</Text>
+              <Text style={styles.travelEta}>{t.eta}</Text>
+            </View>
+          </View>
+        ))}
+      </View>
+    </View>
+  );
+
+  const renderStaySection = () => (
+    <View style={styles.extrasSection}>
+      <View style={styles.extrasHeaderRow}>
+        <Text style={styles.extrasTitle}>🛏️ Where to stay</Text>
+        <Text style={styles.extrasSubtitle}>{STAY_OPTIONS.length} options</Text>
+      </View>
+      {STAY_OPTIONS.map((s) => (
+        <View key={s.id} style={[styles.stayCard, { borderLeftColor: s.color }]}>
+          <View style={styles.stayHeaderRow}>
+            <Text style={styles.stayEmoji}>{s.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.stayName}>{s.name}</Text>
+              <Text style={styles.stayMeta}>{s.type} · {s.walk}</Text>
+            </View>
+            <Text style={[styles.stayPrice, { color: s.color }]}>{s.priceHint}</Text>
+          </View>
+          <View style={styles.stayPerksRow}>
+            {s.perks.map((p) => (
+              <View key={p} style={styles.stayPerkChip}>
+                <Text style={styles.stayPerkText}>{p}</Text>
+              </View>
+            ))}
+          </View>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderRecapsSection = () => (
+    <View style={styles.extrasSection}>
+      <View style={styles.extrasHeaderRow}>
+        <Text style={styles.extrasTitle}>🗂️ Recent recaps</Text>
+        <Text style={styles.extrasSubtitle}>{EVENT_RECAPS.length} events</Text>
+      </View>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.recapScroll}
+      >
+        {EVENT_RECAPS.map((r) => (
+          <View key={r.id} style={styles.recapCard}>
+            <LinearGradient
+              colors={[r.color + '38', '#0A0F14']}
+              style={styles.recapGradient}
+            >
+              <View style={styles.recapHeaderRow}>
+                <Text style={styles.recapEmoji}>{r.emoji}</Text>
+                <View style={styles.recapCountPill}>
+                  <Text style={styles.recapCountText}>
+                    {r.attended}/{r.signups}
+                  </Text>
+                </View>
+              </View>
+              <Text style={styles.recapTitle}>{r.title}</Text>
+              <Text style={styles.recapDate}>{r.date}</Text>
+              <Text style={styles.recapHighlight} numberOfLines={3}>{r.highlight}</Text>
+              <View style={styles.recapMetricsRow}>
+                {r.metrics.map((m) => (
+                  <View key={m.label} style={styles.recapMetric}>
+                    <Text style={[styles.recapMetricVal, { color: r.color }]}>{m.value}</Text>
+                    <Text style={styles.recapMetricLab} numberOfLines={2}>{m.label}</Text>
+                  </View>
+                ))}
+              </View>
+              <View style={styles.recapQuoteRow}>
+                <Text style={styles.recapQuote} numberOfLines={3}>“{r.quote}”</Text>
+                <Text style={styles.recapQuoteAuthor}>— {r.quoteAuthor}</Text>
+              </View>
+            </LinearGradient>
+          </View>
+        ))}
+      </ScrollView>
+    </View>
+  );
+
+  const renderVolunteerSection = () => (
+    <View style={styles.extrasSection}>
+      <View style={styles.extrasHeaderRow}>
+        <Text style={styles.extrasTitle}>🤝 Volunteer roles</Text>
+        <Text style={styles.extrasSubtitle}>{VOLUNTEER_ROLES.length} teams</Text>
+      </View>
+      <View style={styles.volunteerGrid}>
+        {VOLUNTEER_ROLES.map((v) => {
+          const pct = v.spots > 0 ? Math.min(1, v.filled / v.spots) : 0;
+          return (
+            <View key={v.id} style={styles.volunteerCard}>
+              <View style={styles.volunteerHeader}>
+                <Text style={styles.volunteerEmoji}>{v.emoji}</Text>
+                <Text style={styles.volunteerName}>{v.name}</Text>
+              </View>
+              <Text style={styles.volunteerTime}>{v.time}</Text>
+              <View style={styles.volunteerBarBg}>
+                <View
+                  style={[
+                    styles.volunteerBarFill,
+                    { width: `${Math.round(pct * 100)}%`, backgroundColor: v.color },
+                  ]}
+                />
+              </View>
+              <Text style={[styles.volunteerSpots, { color: v.color }]}>
+                {v.filled}/{v.spots} filled
+              </Text>
+              {v.responsibilities.map((r) => (
+                <Text key={r} style={styles.volunteerResp}>• {r}</Text>
+              ))}
+            </View>
+          );
+        })}
+      </View>
+    </View>
+  );
+
+  const renderStreamSection = () => (
+    <View style={styles.extrasSection}>
+      <View style={styles.extrasHeaderRow}>
+        <Text style={styles.extrasTitle}>📡 Livestream tracks</Text>
+        <Text style={styles.extrasSubtitle}>Captions · replays</Text>
+      </View>
+      {STREAM_DETAILS.map((s) => (
+        <View key={s.id} style={[styles.streamRow, { borderLeftColor: s.color }]}>
+          <View style={{ flex: 1 }}>
+            <Text style={styles.streamTrack}>{s.track}</Text>
+            <Text style={styles.streamWhere}>{s.where} · {s.time}</Text>
+            <Text style={styles.streamPlatform}>{s.platform}</Text>
+          </View>
+          <View style={styles.streamPillCol}>
+            <View
+              style={[
+                styles.streamPill,
+                { backgroundColor: s.caption ? '#22C55E22' : '#ffffff14' },
+              ]}
+            >
+              <Text
+                style={[
+                  styles.streamPillText,
+                  { color: s.caption ? '#22C55E' : Colors.text.muted },
+                ]}
+              >
+                {s.caption ? 'CC' : 'no CC'}
+              </Text>
+            </View>
+            <View
+              style={[
+                styles.streamPill,
+                { backgroundColor: s.recording ? '#38BDF822' : '#ffffff14', marginTop: 4 },
+              ]}
+            >
+              <Text
+                style={[
+                  styles.streamPillText,
+                  { color: s.recording ? '#38BDF8' : Colors.text.muted },
+                ]}
+              >
+                {s.recording ? 'replay' : 'live only'}
+              </Text>
+            </View>
+          </View>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderConsentSection = () => (
+    <View style={styles.extrasSection}>
+      <View style={styles.extrasHeaderRow}>
+        <Text style={styles.extrasTitle}>📷 Photo / video consent</Text>
+        <Text style={styles.extrasSubtitle}>Badge legend</Text>
+      </View>
+      {CONSENT_RULES.map((c) => (
+        <View key={c.id} style={styles.consentRow}>
+          <Text style={styles.consentEmoji}>{c.emoji}</Text>
+          <View style={{ flex: 1 }}>
+            <Text style={styles.consentTitle}>{c.title}</Text>
+            <Text style={styles.consentBody}>{c.body}</Text>
+          </View>
+        </View>
+      ))}
+    </View>
+  );
+
   const renderExtrasFooter = () => (
     <View>
       {renderCalendarSection()}
@@ -2206,10 +2608,16 @@ const EventsScreen: React.FC = () => {
       {renderSpeakersSection()}
       {renderSponsorsSection()}
       {renderVenuesSection()}
+      {renderTravelSection()}
+      {renderStaySection()}
+      {renderStreamSection()}
       {renderFaqSection()}
       {renderConductSection()}
+      {renderConsentSection()}
       {renderChaptersSection()}
       {renderAccessibilitySection()}
+      {renderVolunteerSection()}
+      {renderRecapsSection()}
       {renderCheckinSection()}
       <View style={styles.footerBand}>
         <Text style={styles.footerLine}>
@@ -4061,6 +4469,215 @@ const styles = StyleSheet.create({
     fontSize: 11,
     textAlign: 'right',
     marginTop: 4,
+  },
+
+  // Travel
+  travelGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginTop: 10,
+  },
+  travelCard: {
+    width: '50%',
+    padding: 4,
+  },
+  travelIconWrap: {
+    width: 36,
+    height: 36,
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  travelIcon: { fontSize: 18 },
+  travelMode: {
+    color: Colors.text.primary,
+    fontSize: 12,
+    fontWeight: '800',
+    marginTop: 6,
+  },
+  travelDetails: {
+    color: Colors.text.secondary,
+    fontSize: 11,
+    marginTop: 4,
+    lineHeight: 15,
+  },
+  travelFootRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 6,
+  },
+  travelCost: { fontSize: 11, fontWeight: '800' },
+  travelEta: { color: Colors.text.muted, fontSize: 11 },
+
+  // Stay
+  stayCard: {
+    padding: 12,
+    marginBottom: 8,
+    borderRadius: 14,
+    backgroundColor: '#0D141B',
+    borderLeftWidth: 3,
+  },
+  stayHeaderRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  stayEmoji: { fontSize: 22, marginRight: 10 },
+  stayName: {
+    color: Colors.text.primary,
+    fontSize: 13,
+    fontWeight: '800',
+  },
+  stayMeta: {
+    color: Colors.text.muted,
+    fontSize: 11,
+    marginTop: 2,
+  },
+  stayPrice: { fontSize: 12, fontWeight: '800' },
+  stayPerksRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginTop: 8,
+  },
+  stayPerkChip: {
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 10,
+    backgroundColor: '#ffffff0F',
+    marginRight: 6,
+    marginBottom: 4,
+  },
+  stayPerkText: { color: Colors.text.secondary, fontSize: 10, fontWeight: '700' },
+
+  // Recaps
+  recapScroll: { paddingRight: 10, paddingBottom: 6, marginTop: 6 },
+  recapCard: { width: 280, marginRight: 12 },
+  recapGradient: {
+    borderRadius: 18,
+    padding: 14,
+    borderWidth: 1,
+    borderColor: '#ffffff18',
+    minHeight: 360,
+  },
+  recapHeaderRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  recapEmoji: { fontSize: 26 },
+  recapCountPill: {
+    backgroundColor: '#ffffff14',
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 10,
+  },
+  recapCountText: { color: Colors.text.primary, fontSize: 10, fontWeight: '800' },
+  recapTitle: {
+    color: Colors.text.primary,
+    fontSize: 16,
+    fontWeight: '900',
+    marginTop: 10,
+  },
+  recapDate: { color: Colors.text.muted, fontSize: 11, marginTop: 2 },
+  recapHighlight: {
+    color: Colors.text.secondary,
+    fontSize: 11,
+    marginTop: 8,
+    lineHeight: 16,
+  },
+  recapMetricsRow: {
+    flexDirection: 'row',
+    marginTop: 12,
+    justifyContent: 'space-between',
+  },
+  recapMetric: { flex: 1, paddingHorizontal: 4 },
+  recapMetricVal: { fontSize: 14, fontWeight: '900' },
+  recapMetricLab: { color: Colors.text.muted, fontSize: 9, marginTop: 2 },
+  recapQuoteRow: {
+    marginTop: 12,
+    padding: 10,
+    borderRadius: 10,
+    backgroundColor: '#ffffff0E',
+  },
+  recapQuote: { color: Colors.text.primary, fontSize: 11, fontStyle: 'italic', lineHeight: 15 },
+  recapQuoteAuthor: { color: Colors.text.muted, fontSize: 10, marginTop: 4 },
+
+  // Volunteer
+  volunteerGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginTop: 10,
+  },
+  volunteerCard: {
+    width: '50%',
+    padding: 4,
+  },
+  volunteerHeader: { flexDirection: 'row', alignItems: 'center' },
+  volunteerEmoji: { fontSize: 18, marginRight: 6 },
+  volunteerName: {
+    color: Colors.text.primary,
+    fontSize: 12,
+    fontWeight: '800',
+    flex: 1,
+  },
+  volunteerTime: { color: Colors.text.muted, fontSize: 10, marginTop: 4 },
+  volunteerBarBg: {
+    height: 6,
+    backgroundColor: '#ffffff14',
+    borderRadius: 4,
+    marginTop: 8,
+    overflow: 'hidden',
+  },
+  volunteerBarFill: { height: 6, borderRadius: 4 },
+  volunteerSpots: { fontSize: 10, fontWeight: '800', marginTop: 4 },
+  volunteerResp: { color: Colors.text.secondary, fontSize: 10, marginTop: 2 },
+
+  // Stream
+  streamRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 12,
+    marginBottom: 8,
+    borderRadius: 14,
+    backgroundColor: '#0D141B',
+    borderLeftWidth: 3,
+  },
+  streamTrack: {
+    color: Colors.text.primary,
+    fontSize: 13,
+    fontWeight: '800',
+  },
+  streamWhere: { color: Colors.text.secondary, fontSize: 11, marginTop: 2 },
+  streamPlatform: { color: Colors.text.muted, fontSize: 10, marginTop: 2 },
+  streamPillCol: { alignItems: 'flex-end', marginLeft: 8 },
+  streamPill: {
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 10,
+  },
+  streamPillText: { fontSize: 10, fontWeight: '800' },
+
+  // Consent
+  consentRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    padding: 12,
+    marginBottom: 6,
+    borderRadius: 12,
+    backgroundColor: '#0D141B',
+    borderWidth: 1,
+    borderColor: '#ffffff0F',
+  },
+  consentEmoji: { fontSize: 18, marginRight: 10, marginTop: 1 },
+  consentTitle: {
+    color: Colors.text.primary,
+    fontSize: 12,
+    fontWeight: '800',
+  },
+  consentBody: {
+    color: Colors.text.secondary,
+    fontSize: 11,
+    marginTop: 3,
+    lineHeight: 15,
   },
 });
 
