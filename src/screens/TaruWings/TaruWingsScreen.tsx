@@ -1342,6 +1342,107 @@ const WING_FIRST_SHIPPED: WingFirstShippedMoment[] = [
   { id: 'wfs-pr-1',  wingId: 'pr',      moment: 'First landed story · campus podcast · 12-min episode',           who: 'Tanish C. · first-year',  when: 'Dec 2024',       color: '#FFD166', emoji: '📰' },
 ];
 
+// =====================================================
+// Phase 3an: deeper wing structures — round 4
+// =====================================================
+
+interface WingRitualCadence {
+  id: string;
+  wingId: string;
+  ritual: string;
+  cadence: string;
+  lead: string;
+  purpose: string;
+  color: string;
+  emoji: string;
+}
+
+const WING_RITUAL_CADENCES: WingRitualCadence[] = [
+  { id: 'wrc-c-1',   wingId: 'content', ritual: 'Monday desk-check',                  cadence: 'Weekly · 20 min',      lead: 'Content lead',             purpose: 'Line up drafts · confirm Friday ship list · flag blockers early.',                        color: '#F59E0B', emoji: '🗂️' },
+  { id: 'wrc-c-2',   wingId: 'content', ritual: 'Friday read-aloud',                   cadence: 'Weekly · 45 min',      lead: 'Rotating',                 purpose: 'Read your week\'s pieces aloud · catch rhythm · honour what landed.',                      color: '#F59E0B', emoji: '📣' },
+  { id: 'wrc-w-1',   wingId: 'web',     ritual: 'Tuesday PR review pairing',          cadence: 'Weekly · 60 min',      lead: 'Web lead + buddy',         purpose: 'Two engineers · two PRs each · honest reads · no rubber-stamp.',                           color: '#00D4FF', emoji: '🔍' },
+  { id: 'wrc-w-2',   wingId: 'web',     ritual: 'Thursday ship-or-save retro',         cadence: 'Weekly · 30 min',      lead: 'Web lead',                 purpose: 'Pick ship lane · or save lane · for every open item · no middle ground.',                  color: '#00D4FF', emoji: '🧭' },
+  { id: 'wrc-gd-1',  wingId: 'gd',      ritual: 'Wednesday crit hour',                  cadence: 'Weekly · 60 min',      lead: 'GD lead + critic-of-week', purpose: 'Pin five variants · defend choice · listen before refuting · version up together.',        color: '#F472B6', emoji: '🖼️' },
+  { id: 'wrc-gd-2',  wingId: 'gd',      ritual: 'Monthly portfolio refresh',             cadence: 'Monthly · 2 hours',    lead: 'GD lead',                  purpose: 'Each member updates one portfolio piece · 12-month rolling showcase · public.',             color: '#F472B6', emoji: '🎨' },
+  { id: 'wrc-v-1',   wingId: 'video',   ritual: 'Saturday edit session',                  cadence: 'Weekly · 3 hours',     lead: 'Video lead',                 purpose: 'Work alongside each other · share timelines · help with tricky cuts in person.',          color: '#A78BFA', emoji: '🎬' },
+  { id: 'wrc-v-2',   wingId: 'video',   ritual: 'Monthly film night',                     cadence: 'Monthly · 2 hours',    lead: 'Rotating',                   purpose: 'Watch one short · one interview · one feature · no phones · talk after.',                   color: '#A78BFA', emoji: '🎞️' },
+  { id: 'wrc-p-1',   wingId: 'photo',   ritual: 'Sunday photo walk',                       cadence: 'Weekly · 2 hours',     lead: 'Photo lead',                  purpose: 'Walk with one prime lens · talk about frames seen · cull together after.',                  color: '#22C55E', emoji: '🚶' },
+  { id: 'wrc-p-2',   wingId: 'photo',   ritual: 'Quarterly print day',                       cadence: 'Quarterly',             lead: 'Photo lead + library',       purpose: 'Pick 10 frames each · print · rotate the library wall · reading corner audience.',        color: '#22C55E', emoji: '🖼️' },
+  { id: 'wrc-pr-1',  wingId: 'pr',      ritual: 'Monday newsroom scan',                      cadence: 'Weekly · 30 min',       lead: 'PR lead',                     purpose: 'Review city · sector · alumni beats · pick 2 pitch angles · divide and start.',           color: '#FFD166', emoji: '📰' },
+  { id: 'wrc-pr-2',  wingId: 'pr',      ritual: 'Quarterly press brunch',                     cadence: 'Quarterly',              lead: 'PR lead + hospitality',        purpose: 'Invite 6 journos · slow Sunday · show campus · no formal talking points.',                color: '#FFD166', emoji: '🥐' },
+];
+
+interface WingDecisionLog {
+  id: string;
+  wingId: string;
+  decision: string;
+  context: string;
+  madeBy: string;
+  outcome: string;
+  color: string;
+  emoji: string;
+}
+
+const WING_DECISION_LOGS: WingDecisionLog[] = [
+  { id: 'wdl-c-1',   wingId: 'content', decision: 'Drop the daily hot-take · keep the weekly digest.',                   context: 'Saw quality dip · found ourselves scrambling · chasing traffic not truth.',                madeBy: 'Content lead + 4 writers',            outcome: 'Digest traffic rose · trust up · weekday stress down dramatically.',                color: '#F59E0B', emoji: '⬇️' },
+  { id: 'wdl-c-2',   wingId: 'content', decision: 'Open letters from alumni · every recap blog · always.',                context: 'Recaps felt cold · alumni voice missing · reader engagement dropping.',                     madeBy: 'Content + Alumni lead',                outcome: 'Average read-time up 2x · alumni letters reused as standalone posts.',                color: '#F59E0B', emoji: '✉️' },
+  { id: 'wdl-w-1',   wingId: 'web',     decision: 'Freeze new feature work · finish the accessibility audit first.',      context: 'Audit findings piled up · kept deprioritising · juniors felt unsafe raising concerns.',     madeBy: 'Web lead · unanimous team',            outcome: 'Full audit closed in 3 weeks · confidence to ship big release grew.',                  color: '#00D4FF', emoji: '♿' },
+  { id: 'wdl-w-2',   wingId: 'web',     decision: 'Move to monorepo · with 1-week dry-run first.',                        context: 'Three repos shared 60% code · constant context-switch cost · juniors confused.',           madeBy: 'Web + Ops',                             outcome: 'Dry-run revealed 4 gotchas · real migration took 2 days · no prod incident.',          color: '#00D4FF', emoji: '🧱' },
+  { id: 'wdl-gd-1',  wingId: 'gd',      decision: 'One brand refresh per year · not per lead.',                             context: 'Every new lead wanted a brand refresh · identity kept drifting.',                            madeBy: 'GD lead + alumni advisors',             outcome: 'Yearly rhythm gave calm · archive became coherent · alumni liked returning.',          color: '#F472B6', emoji: '🗓️' },
+  { id: 'wdl-gd-2',  wingId: 'gd',      decision: 'Open-source our font-stack · attribute properly · add to readme.',        context: 'Used a boutique pay-per-project font · inherited from a gift · unclear.',                    madeBy: 'GD lead + alumni advisors',             outcome: 'Cleaner licence · one less legal email per year · clearer handoffs.',                   color: '#F472B6', emoji: '🅰️' },
+  { id: 'wdl-v-1',   wingId: 'video',   decision: 'Always subtitle · always caption · from first export.',                    context: 'Saw Insta reach lift when captions present · accessibility argument was already strong.',     madeBy: 'Video lead',                            outcome: 'Reach up 40% across reels · accessibility praised by parents + alumni.',                 color: '#A78BFA', emoji: '💬' },
+  { id: 'wdl-v-2',   wingId: 'video',   decision: 'Delete the B-roll drive yearly · keep the 20 GB bench of favourites.',     context: 'Archive ballooned to 1.2 TB · finding anything painful · juniors gave up trying.',             madeBy: 'Video lead + photo',                     outcome: 'Curated bench felt alive · juniors used it · quality improved visibly.',                 color: '#A78BFA', emoji: '🗑️' },
+  { id: 'wdl-p-1',   wingId: 'photo',   decision: 'Credit + release form at every event · signed at entry · no exception.',    context: 'Had two post-event DMs asking to remove photos · we missed consents.',                           madeBy: 'Photo lead + ops',                        outcome: 'Zero post-event removal requests in next year · juniors felt safer carrying cameras.',   color: '#22C55E', emoji: '🫱' },
+  { id: 'wdl-p-2',   wingId: 'photo',   decision: 'No stage flash during talks · ever · no matter the gear.',                   context: 'Speaker complained once · realised we never asked · changed that day.',                           madeBy: 'Photo lead',                               outcome: 'Speakers stopped flinching · candid moments grew · the room breathed.',                  color: '#22C55E', emoji: '🚫' },
+  { id: 'wdl-pr-1',  wingId: 'pr',      decision: 'Say no to opportunities that require last-minute scrambles.',                context: 'Realised we\'d burn two weekends for one hit · juniors were losing Sunday after Sunday.',        madeBy: 'PR lead + alumni advisors',                outcome: 'Said yes to fewer · did them well · got better coverage with half the effort.',           color: '#FFD166', emoji: '🛑' },
+  { id: 'wdl-pr-2',  wingId: 'pr',      decision: 'Publish the pitch template · let anyone send it · ask for a cc.',            context: 'Pitches bottlenecked through one lead · juniors never learned to pitch · fear grew.',            madeBy: 'PR lead',                                    outcome: 'Five juniors sent first pitch within a month · confidence compounded · better pitches.', color: '#FFD166', emoji: '🗂️' },
+];
+
+interface WingCallOfDuty {
+  id: string;
+  wingId: string;
+  duty: string;
+  signal: string;
+  response: string;
+  color: string;
+  emoji: string;
+}
+
+const WING_CALL_OF_DUTIES: WingCallOfDuty[] = [
+  { id: 'wcd2-c-1',   wingId: 'content', duty: 'Owner of the weekly digest',                                          signal: 'It has not gone out by Tuesday',         response: 'Wing lead calls · writer + editor fix or reschedule publicly. No hiding.',                          color: '#F59E0B', emoji: '📨' },
+  { id: 'wcd2-w-1',   wingId: 'web',     duty: 'On-call for production incidents',                                     signal: 'Public site down · error rate spikes',    response: 'Two-engineer on-call pager · 10-min ack · 2-hour resolve or status update.',                        color: '#00D4FF', emoji: '🛰️' },
+  { id: 'wcd2-gd-1',  wingId: 'gd',      duty: 'Keep the event poster pipeline flowing',                                signal: 'Event 10 days out · no poster approved', response: 'GD lead nominates pair within 24 h · first draft in 48 h · approval in 5 days.',                   color: '#F472B6', emoji: '📮' },
+  { id: 'wcd2-v-1',   wingId: 'video',   duty: 'Keep the recap reel pipeline flowing',                                  signal: 'Event 7 days out · no recap scheduled',   response: 'Video lead assigns pair · final cut in 10 days · alumni feedback before publish.',                  color: '#A78BFA', emoji: '🎞️' },
+  { id: 'wcd2-p-1',   wingId: 'photo',   duty: 'Keep event documentation complete',                                    signal: 'Event in 2 days · photo pair not set',    response: 'Photo lead assigns pair · gear ready day-of · backup pair on quiet standby.',                      color: '#22C55E', emoji: '📷' },
+  { id: 'wcd2-pr-1',  wingId: 'pr',      duty: 'Crisis communication when the club needs a public word',                signal: 'Public incident · misinformation spreading',response: 'PR lead drafts within 2 h · council reviews · post live within 6 h · no silence.',                color: '#FFD166', emoji: '🚨' },
+  { id: 'wcd2-core-1', wingId: 'content', duty: 'Hold the one mentor-call-a-month promise · every junior gets one',     signal: 'A junior has not had a call in 35 days', response: 'Wing lead + buddy check-in · schedule within 7 days · no exceptions.',                              color: '#A78BFA', emoji: '🫂' },
+];
+
+interface WingPortfolioBrief {
+  id: string;
+  wingId: string;
+  brief: string;
+  scope: string;
+  learning: string;
+  color: string;
+  emoji: string;
+}
+
+const WING_PORTFOLIO_BRIEFS: WingPortfolioBrief[] = [
+  { id: 'wpb-c-1',   wingId: 'content', brief: 'Write a 1200-word long-read about a campus ritual',                   scope: 'Interview 3 people · edit through 2 rounds · include a sidebar quote.',                         learning: 'Long-form pacing · interview craft · picking the one quote that holds it all.',                 color: '#F59E0B', emoji: '📜' },
+  { id: 'wpb-c-2',   wingId: 'content', brief: 'Run a 4-week newsletter experiment · pick your niche',                   scope: 'Four issues · consistent voice · grow to 100 subscribers organically.',                         learning: 'Finding your voice · showing up · caring about one reader at a time.',                           color: '#F59E0B', emoji: '📨' },
+  { id: 'wpb-w-1',   wingId: 'web',     brief: 'Ship a public tool that saves 1 minute a day for 10 people',              scope: 'Deploy · document · write a 500-word blog about the build.',                                      learning: 'Shipping small · writing docs · listening to real users not imagined ones.',                     color: '#00D4FF', emoji: '🚀' },
+  { id: 'wpb-w-2',   wingId: 'web',     brief: 'Refactor a 300-line component into tested hooks',                         scope: 'Keep behaviour · add tests · reduce cyclomatic complexity by 40%.',                               learning: 'Refactoring with tests · naming · separating what changes from what stays.',                    color: '#00D4FF', emoji: '🧪' },
+  { id: 'wpb-gd-1',  wingId: 'gd',      brief: 'Design a poster series · 3 events · one visual system',                    scope: 'Grid · typography · palette · one recurring motif · printable + digital.',                         learning: 'Systems thinking · recurring motifs · restraint as identity.',                                   color: '#F472B6', emoji: '🖼️' },
+  { id: 'wpb-gd-2',  wingId: 'gd',      brief: 'Redesign a flyer from 2018 with today\'s eyes',                              scope: 'Original + new side-by-side · short essay on what changed · publish in magazine.',                 learning: 'Critiquing kindly · seeing your own growth · honouring the original.',                            color: '#F472B6', emoji: '🔁' },
+  { id: 'wpb-v-1',   wingId: 'video',   brief: 'Make a 3-minute documentary portrait of a campus elder',                      scope: 'Interview · b-roll · music · colour · subtitles · 2-round peer review.',                           learning: 'Listening · story structure · restraint in cuts · treating a subject well.',                       color: '#A78BFA', emoji: '🎞️' },
+  { id: 'wpb-v-2',   wingId: 'video',   brief: 'Edit a 60-second reel from 30 minutes of raw',                                 scope: 'Pick the one story · no voiceover · natural sound · captioned.',                                   learning: 'Killing your darlings · trusting silence · letting the subject speak first.',                      color: '#A78BFA', emoji: '✂️' },
+  { id: 'wpb-p-1',   wingId: 'photo',   brief: 'Shoot a 20-frame essay on a single subject over one month',                   scope: 'One subject · varied light · one print · one essay.',                                              learning: 'Patience · return visits · how a subject opens up when you do.',                                    color: '#22C55E', emoji: '📸' },
+  { id: 'wpb-p-2',   wingId: 'photo',   brief: 'Print 10 frames from the last year · pin in library',                        scope: 'Curate · caption · print · install · write a short artist statement.',                             learning: 'Picking · captioning · letting go of \"also-rans\" · committing to the 10.',                         color: '#22C55E', emoji: '🖼️' },
+  { id: 'wpb-pr-1',  wingId: 'pr',      brief: 'Pitch and land one story in a publication you respect',                          scope: 'Three pitch rounds · no form-letters · follow-up discipline.',                                       learning: 'Editorial empathy · rejection resilience · following up without nagging.',                       color: '#FFD166', emoji: '🎯' },
+  { id: 'wpb-pr-2',  wingId: 'pr',      brief: 'Write a crisis comms plan for an imaginary mishap',                              scope: 'Scenario · stakeholders · 24-hour plan · approval flow · publish.',                                   learning: 'Thinking under pressure · writing clearly when stakes are high · naming ownership.',                color: '#FFD166', emoji: '🚨' },
+];
+
 const TaruWingsScreen: React.FC = () => {
   const [selectedWingId, setSelectedWingId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -3187,6 +3288,107 @@ const TaruWingsScreen: React.FC = () => {
     );
   };
 
+  // ------ Phase 3an: round 4 deeper wing blocks ------
+  const renderWingRitualCadencesBlock = () => {
+    if (!selectedWing) return null;
+    const items = WING_RITUAL_CADENCES.filter((x) => x.wingId === selectedWing.id);
+    if (items.length === 0) return null;
+    return (
+      <View style={styles.sectionBlock}>
+        <View style={styles.sectionHeaderRow}>
+          <Text style={styles.sectionTitle}>🕰️ Ritual cadences · the week we keep</Text>
+          <Text style={styles.sectionCaption}>{items.length} rituals</Text>
+        </View>
+        {items.map((r) => (
+          <View key={r.id} style={[styles.wrcCard, { borderLeftColor: r.color }]}>
+            <View style={styles.wrcTopRow}>
+              <Text style={styles.wrcEmoji}>{r.emoji}</Text>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.wrcRitual} numberOfLines={2}>{r.ritual}</Text>
+                <Text style={[styles.wrcCadence, { color: r.color }]}>{r.cadence}</Text>
+              </View>
+            </View>
+            <Text style={styles.wrcLead} numberOfLines={1}>lead · {r.lead}</Text>
+            <Text style={styles.wrcPurpose} numberOfLines={3}>{r.purpose}</Text>
+          </View>
+        ))}
+      </View>
+    );
+  };
+
+  const renderWingDecisionLogsBlock = () => {
+    if (!selectedWing) return null;
+    const items = WING_DECISION_LOGS.filter((x) => x.wingId === selectedWing.id);
+    if (items.length === 0) return null;
+    return (
+      <View style={styles.sectionBlock}>
+        <View style={styles.sectionHeaderRow}>
+          <Text style={styles.sectionTitle}>📋 Decision log · how we chose · and why</Text>
+          <Text style={styles.sectionCaption}>{items.length} decisions</Text>
+        </View>
+        {items.map((d) => (
+          <View key={d.id} style={[styles.wdlCard, { borderLeftColor: d.color }]}>
+            <View style={styles.wdlTopRow}>
+              <Text style={styles.wdlEmoji}>{d.emoji}</Text>
+              <Text style={styles.wdlDecision} numberOfLines={3}>{d.decision}</Text>
+            </View>
+            <Text style={styles.wdlContext} numberOfLines={3}>context · {d.context}</Text>
+            <Text style={styles.wdlMade} numberOfLines={1}>made by · {d.madeBy}</Text>
+            <Text style={[styles.wdlOutcome, { color: d.color }]} numberOfLines={3}>outcome · {d.outcome}</Text>
+          </View>
+        ))}
+      </View>
+    );
+  };
+
+  const renderWingCallOfDutiesBlock = () => {
+    if (!selectedWing) return null;
+    const items = WING_CALL_OF_DUTIES.filter((x) => x.wingId === selectedWing.id);
+    if (items.length === 0) return null;
+    return (
+      <View style={styles.sectionBlock}>
+        <View style={styles.sectionHeaderRow}>
+          <Text style={styles.sectionTitle}>📞 Calls of duty · what we show up for</Text>
+          <Text style={styles.sectionCaption}>{items.length} duties</Text>
+        </View>
+        {items.map((c) => (
+          <View key={c.id} style={[styles.wcd2Card, { borderLeftColor: c.color }]}>
+            <View style={styles.wcd2TopRow}>
+              <Text style={styles.wcd2Emoji}>{c.emoji}</Text>
+              <Text style={styles.wcd2Duty} numberOfLines={2}>{c.duty}</Text>
+            </View>
+            <Text style={styles.wcd2Signal} numberOfLines={2}>signal · {c.signal}</Text>
+            <Text style={styles.wcd2Response} numberOfLines={3}>response · {c.response}</Text>
+          </View>
+        ))}
+      </View>
+    );
+  };
+
+  const renderWingPortfolioBriefsBlock = () => {
+    if (!selectedWing) return null;
+    const items = WING_PORTFOLIO_BRIEFS.filter((x) => x.wingId === selectedWing.id);
+    if (items.length === 0) return null;
+    return (
+      <View style={styles.sectionBlock}>
+        <View style={styles.sectionHeaderRow}>
+          <Text style={styles.sectionTitle}>🎯 Portfolio briefs · starter quests to earn your craft</Text>
+          <Text style={styles.sectionCaption}>{items.length} briefs</Text>
+        </View>
+        {items.map((b) => (
+          <View key={b.id} style={[styles.wpbCard, { borderLeftColor: b.color }]}>
+            <View style={styles.wpbTopRow}>
+              <Text style={styles.wpbEmoji}>{b.emoji}</Text>
+              <Text style={styles.wpbBrief} numberOfLines={3}>{b.brief}</Text>
+            </View>
+            <Text style={styles.wpbScope} numberOfLines={3}>scope · {b.scope}</Text>
+            <Text style={[styles.wpbLearning, { color: b.color }]} numberOfLines={3}>learning · {b.learning}</Text>
+          </View>
+        ))}
+      </View>
+    );
+  };
+
   const renderDetail = () => (
     <ScrollView
       contentContainerStyle={styles.scrollContent}
@@ -3234,6 +3436,10 @@ const TaruWingsScreen: React.FC = () => {
       {renderWingFirstShippedBlock()}
       {renderJournalBlock()}
       {renderWingExitPathsBlock()}
+      {renderWingRitualCadencesBlock()}
+      {renderWingDecisionLogsBlock()}
+      {renderWingCallOfDutiesBlock()}
+      {renderWingPortfolioBriefsBlock()}
       {renderMembersBlock()}
     </ScrollView>
   );
@@ -4247,6 +4453,40 @@ const styles = StyleSheet.create({
   wfsMoment: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', lineHeight: 17 },
   wfsWho: { color: Colors.text.muted, fontSize: 11, marginTop: 4 },
   wfsWhen: { fontSize: 11, fontWeight: '900' },
+
+  // --- Phase 3an: ritual cadences ---
+  wrcCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginBottom: 10, borderLeftWidth: 3 },
+  wrcTopRow: { flexDirection: 'row', alignItems: 'center' },
+  wrcEmoji: { fontSize: 22, marginRight: 10 },
+  wrcRitual: { color: Colors.text.primary, fontSize: 13, fontWeight: '900' },
+  wrcCadence: { fontSize: 11, fontWeight: '700', marginTop: 2 },
+  wrcLead: { color: Colors.text.muted, fontSize: 11, marginTop: 8, paddingLeft: 32 },
+  wrcPurpose: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 3, paddingLeft: 32 },
+
+  // --- Phase 3an: decision logs ---
+  wdlCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginBottom: 10, borderLeftWidth: 3 },
+  wdlTopRow: { flexDirection: 'row', alignItems: 'center' },
+  wdlEmoji: { fontSize: 22, marginRight: 10 },
+  wdlDecision: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', flex: 1, lineHeight: 17 },
+  wdlContext: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8, paddingLeft: 32 },
+  wdlMade: { color: Colors.text.muted, fontSize: 11, marginTop: 3, paddingLeft: 32 },
+  wdlOutcome: { fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32, fontWeight: '700' },
+
+  // --- Phase 3an: call of duties ---
+  wcd2Card: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginBottom: 10, borderLeftWidth: 3 },
+  wcd2TopRow: { flexDirection: 'row', alignItems: 'center' },
+  wcd2Emoji: { fontSize: 22, marginRight: 10 },
+  wcd2Duty: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', flex: 1, lineHeight: 17 },
+  wcd2Signal: { color: '#F87171', fontSize: 11, lineHeight: 15, marginTop: 8, paddingLeft: 32 },
+  wcd2Response: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 3, paddingLeft: 32 },
+
+  // --- Phase 3an: portfolio briefs ---
+  wpbCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginBottom: 10, borderLeftWidth: 3 },
+  wpbTopRow: { flexDirection: 'row', alignItems: 'center' },
+  wpbEmoji: { fontSize: 22, marginRight: 10 },
+  wpbBrief: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', flex: 1, lineHeight: 17 },
+  wpbScope: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8, paddingLeft: 32 },
+  wpbLearning: { fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32, fontStyle: 'italic' },
 });
 
 export default TaruWingsScreen;
