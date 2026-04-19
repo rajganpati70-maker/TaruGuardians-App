@@ -1124,6 +1124,137 @@ const SCHEDULE_BLOCKS: ScheduleBlock[] = [
 // COMPONENT
 // =====================================================
 
+// =====================================================
+// Phase 3t: deeper events structures
+// =====================================================
+
+interface MerchDrop {
+  id: string;
+  item: string;
+  priceInr: number;
+  stock: number;
+  material: string;
+  note: string;
+  color: string;
+  emoji: string;
+}
+
+const MERCH_DROPS: MerchDrop[] = [
+  { id: 'md-1',  item: 'Organic cotton tee · leaf print', priceInr: 480, stock: 120, material: 'GOTS-certified organic cotton',   note: 'Printed at a union shop in Tirupur.',                     color: '#22C55E', emoji: '👕' },
+  { id: 'md-2',  item: 'Recycled tote · seed pattern',    priceInr: 220, stock: 200, material: 'Post-consumer recycled canvas',   note: 'Sewn by a women-led co-op in Bengaluru.',                color: '#38BDF8', emoji: '🛍️' },
+  { id: 'md-3',  item: 'Bamboo sipper · 450 ml',          priceInr: 350, stock: 80,  material: 'Food-grade bamboo · steel liner', note: 'Dishwasher-safe · rinse before first use.',              color: '#F59E0B', emoji: '🧃' },
+  { id: 'md-4',  item: 'Enamel pin · Taru leaf',          priceInr: 120, stock: 300, material: 'Lead-free enamel on brass',        note: 'Small + sturdy · ships with a thank-you note.',          color: '#A78BFA', emoji: '🪷' },
+  { id: 'md-5',  item: 'Notebook · 80 pages · upcycled',  priceInr: 180, stock: 150, material: 'Handmade recycled paper',          note: 'Made in Sanganer · acid-free · light spine.',             color: '#F472B6', emoji: '📓' },
+  { id: 'md-6',  item: 'Sapling kit · five seeds',        priceInr: 95,  stock: 250, material: 'Cloth pouch + 5 native seeds',     note: 'Neem · tulsi · amla · guava · curry leaf · all local.', color: '#22C55E', emoji: '🌱' },
+  { id: 'md-7',  item: 'Guardian cap · forest green',     priceInr: 290, stock: 60,  material: 'Organic cotton twill',             note: 'Small run · every cap has a hand-stitched leaf.',        color: '#22C55E', emoji: '🧢' },
+  { id: 'md-8',  item: 'Sticker pack · 12 pieces',        priceInr: 80,  stock: 400, material: 'Recycled paper + plant-based ink', note: 'Designed by four different GD wing members.',           color: '#F472B6', emoji: '🏷️' },
+];
+
+interface GreenOpsItem {
+  id: string;
+  area: string;
+  action: string;
+  owner: string;
+  done: boolean;
+  color: string;
+  emoji: string;
+}
+
+const GREEN_OPS: GreenOpsItem[] = [
+  { id: 'go-1',  area: 'Water',   action: 'Use reusable glass jugs instead of bottled water.',    owner: 'Ops wing',           done: true,  color: '#38BDF8', emoji: '💧' },
+  { id: 'go-2',  area: 'Waste',   action: 'Set up three-bin segregation · wet / dry / e-waste.',  owner: 'Volunteers · green team', done: true, color: '#22C55E', emoji: '♻️' },
+  { id: 'go-3',  area: 'Food',    action: 'Ask vendors to bring reusable plates · no foil.',      owner: 'Food coordinator',   done: true,  color: '#F59E0B', emoji: '🍛' },
+  { id: 'go-4',  area: 'Energy',  action: 'Switch to LED stage lights · cut wattage by 40%.',     owner: 'Photo + lighting',   done: true,  color: '#FDE047', emoji: '💡' },
+  { id: 'go-5',  area: 'Travel',  action: 'Carpool sheet goes live 10 days before the event.',    owner: 'PR wing',            done: true,  color: '#A78BFA', emoji: '🚗' },
+  { id: 'go-6',  area: 'Paper',   action: 'No printed brochures · everything lives in the app.',  owner: 'Content wing',       done: true,  color: '#F472B6', emoji: '🌿' },
+  { id: 'go-7',  area: 'Gifts',   action: 'Speaker gifts are a sapling + a hand-written card.',   owner: 'PR wing',            done: true,  color: '#22C55E', emoji: '🌱' },
+  { id: 'go-8',  area: 'Mugs',    action: '120 reusable mugs · wash + return · no paper cups.',   owner: 'Volunteers · mug desk', done: false, color: '#00D4FF', emoji: '☕' },
+  { id: 'go-9',  area: 'Merch',   action: 'Merch sourced from GOTS + union-shop vendors only.',   owner: 'Merch lead',         done: false, color: '#22C55E', emoji: '👕' },
+  { id: 'go-10', area: 'Audit',   action: 'Post-event waste-audit photo within 48 hours.',        owner: 'Sustainability wing', done: false, color: '#F59E0B', emoji: '📸' },
+];
+
+interface RiskEntry {
+  id: string;
+  risk: string;
+  likelihood: 'low' | 'medium' | 'high';
+  impact: 'low' | 'medium' | 'high';
+  owner: string;
+  mitigation: string;
+  color: string;
+  emoji: string;
+}
+
+const RISK_REGISTER: RiskEntry[] = [
+  { id: 'rk-1', risk: 'Rain · stage lights exposed',        likelihood: 'medium', impact: 'high',   owner: 'Ops wing',    mitigation: 'Two tarps on standby · backup indoor room 2A held.',      color: '#38BDF8', emoji: '🌧️' },
+  { id: 'rk-2', risk: 'Speaker drops out · 48h before',     likelihood: 'medium', impact: 'medium', owner: 'PR wing',      mitigation: 'Reserve list of 3 speakers · each pre-briefed on topic.', color: '#A78BFA', emoji: '🎤' },
+  { id: 'rk-3', risk: 'Crowd overflow · room 1 fills',      likelihood: 'high',   impact: 'medium', owner: 'Volunteers',   mitigation: 'Live relay to room 2B · volunteer guides routing.',       color: '#F59E0B', emoji: '👥' },
+  { id: 'rk-4', risk: 'Power outage · stage + audio',       likelihood: 'low',    impact: 'high',   owner: 'Ops wing',    mitigation: 'Battery-backed PA + 30-min generator on campus.',         color: '#EF4444', emoji: '⚡' },
+  { id: 'rk-5', risk: 'Photo consent mix-up',               likelihood: 'low',    impact: 'high',   owner: 'PR wing',      mitigation: 'Wristbands · green = OK · red = no photo · brief volunteers.', color: '#22C55E', emoji: '📸' },
+  { id: 'rk-6', risk: 'Medical incident · heat exhaustion', likelihood: 'low',    impact: 'high',   owner: 'Medical lead', mitigation: 'Two first-aid stations · 100 ORS packets · on-call doctor.', color: '#F87171', emoji: '🩺' },
+  { id: 'rk-7', risk: 'Wi-Fi saturates during stream',      likelihood: 'medium', impact: 'medium', owner: 'Web wing',     mitigation: 'Dedicated stream SSID · guests use a throttled pool.',    color: '#00D4FF', emoji: '📡' },
+  { id: 'rk-8', risk: 'Food shortage · vendor misjudges',   likelihood: 'low',    impact: 'medium', owner: 'Food lead',    mitigation: 'Two backup vendors on call · 30-min delivery radius.',    color: '#F59E0B', emoji: '🍱' },
+];
+
+interface PhotoBrief {
+  id: string;
+  slot: string;
+  camera: string;
+  mustCapture: string;
+  styleNote: string;
+  color: string;
+  emoji: string;
+}
+
+const PHOTO_BRIEFS: PhotoBrief[] = [
+  { id: 'pb-1', slot: 'Pre-event · 45 min before',        camera: 'Prime · 35mm · natural light',           mustCapture: 'Volunteers setting up · hands-on details · signage.',          styleNote: 'Warm · documentary · no stiff posing · f/2.8.',    color: '#F59E0B', emoji: '🌅' },
+  { id: 'pb-2', slot: 'Opening keynote',                  camera: 'Telephoto · 70–200 · off-stage',         mustCapture: 'Speaker three-quarter · crowd reaction · slide + face duo.',   styleNote: 'Low ISO · sharp · no harsh flash · f/4.',          color: '#A78BFA', emoji: '🎤' },
+  { id: 'pb-3', slot: 'Wing workshops',                   camera: 'Wide 24mm · moving with attendees',      mustCapture: 'Hands on laptops · sticky notes · smiles during debug.',        styleNote: 'Eye-level · follow one pair for 10 min each.',     color: '#F472B6', emoji: '🧑‍💻' },
+  { id: 'pb-4', slot: 'Lunch + tea · courtyard',          camera: 'Prime 50mm · candid',                    mustCapture: 'Reusable mugs · plates · laughter · inter-wing conversations.', styleNote: 'Warm tones · slightly over-exposed · f/1.8.',      color: '#F59E0B', emoji: '☕' },
+  { id: 'pb-5', slot: 'Alumni fireside',                  camera: 'Low light · 85mm · tripod-ready',        mustCapture: 'Mentor + mentee eye-contact · audience in soft blur.',          styleNote: 'Shallow depth · warm · soft bokeh · f/1.8.',       color: '#7E57C2', emoji: '🔥' },
+  { id: 'pb-6', slot: 'Closing group photo',              camera: 'Wide 24mm · step-ladder · flash off',    mustCapture: 'One wide frame · one medium · one candid right after.',         styleNote: 'Tall people back · short people front · 3 takes.', color: '#22C55E', emoji: '📸' },
+];
+
+interface AfterPartyPlan {
+  id: string;
+  name: string;
+  slot: string;
+  capacity: number;
+  vibe: string;
+  signupMode: 'free' | 'rsvp' | 'waitlist';
+  color: string;
+  emoji: string;
+}
+
+const AFTER_PARTY_PLANS: AfterPartyPlan[] = [
+  { id: 'ap-1', name: 'Quiet lounge · chai + board games',     slot: '7:30 pm – 9:30 pm', capacity: 50, vibe: 'Low-stim · no music · warm lighting · chess + carrom.',          signupMode: 'rsvp',     color: '#A78BFA', emoji: '🧘' },
+  { id: 'ap-2', name: 'Open-mic · music + poetry',             slot: '8:00 pm – 10:30 pm', capacity: 120, vibe: 'Acoustic first · volunteers curate slots of 6 min each.',        signupMode: 'rsvp',     color: '#F472B6', emoji: '🎸' },
+  { id: 'ap-3', name: 'Night hike · campus green patch',       slot: '9:00 pm – 10:00 pm', capacity: 30, vibe: 'Twelve-minute loop · two volunteer guides · torches provided.', signupMode: 'waitlist', color: '#22C55E', emoji: '🌳' },
+  { id: 'ap-4', name: 'Gallery walk · this year in photos',    slot: '7:30 pm – 9:00 pm', capacity: 80, vibe: 'Prints up in the courtyard · photographer present for q&a.',     signupMode: 'free',     color: '#F59E0B', emoji: '🖼️' },
+  { id: 'ap-5', name: 'Silent study · late-night hack',        slot: '9:00 pm – 12:00 am', capacity: 40, vibe: 'Quiet only · laptops ok · one volunteer runs tea runs.',         signupMode: 'rsvp',     color: '#00D4FF', emoji: '💻' },
+];
+
+interface WeatherWatch {
+  id: string;
+  hour: string;
+  condition: string;
+  tempC: number;
+  humidity: number;
+  note: string;
+  color: string;
+  emoji: string;
+}
+
+const WEATHER_WATCH: WeatherWatch[] = [
+  { id: 'ww-1', hour: '07:00', condition: 'Cool + dry',        tempC: 19, humidity: 62, note: 'Good for setup · carry a light jacket.',                      color: '#38BDF8', emoji: '🌤️' },
+  { id: 'ww-2', hour: '09:00', condition: 'Clear · mild sun',  tempC: 23, humidity: 58, note: 'Open courtyard is comfortable · flags up.',                  color: '#FDE047', emoji: '☀️' },
+  { id: 'ww-3', hour: '11:00', condition: 'Sunny · warm',      tempC: 28, humidity: 54, note: 'Move panels indoors if over 30 · keep ORS station open.',    color: '#F59E0B', emoji: '🌞' },
+  { id: 'ww-4', hour: '13:00', condition: 'Partly cloudy',     tempC: 30, humidity: 57, note: 'Good for the lunch courtyard · tarps loose but ready.',     color: '#F59E0B', emoji: '⛅' },
+  { id: 'ww-5', hour: '15:00', condition: 'Chance of rain',    tempC: 27, humidity: 72, note: '30% rain · move the photo wall indoors as a precaution.',    color: '#A78BFA', emoji: '🌦️' },
+  { id: 'ww-6', hour: '17:00', condition: 'Drizzle possible',  tempC: 25, humidity: 80, note: 'Have two tarps ready · open-mic shifts inside if needed.',   color: '#7E57C2', emoji: '🌧️' },
+  { id: 'ww-7', hour: '19:00', condition: 'Mild + clear',      tempC: 22, humidity: 68, note: 'Good for the night hike · take torches + whistles.',       color: '#22C55E', emoji: '🌙' },
+  { id: 'ww-8', hour: '21:00', condition: 'Cool + calm',       tempC: 20, humidity: 66, note: 'Close-down shift · courtyard lights on · head-count done.', color: '#38BDF8', emoji: '✨' },
+];
+
 const EventsScreen: React.FC = () => {
   // State
   const [activeTab, setActiveTab] = useState<'upcoming' | 'past'>('upcoming');
@@ -2955,9 +3086,201 @@ const EventsScreen: React.FC = () => {
     );
   };
 
+  const renderMerchSection = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🧺 Merch drops · responsibly sourced</Text>
+        <Text style={styles.sectionHint}>{MERCH_DROPS.length} items · small-run</Text>
+      </View>
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingRight: HORIZONTAL_PADDING }}>
+        {MERCH_DROPS.map((m) => (
+          <View key={m.id} style={[styles.merchCard, { borderColor: m.color + '55' }]}>
+            <Text style={styles.merchEmoji}>{m.emoji}</Text>
+            <Text style={styles.merchItem} numberOfLines={2}>{m.item}</Text>
+            <Text style={[styles.merchPrice, { color: m.color }]}>₹{m.priceInr}</Text>
+            <Text style={styles.merchStock}>{m.stock} in stock</Text>
+            <Text style={styles.merchMaterial} numberOfLines={2}>{m.material}</Text>
+            <Text style={styles.merchNote} numberOfLines={3}>{m.note}</Text>
+          </View>
+        ))}
+      </ScrollView>
+    </View>
+  );
+
+  const renderGreenOps = () => {
+    const doneCount = GREEN_OPS.filter((g) => g.done).length;
+    return (
+      <View style={styles.sectionBlock}>
+        <View style={styles.sectionHeaderRow}>
+          <Text style={styles.sectionTitle}>🌿 Green-ops checklist</Text>
+          <Text style={styles.sectionHint}>
+            {doneCount}/{GREEN_OPS.length} done
+          </Text>
+        </View>
+        {GREEN_OPS.map((g) => (
+          <View key={g.id} style={[styles.goRow, { borderLeftColor: g.color, opacity: g.done ? 0.9 : 1 }]}>
+            <Text style={styles.goEmoji}>{g.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <View style={styles.goTopRow}>
+                <Text style={styles.goArea} numberOfLines={1}>{g.area}</Text>
+                <View
+                  style={[
+                    styles.goStatus,
+                    {
+                      backgroundColor: g.done ? 'rgba(34,197,94,0.18)' : 'rgba(245,158,11,0.18)',
+                    },
+                  ]}
+                >
+                  <Text style={[styles.goStatusText, { color: g.done ? '#22C55E' : '#F59E0B' }]}>
+                    {g.done ? 'done' : 'doing'}
+                  </Text>
+                </View>
+              </View>
+              <Text style={styles.goAction} numberOfLines={2}>{g.action}</Text>
+              <Text style={styles.goOwner} numberOfLines={1}>owner · {g.owner}</Text>
+            </View>
+          </View>
+        ))}
+      </View>
+    );
+  };
+
+  const renderRiskRegister = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🧯 Risk register · and what we do</Text>
+        <Text style={styles.sectionHint}>{RISK_REGISTER.length} tracked</Text>
+      </View>
+      {RISK_REGISTER.map((r) => (
+        <View key={r.id} style={[styles.riskCard, { borderLeftColor: r.color }]}>
+          <View style={styles.riskTopRow}>
+            <Text style={styles.riskEmoji}>{r.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.riskTitle} numberOfLines={2}>{r.risk}</Text>
+              <Text style={styles.riskOwner} numberOfLines={1}>owner · {r.owner}</Text>
+            </View>
+          </View>
+          <View style={styles.riskPillRow}>
+            <View style={styles.riskPill}>
+              <Text style={styles.riskPillLabel}>likelihood</Text>
+              <Text style={styles.riskPillText}>{r.likelihood}</Text>
+            </View>
+            <View style={styles.riskPill}>
+              <Text style={styles.riskPillLabel}>impact</Text>
+              <Text style={styles.riskPillText}>{r.impact}</Text>
+            </View>
+          </View>
+          <Text style={styles.riskMitigation} numberOfLines={3}>{r.mitigation}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderPhotoBriefs = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>📷 Photography briefs · by slot</Text>
+        <Text style={styles.sectionHint}>{PHOTO_BRIEFS.length} briefs</Text>
+      </View>
+      {PHOTO_BRIEFS.map((p) => (
+        <View key={p.id} style={[styles.pbCard, { borderLeftColor: p.color }]}>
+          <View style={styles.pbTopRow}>
+            <Text style={styles.pbEmoji}>{p.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.pbSlot}>{p.slot}</Text>
+              <Text style={styles.pbCamera} numberOfLines={1}>{p.camera}</Text>
+            </View>
+          </View>
+          <Text style={styles.pbSectionLabel}>MUST CAPTURE</Text>
+          <Text style={styles.pbBody} numberOfLines={3}>{p.mustCapture}</Text>
+          <Text style={styles.pbSectionLabel}>STYLE NOTE</Text>
+          <Text style={styles.pbBody} numberOfLines={2}>{p.styleNote}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderAfterParty = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🌙 After-party plans</Text>
+        <Text style={styles.sectionHint}>{AFTER_PARTY_PLANS.length} tracks</Text>
+      </View>
+      {AFTER_PARTY_PLANS.map((a) => (
+        <View key={a.id} style={[styles.apCard, { borderLeftColor: a.color }]}>
+          <View style={styles.apTopRow}>
+            <Text style={styles.apEmoji}>{a.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.apName} numberOfLines={2}>{a.name}</Text>
+              <Text style={styles.apSlot}>{a.slot}</Text>
+            </View>
+            <View
+              style={[
+                styles.apSignup,
+                {
+                  backgroundColor:
+                    a.signupMode === 'free'
+                      ? 'rgba(34,197,94,0.18)'
+                      : a.signupMode === 'rsvp'
+                      ? 'rgba(0,212,255,0.18)'
+                      : 'rgba(245,158,11,0.18)',
+                },
+              ]}
+            >
+              <Text
+                style={[
+                  styles.apSignupText,
+                  {
+                    color:
+                      a.signupMode === 'free'
+                        ? '#22C55E'
+                        : a.signupMode === 'rsvp'
+                        ? '#00D4FF'
+                        : '#F59E0B',
+                  },
+                ]}
+              >
+                {a.signupMode}
+              </Text>
+            </View>
+          </View>
+          <Text style={styles.apCapacity}>cap · {a.capacity} people</Text>
+          <Text style={styles.apVibe} numberOfLines={3}>{a.vibe}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderWeatherWatch = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🌦️ Weather watch · event day</Text>
+        <Text style={styles.sectionHint}>hourly outlook</Text>
+      </View>
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingRight: HORIZONTAL_PADDING }}>
+        {WEATHER_WATCH.map((w) => (
+          <View key={w.id} style={[styles.wwCard, { borderColor: w.color + '55' }]}>
+            <Text style={styles.wwHour}>{w.hour}</Text>
+            <Text style={styles.wwEmoji}>{w.emoji}</Text>
+            <Text style={[styles.wwTemp, { color: w.color }]}>{w.tempC}°C</Text>
+            <Text style={styles.wwCondition} numberOfLines={2}>{w.condition}</Text>
+            <Text style={styles.wwHumidity}>{w.humidity}% rh</Text>
+            <Text style={styles.wwNote} numberOfLines={3}>{w.note}</Text>
+          </View>
+        ))}
+      </ScrollView>
+    </View>
+  );
+
   const renderExtrasFooter = () => (
     <View>
       {renderCalendarSection()}
+      {renderWeatherWatch()}
+      {renderGreenOps()}
+      {renderRiskRegister()}
+      {renderPhotoBriefs()}
+      {renderAfterParty()}
+      {renderMerchSection()}
       {renderScheduleSection()}
       {renderTicketsSection()}
       {renderSpeakersSection()}
@@ -5171,6 +5494,131 @@ const styles = StyleSheet.create({
   schedEnd: { color: Colors.text.muted, fontSize: 10, marginTop: 1 },
   schedTitle: { color: Colors.text.primary, fontSize: 12, fontWeight: '800', lineHeight: 16 },
   schedMeta: { color: Colors.text.muted, fontSize: 10, marginTop: 2 },
+
+  // Phase 3t shared section wrappers
+  sectionBlock: {
+    paddingHorizontal: HORIZONTAL_PADDING,
+    marginTop: 20,
+  },
+  sectionHeaderRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+
+  // Merch
+  merchCard: {
+    width: 180,
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginRight: 10,
+    borderWidth: 1,
+  },
+  merchEmoji: { fontSize: 28 },
+  merchItem: { color: Colors.text.primary, fontSize: 12, fontWeight: '800', marginTop: 8, lineHeight: 16 },
+  merchPrice: { fontSize: 18, fontWeight: '900', marginTop: 6 },
+  merchStock: { color: Colors.text.muted, fontSize: 10, marginTop: 2 },
+  merchMaterial: { color: Colors.text.secondary, fontSize: 10, lineHeight: 13, marginTop: 6 },
+  merchNote: { color: Colors.text.muted, fontSize: 10, lineHeight: 13, marginTop: 4, fontStyle: 'italic' },
+
+  // Green ops
+  goRow: {
+    flexDirection: 'row',
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginBottom: 8,
+    borderLeftWidth: 3,
+  },
+  goEmoji: { fontSize: 22, marginRight: 10, marginTop: 2 },
+  goTopRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  goArea: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', flex: 1 },
+  goStatus: { paddingHorizontal: 8, paddingVertical: 2, borderRadius: 999, marginLeft: 8 },
+  goStatusText: { fontSize: 9, fontWeight: '900', letterSpacing: 1, textTransform: 'uppercase' },
+  goAction: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4 },
+  goOwner: { color: Colors.text.muted, fontSize: 10, marginTop: 4, fontStyle: 'italic' },
+
+  // Risk
+  riskCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  riskTopRow: { flexDirection: 'row', alignItems: 'flex-start' },
+  riskEmoji: { fontSize: 22, marginRight: 10, marginTop: 2 },
+  riskTitle: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', lineHeight: 17 },
+  riskOwner: { color: Colors.text.muted, fontSize: 10, marginTop: 2, fontStyle: 'italic' },
+  riskPillRow: { flexDirection: 'row', marginTop: 8, gap: 8 },
+  riskPill: {
+    flex: 1,
+    backgroundColor: 'rgba(255,255,255,0.04)',
+    borderRadius: 10,
+    padding: 8,
+  },
+  riskPillLabel: { color: Colors.text.muted, fontSize: 9, fontWeight: '900', letterSpacing: 1, textTransform: 'uppercase' },
+  riskPillText: { color: Colors.text.primary, fontSize: 12, fontWeight: '800', marginTop: 2, textTransform: 'capitalize' },
+  riskMitigation: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8 },
+
+  // Photo briefs
+  pbCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  pbTopRow: { flexDirection: 'row', alignItems: 'center' },
+  pbEmoji: { fontSize: 22, marginRight: 10 },
+  pbSlot: { color: Colors.text.primary, fontSize: 13, fontWeight: '800' },
+  pbCamera: { color: Colors.text.secondary, fontSize: 11, marginTop: 2 },
+  pbSectionLabel: {
+    color: Colors.text.muted,
+    fontSize: 9,
+    fontWeight: '900',
+    letterSpacing: 1.5,
+    textTransform: 'uppercase',
+    marginTop: 10,
+    marginBottom: 4,
+  },
+  pbBody: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15 },
+
+  // After-party
+  apCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  apTopRow: { flexDirection: 'row', alignItems: 'center' },
+  apEmoji: { fontSize: 22, marginRight: 10 },
+  apName: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', lineHeight: 17 },
+  apSlot: { color: Colors.text.muted, fontSize: 11, marginTop: 2 },
+  apSignup: { paddingHorizontal: 8, paddingVertical: 3, borderRadius: 999, marginLeft: 8 },
+  apSignupText: { fontSize: 9, fontWeight: '900', letterSpacing: 1, textTransform: 'uppercase' },
+  apCapacity: { color: Colors.text.secondary, fontSize: 11, marginTop: 8, fontWeight: '700' },
+  apVibe: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 6 },
+
+  // Weather
+  wwCard: {
+    width: 140,
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginRight: 10,
+    borderWidth: 1,
+    alignItems: 'flex-start',
+  },
+  wwHour: { color: Colors.text.muted, fontSize: 10, fontWeight: '900', letterSpacing: 1 },
+  wwEmoji: { fontSize: 30, marginTop: 6 },
+  wwTemp: { fontSize: 20, fontWeight: '900', marginTop: 6 },
+  wwCondition: { color: Colors.text.primary, fontSize: 12, fontWeight: '700', marginTop: 4, lineHeight: 16 },
+  wwHumidity: { color: Colors.text.muted, fontSize: 10, marginTop: 2 },
+  wwNote: { color: Colors.text.secondary, fontSize: 10, lineHeight: 13, marginTop: 6 },
 });
 
 export default EventsScreen;
