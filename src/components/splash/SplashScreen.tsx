@@ -52,6 +52,15 @@ import NebulaCloudsEffect from './NebulaCloudsEffect';
 import VortexEffect from './VortexEffect';
 import ChromaWaveEffect from './ChromaWaveEffect';
 import UltimateFusionEffect from './UltimateFusionEffect';
+import FallingLeavesEffect from './FallingLeavesEffect';
+import SunbeamsEffect from './SunbeamsEffect';
+import FirefliesEffect from './FirefliesEffect';
+import ForestSilhouetteEffect from './ForestSilhouetteEffect';
+import PetalDriftEffect from './PetalDriftEffect';
+import GentleRainEffect from './GentleRainEffect';
+import MistLayerEffect from './MistLayerEffect';
+import BirdsFlightEffect from './BirdsFlightEffect';
+import BloomBurstEffect from './BloomBurstEffect';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 const IS_SMALL = SCREEN_WIDTH < 375;
@@ -321,6 +330,16 @@ interface EffectVisibility {
   vortex: boolean;
   logoReveal: boolean;
   scanline: boolean;
+  // Nature layer
+  fallingLeaves: boolean;
+  sunbeams: boolean;
+  fireflies: boolean;
+  forestSilhouette: boolean;
+  petalDrift: boolean;
+  gentleRain: boolean;
+  mistLayer: boolean;
+  birdsFlight: boolean;
+  bloomBurst: boolean;
 }
 
 const visibilityForStage = (key: StageKey): EffectVisibility => {
@@ -355,10 +374,19 @@ const visibilityForStage = (key: StageKey): EffectVisibility => {
     vortex: false,
     logoReveal: false,
     scanline: true,
+    fallingLeaves: false,
+    sunbeams: false,
+    fireflies: false,
+    forestSilhouette: false,
+    petalDrift: false,
+    gentleRain: false,
+    mistLayer: false,
+    birdsFlight: false,
+    bloomBurst: false,
   };
   switch (key) {
     case 'boot':
-      return { ...base, particleSystem: true };
+      return { ...base, particleSystem: true, fireflies: true };
     case 'cosmos':
       return {
         ...base,
@@ -366,6 +394,7 @@ const visibilityForStage = (key: StageKey): EffectVisibility => {
         starField: true,
         cosmicDust: true,
         nebulaClouds: true,
+        fireflies: true,
       };
     case 'nature':
       return {
@@ -375,6 +404,14 @@ const visibilityForStage = (key: StageKey): EffectVisibility => {
         auroraBorealis: true,
         waveform: true,
         energyFlow: true,
+        fallingLeaves: true,
+        sunbeams: true,
+        fireflies: true,
+        forestSilhouette: true,
+        petalDrift: true,
+        mistLayer: true,
+        birdsFlight: true,
+        bloomBurst: true,
       };
     case 'tech':
       return {
@@ -410,6 +447,8 @@ const visibilityForStage = (key: StageKey): EffectVisibility => {
         lightBeam: true,
         ringPulse: true,
         glow: true,
+        fireflies: true,
+        sunbeams: true,
       };
     case 'brand':
       return {
@@ -419,6 +458,8 @@ const visibilityForStage = (key: StageKey): EffectVisibility => {
         ripple: true,
         plasmaField: true,
         chromaWave: true,
+        fireflies: true,
+        petalDrift: true,
       };
     case 'outro':
       return {
@@ -428,6 +469,8 @@ const visibilityForStage = (key: StageKey): EffectVisibility => {
         plasmaField: true,
         ringPulse: true,
         vortex: true,
+        fireflies: true,
+        bloomBurst: true,
       };
     default:
       return base;
@@ -976,6 +1019,35 @@ const SplashScreen: React.FC<SplashScreenProps> = ({
       {v.auroraBorealis ? <AuroraBorealisEffect active /> : null}
       {v.waveform ? <WaveformEffect active /> : null}
       {v.energyFlow ? <EnergyFlow active /> : null}
+
+      {/* Nature vibe layer (new) */}
+      {v.forestSilhouette ? (
+        <ForestSilhouetteEffect reduceMotion={reduceMotion} />
+      ) : null}
+      {v.mistLayer ? (
+        <MistLayerEffect reduceMotion={reduceMotion} tint="cool" density="normal" />
+      ) : null}
+      {v.sunbeams ? (
+        <SunbeamsEffect reduceMotion={reduceMotion} density="normal" />
+      ) : null}
+      {v.gentleRain ? (
+        <GentleRainEffect reduceMotion={reduceMotion} density="soft" />
+      ) : null}
+      {v.fallingLeaves ? (
+        <FallingLeavesEffect reduceMotion={reduceMotion} />
+      ) : null}
+      {v.petalDrift ? (
+        <PetalDriftEffect reduceMotion={reduceMotion} density="soft" />
+      ) : null}
+      {v.birdsFlight ? (
+        <BirdsFlightEffect reduceMotion={reduceMotion} density="soft" />
+      ) : null}
+      {v.bloomBurst ? (
+        <BloomBurstEffect reduceMotion={reduceMotion} density="soft" />
+      ) : null}
+      {v.fireflies ? (
+        <FirefliesEffect reduceMotion={reduceMotion} density="soft" />
+      ) : null}
 
       {/* Tech stage */}
       {v.neuralNetwork ? <NeuralNetwork active /> : null}
