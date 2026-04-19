@@ -1401,6 +1401,146 @@ const COMMUNITY_PACTS: CommunityPact[] = [
   { id: 'cp-6', line: 'Leftovers are shared · never thrown.',                    detail: 'Any unclaimed food goes to the Ops wing bag · carried to the shelter that same night.',      color: '#F59E0B', emoji: '🥡' },
 ];
 
+// =====================================================
+// Phase 3af: deeper events structures — round 2
+// =====================================================
+
+interface EventGreenScorecard {
+  id: string;
+  metric: string;
+  target: string;
+  tracked: string;
+  owner: string;
+  color: string;
+  emoji: string;
+}
+
+const EVENT_GREEN_SCORECARDS: EventGreenScorecard[] = [
+  { id: 'egs-1', metric: 'Single-use plastic at venue',          target: '0 items · no exception',                  tracked: 'Sweep at 3 points · 10 AM · 2 PM · 6 PM',        owner: 'Green captain',         color: '#22C55E', emoji: '🚯' },
+  { id: 'egs-2', metric: 'Food waste · kg per attendee',         target: '≤ 40 g · industry avg 200 g',             tracked: 'Weighed at close · scale by the kitchen',          owner: 'Food vendor lead',      color: '#F59E0B', emoji: '🍲' },
+  { id: 'egs-3', metric: 'Renewable energy share',               target: '≥ 60% for electrical load',                tracked: 'Solar + grid mix reported by AV team',              owner: 'AV + logistics',        color: '#FFD166', emoji: '☀️' },
+  { id: 'egs-4', metric: 'Attendees on shared transport',         target: '≥ 70%',                                   tracked: 'Check-in form · carpool + shuttle tag',            owner: 'Travel desk',            color: '#00D4FF', emoji: '🚌' },
+  { id: 'egs-5', metric: 'Signage reuse · next event',            target: '≥ 80% of boards reused',                   tracked: 'Post-event catalogue · photo + storage shelf',     owner: 'Design + logistics',    color: '#A78BFA', emoji: '🪧' },
+  { id: 'egs-6', metric: 'Saplings planted per 100 attendees',    target: '≥ 5 saplings',                            tracked: 'Post-event tree walk roster',                      owner: 'Green team',             color: '#16A34A', emoji: '🌱' },
+  { id: 'egs-7', metric: 'Paper printed · A4 equivalents',         target: '≤ 0.5 sheets per attendee',               tracked: 'Printer meter before + after',                      owner: 'Ops desk',               color: '#F472B6', emoji: '📄' },
+];
+
+interface EventCrewRotation {
+  id: string;
+  slot: string;
+  time: string;
+  station: string;
+  leads: string;
+  note: string;
+  color: string;
+  emoji: string;
+}
+
+const EVENT_CREW_ROTATIONS: EventCrewRotation[] = [
+  { id: 'ecr-1', slot: 'Gate · morning',        time: '7:30 – 10:00 AM',   station: 'South gate · check-in',     leads: 'A. Kumar · N. Shetty',  note: 'Badges + seated map handover · no one stands alone at the gate.', color: '#F59E0B', emoji: '🎟️' },
+  { id: 'ecr-2', slot: 'Gate · noon',            time: '10:00 AM – 1:00 PM', station: 'South gate · walk-ins',      leads: 'R. Iqbal · T. Verma',   note: 'Live count on iPad · escalate after 90% cap.',                    color: '#FFD166', emoji: '🔁' },
+  { id: 'ecr-3', slot: 'Stage · morning',         time: '8:30 – 12:30 PM',    station: 'Main stage · AV + MC',        leads: 'K. Das · P. Mehta',      note: 'Mic test logged at the top of the hour · every hour.',             color: '#00D4FF', emoji: '🎙️' },
+  { id: 'ecr-4', slot: 'Food desk',                time: '12:00 – 3:00 PM',    station: 'North lawn · counter',       leads: 'Hospitality crew ×4',    note: 'Vegan + gluten-free queues marked · allergy cards visible.',        color: '#22C55E', emoji: '🍽️' },
+  { id: 'ecr-5', slot: 'Medical',                  time: 'Open · 7 AM – 10 PM', station: 'Medical tent · east',      leads: 'Dr. Iyer · on call',       note: 'Defibrillator stocked · two stretchers · shift log signed hourly.',  color: '#EF4444', emoji: '🚑' },
+  { id: 'ecr-6', slot: 'Photo · golden hour',     time: '5:30 – 7:00 PM',    station: 'All corners · roaming',     leads: 'Photo wing ×3',          note: 'Consent badges respected · no candid flash on minors.',            color: '#F472B6', emoji: '📸' },
+  { id: 'ecr-7', slot: 'Teardown',                  time: '9:00 – 11:30 PM',   station: 'Main stage + lawn',           leads: 'Ops + volunteer pool', note: 'Dimmed lights · no shouting · drinks + packed dinners by 11.',      color: '#A78BFA', emoji: '🌙' },
+];
+
+interface EventBackstageNote {
+  id: string;
+  moment: string;
+  detail: string;
+  owner: string;
+  color: string;
+  emoji: string;
+}
+
+const EVENT_BACKSTAGE_NOTES: EventBackstageNote[] = [
+  { id: 'ebn-1', moment: 'Soundcheck · night before',       detail: 'Three songs minimum · mic + monitors labelled · recording saved to shared drive.',     owner: 'AV lead',                  color: '#00D4FF', emoji: '🎚️' },
+  { id: 'ebn-2', moment: 'Green-room welcome',                detail: 'Water · one hot drink · a printed single-page run-sheet · phone charger per artist.', owner: 'Hospitality',              color: '#F59E0B', emoji: '🫖' },
+  { id: 'ebn-3', moment: 'Stage hand-off',                     detail: 'Every segment has a named hand-off · not "next up" · but "hand Radhika to Priya".',   owner: 'Stage manager',            color: '#F472B6', emoji: '🪄' },
+  { id: 'ebn-4', moment: 'Silent minute · before the doors',    detail: '5:55 PM · crew pauses · one minute · then doors open · resets the tone.',             owner: 'All leads',                 color: '#A78BFA', emoji: '🌙' },
+  { id: 'ebn-5', moment: 'Quiet corner',                        detail: 'A small unlit corner for anyone overwhelmed · sofa · one person on call.',             owner: 'Care desk',                color: '#22C55E', emoji: '🪴' },
+  { id: 'ebn-6', moment: 'Off-mic check-ins',                    detail: 'Every hour · leads ask: "eaten? water? ok?" · not "is it going well?".',               owner: 'Anchor lead',               color: '#FFD166', emoji: '🫂' },
+  { id: 'ebn-7', moment: 'Closing circle',                        detail: 'After doors close · crew forms a circle · one thank-you each · then kitchen.',        owner: 'Founder',                   color: '#EF4444', emoji: '🕯️' },
+];
+
+interface EventSensoryCheck {
+  id: string;
+  sense: string;
+  check: string;
+  pass: string;
+  fail: string;
+  color: string;
+  emoji: string;
+}
+
+const EVENT_SENSORY_CHECKS: EventSensoryCheck[] = [
+  { id: 'esc-1', sense: 'Sound',   check: 'dB level at the back row',              pass: '≤ 85 dB peak',                   fail: 'pull house volume by 10%',                   color: '#00D4FF', emoji: '🎧' },
+  { id: 'esc-2', sense: 'Light',    check: 'Flash cadence in visuals',               pass: 'no sub-3-Hz strobe',              fail: 'swap slide · dim ambient',                    color: '#FFD166', emoji: '💡' },
+  { id: 'esc-3', sense: 'Scent',     check: 'No overpowering essential oils',          pass: 'neutral in 90% of the hall',      fail: 'vent for 10 min · switch to unscented',        color: '#A78BFA', emoji: '🌸' },
+  { id: 'esc-4', sense: 'Seating',    check: 'Cushions available at request',          pass: '≥ 20 cushions stocked',           fail: 'runner to stores · 3 min SLA',                 color: '#F472B6', emoji: '🪑' },
+  { id: 'esc-5', sense: 'Quiet zone',  check: 'Noise leak from stage',                  pass: '≤ 55 dB at quiet corner',         fail: 'close curtain · route guests',                  color: '#22C55E', emoji: '🤫' },
+  { id: 'esc-6', sense: 'Air',         check: 'CO₂ level in main hall',                 pass: '≤ 900 ppm',                      fail: 'open two doors · 15 min circulation',           color: '#16A34A', emoji: '🍃' },
+];
+
+interface EventCostLedger {
+  id: string;
+  line: string;
+  inr: string;
+  notes: string;
+  color: string;
+  emoji: string;
+}
+
+const EVENT_COST_LEDGER: EventCostLedger[] = [
+  { id: 'ecl-1',  line: 'Venue · lawn + amphitheatre',            inr: '₹ 0 · campus grant',           notes: 'Zero-rent · logged against facilities budget.',            color: '#16A34A', emoji: '🏞️' },
+  { id: 'ecl-2',  line: 'AV · sound + lights + LED',                inr: '₹ 48,000',                    notes: 'Split three-way · reused truss from prior gig.',            color: '#00D4FF', emoji: '🎚️' },
+  { id: 'ecl-3',  line: 'Food · two meals + chai',                   inr: '₹ 62,000',                    notes: '₹ 124 per head · buffet · three stations.',                 color: '#F59E0B', emoji: '🍲' },
+  { id: 'ecl-4',  line: 'Signage · reusable · rental-free',             inr: '₹ 7,500',                     notes: '80% boards from last event · 20% fresh paint.',             color: '#A78BFA', emoji: '🪧' },
+  { id: 'ecl-5',  line: 'Speaker travel + hospitality',                   inr: '₹ 22,000',                    notes: 'Economy rail · two hotel nights · per-diem.',               color: '#F472B6', emoji: '✈️' },
+  { id: 'ecl-6',  line: 'Swag · 200 kits · no plastic',                    inr: '₹ 18,000',                    notes: 'Cotton bags · printed in-house · bookmarks from recycled card.', color: '#FFD166', emoji: '🎁' },
+  { id: 'ecl-7',  line: 'Medical cover · on-call',                            inr: '₹ 3,500',                     notes: 'Dr. + paramedic + stocked tent.',                           color: '#EF4444', emoji: '🚑' },
+  { id: 'ecl-8',  line: 'Contingency · 8%',                                 inr: '₹ 12,800',                    notes: 'Held in reserve · return what is unused.',                   color: '#38BDF8', emoji: '🛟' },
+];
+
+interface EventAfterCircle {
+  id: string;
+  moment: string;
+  did: string;
+  learned: string;
+  color: string;
+  emoji: string;
+}
+
+const EVENT_AFTER_CIRCLES: EventAfterCircle[] = [
+  { id: 'eac-1', moment: 'Closing circle · 48 people',                         did: 'Each crew member named one thing that worked · one thing to tune.',             learned: 'Our pre-doors silent minute made doors feel warmer · keep it.',                                              color: '#A78BFA', emoji: '🕯️' },
+  { id: 'eac-2', moment: 'Next-day pulse · 72 hours',                          did: 'Three questions · 1-5 scale · one free-text · sent to 612 attendees.',           learned: 'Sound at back row rated 3.2 · front 4.6 · move speakers forward next time.',                                    color: '#00D4FF', emoji: '📈' },
+  { id: 'eac-3', moment: 'Quiet debrief · 7 days',                            did: 'Lead only · 90 minutes · no phones · one page shared across wings.',              learned: 'Food station spacing caused a bottleneck · two smaller counters next time.',                                  color: '#F59E0B', emoji: '🗒️' },
+  { id: 'eac-4', moment: 'Thank-you mail · signed by all leads',                  did: 'Physical cards · hand-signed · sent within 10 days to 14 external guests.',     learned: 'One artist cancelled the next paid gig · kept our slot · the card mattered.',                                  color: '#F472B6', emoji: '✉️' },
+  { id: 'eac-5', moment: 'Green-scorecard review · 2 weeks',                       did: 'Every metric reviewed · variance logged · next event targets moved 5% tighter.',  learned: 'Food-waste target hit at 38 g · pushed next target to 30 g.',                                               color: '#22C55E', emoji: '🌿' },
+  { id: 'eac-6', moment: 'Story drop · 30 days',                                  did: 'Public recap · photos + numbers + one story · posted to blog + digest.',        learned: 'A first-year\'s first post went viral inside · promoted them to content core.',                               color: '#FFD166', emoji: '📜' },
+];
+
+interface EventCodeOfCare {
+  id: string;
+  pillar: string;
+  oneLine: string;
+  guideline: string;
+  color: string;
+  emoji: string;
+}
+
+const EVENT_CODE_OF_CARE: EventCodeOfCare[] = [
+  { id: 'eco-1', pillar: 'Consent',          oneLine: 'Ask · every time · for every camera.',                            guideline: 'Orange wristband = no photos · we train 100% of photo volunteers · no exceptions.',                   color: '#EF4444', emoji: '🎀' },
+  { id: 'eco-2', pillar: 'Accessibility',   oneLine: 'Ramp · captions · quiet corner · always.',                         guideline: 'Pre-event accessibility audit signed · quiet corner staffed · captions on live stream.',           color: '#38BDF8', emoji: '♿' },
+  { id: 'eco-3', pillar: 'Kindness',          oneLine: 'Soft lights · softer voices.',                                   guideline: 'Crew is trained · one warning · then quiet walk outside · no shouting match at an event.',            color: '#F472B6', emoji: '🫀' },
+  { id: 'eco-4', pillar: 'Safety',             oneLine: 'Medical tent · exits lit · phones charged.',                      guideline: 'Every stewards\' phone shares medical contact + nearest exit + care-desk WhatsApp link.',             color: '#F59E0B', emoji: '🛟' },
+  { id: 'eco-5', pillar: 'Sobriety-respect', oneLine: 'No pressure · sober is cool.',                                      guideline: 'One mocktail bar equal in size to the bar · visible sober crew · no coaxing.',                         color: '#22C55E', emoji: '🍋' },
+  { id: 'eco-6', pillar: 'Green',                oneLine: 'We leave the place cleaner than we found it.',                     guideline: 'Sweep at close · two-bin audit · compost pick-up confirmed before lights off.',                       color: '#16A34A', emoji: '🌿' },
+  { id: 'eco-7', pillar: 'Pay + credits',          oneLine: 'Every artist · fairly paid · properly credited.',                  guideline: 'No "expose for exposure" gigs · minimum stipend · signed agreement in advance · name on poster.',     color: '#FFD166', emoji: '💚' },
+];
+
 const EventsScreen: React.FC = () => {
   // State
   const [activeTab, setActiveTab] = useState<'upcoming' | 'past'>('upcoming');
@@ -3591,8 +3731,165 @@ const EventsScreen: React.FC = () => {
     </View>
   );
 
+  // ------ Phase 3af blocks ------
+  const renderGreenScorecards = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🟢 Green scorecard · targets we actually track</Text>
+        <Text style={styles.sectionHint}>{EVENT_GREEN_SCORECARDS.length} metrics</Text>
+      </View>
+      {EVENT_GREEN_SCORECARDS.map((g) => (
+        <View key={g.id} style={[styles.egsCard, { borderLeftColor: g.color }]}>
+          <View style={styles.egsTopRow}>
+            <Text style={styles.egsEmoji}>{g.emoji}</Text>
+            <Text style={styles.egsMetric} numberOfLines={2}>{g.metric}</Text>
+          </View>
+          <View style={styles.egsMetaRow}>
+            <Text style={styles.egsMetaLabel}>target · <Text style={[styles.egsMetaValue, { color: g.color }]}>{g.target}</Text></Text>
+            <Text style={styles.egsMetaLabel}>owner · <Text style={styles.egsMetaValue}>{g.owner}</Text></Text>
+          </View>
+          <Text style={styles.egsTracked} numberOfLines={2}>{g.tracked}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderCrewRotations = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🧑‍🤝‍🧑 Crew rotations · every station has a name</Text>
+        <Text style={styles.sectionHint}>{EVENT_CREW_ROTATIONS.length} shifts</Text>
+      </View>
+      {EVENT_CREW_ROTATIONS.map((r) => (
+        <View key={r.id} style={[styles.ecrCard, { borderLeftColor: r.color }]}>
+          <View style={styles.ecrTopRow}>
+            <Text style={styles.ecrEmoji}>{r.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.ecrSlot} numberOfLines={1}>{r.slot}</Text>
+              <Text style={[styles.ecrTime, { color: r.color }]}>{r.time}</Text>
+            </View>
+          </View>
+          <Text style={styles.ecrStation} numberOfLines={1}>📍 {r.station}</Text>
+          <Text style={styles.ecrLeads} numberOfLines={1}>leads · {r.leads}</Text>
+          <Text style={styles.ecrNote} numberOfLines={2}>→ {r.note}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderBackstageNotes = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🎭 Backstage notes · how we hold the crew</Text>
+        <Text style={styles.sectionHint}>{EVENT_BACKSTAGE_NOTES.length} moments</Text>
+      </View>
+      {EVENT_BACKSTAGE_NOTES.map((b) => (
+        <View key={b.id} style={[styles.ebnCard, { borderLeftColor: b.color }]}>
+          <View style={styles.ebnTopRow}>
+            <Text style={styles.ebnEmoji}>{b.emoji}</Text>
+            <Text style={styles.ebnMoment} numberOfLines={2}>{b.moment}</Text>
+          </View>
+          <Text style={styles.ebnDetail} numberOfLines={3}>{b.detail}</Text>
+          <Text style={styles.ebnOwner} numberOfLines={1}>— {b.owner}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderSensoryChecks = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🫧 Sensory checks · small things matter</Text>
+        <Text style={styles.sectionHint}>{EVENT_SENSORY_CHECKS.length} checks</Text>
+      </View>
+      {EVENT_SENSORY_CHECKS.map((s) => (
+        <View key={s.id} style={[styles.escCard, { borderLeftColor: s.color }]}>
+          <View style={styles.escTopRow}>
+            <Text style={styles.escEmoji}>{s.emoji}</Text>
+            <Text style={styles.escSense} numberOfLines={1}>{s.sense}</Text>
+          </View>
+          <Text style={styles.escCheck} numberOfLines={2}>{s.check}</Text>
+          <View style={styles.escPillRow}>
+            <View style={[styles.escPillPass, { borderColor: s.color + '66', backgroundColor: s.color + '18' }]}>
+              <Text style={[styles.escPillText, { color: s.color }]}>✓ {s.pass}</Text>
+            </View>
+            <View style={[styles.escPillFail, { borderColor: 'rgba(239,68,68,0.5)' }]}>
+              <Text style={styles.escPillFailText} numberOfLines={2}>↳ {s.fail}</Text>
+            </View>
+          </View>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderCostLedger = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🧾 Cost ledger · a flagship event · honestly</Text>
+        <Text style={styles.sectionHint}>{EVENT_COST_LEDGER.length} lines</Text>
+      </View>
+      {EVENT_COST_LEDGER.map((l) => (
+        <View key={l.id} style={[styles.eclRow, { borderLeftColor: l.color }]}>
+          <Text style={styles.eclEmoji}>{l.emoji}</Text>
+          <View style={{ flex: 1 }}>
+            <Text style={styles.eclLine} numberOfLines={1}>{l.line}</Text>
+            <Text style={styles.eclNotes} numberOfLines={2}>{l.notes}</Text>
+          </View>
+          <Text style={[styles.eclInr, { color: l.color }]} numberOfLines={1}>{l.inr}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderAfterCircles = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🕯️ After the event · the quiet work</Text>
+        <Text style={styles.sectionHint}>{EVENT_AFTER_CIRCLES.length} rituals</Text>
+      </View>
+      {EVENT_AFTER_CIRCLES.map((a) => (
+        <View key={a.id} style={[styles.eacCard, { borderLeftColor: a.color }]}>
+          <View style={styles.eacTopRow}>
+            <Text style={styles.eacEmoji}>{a.emoji}</Text>
+            <Text style={styles.eacMoment} numberOfLines={2}>{a.moment}</Text>
+          </View>
+          <Text style={styles.eacDid} numberOfLines={3}>{a.did}</Text>
+          <Text style={styles.eacLearned} numberOfLines={3}>→ {a.learned}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderCodeOfCare = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🫂 Code of care · non-negotiables</Text>
+        <Text style={styles.sectionHint}>{EVENT_CODE_OF_CARE.length} pillars</Text>
+      </View>
+      {EVENT_CODE_OF_CARE.map((c) => (
+        <View key={c.id} style={[styles.ecoCard, { borderLeftColor: c.color }]}>
+          <View style={styles.ecoTopRow}>
+            <Text style={styles.ecoEmoji}>{c.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.ecoPillar} numberOfLines={1}>{c.pillar}</Text>
+              <Text style={[styles.ecoOneLine, { color: c.color }]} numberOfLines={2}>{c.oneLine}</Text>
+            </View>
+          </View>
+          <Text style={styles.ecoGuideline} numberOfLines={3}>→ {c.guideline}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
   const renderExtrasFooter = () => (
     <View>
+      {renderGreenScorecards()}
+      {renderCrewRotations()}
+      {renderBackstageNotes()}
+      {renderSensoryChecks()}
+      {renderCostLedger()}
+      {renderAfterCircles()}
+      {renderCodeOfCare()}
       {renderCalendarSection()}
       {renderWeatherWatch()}
       {renderGreenPledges()}
@@ -6081,6 +6378,133 @@ const styles = StyleSheet.create({
   cpEmoji: { fontSize: 22, marginRight: 10 },
   cpLine: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', flex: 1, lineHeight: 17 },
   cpDetail: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 6, paddingLeft: 32 },
+
+  // --- Phase 3af: green scorecards ---
+  egsCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginHorizontal: HORIZONTAL_PADDING,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  egsTopRow: { flexDirection: 'row', alignItems: 'center' },
+  egsEmoji: { fontSize: 22, marginRight: 10 },
+  egsMetric: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', flex: 1, lineHeight: 17 },
+  egsMetaRow: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 8, paddingLeft: 32 },
+  egsMetaLabel: { color: Colors.text.muted, fontSize: 10 },
+  egsMetaValue: { color: Colors.text.primary, fontSize: 11, fontWeight: '800' },
+  egsTracked: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 6, paddingLeft: 32, fontStyle: 'italic' },
+
+  // --- Phase 3af: crew rotations ---
+  ecrCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginHorizontal: HORIZONTAL_PADDING,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  ecrTopRow: { flexDirection: 'row', alignItems: 'center' },
+  ecrEmoji: { fontSize: 22, marginRight: 10 },
+  ecrSlot: { color: Colors.text.primary, fontSize: 13, fontWeight: '800' },
+  ecrTime: { fontSize: 11, fontWeight: '900', marginTop: 2, letterSpacing: 0.5 },
+  ecrStation: { color: Colors.text.secondary, fontSize: 11, marginTop: 6, paddingLeft: 32 },
+  ecrLeads: { color: Colors.text.muted, fontSize: 10, marginTop: 3, paddingLeft: 32, fontStyle: 'italic' },
+  ecrNote: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 6, paddingLeft: 32 },
+
+  // --- Phase 3af: backstage notes ---
+  ebnCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginHorizontal: HORIZONTAL_PADDING,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  ebnTopRow: { flexDirection: 'row', alignItems: 'center' },
+  ebnEmoji: { fontSize: 22, marginRight: 10 },
+  ebnMoment: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', flex: 1, lineHeight: 17 },
+  ebnDetail: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 6, paddingLeft: 32 },
+  ebnOwner: { color: Colors.text.muted, fontSize: 10, marginTop: 4, paddingLeft: 32, fontStyle: 'italic' },
+
+  // --- Phase 3af: sensory checks ---
+  escCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginHorizontal: HORIZONTAL_PADDING,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  escTopRow: { flexDirection: 'row', alignItems: 'center' },
+  escEmoji: { fontSize: 22, marginRight: 10 },
+  escSense: { color: Colors.text.primary, fontSize: 13, fontWeight: '800' },
+  escCheck: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 6, paddingLeft: 32 },
+  escPillRow: { flexDirection: 'row', marginTop: 8, paddingLeft: 32, gap: 8 },
+  escPillPass: {
+    flex: 1,
+    paddingHorizontal: 8,
+    paddingVertical: 6,
+    borderRadius: 8,
+    borderWidth: 1,
+  },
+  escPillText: { fontSize: 10, fontWeight: '900', letterSpacing: 0.5 },
+  escPillFail: {
+    flex: 1,
+    paddingHorizontal: 8,
+    paddingVertical: 6,
+    borderRadius: 8,
+    borderWidth: 1,
+    backgroundColor: 'rgba(239,68,68,0.08)',
+  },
+  escPillFailText: { color: '#FCA5A5', fontSize: 10, fontWeight: '800' },
+
+  // --- Phase 3af: cost ledger ---
+  eclRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginHorizontal: HORIZONTAL_PADDING,
+    marginBottom: 8,
+    borderLeftWidth: 3,
+  },
+  eclEmoji: { fontSize: 20, marginRight: 10 },
+  eclLine: { color: Colors.text.primary, fontSize: 13, fontWeight: '800' },
+  eclNotes: { color: Colors.text.muted, fontSize: 10, marginTop: 2, lineHeight: 14 },
+  eclInr: { fontSize: 13, fontWeight: '900', marginLeft: 8, letterSpacing: 0.3 },
+
+  // --- Phase 3af: after circles ---
+  eacCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginHorizontal: HORIZONTAL_PADDING,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  eacTopRow: { flexDirection: 'row', alignItems: 'center' },
+  eacEmoji: { fontSize: 22, marginRight: 10 },
+  eacMoment: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', flex: 1, lineHeight: 17 },
+  eacDid: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 6, paddingLeft: 32 },
+  eacLearned: { color: Colors.accent.softGold, fontSize: 11, lineHeight: 15, marginTop: 6, paddingLeft: 32, fontStyle: 'italic' },
+
+  // --- Phase 3af: code of care ---
+  ecoCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginHorizontal: HORIZONTAL_PADDING,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  ecoTopRow: { flexDirection: 'row', alignItems: 'center' },
+  ecoEmoji: { fontSize: 22, marginRight: 10 },
+  ecoPillar: { color: Colors.text.primary, fontSize: 13, fontWeight: '800' },
+  ecoOneLine: { fontSize: 11, fontWeight: '700', marginTop: 2 },
+  ecoGuideline: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 6, paddingLeft: 32 },
 });
 
 export default EventsScreen;
