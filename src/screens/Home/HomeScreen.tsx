@@ -1677,6 +1677,145 @@ const WEEKLY_FOCUSES: WeeklyFocus[] = [
   { id: 'wf-7', week: 'Week + 6',       theme: 'Rest + reset',                            anchor: 'Sunday off · nothing shipped · digital-off Saturday · reading Sunday.',             color: '#EF4444', emoji: '🌙' },
 ];
 
+// =====================================================
+// Phase 3ai: deeper home structures — round 3
+// =====================================================
+
+interface MorningPulseItem {
+  id: string;
+  title: string;
+  detail: string;
+  hint: string;
+  color: string;
+  emoji: string;
+}
+
+const MORNING_PULSES: MorningPulseItem[] = [
+  { id: 'mp-1', title: 'Sunrise · 6:02 AM',            detail: 'Dawn chorus from the banyan · 14 bird species logged this week.',         hint: 'Walk quietly past the gate · they notice.',                color: '#F59E0B', emoji: '🌅' },
+  { id: 'mp-2', title: 'Wake nudge · 6:30 AM',           detail: 'Kettle on in the courtyard · two wings rotate duty · chai for twenty.',   hint: 'Bring a mug · leave it washed.',                             color: '#D4AF37', emoji: '🍵' },
+  { id: 'mp-3', title: 'Stretch circle · 6:45 AM',       detail: 'Ten minutes · old banyan shade · no music · just breath.',                    hint: 'Back-bends for the spine · neck rolls for the phone necks.', color: '#22C55E', emoji: '🧘' },
+  { id: 'mp-4', title: 'Green sweep · 7:00 AM',          detail: 'Two people · bin to bin · litter audit logged in #green-signals.',          hint: 'Gloves by the shed · log weight on the scale.',              color: '#16A34A', emoji: '🧹' },
+  { id: 'mp-5', title: 'Breakfast mingle · 7:30 AM',     detail: 'Mess hall · no phones rule · sit with someone from another wing.',           hint: 'Extra filter coffee today · Sunita didi\'s batch.',           color: '#F472B6', emoji: '🫖' },
+  { id: 'mp-6', title: 'Study circle · 8:00 AM',          detail: 'Library lawn · silent hour · rule is one book · no screens.',               hint: 'Sit on the stone bench side · quieter corner.',              color: '#A78BFA', emoji: '📖' },
+];
+
+interface GratitudeWall {
+  id: string;
+  name: string;
+  to: string;
+  line: string;
+  day: string;
+  color: string;
+  emoji: string;
+}
+
+const GRATITUDE_WALL: GratitudeWall[] = [
+  { id: 'gw-1', name: 'Riya P.',     to: 'Sameer M.',          line: 'Reviewed my PR at 11 PM so it could go out Monday · legend.',            day: 'Tuesday',       color: '#00D4FF', emoji: '🛰️' },
+  { id: 'gw-2', name: 'Arnav G.',    to: 'Zara S. · alumnus',  line: 'Three-line note on my reel cuts saved me two days of guessing.',        day: 'Wednesday',     color: '#A78BFA', emoji: '🎞️' },
+  { id: 'gw-3', name: 'Kavya I.',    to: 'Priya N. · alumna',  line: 'The voice-note feedback made me rewrite my opener · it finally sings.',   day: 'Friday',        color: '#F59E0B', emoji: '📝' },
+  { id: 'gw-4', name: 'Nila T.',     to: 'Ananya R. · alumna', line: 'Crit on my poster · no sugar · I ended up doing four more variants.',   day: 'Saturday',      color: '#F472B6', emoji: '🎨' },
+  { id: 'gw-5', name: 'Meera V.',    to: 'Arjun K. · alumnus', line: 'Walked me through metering the last light at the grove · perfect now.', day: 'Sunday',        color: '#22C55E', emoji: '📷' },
+  { id: 'gw-6', name: 'Tanish C.',   to: 'Dev P. · alumnus',   line: 'Connected me to the campus paper · first byline dropping this week.',    day: 'Monday',        color: '#FFD166', emoji: '📰' },
+  { id: 'gw-7', name: 'Whole club',  to: 'Ramu chacha',        line: 'Planted the twelve-thousandth sapling with us · patience has a face.',    day: 'Sunday',        color: '#16A34A', emoji: '🌳' },
+];
+
+interface CarbonSavingTile {
+  id: string;
+  label: string;
+  thisMonth: string;
+  cumulative: string;
+  method: string;
+  color: string;
+  emoji: string;
+}
+
+const CARBON_SAVINGS: CarbonSavingTile[] = [
+  { id: 'cs-1', label: 'Single-use plastic avoided',            thisMonth: '34 kg',           cumulative: '2,880 kg · 2 yrs', method: 'Refill stations · steel bottles · daily audit by green captains.',      color: '#22C55E', emoji: '🧴' },
+  { id: 'cs-2', label: 'Paper printed saved',                   thisMonth: '142 reams',        cumulative: '18,430 reams',     method: 'Design system forces digital-first · print only with approval.',           color: '#F59E0B', emoji: '📄' },
+  { id: 'cs-3', label: 'Event carbon offset',                   thisMonth: '0.8 tCO₂',         cumulative: '26.4 tCO₂',        method: 'Vendors scored on distance · leftover food donated · bike incentives.',  color: '#16A34A', emoji: '🌍' },
+  { id: 'cs-4', label: 'Food waste cut',                         thisMonth: '41 kg',             cumulative: '6,120 kg',         method: 'Weighed post-event · mess feedback loop · portion tuning monthly.',        color: '#F472B6', emoji: '🍲' },
+  { id: 'cs-5', label: 'Electricity saved vs baseline',           thisMonth: '620 kWh',          cumulative: '48,000 kWh',       method: 'LED retrofit · solar socket stack · timer-based workshop lights.',          color: '#FFD166', emoji: '💡' },
+  { id: 'cs-6', label: 'Trees planted · survival 92%',            thisMonth: '140',               cumulative: '12,400',            method: 'Native species only · survival audit every six months by photo logs.',     color: '#22C55E', emoji: '🌳' },
+];
+
+interface PledgeStreakRow {
+  id: string;
+  pledge: string;
+  streakDays: number;
+  keptToday: number;
+  total: number;
+  color: string;
+  emoji: string;
+}
+
+const PLEDGE_STREAKS: PledgeStreakRow[] = [
+  { id: 'ps-1', pledge: 'Carry a steel bottle',                  streakDays: 184, keptToday: 198, total: 210, color: '#22C55E', emoji: '💧' },
+  { id: 'ps-2', pledge: 'One tree photo a week',                  streakDays: 96,  keptToday: 168, total: 210, color: '#16A34A', emoji: '📷' },
+  { id: 'ps-3', pledge: 'Walk/cycle within 2 km',                  streakDays: 212, keptToday: 186, total: 210, color: '#F59E0B', emoji: '🚲' },
+  { id: 'ps-4', pledge: 'No single-use cutlery',                   streakDays: 140, keptToday: 174, total: 210, color: '#F472B6', emoji: '🍴' },
+  { id: 'ps-5', pledge: 'Refuse print · unless needed',              streakDays: 278, keptToday: 190, total: 210, color: '#A78BFA', emoji: '📄' },
+  { id: 'ps-6', pledge: 'Compost mess scraps · weekly rota',         streakDays: 162, keptToday: 180, total: 210, color: '#22C55E', emoji: '🍃' },
+  { id: 'ps-7', pledge: 'Phone-off dinners',                        streakDays: 88,  keptToday: 154, total: 210, color: '#FFD166', emoji: '🫂' },
+];
+
+interface QuietHourSlot {
+  id: string;
+  range: string;
+  where: string;
+  rule: string;
+  host: string;
+  color: string;
+  emoji: string;
+}
+
+const QUIET_HOURS: QuietHourSlot[] = [
+  { id: 'qh-1', range: '5:45 – 6:45 AM', where: 'Old banyan grove',        rule: 'Walking only · no phones · greet without speaking.',                       host: 'Rotating wing lead',    color: '#F59E0B', emoji: '🌅' },
+  { id: 'qh-2', range: '12:30 – 1:30 PM', where: 'Library quiet wing',       rule: 'Reading only · no typing · phones to the rack at the door.',             host: 'Library volunteer',      color: '#A78BFA', emoji: '📚' },
+  { id: 'qh-3', range: '4:30 – 5:30 PM', where: 'Green shed',              rule: 'Hands-work only · gardening · no meetings · no phones.',                 host: 'Ramu chacha',             color: '#22C55E', emoji: '🌿' },
+  { id: 'qh-4', range: '8:00 – 9:00 PM', where: 'Amphitheatre steps',       rule: 'Reading + journaling · one candle · no phones · leave by 9.',            host: 'Alumni rotation',        color: '#FFD166', emoji: '🕯️' },
+  { id: 'qh-5', range: '10:00 – 10:30 PM', where: 'Roof garden',             rule: 'Stargazing · silent · no torches · red-filter lights only.',             host: 'Astronomy circle',       color: '#60A5FA', emoji: '🌌' },
+  { id: 'qh-6', range: '11:00 – 11:30 PM', where: 'Dorm corridor · A-block',  rule: 'Lights out · whisper-only · rule enforced kindly by the seniors.',         host: 'Warden + senior',        color: '#6366F1', emoji: '🌙' },
+];
+
+interface PlantingDiary {
+  id: string;
+  species: string;
+  location: string;
+  plantedOn: string;
+  guardian: string;
+  status: string;
+  color: string;
+  emoji: string;
+}
+
+const PLANTING_DIARY: PlantingDiary[] = [
+  { id: 'pd-1', species: 'Neem · Azadirachta indica',           location: 'West fence · row 3',      plantedOn: 'Jul 2023',    guardian: 'Kavya + first-years · batch 24',   status: 'Healthy · 2.1 m tall',   color: '#22C55E', emoji: '🌳' },
+  { id: 'pd-2', species: 'Peepal · Ficus religiosa',             location: 'Courtyard centre',        plantedOn: 'Aug 2022',    guardian: 'Riya + Ramu chacha',                status: 'Thriving · bird visit log',  color: '#16A34A', emoji: '🌿' },
+  { id: 'pd-3', species: 'Amaltas · Cassia fistula',             location: 'Amphitheatre edge',      plantedOn: 'Mar 2022',    guardian: 'Nila · design wing',                 status: 'Bloomed March 2024',       color: '#FFD166', emoji: '🌼' },
+  { id: 'pd-4', species: 'Gulmohar · Delonix regia',             location: 'Gate approach · north',    plantedOn: 'Jun 2021',    guardian: 'Sameer + tech wing',                 status: 'Bloomed May 2024 · first time', color: '#EF4444', emoji: '🌺' },
+  { id: 'pd-5', species: 'Banyan sapling · Ficus benghalensis', location: 'Old grove extension',   plantedOn: 'Sep 2023',    guardian: 'Alumni batch 2017',                  status: 'Aerial roots starting',    color: '#22C55E', emoji: '🌳' },
+  { id: 'pd-6', species: 'Mango · Mangifera indica',             location: 'Mess garden · south bed',   plantedOn: 'Jul 2022',    guardian: 'Sunita didi + mess team',             status: 'First fruit summer 2025',  color: '#F59E0B', emoji: '🥭' },
+  { id: 'pd-7', species: 'Jamun · Syzygium cumini',               location: 'Library lawn · back',       plantedOn: 'Aug 2021',    guardian: 'Photo wing · class of 2023',          status: 'Fruits attracting barbets', color: '#6366F1', emoji: '🫐' },
+];
+
+interface GuardianCovenant {
+  id: string;
+  promise: string;
+  because: string;
+  color: string;
+  emoji: string;
+}
+
+const GUARDIAN_COVENANTS: GuardianCovenant[] = [
+  { id: 'gc-1', promise: 'We leave every place greener than we found it.',                           because: 'Even if the mess was not ours · the next walker thanks us.',                          color: '#22C55E', emoji: '🌿' },
+  { id: 'gc-2', promise: 'We credit the alumni who opened the door.',                                 because: 'Names matter · especially when they are not in the room.',                              color: '#FFD166', emoji: '🫶' },
+  { id: 'gc-3', promise: 'We share tools · we do not hoard logins.',                                  because: 'Knowledge that one person guards dies with that person.',                              color: '#00D4FF', emoji: '🔑' },
+  { id: 'gc-4', promise: 'We name the junior who helped · before the senior who approved.',         because: 'Credit flows downward · responsibility flows upward.',                                color: '#F472B6', emoji: '📣' },
+  { id: 'gc-5', promise: 'We say no kindly · early · clearly.',                                       because: 'A late no is more expensive than an early no.',                                         color: '#F59E0B', emoji: '🪶' },
+  { id: 'gc-6', promise: 'We prefer small · shipped · honest work over big · unshipped · perfect.',   because: 'The club\'s strength is its steady drumbeat.',                                        color: '#A78BFA', emoji: '🥁' },
+  { id: 'gc-7', promise: 'We keep the grove · always.',                                               because: 'The trees were here before us · will be here after · we are only caretakers.',          color: '#16A34A', emoji: '🌳' },
+];
+
 const HomeScreen: React.FC = () => {
   // ------ State ------
   const [refreshing, setRefreshing] = useState(false);
@@ -3396,6 +3535,166 @@ const HomeScreen: React.FC = () => {
   );
 
   // ------ Phase 3ab blocks ------
+  // ------ Phase 3ai: round 3 deeper home blocks ------
+  const renderMorningPulses = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🌅 Morning pulse · the campus wakes up</Text>
+        <Text style={styles.sectionCaption}>{MORNING_PULSES.length} beats</Text>
+      </View>
+      {MORNING_PULSES.map((m) => (
+        <View key={m.id} style={[styles.mpCard, { borderLeftColor: m.color }]}>
+          <View style={styles.mpTopRow}>
+            <Text style={styles.mpEmoji}>{m.emoji}</Text>
+            <Text style={styles.mpTitle} numberOfLines={1}>{m.title}</Text>
+          </View>
+          <Text style={styles.mpDetail} numberOfLines={3}>{m.detail}</Text>
+          <Text style={styles.mpHint} numberOfLines={2}>↳ {m.hint}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderQuietHours = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🤫 Quiet hours · places the phone goes down</Text>
+        <Text style={styles.sectionCaption}>{QUIET_HOURS.length} slots</Text>
+      </View>
+      {QUIET_HOURS.map((q) => (
+        <View key={q.id} style={[styles.qhCard, { borderLeftColor: q.color }]}>
+          <View style={styles.qhTopRow}>
+            <Text style={styles.qhEmoji}>{q.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.qhRange} numberOfLines={1}>{q.range}</Text>
+              <Text style={styles.qhWhere} numberOfLines={1}>{q.where}</Text>
+            </View>
+          </View>
+          <Text style={styles.qhRule} numberOfLines={3}>{q.rule}</Text>
+          <Text style={styles.qhHost} numberOfLines={1}>hosted by {q.host}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderPlantingDiary = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🌳 Planting diary · what we planted · still alive</Text>
+        <Text style={styles.sectionCaption}>{PLANTING_DIARY.length} entries</Text>
+      </View>
+      {PLANTING_DIARY.map((p) => (
+        <View key={p.id} style={[styles.pdCard, { borderLeftColor: p.color }]}>
+          <View style={styles.pdTopRow}>
+            <Text style={styles.pdEmoji}>{p.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.pdSpecies} numberOfLines={1}>{p.species}</Text>
+              <Text style={styles.pdLoc} numberOfLines={1}>{p.location}</Text>
+            </View>
+            <Text style={[styles.pdDate, { color: p.color }]}>{p.plantedOn}</Text>
+          </View>
+          <Text style={styles.pdGuardian} numberOfLines={1}>Guardian · {p.guardian}</Text>
+          <Text style={styles.pdStatus} numberOfLines={1}>Status · {p.status}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderCarbonSavings = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🌍 Carbon ledger · what we actually saved</Text>
+        <Text style={styles.sectionCaption}>{CARBON_SAVINGS.length} tiles</Text>
+      </View>
+      {CARBON_SAVINGS.map((c) => (
+        <View key={c.id} style={[styles.csCard, { borderLeftColor: c.color }]}>
+          <View style={styles.csTopRow}>
+            <Text style={styles.csEmoji}>{c.emoji}</Text>
+            <Text style={styles.csLabel} numberOfLines={2}>{c.label}</Text>
+          </View>
+          <View style={styles.csMetricRow}>
+            <View style={styles.csMetricCol}>
+              <Text style={styles.csMetricLabel}>THIS MONTH</Text>
+              <Text style={[styles.csMetricValue, { color: c.color }]}>{c.thisMonth}</Text>
+            </View>
+            <View style={styles.csMetricCol}>
+              <Text style={styles.csMetricLabel}>CUMULATIVE</Text>
+              <Text style={[styles.csMetricValue, { color: c.color }]}>{c.cumulative}</Text>
+            </View>
+          </View>
+          <Text style={styles.csMethod} numberOfLines={2}>↳ {c.method}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderPledgeStreaks = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🔥 Pledge streaks · what we keep going</Text>
+        <Text style={styles.sectionCaption}>{PLEDGE_STREAKS.length} pledges</Text>
+      </View>
+      {PLEDGE_STREAKS.map((s) => {
+        const pct = Math.min(100, Math.round((s.keptToday / s.total) * 100));
+        return (
+          <View key={s.id} style={[styles.psCard, { borderLeftColor: s.color }]}>
+            <View style={styles.psTopRow}>
+              <Text style={styles.psEmoji}>{s.emoji}</Text>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.psPledge} numberOfLines={2}>{s.pledge}</Text>
+                <Text style={styles.psStreak}>{s.streakDays}-day club streak</Text>
+              </View>
+              <Text style={[styles.psPct, { color: s.color }]}>{pct}%</Text>
+            </View>
+            <View style={styles.psBarBg}>
+              <View style={[styles.psBarFill, { width: `${pct}%`, backgroundColor: s.color }]} />
+            </View>
+            <Text style={styles.psKept}>{s.keptToday} / {s.total} guardians kept it today</Text>
+          </View>
+        );
+      })}
+    </View>
+  );
+
+  const renderGratitudeWall = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🫶 Gratitude wall · this weeks thank-yous</Text>
+        <Text style={styles.sectionCaption}>{GRATITUDE_WALL.length} notes</Text>
+      </View>
+      {GRATITUDE_WALL.map((g) => (
+        <View key={g.id} style={[styles.gwCard, { borderLeftColor: g.color }]}>
+          <View style={styles.gwTopRow}>
+            <Text style={styles.gwEmoji}>{g.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.gwFrom} numberOfLines={1}>{g.name} → {g.to}</Text>
+              <Text style={[styles.gwDay, { color: g.color }]}>{g.day}</Text>
+            </View>
+          </View>
+          <Text style={styles.gwLine} numberOfLines={3}>"{g.line}"</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderGuardianCovenants = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🤝 Guardian covenants · how we hold this place</Text>
+        <Text style={styles.sectionCaption}>{GUARDIAN_COVENANTS.length} promises</Text>
+      </View>
+      {GUARDIAN_COVENANTS.map((g) => (
+        <View key={g.id} style={[styles.gcCard, { borderLeftColor: g.color }]}>
+          <View style={styles.gcTopRow}>
+            <Text style={styles.gcEmoji}>{g.emoji}</Text>
+            <Text style={styles.gcPromise} numberOfLines={3}>{g.promise}</Text>
+          </View>
+          <Text style={styles.gcBecause} numberOfLines={3}>because · {g.because}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
   const renderCampusRituals = () => (
     <View style={styles.sectionBlock}>
       <View style={styles.sectionHeaderRow}>
@@ -3557,7 +3856,10 @@ const HomeScreen: React.FC = () => {
         {renderFeaturedEvents()}
         {renderCampusCal()}
         {renderCampusRituals()}
+        {renderMorningPulses()}
+        {renderQuietHours()}
         {renderSaplingPrograms()}
+        {renderPlantingDiary()}
         {renderVolunteerSlots()}
         {renderMentorHours()}
         {renderRecommendedReads()}
@@ -3573,10 +3875,14 @@ const HomeScreen: React.FC = () => {
         {renderDailyRituals()}
         {renderCommunityShouts()}
         {renderImpactDashboard()}
+        {renderCarbonSavings()}
+        {renderPledgeStreaks()}
         {renderScoreboard()}
         {renderWeeklyDigest()}
         {renderMemberHighlights()}
         {renderLocalHeroes()}
+        {renderGratitudeWall()}
+        {renderGuardianCovenants()}
         {renderSpotlights()}
         {renderCollab()}
         {renderClubValues()}
@@ -4863,6 +5169,70 @@ const styles = StyleSheet.create({
   wfEmoji: { fontSize: 18, marginRight: 8 },
   wfTheme: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', flex: 1, lineHeight: 17 },
   wfAnchor: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4 },
+
+  // --- Phase 3ai: morning pulses ---
+  mpCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  mpTopRow: { flexDirection: 'row', alignItems: 'center' },
+  mpEmoji: { fontSize: 20, marginRight: 10 },
+  mpTitle: { color: Colors.text.primary, fontSize: 13, fontWeight: '900', flex: 1 },
+  mpDetail: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 6, paddingLeft: 30 },
+  mpHint: { color: Colors.accent.softGold, fontSize: 10, lineHeight: 14, marginTop: 4, paddingLeft: 30, fontStyle: 'italic' },
+
+  // --- Phase 3ai: quiet hours ---
+  qhCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  qhTopRow: { flexDirection: 'row', alignItems: 'center' },
+  qhEmoji: { fontSize: 20, marginRight: 10 },
+  qhRange: { color: Colors.text.primary, fontSize: 13, fontWeight: '900' },
+  qhWhere: { color: Colors.text.muted, fontSize: 11, marginTop: 2 },
+  qhRule: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 6, paddingLeft: 30 },
+  qhHost: { color: Colors.text.muted, fontSize: 10, marginTop: 4, paddingLeft: 30, fontStyle: 'italic' },
+
+  // --- Phase 3ai: planting diary ---
+  pdCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  pdTopRow: { flexDirection: 'row', alignItems: 'center' },
+  pdEmoji: { fontSize: 20, marginRight: 10 },
+  pdSpecies: { color: Colors.text.primary, fontSize: 13, fontWeight: '800' },
+  pdLoc: { color: Colors.text.muted, fontSize: 11, marginTop: 2 },
+  pdDate: { fontSize: 10, fontWeight: '900', letterSpacing: 1, marginLeft: 8 },
+  pdGuardian: { color: Colors.text.secondary, fontSize: 11, marginTop: 6, paddingLeft: 30 },
+  pdStatus: { color: Colors.nature.leafGreen, fontSize: 11, marginTop: 2, paddingLeft: 30, fontWeight: '700' },
+
+  // --- Phase 3ai: carbon savings ---
+  csCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  csTopRow: { flexDirection: 'row', alignItems: 'center' },
+  csEmoji: { fontSize: 20, marginRight: 10 },
+  csLabel: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', flex: 1, lineHeight: 17 },
+  csMetricRow: { flexDirection: 'row', marginTop: 10, paddingLeft: 30 },
+  csMetricCol: { flex: 1 },
+  csMetricLabel: { color: Colors.text.muted, fontSize: 9, fontWeight: '900', letterSpacing: 1.2 },
+  csMetricValue: { fontSize: 17, fontWeight: '900', marginTop: 4 },
+  csMethod: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8, paddingLeft: 30 },
+
+  // --- Phase 3ai: pledge streaks ---
+  psCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  psTopRow: { flexDirection: 'row', alignItems: 'center' },
+  psEmoji: { fontSize: 20, marginRight: 10 },
+  psPledge: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', lineHeight: 17 },
+  psStreak: { color: Colors.accent.softGold, fontSize: 10, fontWeight: '700', marginTop: 2 },
+  psPct: { fontSize: 17, fontWeight: '900', marginLeft: 8 },
+  psBarBg: { height: 6, backgroundColor: '#1A2330', borderRadius: 3, marginTop: 8, marginLeft: 30, overflow: 'hidden' },
+  psBarFill: { height: '100%', borderRadius: 3 },
+  psKept: { color: Colors.text.muted, fontSize: 10, marginTop: 4, paddingLeft: 30 },
+
+  // --- Phase 3ai: gratitude wall ---
+  gwCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  gwTopRow: { flexDirection: 'row', alignItems: 'center' },
+  gwEmoji: { fontSize: 20, marginRight: 10 },
+  gwFrom: { color: Colors.text.primary, fontSize: 12, fontWeight: '800' },
+  gwDay: { fontSize: 10, fontWeight: '900', letterSpacing: 1, textTransform: 'uppercase', marginTop: 2 },
+  gwLine: { color: Colors.text.secondary, fontSize: 12, lineHeight: 17, marginTop: 8, paddingLeft: 30, fontStyle: 'italic' },
+
+  // --- Phase 3ai: guardian covenants ---
+  gcCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  gcTopRow: { flexDirection: 'row', alignItems: 'flex-start' },
+  gcEmoji: { fontSize: 20, marginRight: 10, marginTop: 2 },
+  gcPromise: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', flex: 1, lineHeight: 17 },
+  gcBecause: { color: Colors.text.muted, fontSize: 11, lineHeight: 15, marginTop: 6, paddingLeft: 30, fontStyle: 'italic' },
 });
 
 export default HomeScreen;
