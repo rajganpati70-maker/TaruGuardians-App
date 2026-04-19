@@ -1594,6 +1594,125 @@ const SUGGESTION_VOICES: SuggestionVoice[] = [
   { id: 'sv-6', voice: 'Sustainability committee',          said: '"Green suggestions skip the queue. That one rule changed how fast we decarbonise events."',      about: 'Green priority rule',          color: '#22C55E', emoji: '🌿' },
 ];
 
+// =====================================================
+// Phase 3al: deeper suggestion structures — round 3
+// =====================================================
+
+interface SuggestionIntakeWindow {
+  id: string;
+  window: string;
+  openFrom: string;
+  theme: string;
+  lead: string;
+  color: string;
+  emoji: string;
+}
+
+const SUGG_INTAKE_WINDOWS: SuggestionIntakeWindow[] = [
+  { id: 'siw-1', window: 'Monsoon cycle',        openFrom: 'Jul 1 – Jul 20',     theme: 'Campus comfort + rain readiness',           lead: 'Ops + wellness',         color: '#38BDF8', emoji: '🌧️' },
+  { id: 'siw-2', window: 'Onboarding cycle',      openFrom: 'Aug 5 – Aug 25',     theme: 'First-year experience · buddy system',     lead: 'People + content',       color: '#F59E0B', emoji: '🌱' },
+  { id: 'siw-3', window: 'Festival cycle',        openFrom: 'Sep 15 – Oct 5',     theme: 'Events · partners · inclusion',             lead: 'Events + PR',            color: '#F472B6', emoji: '🎉' },
+  { id: 'siw-4', window: 'Winter cycle',           openFrom: 'Nov 20 – Dec 15',    theme: 'Alumni return · bonfire + archive',          lead: 'Alumni + photo',         color: '#EF4444', emoji: '🔥' },
+  { id: 'siw-5', window: 'Quiet cycle',             openFrom: 'Jan 20 – Feb 10',    theme: 'Habits · retros · rest · craft',             lead: 'Core council',           color: '#A78BFA', emoji: '🌙' },
+  { id: 'siw-6', window: 'Green cycle',             openFrom: 'Mar 10 – Mar 30',    theme: 'Sustainability · saplings · pledges',        lead: 'Green wing',             color: '#22C55E', emoji: '🌿' },
+  { id: 'siw-7', window: 'Open cycle',              openFrom: 'Always open',        theme: 'Anything urgent or out-of-cycle',            lead: 'Any lead on rotation',   color: '#FFD166', emoji: '🚪' },
+];
+
+interface SuggestionCommitteePick {
+  id: string;
+  suggestion: string;
+  outcome: string;
+  shippedOn: string;
+  impact: string;
+  color: string;
+  emoji: string;
+}
+
+const SUGG_COMMITTEE_PICKS: SuggestionCommitteePick[] = [
+  { id: 'scp-1', suggestion: 'Silent study hour · library',                 outcome: 'Formalised with rotation · 5:30-6:30 PM, three days a week.',    shippedOn: 'Jun 2023',    impact: '30+ regulars · calmer library overall.',                     color: '#A78BFA', emoji: '📚' },
+  { id: 'scp-2', suggestion: 'Refill stations across campus',                outcome: '12 refill points installed · map pinned at entry.',                 shippedOn: 'Sep 2022',    impact: 'Single-use bottles down 34% month-on-month.',                color: '#22C55E', emoji: '🚰' },
+  { id: 'scp-3', suggestion: 'Cross-wing pairing day · monthly',             outcome: 'Monthly ritual · picker bot pairs people randomly.',                shippedOn: 'Feb 2024',    impact: '62 new collaborations sparked in first quarter.',             color: '#00D4FF', emoji: '🤝' },
+  { id: 'scp-4', suggestion: 'Post-event food donation pipeline',             outcome: 'Partnered with local NGO · pickup scheduled within 30 min.',        shippedOn: 'Aug 2023',    impact: '410 kg redirected in year one.',                               color: '#F59E0B', emoji: '🍲' },
+  { id: 'scp-5', suggestion: 'Alumni letters wall · Hall of Fame',            outcome: 'Built rotating display · refreshed every quarter.',                 shippedOn: 'Jan 2024',    impact: '52 letters collected · reading corner busy daily.',            color: '#F472B6', emoji: '✉️' },
+  { id: 'scp-6', suggestion: 'Clearer buddy pairs for first-years',           outcome: 'New buddy rota · 2 rituals/week · accountability owner.',           shippedOn: 'Aug 2023',    impact: 'Drop-off rate cut · 14→3 in first batch.',                     color: '#FFD166', emoji: '🧭' },
+  { id: 'scp-7', suggestion: 'Carbon ledger · published monthly',              outcome: 'Auto-script scrapes ledgers · publishes to /green.',               shippedOn: 'Oct 2023',    impact: 'Vendors opt-in · public accountability rising.',               color: '#16A34A', emoji: '🌍' },
+];
+
+interface SuggestionDesignPrinciple {
+  id: string;
+  principle: string;
+  inPractice: string;
+  color: string;
+  emoji: string;
+}
+
+const SUGG_DESIGN_PRINCIPLES: SuggestionDesignPrinciple[] = [
+  { id: 'sdp-1', principle: 'Ideas are cheap · ownership is sacred.',                              inPractice: 'Every accepted suggestion has a named human within 48 hours.',                                       color: '#00D4FF', emoji: '🪪' },
+  { id: 'sdp-2', principle: 'No suggestion dies in silence.',                                       inPractice: 'Every submission gets a reply · even if the reply is kind and tiny.',                                 color: '#F59E0B', emoji: '📣' },
+  { id: 'sdp-3', principle: 'Critique the idea · celebrate the person.',                            inPractice: 'Replies separate technical critique from personal thanks · always.',                                   color: '#F472B6', emoji: '🫂' },
+  { id: 'sdp-4', principle: 'Small shipped · before big imagined.',                                 inPractice: 'A 1-week prototype beats a 6-month plan every time.',                                                  color: '#22C55E', emoji: '🚢' },
+  { id: 'sdp-5', principle: 'The loudest voice is not the most right.',                              inPractice: 'We sort by thoughtfulness · not by volume · and publish the math.',                                    color: '#A78BFA', emoji: '🎙️' },
+  { id: 'sdp-6', principle: 'Trust builds when the no is kind + early.',                             inPractice: 'Closing a suggestion respectfully is a feature · not a failure.',                                      color: '#FFD166', emoji: '🪶' },
+  { id: 'sdp-7', principle: 'We audit ourselves · we publish what we learn.',                        inPractice: 'Quarterly retro on the board itself · open notes · open fixes.',                                      color: '#EF4444', emoji: '🔍' },
+];
+
+interface SuggestionLifecycle {
+  id: string;
+  stage: string;
+  owner: string;
+  sla: string;
+  rule: string;
+  color: string;
+  emoji: string;
+}
+
+const SUGG_LIFECYCLE: SuggestionLifecycle[] = [
+  { id: 'sgl-1', stage: 'Submit',           owner: 'Anyone · member or alumni',    sla: 'Instant',            rule: 'One idea per submission · clear · kind · with one asked-for outcome.',                          color: '#00D4FF', emoji: '📥' },
+  { id: 'sgl-2', stage: 'Triage',            owner: 'On-call suggestion buddy',      sla: 'Within 48 hours',     rule: 'Assign category · priority · pick named owner · send first kind reply.',                          color: '#F59E0B', emoji: '🔍' },
+  { id: 'sgl-3', stage: 'Discuss',            owner: 'Named owner + 2 invited',      sla: 'Within 1 week',       rule: 'Scope out · publish decision rights · invite dissent before deciding.',                          color: '#A78BFA', emoji: '🗣️' },
+  { id: 'sgl-4', stage: 'Decide',              owner: 'Named owner',                   sla: 'Within 2 weeks',      rule: 'Yes · no · or wait-with-reason · always published in the thread.',                               color: '#F472B6', emoji: '🪧' },
+  { id: 'sgl-5', stage: 'Ship or archive',     owner: 'Named owner',                   sla: 'As decided',          rule: 'If ship · scoped · dated · small-shippable · if archive · kindly closed + thanked.',              color: '#22C55E', emoji: '🚀' },
+  { id: 'sgl-6', stage: 'Retro',                owner: 'Ops + named owner',              sla: 'Within 1 month of ship', rule: 'Publish what worked · what did not · what we\'d change next · open for comment.',                  color: '#FFD166', emoji: '📝' },
+  { id: 'sgl-7', stage: 'Celebrate + credit',   owner: 'PR + hospitality',               sla: 'Within 1 week of ship', rule: 'Credit the submitter + owner publicly · send a handwritten thank-you.',                         color: '#EF4444', emoji: '🫶' },
+];
+
+interface SuggestionReviewerDuty {
+  id: string;
+  duty: string;
+  do: string;
+  doNot: string;
+  color: string;
+  emoji: string;
+}
+
+const SUGG_REVIEWER_DUTIES: SuggestionReviewerDuty[] = [
+  { id: 'srd-1', duty: 'Read every single submission · within 24h',                     do: 'Even if short · even if late · even if tired. One human reads each one.',                     doNot: 'Outsource the read to a bot · that would burn trust fast.',                                   color: '#00D4FF', emoji: '👀' },
+  { id: 'srd-2', duty: 'Reply within 48h · even just to say \"seen\"',                  do: 'Kind · short · specific · even a single line keeps trust warm.',                                doNot: 'Leave it open for weeks · that is how good ideas quietly die.',                                color: '#F59E0B', emoji: '💬' },
+  { id: 'srd-3', duty: 'Name an owner · or kindly close the thread',                      do: 'If we can own it · name the person · if we can\'t · say so · gently.',                           doNot: 'Ghost the submitter · or leave with a maybe that turns into a never.',                        color: '#F472B6', emoji: '🪪' },
+  { id: 'srd-4', duty: 'Publish the decision publicly in the thread',                    do: 'Open · dated · reasoned · link to the retro or next step clearly.',                             doNot: 'Send the decision in DM only · decisions live in the open on the board.',                      color: '#A78BFA', emoji: '📜' },
+  { id: 'srd-5', duty: 'Invite dissent before final call',                                  do: 'Pull in one neighbour wing · one alumnus who did this before · listen.',                     doNot: 'Rush the call because it is Friday · Friday is for rest not for rush-calls.',                  color: '#22C55E', emoji: '🪞' },
+  { id: 'srd-6', duty: 'Retro every quarter · publish · fix the process',                 do: 'Audit the board · ask who stopped using it · fix the friction.',                                doNot: 'Defend the board · it is not sacred · it is a tool that should serve humans.',               color: '#FFD166', emoji: '🔁' },
+];
+
+interface SuggestionWorkedCase {
+  id: string;
+  title: string;
+  submitter: string;
+  journey: string;
+  outcome: string;
+  thanks: string;
+  color: string;
+  emoji: string;
+}
+
+const SUGG_WORKED_CASES: SuggestionWorkedCase[] = [
+  { id: 'swc-1', title: 'Silent library · the year we built it',               submitter: 'Rohit + 2022 batch',               journey: 'Proposed as two-week pilot · then a semester pilot · then permanent.',                                         outcome: 'Formal ritual · 30+ regulars · now referenced by two other clubs.',              thanks: 'The library quietly saved two exam seasons worth of nerves.',                          color: '#A78BFA', emoji: '📚' },
+  { id: 'swc-2', title: 'Refill stations · and how they paid back',              submitter: 'Tanvi · 2022',                      journey: 'Started with 2 stations · counted single-use bottles weekly · grew to 12.',                                    outcome: 'Plastic volume down 34% · now funded by annual campus budget.',                  thanks: 'A dry-run month of \"bring your own bottle\" made us believers.',                         color: '#22C55E', emoji: '🚰' },
+  { id: 'swc-3', title: 'Cross-wing pair day · happy accident',                  submitter: 'Anonymous · first-year, 2023',       journey: 'Idea to mix strangers · pilot made random pairs · it stuck immediately.',                                     outcome: 'Monthly ritual · 62 collaborations in 4 months · two campaigns born here.',       thanks: 'The shy people spoke first · because the icebreaker wasn\'t optional.',                  color: '#00D4FF', emoji: '🤝' },
+  { id: 'swc-4', title: 'Food donation pipeline · from leftover to loved',         submitter: 'Sunita didi + events team',          journey: 'Ten events logged leftovers · pipeline drafted with NGO · tested at bonfire.',                                 outcome: '410 kg redirected · three partners onboarded · zero refusals so far.',             thanks: 'The NGO now helps us plan portion sizes · and we help them carry.',                       color: '#F59E0B', emoji: '🍲' },
+  { id: 'swc-5', title: 'Letters wall · twelve of us wrote at once',              submitter: 'Alumni committee',                    journey: 'Weekly open-hour · scanning sessions · thousand-letter archive forming.',                                     outcome: 'Rotating wall · 52 letters · reading corner busy daily after class.',              thanks: 'We found letters from 2008 that still read like today.',                                color: '#F472B6', emoji: '✉️' },
+];
+
 const SuggestionScreen: React.FC = () => {
   // ------------ State ------------
   const [suggestions, setSuggestions] = useState<ExtSuggestion[]>(SAMPLE_SUGGESTIONS);
@@ -3596,6 +3715,134 @@ const SuggestionScreen: React.FC = () => {
     </View>
   );
 
+  // ------ Phase 3al: round 3 suggestion blocks ------
+  const renderIntakeWindows = () => (
+    <View style={[styles.sectionBlock, { paddingHorizontal: HORIZONTAL_PADDING }]}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🗓️ Intake windows · when we open the board widest</Text>
+        <Text style={styles.sectionCaption}>{SUGG_INTAKE_WINDOWS.length} cycles</Text>
+      </View>
+      {SUGG_INTAKE_WINDOWS.map((w) => (
+        <View key={w.id} style={[styles.siwCard, { borderLeftColor: w.color }]}>
+          <View style={styles.siwTopRow}>
+            <Text style={styles.siwEmoji}>{w.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.siwWindow} numberOfLines={1}>{w.window}</Text>
+              <Text style={[styles.siwOpen, { color: w.color }]}>{w.openFrom}</Text>
+            </View>
+          </View>
+          <Text style={styles.siwTheme} numberOfLines={2}>theme · {w.theme}</Text>
+          <Text style={styles.siwLead} numberOfLines={1}>lead · {w.lead}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderCommitteePicks = () => (
+    <View style={[styles.sectionBlock, { paddingHorizontal: HORIZONTAL_PADDING }]}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🏅 Committee picks · from board to real life</Text>
+        <Text style={styles.sectionCaption}>{SUGG_COMMITTEE_PICKS.length} picks</Text>
+      </View>
+      {SUGG_COMMITTEE_PICKS.map((p) => (
+        <View key={p.id} style={[styles.scpCard, { borderLeftColor: p.color }]}>
+          <View style={styles.scpTopRow}>
+            <Text style={styles.scpEmoji}>{p.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.scpSuggestion} numberOfLines={2}>{p.suggestion}</Text>
+              <Text style={[styles.scpShipped, { color: p.color }]}>shipped · {p.shippedOn}</Text>
+            </View>
+          </View>
+          <Text style={styles.scpOutcome} numberOfLines={3}>{p.outcome}</Text>
+          <Text style={styles.scpImpact} numberOfLines={2}>impact · {p.impact}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderDesignPrinciples = () => (
+    <View style={[styles.sectionBlock, { paddingHorizontal: HORIZONTAL_PADDING }]}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🧭 Design principles for the board</Text>
+        <Text style={styles.sectionCaption}>{SUGG_DESIGN_PRINCIPLES.length} principles</Text>
+      </View>
+      {SUGG_DESIGN_PRINCIPLES.map((p) => (
+        <View key={p.id} style={[styles.sdpCard, { borderLeftColor: p.color }]}>
+          <View style={styles.sdpTopRow}>
+            <Text style={styles.sdpEmoji}>{p.emoji}</Text>
+            <Text style={[styles.sdpPrinciple, { color: p.color }]} numberOfLines={2}>{p.principle}</Text>
+          </View>
+          <Text style={styles.sdpInPractice} numberOfLines={3}>in practice · {p.inPractice}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderLifecycleStages = () => (
+    <View style={[styles.sectionBlock, { paddingHorizontal: HORIZONTAL_PADDING }]}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🔁 Lifecycle · submit to celebrate</Text>
+        <Text style={styles.sectionCaption}>{SUGG_LIFECYCLE.length} stages</Text>
+      </View>
+      {SUGG_LIFECYCLE.map((s, i) => (
+        <View key={s.id} style={[styles.sglCard, { borderLeftColor: s.color }]}>
+          <View style={styles.sglTopRow}>
+            <Text style={[styles.sglStep, { color: s.color }]}>{String(i + 1).padStart(2, '0')}</Text>
+            <Text style={styles.sglEmoji}>{s.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.sglStage} numberOfLines={1}>{s.stage}</Text>
+              <Text style={styles.sglSla} numberOfLines={1}>sla · {s.sla}</Text>
+            </View>
+          </View>
+          <Text style={styles.sglOwner} numberOfLines={1}>owner · {s.owner}</Text>
+          <Text style={styles.sglRule} numberOfLines={3}>{s.rule}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderReviewerDuties = () => (
+    <View style={[styles.sectionBlock, { paddingHorizontal: HORIZONTAL_PADDING }]}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🫱 Reviewer duties · do · don&apos;t</Text>
+        <Text style={styles.sectionCaption}>{SUGG_REVIEWER_DUTIES.length} duties</Text>
+      </View>
+      {SUGG_REVIEWER_DUTIES.map((d) => (
+        <View key={d.id} style={[styles.srdCard, { borderLeftColor: d.color }]}>
+          <View style={styles.srdTopRow}>
+            <Text style={styles.srdEmoji}>{d.emoji}</Text>
+            <Text style={styles.srdDuty} numberOfLines={2}>{d.duty}</Text>
+          </View>
+          <Text style={styles.srdDo} numberOfLines={2}>do · {d.do}</Text>
+          <Text style={styles.srdDoNot} numberOfLines={2}>don&apos;t · {d.doNot}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderWorkedCases = () => (
+    <View style={[styles.sectionBlock, { paddingHorizontal: HORIZONTAL_PADDING }]}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>📖 Worked cases · the whole journey, told honestly</Text>
+        <Text style={styles.sectionCaption}>{SUGG_WORKED_CASES.length} cases</Text>
+      </View>
+      {SUGG_WORKED_CASES.map((c) => (
+        <View key={c.id} style={[styles.swcCard, { borderLeftColor: c.color }]}>
+          <View style={styles.swcTopRow}>
+            <Text style={styles.swcEmoji}>{c.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.swcTitle} numberOfLines={2}>{c.title}</Text>
+              <Text style={[styles.swcSubmitter, { color: c.color }]} numberOfLines={1}>by · {c.submitter}</Text>
+            </View>
+          </View>
+          <Text style={styles.swcJourney} numberOfLines={3}>journey · {c.journey}</Text>
+          <Text style={styles.swcOutcome} numberOfLines={3}>outcome · {c.outcome}</Text>
+          <Text style={styles.swcThanks} numberOfLines={2}>{c.thanks}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
   const listHeader = (
     <View>
       {renderHeader()}
@@ -3629,6 +3876,12 @@ const SuggestionScreen: React.FC = () => {
       {renderTrustPromises()}
       {renderRoadmap()}
       {renderOpenCalls()}
+      {renderIntakeWindows()}
+      {renderCommitteePicks()}
+      {renderDesignPrinciples()}
+      {renderLifecycleStages()}
+      {renderReviewerDuties()}
+      {renderWorkedCases()}
       {renderListHeader()}
     </View>
   );
@@ -4860,6 +5113,59 @@ const styles = StyleSheet.create({
   svVoice: { color: Colors.text.primary, fontSize: 13, fontWeight: '800' },
   svAbout: { fontSize: 10, fontWeight: '700', marginTop: 2, letterSpacing: 0.5 },
   svSaid: { color: Colors.text.secondary, fontSize: 12, lineHeight: 16, marginTop: 8, paddingLeft: 32, fontStyle: 'italic' },
+
+  // --- Phase 3al: intake windows ---
+  siwCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  siwTopRow: { flexDirection: 'row', alignItems: 'center' },
+  siwEmoji: { fontSize: 22, marginRight: 10 },
+  siwWindow: { color: Colors.text.primary, fontSize: 13, fontWeight: '900' },
+  siwOpen: { fontSize: 11, fontWeight: '700', marginTop: 2 },
+  siwTheme: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8, paddingLeft: 32 },
+  siwLead: { color: Colors.text.muted, fontSize: 11, marginTop: 3, paddingLeft: 32 },
+
+  // --- Phase 3al: committee picks ---
+  scpCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  scpTopRow: { flexDirection: 'row', alignItems: 'center' },
+  scpEmoji: { fontSize: 22, marginRight: 10 },
+  scpSuggestion: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', lineHeight: 17 },
+  scpShipped: { fontSize: 10, fontWeight: '900', letterSpacing: 1, marginTop: 2, textTransform: 'uppercase' },
+  scpOutcome: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8, paddingLeft: 32 },
+  scpImpact: { color: Colors.accent.softGold, fontSize: 11, lineHeight: 15, marginTop: 3, paddingLeft: 32, fontStyle: 'italic' },
+
+  // --- Phase 3al: design principles ---
+  sdpCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  sdpTopRow: { flexDirection: 'row', alignItems: 'center' },
+  sdpEmoji: { fontSize: 22, marginRight: 10 },
+  sdpPrinciple: { fontSize: 13, fontWeight: '800', flex: 1, lineHeight: 17 },
+  sdpInPractice: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8, paddingLeft: 32 },
+
+  // --- Phase 3al: lifecycle stages ---
+  sglCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  sglTopRow: { flexDirection: 'row', alignItems: 'center' },
+  sglStep: { fontSize: 14, fontWeight: '900', marginRight: 10, letterSpacing: 0.5 },
+  sglEmoji: { fontSize: 20, marginRight: 10 },
+  sglStage: { color: Colors.text.primary, fontSize: 13, fontWeight: '900' },
+  sglSla: { color: Colors.accent.softGold, fontSize: 11, fontWeight: '700', marginTop: 2 },
+  sglOwner: { color: Colors.text.muted, fontSize: 11, marginTop: 8, paddingLeft: 48 },
+  sglRule: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 3, paddingLeft: 48 },
+
+  // --- Phase 3al: reviewer duties ---
+  srdCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  srdTopRow: { flexDirection: 'row', alignItems: 'center' },
+  srdEmoji: { fontSize: 22, marginRight: 10 },
+  srdDuty: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', flex: 1, lineHeight: 17 },
+  srdDo: { color: '#22C55E', fontSize: 11, lineHeight: 15, marginTop: 8, paddingLeft: 32 },
+  srdDoNot: { color: '#F87171', fontSize: 11, lineHeight: 15, marginTop: 3, paddingLeft: 32 },
+
+  // --- Phase 3al: worked cases ---
+  swcCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 14, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  swcTopRow: { flexDirection: 'row', alignItems: 'center' },
+  swcEmoji: { fontSize: 24, marginRight: 10 },
+  swcTitle: { color: Colors.text.primary, fontSize: 13, fontWeight: '900', lineHeight: 17 },
+  swcSubmitter: { fontSize: 11, fontWeight: '700', marginTop: 2 },
+  swcJourney: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 10, paddingLeft: 34 },
+  swcOutcome: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 3, paddingLeft: 34 },
+  swcThanks: { color: Colors.accent.softGold, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 34, fontStyle: 'italic' },
 });
 
 export default SuggestionScreen;
