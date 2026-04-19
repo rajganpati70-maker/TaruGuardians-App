@@ -1443,6 +1443,88 @@ const WING_PORTFOLIO_BRIEFS: WingPortfolioBrief[] = [
   { id: 'wpb-pr-2',  wingId: 'pr',      brief: 'Write a crisis comms plan for an imaginary mishap',                              scope: 'Scenario · stakeholders · 24-hour plan · approval flow · publish.',                                   learning: 'Thinking under pressure · writing clearly when stakes are high · naming ownership.',                color: '#FFD166', emoji: '🚨' },
 ];
 
+// =====================================================
+// Phase 3au: deeper wing structures — round 5
+// =====================================================
+
+interface WingApprenticeshipTrack {
+  id: string;
+  wingId: string;
+  stage: string;
+  duration: string;
+  milestones: string;
+  mentor: string;
+  color: string;
+  emoji: string;
+}
+
+const WING_APPRENTICESHIP_TRACKS: WingApprenticeshipTrack[] = [
+  { id: 'wat-c-1',   wingId: 'content', stage: 'First 30 days · reading + voice discovery',                     duration: '30 days · part-time',            milestones: 'Read 8 essays · 5 style profiles · write 3 pastiches · weekly mentor call.',                         mentor: 'Content lead + senior writer buddy',        color: '#F59E0B', emoji: '📚' },
+  { id: 'wat-c-2',   wingId: 'content', stage: 'Days 31–60 · shadow ship cycle',                                       duration: '30 days · half-time',             milestones: 'Edit 3 pieces alongside senior · ship 1 solo · sit in 2 defence sessions · keep a lessons log.',          mentor: 'Senior writer · 1:1 weekly',                       color: '#F59E0B', emoji: '👥' },
+  { id: 'wat-w-1',   wingId: 'web',     stage: 'First 30 days · codebase tour + starter tasks',                              duration: '30 days · 6 hr/wk',                  milestones: 'Setup local · pair on 4 bugs · read 2 architecture docs · ship 1 typed utility.',                                  mentor: 'Web lead + rotating reviewer',                          color: '#00D4FF', emoji: '🧭' },
+  { id: 'wat-w-2',   wingId: 'web',     stage: 'Days 31–90 · own a small feature end-to-end',                                            duration: '60 days · 8 hr/wk',                       milestones: 'Design doc · 3 PRs · 1 production deploy · on-call shadow for 2 weekends.',                                        mentor: 'Web lead · bi-weekly',                                       color: '#00D4FF', emoji: '🚀' },
+  { id: 'wat-gd-1',  wingId: 'gd',      stage: 'First month · principle studies + 3-round briefs',                                              duration: '4 weeks',                                    milestones: 'Complete 10 principle drills · 3 design briefs · 15 grid studies · weekly crit slot.',                                     mentor: 'GD lead + peer critique buddy',                                    color: '#F472B6', emoji: '🎨' },
+  { id: 'wat-gd-2',  wingId: 'gd',      stage: 'Second month · ship a campus-visible piece',                                                        duration: '4 weeks',                                           milestones: 'One printed poster · one motion explainer · one design system page · in-person presentation.',                                 mentor: 'GD lead · 1:1 bi-weekly',                                                 color: '#F472B6', emoji: '🖼️' },
+  { id: 'wat-v-1',   wingId: 'video',   stage: 'First 30 days · edit fundamentals + reference library',                                                    duration: '30 days · 5 hr/wk',                                       milestones: 'Complete 6 recut exercises · build a 20-clip reference library · pair on one real edit.',                                              mentor: 'Video lead + senior editor',                                                      color: '#A78BFA', emoji: '🎞️' },
+  { id: 'wat-v-2',   wingId: 'video',   stage: 'Days 31–60 · own an event recap',                                                                             duration: '30 days',                                                    milestones: 'Full recap · from brief to publish · senior editor reviews · ship with credits.',                                                               mentor: 'Video lead · weekly reviews',                                                        color: '#A78BFA', emoji: '🎬' },
+  { id: 'wat-p-1',   wingId: 'photo',   stage: 'First month · one lens · one subject',                                                                                  duration: '4 weeks',                                                          milestones: 'Shoot daily · cull weekly · end with 20 final frames · one mentor review session.',                                                                mentor: 'Photo lead · 1:1 weekly',                                                                   color: '#22C55E', emoji: '📸' },
+  { id: 'wat-p-2',   wingId: 'photo',   stage: 'Second month · event coverage + print',                                                                                           duration: '4 weeks',                                                                milestones: 'Cover 2 events · deliver same-week · print 10 frames · install in library.',                                                                                mentor: 'Photo lead + print mentor',                                                                           color: '#22C55E', emoji: '🖨️' },
+  { id: 'wat-pr-1',  wingId: 'pr',      stage: 'First month · beat scan + one pitch',                                                                                                     duration: '4 weeks',                                                                      milestones: 'Daily scan · beat map · build 3 pitch rounds · send 2 · land or learn.',                                                                                    mentor: 'PR lead + alumni advisor',                                                                                      color: '#FFD166', emoji: '📰' },
+  { id: 'wat-pr-2',  wingId: 'pr',      stage: 'Second month · own a campus story',                                                                                                                duration: '4 weeks',                                                                            milestones: 'Own narrative · two stakeholder interviews · one published piece · one debrief.',                                                                              mentor: 'PR lead · weekly 1:1',                                                                                                  color: '#FFD166', emoji: '🎯' },
+];
+
+interface WingMasterclass {
+  id: string;
+  wingId: string;
+  topic: string;
+  teacher: string;
+  format: string;
+  artefact: string;
+  color: string;
+  emoji: string;
+}
+
+const WING_MASTERCLASSES: WingMasterclass[] = [
+  { id: 'wmc-c-1',   wingId: 'content', topic: 'Writing headlines that don&apos;t lie',                              teacher: 'Rhea N. · 2014 · edtech content head',         format: '90-min workshop + 20 headline drills',                    artefact: 'Headline rubric · pasted at every desk · revised quarterly.',                            color: '#F59E0B', emoji: '🗞️' },
+  { id: 'wmc-c-2',   wingId: 'content', topic: 'Long-form that holds across 2000 words',                                       teacher: 'Shreya R. · founder · long-form essayist',             format: '3-part series · read-aloud + re-edit',                         artefact: 'Annotated long-form template · shared across the wing.',                                      color: '#F59E0B', emoji: '📜' },
+  { id: 'wmc-w-1',   wingId: 'web',     topic: 'Writing types that actually help future-you',                                              teacher: 'Priya N. · senior engineer · platform team',              format: '2-hr workshop · live refactor of a wing utility',                   artefact: 'Type-first checklist · used in every new PR.',                                                   color: '#00D4FF', emoji: '🧮' },
+  { id: 'wmc-w-2',   wingId: 'web',     topic: 'Refactoring without breaking production',                                                           teacher: 'Kabir S. · staff engineer · infra alumni',                   format: '90-min + pair-exercise on a real-world PR',                             artefact: 'Refactor playbook · versioned · the wing\'s north star.',                                           color: '#00D4FF', emoji: '🛠️' },
+  { id: 'wmc-gd-1',  wingId: 'gd',      topic: 'Type pairings · how to not make bad combinations',                                                          teacher: 'Meera V. · alumni · design systems lead',                         format: '2-hr + 10 pairing exercises',                                              artefact: 'Type-pairing card deck · used in weekly crits.',                                                        color: '#F472B6', emoji: '🔤' },
+  { id: 'wmc-gd-2',  wingId: 'gd',      topic: 'Grids that bend without breaking',                                                                                teacher: 'Tanvi R. · senior designer · startup land',                            format: '90-min + 5 grid drills',                                                          artefact: 'Grid workshop output · 5 templates pinned in the wing.',                                                     color: '#F472B6', emoji: '📐' },
+  { id: 'wmc-v-1',   wingId: 'video',   topic: 'Cutting to emotion · pacing the edit',                                                                                       teacher: 'Rehan K. · documentary editor',                                             format: '3-hr masterclass · review 5 edits',                                                    artefact: 'Pacing cheat-sheet + 3 annotated reels.',                                                                             color: '#A78BFA', emoji: '✂️' },
+  { id: 'wmc-v-2',   wingId: 'video',   topic: 'Color grading for small screens',                                                                                                       teacher: 'Nidhi P. · colorist · ad agency',                                                format: '2-hr + hands-on grade session',                                                             artefact: 'Preset pack · shared with the wing · re-used across recaps.',                                                            color: '#A78BFA', emoji: '🎨' },
+  { id: 'wmc-p-1',   wingId: 'photo',   topic: 'Composition fundamentals · five rules worth learning',                                                                                              teacher: 'Arjun M. · founding tree-keeper · self-taught',                                       format: '2-hr · on-campus walk · 20 frames',                                                                artefact: 'Composition card set · used at every photo walk.',                                                                          color: '#22C55E', emoji: '🔳' },
+  { id: 'wmc-p-2',   wingId: 'photo',   topic: 'Working with natural light across seasons',                                                                                                                 teacher: 'Aarav K. · landscape photographer · alumni',                                                    format: '3-hr outdoor session · 3 locations',                                                                          artefact: 'Season-by-season light guide · pinned at studio.',                                                                                color: '#22C55E', emoji: '☀️' },
+  { id: 'wmc-pr-1',  wingId: 'pr',      topic: 'Writing a pitch that an editor will read',                                                                                                                           teacher: 'Nisha K. · former journalist · comms lead',                                                            format: '2-hr workshop + 5 live pitch edits',                                                                                artefact: 'Pitch template + do/don\'t list · reused monthly.',                                                                                  color: '#FFD166', emoji: '📝' },
+  { id: 'wmc-pr-2',  wingId: 'pr',      topic: 'Managing a small crisis without panic',                                                                                                                                         teacher: 'Arnav M. · communications director',                                                                        format: '90-min · scenario-drill · 3 rounds',                                                                                          artefact: 'Crisis playbook · stored encrypted · reviewed quarterly.',                                                                                     color: '#FFD166', emoji: '🧯' },
+];
+
+interface WingStudyGroup {
+  id: string;
+  wingId: string;
+  group: string;
+  cadence: string;
+  curriculum: string;
+  signal: string;
+  color: string;
+  emoji: string;
+}
+
+const WING_STUDY_GROUPS: WingStudyGroup[] = [
+  { id: 'wsg-c-1',   wingId: 'content', group: 'Style + Substance circle',                         cadence: 'Fortnightly · Sat · 90 min',                curriculum: 'Rotating reader · 1 essay per session · aloud · 20-min discussion · 30-min write.',                    signal: 'Three pieces a month come out of this group · honestly.',                                                   color: '#F59E0B', emoji: '📖' },
+  { id: 'wsg-c-2',   wingId: 'content', group: 'Headline lab',                                              cadence: 'Weekly · 30 min',                             curriculum: 'Rewrite 3 published headlines · vote · discuss what made the winner · ship if ready.',                         signal: 'Click-through on weekly digest lifted 40% over 6 months.',                                                            color: '#F59E0B', emoji: '🪧' },
+  { id: 'wsg-w-1',   wingId: 'web',     group: 'Algorithms · warm-up club',                                      cadence: 'Weekly · Tue 8–9 AM',                           curriculum: 'Two problems · one medium · one hard · walk through with pen · code after.',                                            signal: 'Interview pass-rate for final-year alumni up 60%.',                                                                         color: '#00D4FF', emoji: '🧠' },
+  { id: 'wsg-w-2',   wingId: 'web',     group: 'System design reading',                                                  cadence: 'Fortnightly · 2 hours',                              curriculum: 'One paper or system · deep read · 3 questions each · one diagram by end.',                                                signal: 'Three junior engineers promoted internally after 9 months.',                                                                      color: '#00D4FF', emoji: '📐' },
+  { id: 'wsg-gd-1',  wingId: 'gd',      group: 'Color theory circle',                                                           cadence: 'Weekly · Fri evenings',                                    curriculum: '1 hour drill · 1 hour pairing · 30-min critique · end with 3 palettes per member.',                                             signal: 'Brand consistency score across 24 designs jumped to 95%.',                                                                              color: '#F472B6', emoji: '🎨' },
+  { id: 'wsg-gd-2',  wingId: 'gd',      group: 'Motion design monthly',                                                              cadence: 'Monthly · 3 hours',                                              curriculum: 'Recreate one masterwork · learn one new technique · present in 60 seconds.',                                                        signal: 'Motion output quadrupled from 2023 to 2024.',                                                                                              color: '#F472B6', emoji: '🎥' },
+  { id: 'wsg-v-1',   wingId: 'video',   group: 'Documentary night',                                                                     cadence: 'Monthly · 2 hours',                                                     curriculum: 'Watch 1 documentary · each member notes one technique · apply in the next edit.',                                                    signal: 'Avg recap view time doubled year-on-year.',                                                                                                   color: '#A78BFA', emoji: '🎞️' },
+  { id: 'wsg-v-2',   wingId: 'video',   group: 'Edit timeline workshop',                                                                       cadence: 'Bi-weekly · 2 hours',                                                        curriculum: 'Share one timeline · get 3 questions · not 3 prescriptions · edit after.',                                                             signal: 'Cut-time per minute-of-recap halved in 8 months.',                                                                                                   color: '#A78BFA', emoji: '✂️' },
+  { id: 'wsg-p-1',   wingId: 'photo',   group: 'Chai + photo-review',                                                                             cadence: 'Weekly · Sat 5 PM',                                                             curriculum: 'Each brings 5 frames · blind review · honest notes · one favourite wins "chai pin".',                                                       signal: 'Portfolio-to-wall conversion rose · 30 frames printed yearly.',                                                                                              color: '#22C55E', emoji: '☕' },
+  { id: 'wsg-p-2',   wingId: 'photo',   group: 'Book study · classic monographs',                                                                              cadence: 'Monthly',                                                                              curriculum: 'One book · 30 pages per meeting · discuss · photo-response to one image.',                                                                       signal: 'Members cite these books in portfolio statements · mentor says "yes".',                                                                                            color: '#22C55E', emoji: '📚' },
+  { id: 'wsg-pr-1',  wingId: 'pr',      group: 'Newsroom reading hour',                                                                                       cadence: 'Daily · 30 min',                                                                            curriculum: 'Scan 3 publications · pull 5 story ideas per member · share shortlist by 10 AM.',                                                                signal: 'Pitch-to-land rate moved from 1 in 10 to 1 in 3.',                                                                                                                      color: '#FFD166', emoji: '📰' },
+  { id: 'wsg-pr-2',  wingId: 'pr',      group: 'Public-speaking practice circle',                                                                                              cadence: 'Bi-weekly · 45 min',                                                                               curriculum: '3-min talk each · no slides · feedback on clarity · no platitudes.',                                                                                      signal: 'Zero bombed pitches in alumni summit 2024. Not one.',                                                                                                                             color: '#FFD166', emoji: '🎤' },
+];
+
 const TaruWingsScreen: React.FC = () => {
   const [selectedWingId, setSelectedWingId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -3389,6 +3471,86 @@ const TaruWingsScreen: React.FC = () => {
     );
   };
 
+  // ------ Phase 3au: round 5 deeper wing blocks ------
+  const renderWingApprenticeshipTracksBlock = () => {
+    if (!selectedWing) return null;
+    const tracks = WING_APPRENTICESHIP_TRACKS.filter((t) => t.wingId === selectedWing.id);
+    if (tracks.length === 0) return null;
+    return (
+      <View style={styles.sectionBlock}>
+        <View style={styles.sectionHeaderRow}>
+          <Text style={styles.sectionTitle}>🎓 Apprenticeship · how we grow a new member</Text>
+          <Text style={styles.sectionCaption}>{tracks.length} stages</Text>
+        </View>
+        {tracks.map((t) => (
+          <View key={t.id} style={[styles.watCard, { borderLeftColor: t.color }]}>
+            <View style={styles.watTopRow}>
+              <Text style={styles.watEmoji}>{t.emoji}</Text>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.watStage} numberOfLines={2}>{t.stage}</Text>
+                <Text style={[styles.watDuration, { color: t.color }]}>{t.duration}</Text>
+              </View>
+            </View>
+            <Text style={styles.watMilestones} numberOfLines={3}>milestones · {t.milestones}</Text>
+            <Text style={styles.watMentor} numberOfLines={1}>mentor · {t.mentor}</Text>
+          </View>
+        ))}
+      </View>
+    );
+  };
+
+  const renderWingMasterclassesBlock = () => {
+    if (!selectedWing) return null;
+    const classes = WING_MASTERCLASSES.filter((m) => m.wingId === selectedWing.id);
+    if (classes.length === 0) return null;
+    return (
+      <View style={styles.sectionBlock}>
+        <View style={styles.sectionHeaderRow}>
+          <Text style={styles.sectionTitle}>🎤 Masterclasses · alumni teaching what they know</Text>
+          <Text style={styles.sectionCaption}>{classes.length} classes</Text>
+        </View>
+        {classes.map((m) => (
+          <View key={m.id} style={[styles.wmcCard, { borderLeftColor: m.color }]}>
+            <View style={styles.wmcTopRow}>
+              <Text style={styles.wmcEmoji}>{m.emoji}</Text>
+              <Text style={styles.wmcTopic} numberOfLines={2}>{m.topic}</Text>
+            </View>
+            <Text style={[styles.wmcTeacher, { color: m.color }]} numberOfLines={1}>— {m.teacher}</Text>
+            <Text style={styles.wmcFormat} numberOfLines={2}>format · {m.format}</Text>
+            <Text style={styles.wmcArtefact} numberOfLines={2}>artefact · {m.artefact}</Text>
+          </View>
+        ))}
+      </View>
+    );
+  };
+
+  const renderWingStudyGroupsBlock = () => {
+    if (!selectedWing) return null;
+    const groups = WING_STUDY_GROUPS.filter((g) => g.wingId === selectedWing.id);
+    if (groups.length === 0) return null;
+    return (
+      <View style={styles.sectionBlock}>
+        <View style={styles.sectionHeaderRow}>
+          <Text style={styles.sectionTitle}>📚 Study groups · where this wing practises together</Text>
+          <Text style={styles.sectionCaption}>{groups.length} groups</Text>
+        </View>
+        {groups.map((g) => (
+          <View key={g.id} style={[styles.wsgCard, { borderLeftColor: g.color }]}>
+            <View style={styles.wsgTopRow}>
+              <Text style={styles.wsgEmoji}>{g.emoji}</Text>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.wsgGroup} numberOfLines={1}>{g.group}</Text>
+                <Text style={[styles.wsgCadence, { color: g.color }]}>{g.cadence}</Text>
+              </View>
+            </View>
+            <Text style={styles.wsgCurriculum} numberOfLines={3}>curriculum · {g.curriculum}</Text>
+            <Text style={styles.wsgSignal} numberOfLines={2}>signal · {g.signal}</Text>
+          </View>
+        ))}
+      </View>
+    );
+  };
+
   const renderDetail = () => (
     <ScrollView
       contentContainerStyle={styles.scrollContent}
@@ -3440,6 +3602,9 @@ const TaruWingsScreen: React.FC = () => {
       {renderWingDecisionLogsBlock()}
       {renderWingCallOfDutiesBlock()}
       {renderWingPortfolioBriefsBlock()}
+      {renderWingApprenticeshipTracksBlock()}
+      {renderWingMasterclassesBlock()}
+      {renderWingStudyGroupsBlock()}
       {renderMembersBlock()}
     </ScrollView>
   );
@@ -4487,6 +4652,33 @@ const styles = StyleSheet.create({
   wpbBrief: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', flex: 1, lineHeight: 17 },
   wpbScope: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8, paddingLeft: 32 },
   wpbLearning: { fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32, fontStyle: 'italic' },
+
+  // --- Phase 3au: apprenticeship tracks ---
+  watCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  watTopRow: { flexDirection: 'row', alignItems: 'center' },
+  watEmoji: { fontSize: 22, marginRight: 10 },
+  watStage: { color: Colors.text.primary, fontSize: 13, fontWeight: '900', lineHeight: 17 },
+  watDuration: { fontSize: 11, fontWeight: '700', marginTop: 2 },
+  watMilestones: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8, paddingLeft: 32 },
+  watMentor: { color: Colors.text.muted, fontSize: 11, marginTop: 4, paddingLeft: 32 },
+
+  // --- Phase 3au: masterclasses ---
+  wmcCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  wmcTopRow: { flexDirection: 'row', alignItems: 'center' },
+  wmcEmoji: { fontSize: 22, marginRight: 10 },
+  wmcTopic: { color: Colors.text.primary, fontSize: 13, fontWeight: '900', flex: 1, lineHeight: 17 },
+  wmcTeacher: { fontSize: 11, marginTop: 8, fontWeight: '800', paddingLeft: 32 },
+  wmcFormat: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32 },
+  wmcArtefact: { color: Colors.text.muted, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32, fontStyle: 'italic' },
+
+  // --- Phase 3au: study groups ---
+  wsgCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  wsgTopRow: { flexDirection: 'row', alignItems: 'center' },
+  wsgEmoji: { fontSize: 22, marginRight: 10 },
+  wsgGroup: { color: Colors.text.primary, fontSize: 13, fontWeight: '900' },
+  wsgCadence: { fontSize: 11, fontWeight: '700', marginTop: 2 },
+  wsgCurriculum: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8, paddingLeft: 32 },
+  wsgSignal: { color: Colors.accent.softGold, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32, fontStyle: 'italic' },
 });
 
 export default TaruWingsScreen;
