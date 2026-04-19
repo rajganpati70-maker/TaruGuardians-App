@@ -723,6 +723,154 @@ const WING_RITUALS: WingRitual[] = [
 ];
 
 // -----------------------------------------------------
+// Phase 3p: deeper per-wing data
+// -----------------------------------------------------
+
+interface WingPlaybookStep {
+  id: string;
+  wingId: string;
+  stage: string;
+  title: string;
+  detail: string;
+  output: string;
+  emoji: string;
+  color: string;
+}
+
+const WING_PLAYBOOK: WingPlaybookStep[] = [
+  { id: 'pb-c-1', wingId: 'content', stage: '1 · brief', title: 'Ten-minute brief', detail: 'One sentence purpose, one sentence audience, one sentence success.', output: 'brief.md in the draft repo', emoji: '🧭', color: '#F59E0B' },
+  { id: 'pb-c-2', wingId: 'content', stage: '2 · outline', title: 'Outline before prose', detail: 'Headlines first · then one bullet per paragraph · read aloud.', output: 'outline in the shared doc', emoji: '🗂️', color: '#F59E0B' },
+  { id: 'pb-c-3', wingId: 'content', stage: '3 · draft', title: 'Short first draft', detail: 'Aim for 80 % of the final length · leave gaps for quotes.', output: 'draft v1 with TK markers', emoji: '✍️', color: '#F59E0B' },
+  { id: 'pb-c-4', wingId: 'content', stage: '4 · review', title: 'Editor pass + one reader', detail: 'Editor cuts · a non-expert reader flags any confusion.', output: 'comments on the draft', emoji: '🪞', color: '#F59E0B' },
+  { id: 'pb-c-5', wingId: 'content', stage: '5 · ship', title: 'Publish + archive', detail: 'Post · cross-link in weekly digest · archive source in repo.', output: 'published + archived', emoji: '🚀', color: '#F59E0B' },
+  { id: 'pb-w-1', wingId: 'web', stage: '1 · spec', title: 'Spec before code', detail: 'One-page spec · user · screens · edge cases · success metric.', output: 'spec.md + rough figma', emoji: '📝', color: '#00D4FF' },
+  { id: 'pb-w-2', wingId: 'web', stage: '2 · scaffold', title: 'Scaffold with the real routes', detail: 'Real navigation, real empty states, dummy data. No Lorem Ipsum.', output: 'compiles · runs · empty', emoji: '🧱', color: '#00D4FF' },
+  { id: 'pb-w-3', wingId: 'web', stage: '3 · wire', title: 'Wire real data', detail: 'Fetchers or mocks · loading + error states · accessible labels.', output: 'feature works · logs clean', emoji: '🔌', color: '#00D4FF' },
+  { id: 'pb-w-4', wingId: 'web', stage: '4 · polish', title: 'Polish pass', detail: 'Spacing · typography · dark-mode check · a11y sweep.', output: 'screenshots for review', emoji: '✨', color: '#00D4FF' },
+  { id: 'pb-w-5', wingId: 'web', stage: '5 · ship', title: 'Ship behind a flag', detail: 'Release notes · changelog entry · internal flag · soft rollout.', output: 'live · tracked · reversible', emoji: '🛳️', color: '#00D4FF' },
+  { id: 'pb-g-1', wingId: 'gd', stage: '1 · moodboard', title: 'Five references', detail: 'Three to steal from · two to avoid · shared in the wing channel.', output: 'moodboard link', emoji: '🖼️', color: '#F472B6' },
+  { id: 'pb-g-2', wingId: 'gd', stage: '2 · sketch', title: 'Sketch on paper first', detail: 'Hand-draw three directions before opening Figma.', output: 'photo of sketches', emoji: '✏️', color: '#F472B6' },
+  { id: 'pb-g-3', wingId: 'gd', stage: '3 · build', title: 'Build in the system', detail: 'Use tokens · reuse components · no one-off styles.', output: 'tokens + artboards', emoji: '🎨', color: '#F472B6' },
+  { id: 'pb-g-4', wingId: 'gd', stage: '4 · crit', title: 'Open crit', detail: '45 min · kind + sharp · one decision per piece.', output: 'revision checklist', emoji: '🪞', color: '#F472B6' },
+  { id: 'pb-g-5', wingId: 'gd', stage: '5 · export', title: 'Export ladder', detail: 'Web · social · print · source file archived with licences.', output: 'exports · archived', emoji: '📦', color: '#F472B6' },
+  { id: 'pb-v-1', wingId: 'video', stage: '1 · story', title: 'Three-beat story', detail: 'Hook · climb · land · written on one card.', output: 'story card', emoji: '🎞️', color: '#FFB74D' },
+  { id: 'pb-v-2', wingId: 'video', stage: '2 · assembly', title: 'Rough assembly', detail: 'Selects only · full-length clips · no music yet.', output: 'assembly v1', emoji: '✂️', color: '#FFB74D' },
+  { id: 'pb-v-3', wingId: 'video', stage: '3 · cut', title: 'Pace + sound design', detail: 'Cut to the breath · two-track mix · subtitles drafted.', output: 'cut v2', emoji: '🎧', color: '#FFB74D' },
+  { id: 'pb-v-4', wingId: 'video', stage: '4 · grade', title: 'Colour grade', detail: 'Match shots · subtle grade · export test on a phone screen.', output: 'grade v1', emoji: '🎨', color: '#FFB74D' },
+  { id: 'pb-v-5', wingId: 'video', stage: '5 · caption', title: 'Captions + credits', detail: 'Burn-in captions · credits · delivery ladders per platform.', output: 'final masters', emoji: '🏁', color: '#FFB74D' },
+  { id: 'pb-p-1', wingId: 'photo', stage: '1 · prep', title: 'Shot list before the event', detail: 'Twelve must-haves · five wild-cards · light test frames.', output: 'shot list pinned', emoji: '📋', color: '#7E57C2' },
+  { id: 'pb-p-2', wingId: 'photo', stage: '2 · shoot', title: 'Ingest at end of day', detail: 'Back-up to two drives · rate 3★+ · cull the rest.', output: 'culled set', emoji: '📷', color: '#7E57C2' },
+  { id: 'pb-p-3', wingId: 'photo', stage: '3 · edit', title: 'Lightroom pass', detail: 'Global grade · hero frames polished · consistent ladder.', output: 'graded set', emoji: '💡', color: '#7E57C2' },
+  { id: 'pb-p-4', wingId: 'photo', stage: '4 · caption', title: 'Caption + credit', detail: 'Who, what, when · credit the subject · licences checked.', output: 'captioned exports', emoji: '📝', color: '#7E57C2' },
+  { id: 'pb-p-5', wingId: 'photo', stage: '5 · archive', title: 'Archive the set', detail: 'Folder per event · RAW separately · shared drive linked.', output: 'archived set', emoji: '🗃️', color: '#7E57C2' },
+  { id: 'pb-r-1', wingId: 'pr', stage: '1 · angle', title: 'Find the angle', detail: 'Not the news · the story under it · written in one line.', output: 'angle card', emoji: '🧭', color: '#38BDF8' },
+  { id: 'pb-r-2', wingId: 'pr', stage: '2 · list', title: 'Journalist list of 12', detail: 'Real beats · recent bylines · one-line personal note.', output: 'list.md in repo', emoji: '📇', color: '#38BDF8' },
+  { id: 'pb-r-3', wingId: 'pr', stage: '3 · pitch', title: 'Short pitch', detail: '120 words · subject line is the news · offer quotes + visuals.', output: 'pitch.eml draft', emoji: '✉️', color: '#38BDF8' },
+  { id: 'pb-r-4', wingId: 'pr', stage: '4 · follow', title: 'Follow-up with care', detail: 'Once · after three days · add one fresh fact.', output: 'follow-ups tracked', emoji: '🔁', color: '#38BDF8' },
+  { id: 'pb-r-5', wingId: 'pr', stage: '5 · archive', title: 'Archive the win (or no)', detail: 'Clip the piece · thank the journalist · no bragging in channel.', output: 'archive entry', emoji: '🗄️', color: '#38BDF8' },
+];
+
+interface StudioGear {
+  id: string;
+  wingId: string;
+  name: string;
+  role: string;
+  available: boolean;
+  owner: string;
+  note: string;
+  emoji: string;
+  color: string;
+}
+
+const STUDIO_GEAR: StudioGear[] = [
+  { id: 'sg-1', wingId: 'video', name: 'Sony A7 IV · body', role: 'Primary camera · interviews + b-roll', available: true, owner: 'club-owned', note: 'Comes with two batteries · SD-card is personal responsibility.', emoji: '📸', color: '#FFB74D' },
+  { id: 'sg-2', wingId: 'video', name: 'Sigma 24-70 f/2.8', role: 'Workhorse lens', available: true, owner: 'club-owned', note: 'Check for dust before and after every shoot.', emoji: '🔭', color: '#FFB74D' },
+  { id: 'sg-3', wingId: 'video', name: 'Rode Wireless GO II', role: 'Lavalier set · two transmitters', available: false, owner: 'on loan till Apr 21', note: 'Track in the loans sheet · rechargers stay in the studio.', emoji: '🎤', color: '#FFB74D' },
+  { id: 'sg-4', wingId: 'video', name: 'DJI RS 3 Mini', role: 'Gimbal for handheld moves', available: true, owner: 'club-owned', note: 'Calibrate at the start of every shoot day · weekly review.', emoji: '🎥', color: '#FFB74D' },
+  { id: 'sg-5', wingId: 'photo', name: 'Fujifilm X-T5', role: 'Primary photo body', available: true, owner: 'club-owned', note: 'Lens kit in the cream bag · grip strap stays with the camera.', emoji: '📷', color: '#7E57C2' },
+  { id: 'sg-6', wingId: 'photo', name: 'Godox AD200 Pro × 2', role: 'Portable strobes', available: true, owner: 'club-owned', note: 'Always test-fire at base before leaving campus.', emoji: '💡', color: '#7E57C2' },
+  { id: 'sg-7', wingId: 'photo', name: 'Peak Design tripod', role: 'Low-light + group shots', available: true, owner: 'club-owned', note: 'Extend one leg first to balance · bubble level on the head.', emoji: '🦿', color: '#7E57C2' },
+  { id: 'sg-8', wingId: 'gd', name: 'Wacom One pen display', role: 'Digital sketch + illustration', available: true, owner: 'club-owned', note: 'USB-C cable lives in the side drawer · label it before use.', emoji: '🖌️', color: '#F472B6' },
+  { id: 'sg-9', wingId: 'gd', name: 'Epson printer · A3+', role: 'Poster + zine proofs', available: true, owner: 'club-owned', note: 'Use the draft setting first · colour-managed profile is pinned.', emoji: '🖨️', color: '#F472B6' },
+  { id: 'sg-10', wingId: 'web', name: 'Redmi Note 12 · test device', role: 'Android QA target · low-end', available: true, owner: 'club-owned', note: 'Keep developer options ON · do not add personal accounts.', emoji: '📱', color: '#00D4FF' },
+  { id: 'sg-11', wingId: 'web', name: 'iPhone 13 · test device', role: 'iOS QA target', available: true, owner: 'club-owned', note: 'Safari web-inspector enabled · auto-lock set to 15 min.', emoji: '📱', color: '#00D4FF' },
+  { id: 'sg-12', wingId: 'web', name: 'USB-C hub · 7-in-1', role: 'Travel hub for demo days', available: true, owner: 'club-owned', note: 'Only keep in bag during events · always back in drawer next day.', emoji: '🔌', color: '#00D4FF' },
+  { id: 'sg-13', wingId: 'pr', name: 'Zoom H6 field recorder', role: 'Backup audio · press meets', available: true, owner: 'club-owned', note: 'Format card fresh · check battery bar before leaving.', emoji: '🎙️', color: '#38BDF8' },
+  { id: 'sg-14', wingId: 'content', name: 'Moleskine notebooks × 10', role: 'Field notebooks for reporters', available: true, owner: 'club-owned', note: 'Sign one out · return when full · archived in the cabinet.', emoji: '📓', color: '#F59E0B' },
+];
+
+interface WingRetroNote {
+  id: string;
+  wingId: string;
+  month: string;
+  kept: string[];
+  dropped: string[];
+  trying: string[];
+  mood: 'calm' | 'stretched' | 'humming' | 'tired';
+  color: string;
+  emoji: string;
+}
+
+const WING_RETROS: WingRetroNote[] = [
+  { id: 'wr-c', wingId: 'content', month: 'March 2026', kept: ['Weekly explainer on Friday', 'Editor pass before anything goes live', 'Archive source in the draft repo'], dropped: ['Twitter thread auto-generation · read like filler', 'Daily 500-word target · quality slipped'], trying: ['One long essay per month · assigned to one person', 'Guest drafts from alumni every fortnight'], mood: 'humming', color: '#F59E0B', emoji: '✍️' },
+  { id: 'wr-w', wingId: 'web', month: 'March 2026', kept: ['Spec before code · kept scope honest', 'PR reviewers rotate so no one gets stuck', 'Ship behind a flag · rolled back twice, saved us'], dropped: ['Skipping a11y sweep to ship faster', 'Long Slack threads instead of a tiny meeting'], trying: ['15-min stand-up at noon instead of text updates', 'Paired review on Fridays for 30 min'], mood: 'humming', color: '#00D4FF', emoji: '📱' },
+  { id: 'wr-g', wingId: 'gd', month: 'March 2026', kept: ['Sketch before Figma · saved a lot of redo', 'Token library stayed the source of truth', 'Open crit every Friday · attendance stayed high'], dropped: ['Personal style overrides on posters', 'Last-minute font swaps'], trying: ['Shared asset-export checklist', 'Co-owned brand guidelines doc'], mood: 'calm', color: '#F472B6', emoji: '🎨' },
+  { id: 'wr-v', wingId: 'video', month: 'March 2026', kept: ['Three-beat story card · every project used it', 'Ingest at end of day · no lost footage', 'Captions burnt-in · reach improved'], dropped: ['Over-ambitious music edits · took too long', 'Solo colour grading · ended up inconsistent'], trying: ['Paired colour passes on bigger cuts', 'Shorter 30-sec recaps as default output'], mood: 'stretched', color: '#FFB74D', emoji: '🎬' },
+  { id: 'wr-p', wingId: 'photo', month: 'March 2026', kept: ['Shot list before every event', 'Culled set before going home', 'Captions within 48 h'], dropped: ['Over-editing in Lightroom', 'Posting raw un-credited photos anywhere'], trying: ['One printed frame per month on the wall', 'Buddy-cull system for large sets'], mood: 'humming', color: '#7E57C2', emoji: '📷' },
+  { id: 'wr-r', wingId: 'pr', month: 'March 2026', kept: ['Short pitches · 120 words or less', 'One follow-up · three days apart', 'Archived every outcome'], dropped: ['Cold mass-emails with no research', 'Chasing vanity publications'], trying: ['Warm-intro swaps with alumni', 'Quarterly press review instead of monthly'], mood: 'calm', color: '#38BDF8', emoji: '📣' },
+];
+
+interface CrossWingCollab {
+  id: string;
+  title: string;
+  wings: string[];
+  ask: string;
+  benefit: string;
+  status: 'live' | 'planned' | 'on-hold';
+  lead: string;
+  color: string;
+  emoji: string;
+}
+
+const CROSS_WING_COLLABS: CrossWingCollab[] = [
+  { id: 'cc-1', title: 'Drive recap pack', wings: ['video', 'photo', 'content'], ask: 'One event · one reel · eight photos · one 400-word note.', benefit: 'Post within 48 h · never more than a week late.', status: 'live', lead: 'Sneha · Video', color: '#FFB74D', emoji: '🎬' },
+  { id: 'cc-2', title: 'App launch sprint', wings: ['web', 'gd', 'pr'], ask: 'Six-week cadence · design tokens · press embargo plan.', benefit: 'Launch without last-night panic · clean hand-off.', status: 'live', lead: 'Anmol · Web', color: '#00D4FF', emoji: '📱' },
+  { id: 'cc-3', title: 'Alumni spotlight series', wings: ['content', 'photo', 'pr'], ask: '15-min interview · one portrait · one 600-word profile.', benefit: 'Alumni engagement without guilt · one profile per fortnight.', status: 'live', lead: 'Nikhil · Content', color: '#F59E0B', emoji: '🎓' },
+  { id: 'cc-4', title: 'Climate explainer board', wings: ['gd', 'content', 'video'], ask: 'One illustration · one 90-sec video · one 500-word post.', benefit: 'A consistent voice across channels · stays up for a month.', status: 'planned', lead: 'Ritu · GD', color: '#F472B6', emoji: '🌍' },
+  { id: 'cc-5', title: 'Hackathon press kit', wings: ['pr', 'gd', 'content', 'web'], ask: 'Landing page · press release · social cards · brief video.', benefit: 'Reduced chaos week of event · media coverage easier.', status: 'planned', lead: 'Maya · PR', color: '#38BDF8', emoji: '📣' },
+  { id: 'cc-6', title: 'Sustainability report · 2026', wings: ['content', 'gd', 'web'], ask: 'Data collection · illustration system · static microsite.', benefit: 'Annual public document · cited by partners.', status: 'on-hold', lead: 'Faraz · lead', color: '#22C55E', emoji: '📊' },
+];
+
+interface WingDirectoryLink {
+  id: string;
+  wingId: string;
+  name: string;
+  urlHint: string;
+  trust: 'core' | 'recommended' | 'optional';
+  note: string;
+  color: string;
+  emoji: string;
+}
+
+const WING_DIRECTORY: WingDirectoryLink[] = [
+  { id: 'dl-c-1', wingId: 'content', name: 'Editorial calendar', urlHint: 'shared / notion · /content/cal', trust: 'core', note: 'All publication dates + owners live here.', color: '#F59E0B', emoji: '🗓️' },
+  { id: 'dl-c-2', wingId: 'content', name: 'Style guide · v3', urlHint: 'shared / docs · /content/style-v3', trust: 'core', note: 'Voice · punctuation · British spellings · no exclaimation marks.', color: '#F59E0B', emoji: '📐' },
+  { id: 'dl-c-3', wingId: 'content', name: 'Source log', urlHint: 'repo · /content/sources', trust: 'recommended', note: 'Every quote links back to a recording or written consent.', color: '#F59E0B', emoji: '🔗' },
+  { id: 'dl-w-1', wingId: 'web', name: 'App repo', urlHint: 'github · /web/app', trust: 'core', note: 'Main branch protected · PRs need two reviewers.', color: '#00D4FF', emoji: '🛠️' },
+  { id: 'dl-w-2', wingId: 'web', name: 'Spec board', urlHint: 'shared / notion · /web/specs', trust: 'core', note: 'Every feature has a one-page spec before code starts.', color: '#00D4FF', emoji: '📝' },
+  { id: 'dl-w-3', wingId: 'web', name: 'Release log', urlHint: 'repo · /web/releases', trust: 'recommended', note: 'Rollbacks documented · post-mortems linked.', color: '#00D4FF', emoji: '📜' },
+  { id: 'dl-g-1', wingId: 'gd', name: 'Brand tokens · v4', urlHint: 'figma · tokens-v4', trust: 'core', note: 'All new work references tokens · no new hex codes in files.', color: '#F472B6', emoji: '🎨' },
+  { id: 'dl-g-2', wingId: 'gd', name: 'Asset library', urlHint: 'figma · library/main', trust: 'core', note: 'Master components live here · clone to branch for experiments.', color: '#F472B6', emoji: '🧰' },
+  { id: 'dl-g-3', wingId: 'gd', name: 'Export checklist', urlHint: 'shared / docs · /gd/exports', trust: 'recommended', note: 'Web / social / print · naming convention · licence check.', color: '#F472B6', emoji: '📦' },
+  { id: 'dl-v-1', wingId: 'video', name: 'Edit project folder', urlHint: 'drive · /video/edits/2026', trust: 'core', note: 'Nothing lives only on a personal laptop.', color: '#FFB74D', emoji: '📁' },
+  { id: 'dl-v-2', wingId: 'video', name: 'Music licences', urlHint: 'shared / docs · /video/music', trust: 'core', note: 'Only tracks listed here can be used in public cuts.', color: '#FFB74D', emoji: '🎶' },
+  { id: 'dl-p-1', wingId: 'photo', name: 'Event archive', urlHint: 'drive · /photo/events', trust: 'core', note: 'Graded + captioned sets only · RAWs live separately.', color: '#7E57C2', emoji: '🗃️' },
+  { id: 'dl-p-2', wingId: 'photo', name: 'Consent register', urlHint: 'shared / docs · /photo/consent', trust: 'core', note: 'Anyone can ask to be removed · we act within 24 h.', color: '#7E57C2', emoji: '🤝' },
+  { id: 'dl-r-1', wingId: 'pr', name: 'Journalist list', urlHint: 'repo · /pr/list', trust: 'core', note: 'Updated monthly · personal notes · do-not-pitch flags.', color: '#38BDF8', emoji: '📇' },
+  { id: 'dl-r-2', wingId: 'pr', name: 'Press archive', urlHint: 'shared / docs · /pr/archive', trust: 'recommended', note: 'Every mention clipped · embargoes respected.', color: '#38BDF8', emoji: '🗞️' },
+];
+
+// -----------------------------------------------------
 // Component
 // -----------------------------------------------------
 
@@ -1845,6 +1993,232 @@ const TaruWingsScreen: React.FC = () => {
     );
   };
 
+  const renderPlaybookBlock = () => {
+    if (!selectedWing) return null;
+    const steps = WING_PLAYBOOK.filter((p) => p.wingId === selectedWing.id);
+    if (steps.length === 0) return null;
+    return (
+      <View style={styles.sectionBlock}>
+        <View style={styles.sectionHeaderRow}>
+          <Text style={styles.sectionTitle}>📘 How this wing ships work</Text>
+          <Text style={styles.sectionCaption}>{steps.length}-step playbook</Text>
+        </View>
+        {steps.map((s) => (
+          <View key={s.id} style={[styles.pbCard, { borderLeftColor: s.color }]}>
+            <View style={styles.pbTopRow}>
+              <Text style={styles.pbEmoji}>{s.emoji}</Text>
+              <View style={{ flex: 1 }}>
+                <Text style={[styles.pbStage, { color: s.color }]}>{s.stage}</Text>
+                <Text style={styles.pbTitle} numberOfLines={1}>{s.title}</Text>
+              </View>
+            </View>
+            <Text style={styles.pbDetail} numberOfLines={3}>{s.detail}</Text>
+            <View style={styles.pbOutputRow}>
+              <Text style={styles.pbOutputLabel}>output</Text>
+              <Text style={styles.pbOutputText} numberOfLines={1}>{s.output}</Text>
+            </View>
+          </View>
+        ))}
+      </View>
+    );
+  };
+
+  const renderGearBlock = () => {
+    if (!selectedWing) return null;
+    const gear = STUDIO_GEAR.filter((g) => g.wingId === selectedWing.id);
+    if (gear.length === 0) return null;
+    return (
+      <View style={styles.sectionBlock}>
+        <View style={styles.sectionHeaderRow}>
+          <Text style={styles.sectionTitle}>🎛️ Studio gear</Text>
+          <Text style={styles.sectionCaption}>
+            {gear.filter((g) => g.available).length} / {gear.length} available
+          </Text>
+        </View>
+        {gear.map((g) => (
+          <View key={g.id} style={[styles.gearRow, { borderLeftColor: g.color }]}>
+            <Text style={styles.gearEmoji}>{g.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <View style={styles.gearTopRow}>
+                <Text style={styles.gearName} numberOfLines={1}>{g.name}</Text>
+                <View
+                  style={[
+                    styles.gearPill,
+                    {
+                      backgroundColor: g.available
+                        ? 'rgba(34,197,94,0.18)'
+                        : 'rgba(239,68,68,0.18)',
+                    },
+                  ]}
+                >
+                  <Text
+                    style={[
+                      styles.gearPillText,
+                      { color: g.available ? '#22C55E' : '#EF4444' },
+                    ]}
+                  >
+                    {g.available ? 'free' : 'on loan'}
+                  </Text>
+                </View>
+              </View>
+              <Text style={styles.gearRole}>{g.role}</Text>
+              <Text style={styles.gearNote} numberOfLines={2}>{g.note}</Text>
+              <Text style={styles.gearOwner}>{g.owner}</Text>
+            </View>
+          </View>
+        ))}
+      </View>
+    );
+  };
+
+  const renderRetroBlock = () => {
+    if (!selectedWing) return null;
+    const retro = WING_RETROS.find((r) => r.wingId === selectedWing.id);
+    if (!retro) return null;
+    const moodColors: Record<WingRetroNote['mood'], string> = {
+      calm: '#22C55E',
+      humming: '#38BDF8',
+      stretched: '#F59E0B',
+      tired: '#EF4444',
+    };
+    return (
+      <View style={styles.sectionBlock}>
+        <View style={styles.sectionHeaderRow}>
+          <Text style={styles.sectionTitle}>🪞 Last month · retro</Text>
+          <View
+            style={[
+              styles.retroMoodPill,
+              { backgroundColor: moodColors[retro.mood] + '26' },
+            ]}
+          >
+            <Text style={[styles.retroMoodText, { color: moodColors[retro.mood] }]}>
+              {retro.mood}
+            </Text>
+          </View>
+        </View>
+        <Text style={styles.retroMonth}>{retro.month}</Text>
+        <View style={[styles.retroBlock, { borderLeftColor: '#22C55E' }]}>
+          <Text style={[styles.retroLabel, { color: '#22C55E' }]}>keeping</Text>
+          {retro.kept.map((k, i) => (
+            <Text key={`k-${i}`} style={styles.retroLine}>· {k}</Text>
+          ))}
+        </View>
+        <View style={[styles.retroBlock, { borderLeftColor: '#EF4444' }]}>
+          <Text style={[styles.retroLabel, { color: '#EF4444' }]}>dropping</Text>
+          {retro.dropped.map((d, i) => (
+            <Text key={`d-${i}`} style={styles.retroLine}>· {d}</Text>
+          ))}
+        </View>
+        <View style={[styles.retroBlock, { borderLeftColor: '#A855F7' }]}>
+          <Text style={[styles.retroLabel, { color: '#A855F7' }]}>trying next</Text>
+          {retro.trying.map((t, i) => (
+            <Text key={`t-${i}`} style={styles.retroLine}>· {t}</Text>
+          ))}
+        </View>
+      </View>
+    );
+  };
+
+  const renderCollabBlock = () => {
+    if (!selectedWing) return null;
+    const collabs = CROSS_WING_COLLABS.filter((c) => c.wings.includes(selectedWing.id));
+    if (collabs.length === 0) return null;
+    return (
+      <View style={styles.sectionBlock}>
+        <View style={styles.sectionHeaderRow}>
+          <Text style={styles.sectionTitle}>🤝 Sister-wing collabs</Text>
+          <Text style={styles.sectionCaption}>{collabs.length} active or planned</Text>
+        </View>
+        {collabs.map((c) => (
+          <View key={c.id} style={[styles.collabCard, { borderLeftColor: c.color }]}>
+            <View style={styles.collabTopRow}>
+              <Text style={styles.collabEmoji}>{c.emoji}</Text>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.collabTitle} numberOfLines={1}>{c.title}</Text>
+                <Text style={styles.collabWings}>
+                  with · {c.wings.filter((w) => w !== selectedWing.id).join(' · ')}
+                </Text>
+              </View>
+              <View
+                style={[
+                  styles.collabStatusPill,
+                  {
+                    backgroundColor:
+                      c.status === 'live'
+                        ? 'rgba(34,197,94,0.18)'
+                        : c.status === 'planned'
+                        ? 'rgba(56,189,248,0.18)'
+                        : 'rgba(239,68,68,0.18)',
+                  },
+                ]}
+              >
+                <Text
+                  style={[
+                    styles.collabStatusText,
+                    {
+                      color:
+                        c.status === 'live'
+                          ? '#22C55E'
+                          : c.status === 'planned'
+                          ? '#38BDF8'
+                          : '#EF4444',
+                    },
+                  ]}
+                >
+                  {c.status}
+                </Text>
+              </View>
+            </View>
+            <Text style={styles.collabAsk} numberOfLines={3}>ask · {c.ask}</Text>
+            <Text style={styles.collabBenefit} numberOfLines={3}>benefit · {c.benefit}</Text>
+            <Text style={styles.collabLead}>led by {c.lead}</Text>
+          </View>
+        ))}
+      </View>
+    );
+  };
+
+  const renderDirectoryBlock = () => {
+    if (!selectedWing) return null;
+    const links = WING_DIRECTORY.filter((l) => l.wingId === selectedWing.id);
+    if (links.length === 0) return null;
+    return (
+      <View style={styles.sectionBlock}>
+        <View style={styles.sectionHeaderRow}>
+          <Text style={styles.sectionTitle}>🗂️ Wing directory</Text>
+          <Text style={styles.sectionCaption}>links + docs we live by</Text>
+        </View>
+        {links.map((l) => (
+          <View key={l.id} style={[styles.dirRow, { borderLeftColor: l.color }]}>
+            <Text style={styles.dirEmoji}>{l.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <View style={styles.dirTopRow}>
+                <Text style={styles.dirName} numberOfLines={1}>{l.name}</Text>
+                <Text
+                  style={[
+                    styles.dirTrust,
+                    {
+                      color:
+                        l.trust === 'core'
+                          ? '#22C55E'
+                          : l.trust === 'recommended'
+                          ? '#38BDF8'
+                          : '#94A3B8',
+                    },
+                  ]}
+                >
+                  {l.trust}
+                </Text>
+              </View>
+              <Text style={styles.dirHint} numberOfLines={1}>{l.urlHint}</Text>
+              <Text style={styles.dirNote} numberOfLines={2}>{l.note}</Text>
+            </View>
+          </View>
+        ))}
+      </View>
+    );
+  };
+
   const renderDetail = () => (
     <ScrollView
       contentContainerStyle={styles.scrollContent}
@@ -1861,14 +2235,19 @@ const TaruWingsScreen: React.FC = () => {
       {renderWingDetailHeader()}
       {renderToolsBlock()}
       {renderGrowthPathBlock()}
+      {renderPlaybookBlock()}
       {renderOpenRoles()}
       {renderProjectsBlock()}
       {renderShipLogBlock()}
+      {renderGearBlock()}
+      {renderRetroBlock()}
+      {renderCollabBlock()}
       {renderAwardsBlock()}
       {renderEventsBlock()}
       {renderRitualsBlock()}
       {renderCirclesBlock()}
       {renderLearningBlock()}
+      {renderDirectoryBlock()}
       {renderJournalBlock()}
       {renderMembersBlock()}
     </ScrollView>
@@ -2533,6 +2912,119 @@ const styles = StyleSheet.create({
     marginTop: 4,
     lineHeight: 14,
   },
+
+  // Playbook
+  pbCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  pbTopRow: { flexDirection: 'row', alignItems: 'flex-start' },
+  pbEmoji: { fontSize: 22, marginRight: 10, marginTop: 2 },
+  pbStage: { fontSize: 10, fontWeight: '900', letterSpacing: 1, textTransform: 'uppercase' },
+  pbTitle: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', marginTop: 2 },
+  pbDetail: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8 },
+  pbOutputRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 8,
+    paddingTop: 8,
+    borderTopWidth: 1,
+    borderColor: 'rgba(255,255,255,0.05)',
+  },
+  pbOutputLabel: {
+    color: Colors.text.muted,
+    fontSize: 9,
+    fontWeight: '800',
+    letterSpacing: 1,
+    textTransform: 'uppercase',
+    marginRight: 6,
+  },
+  pbOutputText: { color: Colors.text.secondary, fontSize: 11, flex: 1 },
+
+  // Gear
+  gearRow: {
+    flexDirection: 'row',
+    backgroundColor: '#0D141B',
+    padding: 12,
+    borderRadius: 12,
+    marginBottom: 8,
+    borderLeftWidth: 3,
+  },
+  gearEmoji: { fontSize: 22, marginRight: 10, marginTop: 2 },
+  gearTopRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+  gearName: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', flex: 1 },
+  gearPill: {
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: 999,
+    marginLeft: 8,
+  },
+  gearPillText: { fontSize: 9, fontWeight: '900', letterSpacing: 1, textTransform: 'uppercase' },
+  gearRole: { color: Colors.text.secondary, fontSize: 11, marginTop: 3 },
+  gearNote: { color: Colors.text.muted, fontSize: 10, marginTop: 5, lineHeight: 14 },
+  gearOwner: { color: Colors.text.muted, fontSize: 10, marginTop: 4, fontStyle: 'italic' },
+
+  // Retro
+  retroMoodPill: { paddingHorizontal: 10, paddingVertical: 3, borderRadius: 999 },
+  retroMoodText: { fontSize: 10, fontWeight: '900', letterSpacing: 1, textTransform: 'uppercase' },
+  retroMonth: { color: Colors.text.muted, fontSize: 11, marginBottom: 8 },
+  retroBlock: {
+    backgroundColor: '#0D141B',
+    borderRadius: 12,
+    padding: 12,
+    marginBottom: 8,
+    borderLeftWidth: 3,
+  },
+  retroLabel: {
+    fontSize: 10,
+    fontWeight: '900',
+    letterSpacing: 1.5,
+    textTransform: 'uppercase',
+    marginBottom: 6,
+  },
+  retroLine: { color: Colors.text.secondary, fontSize: 12, lineHeight: 17, marginBottom: 3 },
+
+  // Collab
+  collabCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  collabTopRow: { flexDirection: 'row', alignItems: 'flex-start' },
+  collabEmoji: { fontSize: 22, marginRight: 10, marginTop: 2 },
+  collabTitle: { color: Colors.text.primary, fontSize: 13, fontWeight: '800' },
+  collabWings: { color: Colors.text.muted, fontSize: 11, marginTop: 2 },
+  collabStatusPill: {
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: 999,
+    marginLeft: 8,
+  },
+  collabStatusText: { fontSize: 9, fontWeight: '900', letterSpacing: 1, textTransform: 'uppercase' },
+  collabAsk: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8 },
+  collabBenefit: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4 },
+  collabLead: { color: Colors.text.muted, fontSize: 10, marginTop: 6, fontStyle: 'italic' },
+
+  // Directory
+  dirRow: {
+    flexDirection: 'row',
+    backgroundColor: '#0D141B',
+    padding: 12,
+    borderRadius: 12,
+    marginBottom: 8,
+    borderLeftWidth: 3,
+  },
+  dirEmoji: { fontSize: 20, marginRight: 10, marginTop: 2 },
+  dirTopRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+  dirName: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', flex: 1 },
+  dirTrust: { fontSize: 10, fontWeight: '800', letterSpacing: 0.5, textTransform: 'uppercase' },
+  dirHint: { color: Colors.tech.neonBlue, fontSize: 11, marginTop: 3, fontFamily: Platform.OS === 'ios' ? 'Menlo' : 'monospace' },
+  dirNote: { color: Colors.text.muted, fontSize: 11, marginTop: 4, lineHeight: 15 },
 });
 
 export default TaruWingsScreen;
