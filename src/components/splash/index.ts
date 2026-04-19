@@ -44,3 +44,6 @@ export { default as BloomBurstEffect } from './BloomBurstEffect';
 export { default as FernFrondEffect } from './FernFrondEffect';
 export { default as ConstellationEffect } from './ConstellationEffect';
 export { default as DewDropEffect } from './DewDropEffect';
+export { default as PollenDriftEffect } from './PollenDriftEffect';
+export { default as RiverRippleEffect } from './RiverRippleEffect';
+export { default as MoonGlowEffect } from './MoonGlowEffect';

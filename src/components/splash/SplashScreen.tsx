@@ -64,6 +64,9 @@ import BloomBurstEffect from './BloomBurstEffect';
 import FernFrondEffect from './FernFrondEffect';
 import ConstellationEffect from './ConstellationEffect';
 import DewDropEffect from './DewDropEffect';
+import PollenDriftEffect from './PollenDriftEffect';
+import RiverRippleEffect from './RiverRippleEffect';
+import MoonGlowEffect from './MoonGlowEffect';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 const IS_SMALL = SCREEN_WIDTH < 375;
@@ -346,6 +349,9 @@ interface EffectVisibility {
   fernFrond: boolean;
   constellation: boolean;
   dewDrop: boolean;
+  pollenDrift: boolean;
+  riverRipple: boolean;
+  moonGlow: boolean;
 }
 
 const visibilityForStage = (key: StageKey): EffectVisibility => {
@@ -392,10 +398,13 @@ const visibilityForStage = (key: StageKey): EffectVisibility => {
     fernFrond: false,
     constellation: false,
     dewDrop: false,
+    pollenDrift: false,
+    riverRipple: false,
+    moonGlow: false,
   };
   switch (key) {
     case 'boot':
-      return { ...base, particleSystem: true, fireflies: true, constellation: true };
+      return { ...base, particleSystem: true, fireflies: true, constellation: true, moonGlow: true };
     case 'cosmos':
       return {
         ...base,
@@ -424,6 +433,9 @@ const visibilityForStage = (key: StageKey): EffectVisibility => {
         bloomBurst: true,
         fernFrond: true,
         dewDrop: true,
+        pollenDrift: true,
+        riverRipple: true,
+        moonGlow: true,
       };
     case 'tech':
       return {
@@ -1068,6 +1080,15 @@ const SplashScreen: React.FC<SplashScreenProps> = ({
       ) : null}
       {v.dewDrop ? (
         <DewDropEffect reduceMotion={reduceMotion} />
+      ) : null}
+      {v.pollenDrift ? (
+        <PollenDriftEffect reduceMotion={reduceMotion} density="normal" />
+      ) : null}
+      {v.riverRipple ? (
+        <RiverRippleEffect reduceMotion={reduceMotion} density="normal" />
+      ) : null}
+      {v.moonGlow ? (
+        <MoonGlowEffect reduceMotion={reduceMotion} density="normal" />
       ) : null}
 
       {/* Tech stage */}
