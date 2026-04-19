@@ -1713,6 +1713,109 @@ const SUGG_WORKED_CASES: SuggestionWorkedCase[] = [
   { id: 'swc-5', title: 'Letters wall · twelve of us wrote at once',              submitter: 'Alumni committee',                    journey: 'Weekly open-hour · scanning sessions · thousand-letter archive forming.',                                     outcome: 'Rotating wall · 52 letters · reading corner busy daily after class.',              thanks: 'We found letters from 2008 that still read like today.',                                color: '#F472B6', emoji: '✉️' },
 ];
 
+// =====================================================
+// Phase 3ar: deeper suggestion structures — round 4
+// =====================================================
+
+interface SuggPitchTemplate {
+  id: string;
+  kind: string;
+  structure: string;
+  length: string;
+  example: string;
+  color: string;
+  emoji: string;
+}
+
+const SUGG_PITCH_TEMPLATES: SuggPitchTemplate[] = [
+  { id: 'spt-1', kind: 'One-paragraph pitch',                structure: 'Problem (1 sentence) · proposal (1) · first step (1) · who owns (1).',                              length: '~80 words',        example: 'Study rooms are full on Thursdays. Book a 90-min library slot for silent work. We\'ll run a 2-week pilot. Lib + Ops owns it.',                                                color: '#00D4FF', emoji: '📝' },
+  { id: 'spt-2', kind: 'Letter to council',                     structure: 'Who · what we tried · what we learned · what we propose · with-whom · by-when.',                length: '~300 words',        example: 'We ran weekend coding sprints for a semester. Here is what worked. Here is what didn\'t. Can we make it monthly with Content + PR help?',                                        color: '#F59E0B', emoji: '✉️' },
+  { id: 'spt-3', kind: 'Town-hall 90-second pitch',                 structure: 'Hook (10s) · why-now (20s) · proposal (30s) · ask (20s) · thanks (10s).',                          length: '90 seconds spoken',   example: '"Raise hand if you skipped a meal during finals. Food corner during exam weeks. We\'d cover 4 evenings. We need ₹8,000 + 6 volunteers. Done by April?"',                     color: '#A78BFA', emoji: '🎤' },
+  { id: 'spt-4', kind: 'Design-dissent memo',                           structure: 'Position · evidence · risks we\'re accepting · alternatives considered · open questions.',             length: '~500 words',          example: '"Proposing we drop feature X. Here are 3 user interviews. Here\'s what we lose. Here\'s what we could try instead. Open to being talked out of it."',                    color: '#F472B6', emoji: '🧭' },
+  { id: 'spt-5', kind: 'One-page plan',                                     structure: 'Goal · 3 metrics · 3 milestones · 3 risks · who · budget · first-week plan.',                       length: '1 page, templated',       example: 'Goal: 60 volunteers by May. Metrics: sign-ups, retention, NPS. Milestones: poster / booth / onboarding. Risks: clashing exams. Owner: Meera.',                       color: '#FFD166', emoji: '📄' },
+  { id: 'spt-6', kind: 'RFC · request-for-comments',                           structure: 'Context · problem · proposal · tradeoffs · rollout · how to disagree · decision-by.',             length: '~800 words',               example: '"RFC: move weekly standups from Monday to Thursday. Here\'s the thinking. Comment by Friday. Decide Monday."',                                                     color: '#22C55E', emoji: '🧵' },
+  { id: 'spt-7', kind: 'Retrospective brief',                                       structure: 'Went well · went badly · lucky · unlucky · what we\'ll change · what we won\'t.',                      length: '~250 words',                  example: '"Bonfire retro · 90 attendees · 14 volunteers · weather held · PA failed. Next: backup PA, earlier food, same ticket price."',                             color: '#EF4444', emoji: '🔄' },
+];
+
+interface SuggDecisionGate {
+  id: string;
+  gate: string;
+  check: string;
+  owner: string;
+  whatNext: string;
+  color: string;
+  emoji: string;
+}
+
+const SUGG_DECISION_GATES: SuggDecisionGate[] = [
+  { id: 'sdg-1', gate: 'Gate A · is it worth thinking about',         check: 'Would at least 3 members care? Does it touch an existing pain we\'ve measured?',                      owner: 'Any council member · 20 min',              whatNext: 'If yes → to Gate B. If no → write why · close with a thank-you.',                 color: '#00D4FF', emoji: '🚪' },
+  { id: 'sdg-2', gate: 'Gate B · can we learn cheaply',                  check: 'Is there a 1-week pilot or 3-person test that de-risks the idea?',                                        owner: 'Wing lead + suggester',                       whatNext: 'If yes → pilot brief · assign owner · set metric. If no → design a cheaper test first.', color: '#F59E0B', emoji: '🧪' },
+  { id: 'sdg-3', gate: 'Gate C · does pilot show signal',                    check: 'Did the metric move? Did the people asked-for show up? Any surprise harms?',                              owner: 'Pilot owner + reviewer pair',                    whatNext: 'If yes → scale plan to Gate D. If no → write learnings · archive honorably.',              color: '#A78BFA', emoji: '📊' },
+  { id: 'sdg-4', gate: 'Gate D · do we have hands to scale',                      check: 'Do we have enough owners + budget + time to run it beyond pilot?',                                            owner: 'Council · weekly review',                           whatNext: 'If yes → rollout plan to Gate E. If no → pause · publish "we\'ll try next semester" note.',   color: '#F472B6', emoji: '🙌' },
+  { id: 'sdg-5', gate: 'Gate E · is it sustainable for 3 cycles',                     check: 'Can this survive exam week · monsoon · a key person leaving?',                                                     owner: 'Ops lead + wing lead',                                  whatNext: 'If yes → fold into handbook · hand to maintainer. If no → reduce scope to what survives.',         color: '#FFD166', emoji: '🌿' },
+  { id: 'sdg-6', gate: 'Gate F · is it safe for the quiet majority',                       check: 'Privacy · consent · cost · access · exclusion · pressure-to-join all reviewed by an outsider.',                         owner: 'Care lead · outside reviewer',                             whatNext: 'Block if a hard-no surfaces · fix before any rollout · no exceptions · document concessions.',      color: '#22C55E', emoji: '🛡️' },
+  { id: 'sdg-7', gate: 'Gate G · who is it without',                                            check: 'Does it serve first-years? Non-tech folks? People without devices? People at night?',                                      owner: 'Inclusion reviewer',                                             whatNext: 'If gaps → design fixes before wider launch · note who we couldn\'t reach · keep invite open.',       color: '#EF4444', emoji: '🔎' },
+];
+
+interface SuggReviewerPrinciple {
+  id: string;
+  principle: string;
+  whatItMeans: string;
+  whatItIsNot: string;
+  color: string;
+  emoji: string;
+}
+
+const SUGG_REVIEWER_PRINCIPLES: SuggReviewerPrinciple[] = [
+  { id: 'srp-1', principle: 'Read twice before you reply',                  whatItMeans: 'Understand the proposal on its own terms · re-read once for what you missed · then write back.',                    whatItIsNot: 'Not: skim · react · move on.',                                                         color: '#00D4FF', emoji: '📖' },
+  { id: 'srp-2', principle: 'Praise the specific · critique the specific',        whatItMeans: 'Name what works with examples · name what needs work with examples · never generic.',                                  whatItIsNot: 'Not: "great job" · not: "this needs more work."',                                         color: '#F59E0B', emoji: '🎯' },
+  { id: 'srp-3', principle: 'Steelman before you push back',                          whatItMeans: 'State the idea\'s strongest version in your own words · then share your disagreement.',                                     whatItIsNot: 'Not: straw-man · not: "have you considered not doing this."',                                color: '#A78BFA', emoji: '🛡️' },
+  { id: 'srp-4', principle: 'Surface risks · don\'t hide them in footnotes',                whatItMeans: 'If a decision is risky · say so clearly at the top · flag blockers with a word like "blocker."',                              whatItIsNot: 'Not: buried paragraphs · not: "minor concern" for major issues.',                                color: '#F472B6', emoji: '🚨' },
+  { id: 'srp-5', principle: 'Pass judgement on ideas · not on people',                         whatItMeans: 'Critique the proposal · not the person\'s worth · past work · or motives.',                                                       whatItIsNot: 'Not: "this is the kind of thing X always proposes."',                                                     color: '#FFD166', emoji: '⚖️' },
+  { id: 'srp-6', principle: 'Close with next-step · never dead-end',                               whatItMeans: 'Every review ends with a sentence about what to try next · or how to close with dignity.',                                            whatItIsNot: 'Not: "this won\'t work."',                                                                           color: '#22C55E', emoji: '➡️' },
+  { id: 'srp-7', principle: 'Sign your review',                                                      whatItMeans: 'Reviewers own their words · anonymous is for submitters · not reviewers.',                                                             whatItIsNot: 'Not: anonymous critique.',                                                                             color: '#EF4444', emoji: '🖋️' },
+];
+
+interface SuggConflictPath {
+  id: string;
+  situation: string;
+  firstStep: string;
+  ifStuck: string;
+  ifHarm: string;
+  color: string;
+  emoji: string;
+}
+
+const SUGG_CONFLICT_PATHS: SuggConflictPath[] = [
+  { id: 'scp-1', situation: 'Two valid ideas · one budget',                    firstStep: 'Propose a split-pilot · half budget each · shared retro · combined learnings.',                           ifStuck: 'Council gathers both owners · neutral facilitator · decides by reasoned vote.',                          ifHarm: 'If one idea risks excluding members · safety reviewer pauses it · weight not equal.',             color: '#00D4FF', emoji: '⚔️' },
+  { id: 'scp-2', situation: 'Disagreement on scope',                                 firstStep: 'Re-read charter together · check what the charter covers · make the delta explicit.',                                 ifStuck: 'Write both scopes as separate proposals · pick one · shelve the other with a returnability note.',       ifHarm: 'If scope creep exhausts team · wing lead halts expansion · resets commitments.',                        color: '#F59E0B', emoji: '🧭' },
+  { id: 'scp-3', situation: 'Feedback felt personal',                                     firstStep: 'Give it 24 hours · write what you heard vs what you felt · share with a trusted third.',                                  ifStuck: 'Request a mediated conversation · care lead facilitates · both parties prepare writing first.',              ifHarm: 'If mistreatment · direct to care lead · policy kicks in · no facilitation replaces safeguarding.',    color: '#A78BFA', emoji: '🫱' },
+  { id: 'scp-4', situation: 'Wing lead says no · member disagrees',                         firstStep: 'Ask for written rationale · review with member · see if a smaller version survives.',                                      ifStuck: 'Escalate to council · council hears both · decides within 2 weeks · documents.',                                   ifHarm: 'If the no is retaliatory · ombudsperson path available · separate from operations.',                         color: '#F472B6', emoji: '🚪' },
+  { id: 'scp-5', situation: 'Confidential proposal leaks',                                        firstStep: 'Acknowledge fast · write to submitter · apologize · investigate quietly.',                                                     ifStuck: 'Ethics lead opens a post-mortem · policy review · remedies · no scapegoats.',                                                ifHarm: 'If harm to submitter · care lead arranges support · costs covered · accountability documented.',             color: '#FFD166', emoji: '🔒' },
+  { id: 'scp-6', situation: 'Two wings claim same territory',                                              firstStep: 'Host a joint scoping · one shared doc · one decision owner · second reviewer.',                                                       ifStuck: 'Split into complement roles · named jointly · operational plan published.',                                                             ifHarm: 'If politics over people · council intervenes · values-first · output second.',                                              color: '#22C55E', emoji: '🤝' },
+  { id: 'scp-7', situation: 'Outside partner asks us to change values',                                          firstStep: 'Thank them · share the written values doc · ask for what flex they actually need.',                                                         ifStuck: 'Walk away with grace · offer an alt path · keep the door open.',                                                                         ifHarm: 'If pressure continues · leadership takes over · documents · sometimes public refusal is the healthiest option.', color: '#EF4444', emoji: '🕊️' },
+];
+
+interface SuggCommunicationCadence {
+  id: string;
+  cadence: string;
+  channel: string;
+  audience: string;
+  rhythm: string;
+  color: string;
+  emoji: string;
+}
+
+const SUGG_COMM_CADENCES: SuggCommunicationCadence[] = [
+  { id: 'sxc-1', cadence: 'Weekly intake digest',         channel: 'Club notice-board + app feed',           audience: 'All members',                   rhythm: 'Monday · 10 AM · 10-line digest · new suggestions · who\'s reviewing what.',                 color: '#00D4FF', emoji: '📬' },
+  { id: 'sxc-2', cadence: 'Decision log',                   channel: 'Shared doc + read-only snapshot in app',    audience: 'All members · archived forever',      rhythm: 'Same week as the decision · every decision gets a one-paragraph entry with reasoning.',      color: '#F59E0B', emoji: '🗂️' },
+  { id: 'sxc-3', cadence: 'Pilot retro memo',                  channel: 'Long-form post · emailed + in-app',          audience: 'Anyone who opts in',                  rhythm: 'End of each pilot · ~500 words · what worked · what didn\'t · what we\'ll try next.',      color: '#A78BFA', emoji: '🔁' },
+  { id: 'sxc-4', cadence: 'Town-hall · open house',                 channel: 'In-person + livestream · recorded',             audience: 'Anyone · including non-members',       rhythm: 'Monthly · first Saturday · 90 min · 40 min open-floor · 50 min structured.',              color: '#F472B6', emoji: '🏛️' },
+  { id: 'sxc-5', cadence: 'Anon box pick-up',                            channel: 'Physical box + digital mailbox',                      audience: 'Submitters + reviewers',                        rhythm: 'Tuesday · 6 PM · council reads · routes · responds within 7 days.',                         color: '#FFD166', emoji: '📮' },
+  { id: 'sxc-6', cadence: 'Quiet-channel updates',                           channel: 'Opt-in low-volume newsletter',                               audience: 'Folks who prefer reading over meetings',              rhythm: 'Every two weeks · 6-bullet summary · quote · quiet request at the bottom.',                   color: '#22C55E', emoji: '📰' },
+  { id: 'sxc-7', cadence: 'Year-end proposal book',                              channel: 'Printed + open PDF',                                              audience: 'Everyone · alumni · future members',                     rhythm: 'Every December · proposals of the year · decisions · outcomes · lessons.',                        color: '#EF4444', emoji: '📖' },
+];
+
 const SuggestionScreen: React.FC = () => {
   // ------------ State ------------
   const [suggestions, setSuggestions] = useState<ExtSuggestion[]>(SAMPLE_SUGGESTIONS);
@@ -3843,6 +3946,110 @@ const SuggestionScreen: React.FC = () => {
     </View>
   );
 
+  // ------ Phase 3ar: round 4 suggestion blocks ------
+  const renderSuggPitchTemplates = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>📝 Pitch templates · how to write a proposal that lands</Text>
+        <Text style={styles.sectionCaption}>{SUGG_PITCH_TEMPLATES.length} templates</Text>
+      </View>
+      {SUGG_PITCH_TEMPLATES.map((t) => (
+        <View key={t.id} style={[styles.sptCard, { borderLeftColor: t.color }]}>
+          <View style={styles.sptTopRow}>
+            <Text style={styles.sptEmoji}>{t.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.sptKind} numberOfLines={1}>{t.kind}</Text>
+              <Text style={[styles.sptLength, { color: t.color }]}>{t.length}</Text>
+            </View>
+          </View>
+          <Text style={styles.sptStructure} numberOfLines={3}>structure · {t.structure}</Text>
+          <Text style={styles.sptExample} numberOfLines={4}>e.g. {t.example}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderSuggDecisionGates = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🚪 Decision gates · seven doors a proposal walks through</Text>
+        <Text style={styles.sectionCaption}>{SUGG_DECISION_GATES.length} gates</Text>
+      </View>
+      {SUGG_DECISION_GATES.map((g) => (
+        <View key={g.id} style={[styles.sdgCard, { borderLeftColor: g.color }]}>
+          <View style={styles.sdgTopRow}>
+            <Text style={styles.sdgEmoji}>{g.emoji}</Text>
+            <Text style={styles.sdgGate} numberOfLines={2}>{g.gate}</Text>
+          </View>
+          <Text style={styles.sdgCheck} numberOfLines={3}>check · {g.check}</Text>
+          <Text style={[styles.sdgOwner, { color: g.color }]} numberOfLines={1}>owner · {g.owner}</Text>
+          <Text style={styles.sdgNext} numberOfLines={3}>next · {g.whatNext}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderSuggReviewerPrinciples = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>📖 Reviewer principles · how we read each other&apos;s proposals</Text>
+        <Text style={styles.sectionCaption}>{SUGG_REVIEWER_PRINCIPLES.length} principles</Text>
+      </View>
+      {SUGG_REVIEWER_PRINCIPLES.map((p) => (
+        <View key={p.id} style={[styles.srpCard, { borderLeftColor: p.color }]}>
+          <View style={styles.srpTopRow}>
+            <Text style={styles.srpEmoji}>{p.emoji}</Text>
+            <Text style={styles.srpPrinciple} numberOfLines={2}>{p.principle}</Text>
+          </View>
+          <Text style={styles.srpMeans} numberOfLines={3}>means · {p.whatItMeans}</Text>
+          <Text style={[styles.srpNot, { color: p.color }]} numberOfLines={2}>{p.whatItIsNot}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderSuggConflictPaths = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>⚔️ Conflict paths · what to do when ideas collide</Text>
+        <Text style={styles.sectionCaption}>{SUGG_CONFLICT_PATHS.length} paths</Text>
+      </View>
+      {SUGG_CONFLICT_PATHS.map((c) => (
+        <View key={c.id} style={[styles.scp2Card, { borderLeftColor: c.color }]}>
+          <View style={styles.scp2TopRow}>
+            <Text style={styles.scp2Emoji}>{c.emoji}</Text>
+            <Text style={styles.scp2Situation} numberOfLines={2}>{c.situation}</Text>
+          </View>
+          <Text style={styles.scp2First} numberOfLines={3}>first · {c.firstStep}</Text>
+          <Text style={[styles.scp2Stuck, { color: c.color }]} numberOfLines={3}>if stuck · {c.ifStuck}</Text>
+          <Text style={styles.scp2Harm} numberOfLines={3}>if harm · {c.ifHarm}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderSuggCommCadences = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>📬 Communication cadences · how we stay transparent</Text>
+        <Text style={styles.sectionCaption}>{SUGG_COMM_CADENCES.length} cadences</Text>
+      </View>
+      {SUGG_COMM_CADENCES.map((c) => (
+        <View key={c.id} style={[styles.sxcCard, { borderLeftColor: c.color }]}>
+          <View style={styles.sxcTopRow}>
+            <Text style={styles.sxcEmoji}>{c.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.sxcCadence} numberOfLines={1}>{c.cadence}</Text>
+              <Text style={[styles.sxcChannel, { color: c.color }]} numberOfLines={1}>{c.channel}</Text>
+            </View>
+          </View>
+          <Text style={styles.sxcAudience} numberOfLines={1}>for · {c.audience}</Text>
+          <Text style={styles.sxcRhythm} numberOfLines={3}>rhythm · {c.rhythm}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
   const listHeader = (
     <View>
       {renderHeader()}
@@ -3882,6 +4089,11 @@ const SuggestionScreen: React.FC = () => {
       {renderLifecycleStages()}
       {renderReviewerDuties()}
       {renderWorkedCases()}
+      {renderSuggPitchTemplates()}
+      {renderSuggDecisionGates()}
+      {renderSuggReviewerPrinciples()}
+      {renderSuggConflictPaths()}
+      {renderSuggCommCadences()}
       {renderListHeader()}
     </View>
   );
@@ -5166,6 +5378,50 @@ const styles = StyleSheet.create({
   swcJourney: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 10, paddingLeft: 34 },
   swcOutcome: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 3, paddingLeft: 34 },
   swcThanks: { color: Colors.accent.softGold, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 34, fontStyle: 'italic' },
+
+  // --- Phase 3ar: pitch templates ---
+  sptCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  sptTopRow: { flexDirection: 'row', alignItems: 'center' },
+  sptEmoji: { fontSize: 22, marginRight: 10 },
+  sptKind: { color: Colors.text.primary, fontSize: 13, fontWeight: '900' },
+  sptLength: { fontSize: 11, fontWeight: '700', marginTop: 2 },
+  sptStructure: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8, paddingLeft: 32 },
+  sptExample: { color: Colors.text.muted, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32, fontStyle: 'italic' },
+
+  // --- Phase 3ar: decision gates ---
+  sdgCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  sdgTopRow: { flexDirection: 'row', alignItems: 'center' },
+  sdgEmoji: { fontSize: 22, marginRight: 10 },
+  sdgGate: { color: Colors.text.primary, fontSize: 13, fontWeight: '900', flex: 1, lineHeight: 17 },
+  sdgCheck: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8, paddingLeft: 32 },
+  sdgOwner: { fontSize: 11, marginTop: 4, paddingLeft: 32, fontWeight: '700' },
+  sdgNext: { color: Colors.accent.softGold, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32 },
+
+  // --- Phase 3ar: reviewer principles ---
+  srpCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  srpTopRow: { flexDirection: 'row', alignItems: 'center' },
+  srpEmoji: { fontSize: 22, marginRight: 10 },
+  srpPrinciple: { color: Colors.text.primary, fontSize: 13, fontWeight: '900', flex: 1, lineHeight: 17 },
+  srpMeans: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8, paddingLeft: 32 },
+  srpNot: { fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32, fontStyle: 'italic' },
+
+  // --- Phase 3ar: conflict paths ---
+  scp2Card: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  scp2TopRow: { flexDirection: 'row', alignItems: 'center' },
+  scp2Emoji: { fontSize: 22, marginRight: 10 },
+  scp2Situation: { color: Colors.text.primary, fontSize: 13, fontWeight: '900', flex: 1, lineHeight: 17 },
+  scp2First: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8, paddingLeft: 32 },
+  scp2Stuck: { fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32, fontWeight: '700' },
+  scp2Harm: { color: '#F87171', fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32, fontStyle: 'italic' },
+
+  // --- Phase 3ar: communication cadences ---
+  sxcCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  sxcTopRow: { flexDirection: 'row', alignItems: 'center' },
+  sxcEmoji: { fontSize: 22, marginRight: 10 },
+  sxcCadence: { color: Colors.text.primary, fontSize: 13, fontWeight: '900' },
+  sxcChannel: { fontSize: 11, fontWeight: '700', marginTop: 2 },
+  sxcAudience: { color: Colors.text.muted, fontSize: 11, marginTop: 8, paddingLeft: 32 },
+  sxcRhythm: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32 },
 });
 
 export default SuggestionScreen;
