@@ -880,6 +880,203 @@ const ROADMAP_ITEMS = SAMPLE_SUGGESTIONS
   )
   .slice(0, 14);
 
+// -----------------------------------------------------
+// Contributor leaderboard — top voices
+// -----------------------------------------------------
+
+interface ContributorStanding {
+  id: string;
+  name: string;
+  avatar: string;
+  color: string;
+  submitted: number;
+  shipped: number;
+  votesEarned: number;
+  tag: string;
+  streak: number;
+}
+
+const LEADERBOARD: ContributorStanding[] = [
+  { id: 'cb-1', name: 'Ananya Pillai',   avatar: '🌱', color: '#F59E0B', submitted: 18, shipped: 7, votesEarned: 412, tag: 'Content · long-form', streak: 9 },
+  { id: 'cb-2', name: 'Vivaan Shetty',   avatar: '🔧', color: '#38BDF8', submitted: 14, shipped: 9, votesEarned: 398, tag: 'Web · release eng',   streak: 12 },
+  { id: 'cb-3', name: 'Ishita Kalra',    avatar: '🎨', color: '#F472B6', submitted: 12, shipped: 5, votesEarned: 287, tag: 'Design · motion',     streak: 6 },
+  { id: 'cb-4', name: 'Aryan Deshmuk',   avatar: '🎥', color: '#A78BFA', submitted: 10, shipped: 4, votesEarned: 241, tag: 'Video · edit lab',    streak: 4 },
+  { id: 'cb-5', name: 'Kavya Iyer',      avatar: '🎟️', color: '#F97316', submitted: 16, shipped: 6, votesEarned: 331, tag: 'Events · ops',        streak: 8 },
+  { id: 'cb-6', name: 'Rohit Bansal',    avatar: '💻', color: '#22C55E', submitted: 9,  shipped: 8, votesEarned: 276, tag: 'Web · RN perf',       streak: 11 },
+  { id: 'cb-7', name: 'Nivedita Rao',    avatar: '📚', color: '#6366F1', submitted: 11, shipped: 3, votesEarned: 198, tag: 'Research · briefs',   streak: 5 },
+  { id: 'cb-8', name: 'Aarav Menon',     avatar: '🌳', color: '#16A34A', submitted: 13, shipped: 5, votesEarned: 254, tag: 'Sustainability',      streak: 10 },
+  { id: 'cb-9', name: 'Tanvi Shah',      avatar: '🖼️', color: '#EC4899', submitted: 7,  shipped: 6, votesEarned: 211, tag: 'Design systems',      streak: 3 },
+  { id: 'cb-10', name: 'Meera Iyer',     avatar: '🛰️', color: '#0EA5E9', submitted: 8,  shipped: 7, votesEarned: 289, tag: 'Platform · data',     streak: 14 },
+];
+
+// -----------------------------------------------------
+// Monthly digest — top ideas, shipped count, rejected with care
+// -----------------------------------------------------
+
+interface MonthlyDigestRow {
+  id: string;
+  month: string;
+  submitted: number;
+  shipped: number;
+  rejectedWithCare: number;
+  topIdea: string;
+  topIdeaVotes: number;
+  highlight: string;
+}
+
+const MONTHLY_DIGEST: MonthlyDigestRow[] = [
+  { id: 'md-1', month: 'Apr 2026', submitted: 58, shipped: 9,  rejectedWithCare: 4, topIdea: 'Monthly repair cafés with e-waste drop-off',    topIdeaVotes: 64, highlight: 'First field-partnered drive shipped in under 18 days.' },
+  { id: 'md-2', month: 'Mar 2026', submitted: 71, shipped: 12, rejectedWithCare: 6, topIdea: 'Onboarding playbook for new wings',              topIdeaVotes: 82, highlight: 'Two wings adopted the playbook; onboarding week 3 days shorter.' },
+  { id: 'md-3', month: 'Feb 2026', submitted: 49, shipped: 6,  rejectedWithCare: 3, topIdea: 'Open design critiques Wed evenings',              topIdeaVotes: 47, highlight: 'Ran 4 crits; 11 first-time contributors shipped posters.' },
+  { id: 'md-4', month: 'Jan 2026', submitted: 65, shipped: 11, rejectedWithCare: 7, topIdea: 'Sustainability benchmark report (quarterly)',     topIdeaVotes: 91, highlight: 'Picked up by The Canopy Press and campus sustainability cell.' },
+  { id: 'md-5', month: 'Dec 2025', submitted: 33, shipped: 4,  rejectedWithCare: 2, topIdea: 'Winter zero-waste catering kit',                  topIdeaVotes: 38, highlight: 'Cut winter-fest catering waste by 58% across 3 nights.' },
+  { id: 'md-6', month: 'Nov 2025', submitted: 52, shipped: 8,  rejectedWithCare: 5, topIdea: 'RN release-rotation doc for juniors',             topIdeaVotes: 56, highlight: 'Docs merged · first junior-led release shipped week 4.' },
+];
+
+// -----------------------------------------------------
+// Analytics — category mix, status mix, velocity
+// -----------------------------------------------------
+
+interface CategoryAnalytic {
+  id: string;
+  label: string;
+  color: string;
+  icon: string;
+  count: number;
+  shipped: number;
+  avgDaysToShip: number;
+}
+
+const CATEGORY_ANALYTICS: CategoryAnalytic[] = SUGGESTION_CATEGORIES.map((c) => {
+  const inCat = SAMPLE_SUGGESTIONS.filter((s) => s.category === c.id);
+  const shipped = inCat.filter((s) => s.status === 'implemented').length;
+  const avgDays =
+    c.id === 'event' ? 22 :
+    c.id === 'improvement' ? 14 :
+    c.id === 'partnership' ? 48 :
+    c.id === 'technical' ? 19 :
+    c.id === 'feature' ? 26 :
+    c.id === 'social' ? 11 :
+    c.id === 'academic' ? 34 :
+    c.id === 'cultural' ? 28 :
+    c.id === 'sustainability' ? 16 :
+    c.id === 'community' ? 20 : 24;
+  return {
+    id: c.id,
+    label: c.name,
+    color: c.color,
+    icon: c.icon,
+    count: inCat.length,
+    shipped,
+    avgDaysToShip: avgDays,
+  };
+});
+
+interface VelocityPoint {
+  id: string;
+  week: string;
+  submitted: number;
+  shipped: number;
+}
+
+const VELOCITY_SERIES: VelocityPoint[] = [
+  { id: 'v-1',  week: 'W16', submitted: 11, shipped: 3 },
+  { id: 'v-2',  week: 'W17', submitted: 14, shipped: 4 },
+  { id: 'v-3',  week: 'W18', submitted: 9,  shipped: 2 },
+  { id: 'v-4',  week: 'W19', submitted: 17, shipped: 6 },
+  { id: 'v-5',  week: 'W20', submitted: 13, shipped: 5 },
+  { id: 'v-6',  week: 'W21', submitted: 20, shipped: 7 },
+  { id: 'v-7',  week: 'W22', submitted: 15, shipped: 4 },
+  { id: 'v-8',  week: 'W23', submitted: 18, shipped: 8 },
+  { id: 'v-9',  week: 'W24', submitted: 22, shipped: 9 },
+  { id: 'v-10', week: 'W25', submitted: 19, shipped: 7 },
+  { id: 'v-11', week: 'W26', submitted: 24, shipped: 10 },
+  { id: 'v-12', week: 'W27', submitted: 21, shipped: 9 },
+];
+
+// -----------------------------------------------------
+// Submission tracking — personal idea trail (mock "you")
+// -----------------------------------------------------
+
+interface TrackedSubmission {
+  id: string;
+  title: string;
+  submittedOn: string;
+  statusPath: { label: string; at: string; done: boolean }[];
+  nextStep: string;
+  owner: string;
+  category: string;
+  color: string;
+}
+
+const TRACKED_SUBMISSIONS: TrackedSubmission[] = [
+  {
+    id: 'ts-1',
+    title: 'Weekly design crit — open to first-timers',
+    submittedOn: 'Mar 28, 2026',
+    owner: 'Ishita Kalra',
+    category: 'Improvement',
+    color: '#38BDF8',
+    statusPath: [
+      { label: 'Submitted',        at: 'Mar 28', done: true },
+      { label: 'Reviewed',         at: 'Apr 01', done: true },
+      { label: 'Owner assigned',   at: 'Apr 03', done: true },
+      { label: 'In progress',      at: 'Apr 05', done: true },
+      { label: 'Shipped · weekly', at: 'Apr 10', done: true },
+    ],
+    nextStep: 'No next step — running as a standing ritual.',
+  },
+  {
+    id: 'ts-2',
+    title: 'E-waste drop-off at monthly repair cafés',
+    submittedOn: 'Apr 05, 2026',
+    owner: 'Aarav Menon',
+    category: 'Sustainability',
+    color: '#22C55E',
+    statusPath: [
+      { label: 'Submitted',       at: 'Apr 05', done: true },
+      { label: 'Reviewed',        at: 'Apr 08', done: true },
+      { label: 'Vendor scoped',   at: 'Apr 12', done: true },
+      { label: 'Pilot planned',   at: 'Apr 18', done: true },
+      { label: 'First café',      at: 'Apr 27', done: false },
+    ],
+    nextStep: 'Confirm volunteers by Apr 22; finalise drop-off bins list.',
+  },
+  {
+    id: 'ts-3',
+    title: 'Junior RN release-rotation doc',
+    submittedOn: 'Feb 11, 2026',
+    owner: 'Rohit Bansal',
+    category: 'Technical',
+    color: '#F472B6',
+    statusPath: [
+      { label: 'Submitted',      at: 'Feb 11', done: true },
+      { label: 'Reviewed',       at: 'Feb 15', done: true },
+      { label: 'Draft · v1',     at: 'Feb 22', done: true },
+      { label: 'Crit · v2',      at: 'Mar 04', done: true },
+      { label: 'Merged',         at: 'Mar 11', done: true },
+    ],
+    nextStep: 'Rotate 2 juniors per release; quarterly review in Jun.',
+  },
+  {
+    id: 'ts-4',
+    title: 'Quarterly sustainability benchmark report',
+    submittedOn: 'Dec 02, 2025',
+    owner: 'Nivedita Rao',
+    category: 'Research',
+    color: '#A78BFA',
+    statusPath: [
+      { label: 'Submitted',         at: 'Dec 02', done: true },
+      { label: 'Reviewed',          at: 'Dec 08', done: true },
+      { label: 'Scope agreed',      at: 'Dec 15', done: true },
+      { label: 'Q4 draft',          at: 'Jan 20', done: true },
+      { label: 'Published · Q1',    at: 'Feb 04', done: true },
+      { label: 'Q2 in progress',    at: 'Apr 18', done: false },
+    ],
+    nextStep: 'Q2 interviews ongoing · publish by May 05.',
+  },
+];
+
 // =====================================================
 // Component
 // =====================================================
@@ -1491,6 +1688,261 @@ const SuggestionScreen: React.FC = () => {
     );
   };
 
+  const renderLeaderboard = () => {
+    if (hasFilters) return null;
+    const sorted = [...LEADERBOARD].sort((a, b) => b.votesEarned - a.votesEarned);
+    const medal = (idx: number) => (idx === 0 ? '🥇' : idx === 1 ? '🥈' : idx === 2 ? '🥉' : `#${idx + 1}`);
+    return (
+      <View style={styles.sectionBlock}>
+        <View style={styles.sectionHeaderRow}>
+          <Text style={styles.sectionTitle}>🏆 Contributor leaderboard</Text>
+          <Text style={styles.sectionCaption}>By votes earned</Text>
+        </View>
+        <View style={styles.leaderCard}>
+          {sorted.map((c, idx) => (
+            <View key={c.id} style={styles.leaderRow}>
+              <Text style={styles.leaderRank}>{medal(idx)}</Text>
+              <View style={[styles.leaderAvatar, { backgroundColor: c.color + '2A' }]}>
+                <Text style={styles.leaderAvatarText}>{c.avatar}</Text>
+              </View>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.leaderName}>{c.name}</Text>
+                <Text style={styles.leaderTag} numberOfLines={1}>{c.tag}</Text>
+              </View>
+              <View style={styles.leaderMetrics}>
+                <Text style={[styles.leaderVotes, { color: c.color }]}>
+                  {c.votesEarned}
+                </Text>
+                <Text style={styles.leaderSub}>
+                  {c.submitted} sent · {c.shipped} shipped · 🔥 {c.streak}w
+                </Text>
+              </View>
+            </View>
+          ))}
+        </View>
+      </View>
+    );
+  };
+
+  const renderAnalytics = () => {
+    if (hasFilters) return null;
+    const maxCount = Math.max(...CATEGORY_ANALYTICS.map((c) => c.count));
+    return (
+      <View style={styles.sectionBlock}>
+        <View style={styles.sectionHeaderRow}>
+          <Text style={styles.sectionTitle}>📊 Category mix</Text>
+          <Text style={styles.sectionCaption}>Ship rate · avg days</Text>
+        </View>
+        <View style={styles.analyticsCard}>
+          {CATEGORY_ANALYTICS.map((c) => {
+            const pct = c.count > 0 ? Math.max(0.06, c.count / maxCount) : 0.06;
+            const shipRate = c.count > 0 ? Math.round((c.shipped / c.count) * 100) : 0;
+            return (
+              <View key={c.id} style={styles.analyticsRow}>
+                <View style={styles.analyticsLabelCol}>
+                  <Text style={styles.analyticsName}>{c.icon} {c.label}</Text>
+                  <Text style={styles.analyticsSub}>
+                    {c.count} ideas · {shipRate}% shipped · ~{c.avgDaysToShip}d
+                  </Text>
+                </View>
+                <View style={styles.analyticsBarCol}>
+                  <View style={styles.analyticsBarBg}>
+                    <View
+                      style={[
+                        styles.analyticsBarFill,
+                        { width: `${Math.round(pct * 100)}%`, backgroundColor: c.color },
+                      ]}
+                    />
+                  </View>
+                  <Text style={[styles.analyticsValue, { color: c.color }]}>
+                    {c.count}
+                  </Text>
+                </View>
+              </View>
+            );
+          })}
+        </View>
+      </View>
+    );
+  };
+
+  const renderVelocity = () => {
+    if (hasFilters) return null;
+    const maxSub = Math.max(...VELOCITY_SERIES.map((v) => v.submitted));
+    return (
+      <View style={styles.sectionBlock}>
+        <View style={styles.sectionHeaderRow}>
+          <Text style={styles.sectionTitle}>⏱ Velocity · 12 weeks</Text>
+          <Text style={styles.sectionCaption}>Submitted vs shipped</Text>
+        </View>
+        <View style={styles.velocityCard}>
+          <View style={styles.velocityChart}>
+            {VELOCITY_SERIES.map((v) => {
+              const subH = Math.max(6, (v.submitted / maxSub) * 120);
+              const shipH = Math.max(4, (v.shipped / maxSub) * 120);
+              return (
+                <View key={v.id} style={styles.velocityCol}>
+                  <View style={styles.velocityBarWrap}>
+                    <View
+                      style={[
+                        styles.velocityBarSub,
+                        { height: subH, backgroundColor: Colors.tech.neonBlue + '55' },
+                      ]}
+                    />
+                    <View
+                      style={[
+                        styles.velocityBarShip,
+                        { height: shipH, backgroundColor: '#22C55E' },
+                      ]}
+                    />
+                  </View>
+                  <Text style={styles.velocityLabel}>{v.week}</Text>
+                </View>
+              );
+            })}
+          </View>
+          <View style={styles.velocityLegendRow}>
+            <View style={styles.velocityLegend}>
+              <View
+                style={[
+                  styles.velocityLegendDot,
+                  { backgroundColor: Colors.tech.neonBlue + '88' },
+                ]}
+              />
+              <Text style={styles.velocityLegendText}>Submitted</Text>
+            </View>
+            <View style={styles.velocityLegend}>
+              <View style={[styles.velocityLegendDot, { backgroundColor: '#22C55E' }]} />
+              <Text style={styles.velocityLegendText}>Shipped</Text>
+            </View>
+          </View>
+        </View>
+      </View>
+    );
+  };
+
+  const renderMonthlyDigest = () => {
+    if (hasFilters) return null;
+    return (
+      <View style={styles.sectionBlock}>
+        <View style={styles.sectionHeaderRow}>
+          <Text style={styles.sectionTitle}>📬 Monthly digest</Text>
+          <Text style={styles.sectionCaption}>Last 6 months</Text>
+        </View>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.digestScroll}
+        >
+          {MONTHLY_DIGEST.map((m) => (
+            <View key={m.id} style={styles.digestCard}>
+              <LinearGradient
+                colors={['#0F1A1F', '#0A0F14']}
+                style={styles.digestGradient}
+              >
+                <Text style={styles.digestMonth}>{m.month}</Text>
+                <View style={styles.digestStatsRow}>
+                  <View style={styles.digestStat}>
+                    <Text style={styles.digestStatValue}>{m.submitted}</Text>
+                    <Text style={styles.digestStatLabel}>submitted</Text>
+                  </View>
+                  <View style={styles.digestStat}>
+                    <Text style={[styles.digestStatValue, { color: '#22C55E' }]}>
+                      {m.shipped}
+                    </Text>
+                    <Text style={styles.digestStatLabel}>shipped</Text>
+                  </View>
+                  <View style={styles.digestStat}>
+                    <Text style={[styles.digestStatValue, { color: '#F59E0B' }]}>
+                      {m.rejectedWithCare}
+                    </Text>
+                    <Text style={styles.digestStatLabel}>declined · w/care</Text>
+                  </View>
+                </View>
+                <Text style={styles.digestTopLabel}>Top idea</Text>
+                <Text style={styles.digestTopText} numberOfLines={2}>
+                  {m.topIdea}
+                </Text>
+                <Text style={styles.digestTopVotes}>↑ {m.topIdeaVotes} votes</Text>
+                <View style={styles.digestHighlightRow}>
+                  <Text style={styles.digestHighlight} numberOfLines={3}>
+                    {m.highlight}
+                  </Text>
+                </View>
+              </LinearGradient>
+            </View>
+          ))}
+        </ScrollView>
+      </View>
+    );
+  };
+
+  const renderTracking = () => {
+    if (hasFilters) return null;
+    return (
+      <View style={styles.sectionBlock}>
+        <View style={styles.sectionHeaderRow}>
+          <Text style={styles.sectionTitle}>📍 Your submissions</Text>
+          <Text style={styles.sectionCaption}>Trail · next step</Text>
+        </View>
+        {TRACKED_SUBMISSIONS.map((t) => (
+          <View key={t.id} style={[styles.trackCard, { borderLeftColor: t.color }]}>
+            <View style={styles.trackHeaderRow}>
+              <Text style={styles.trackTitle} numberOfLines={2}>{t.title}</Text>
+              <View style={[styles.trackCatPill, { backgroundColor: t.color + '2A' }]}>
+                <Text style={[styles.trackCatText, { color: t.color }]}>{t.category}</Text>
+              </View>
+            </View>
+            <Text style={styles.trackMeta}>
+              Owner: {t.owner} · submitted {t.submittedOn}
+            </Text>
+            <View style={styles.trackTimeline}>
+              {t.statusPath.map((s, idx) => (
+                <View key={idx} style={styles.trackStep}>
+                  <View
+                    style={[
+                      styles.trackDot,
+                      { backgroundColor: s.done ? t.color : '#ffffff24' },
+                    ]}
+                  >
+                    {s.done ? (
+                      <Text style={styles.trackDotCheck}>✓</Text>
+                    ) : (
+                      <View style={styles.trackDotIdle} />
+                    )}
+                  </View>
+                  {idx < t.statusPath.length - 1 ? (
+                    <View
+                      style={[
+                        styles.trackConnector,
+                        { backgroundColor: s.done ? t.color + '88' : '#ffffff16' },
+                      ]}
+                    />
+                  ) : null}
+                  <View style={{ flex: 1, paddingBottom: 10 }}>
+                    <Text
+                      style={[
+                        styles.trackStepLabel,
+                        { color: s.done ? Colors.text.primary : Colors.text.muted },
+                      ]}
+                    >
+                      {s.label}
+                    </Text>
+                    <Text style={styles.trackStepAt}>{s.at}</Text>
+                  </View>
+                </View>
+              ))}
+            </View>
+            <View style={styles.trackNextRow}>
+              <Text style={styles.trackNextLabel}>Next</Text>
+              <Text style={styles.trackNextText}>{t.nextStep}</Text>
+            </View>
+          </View>
+        ))}
+      </View>
+    );
+  };
+
   const renderListHeader = () => (
     <View style={styles.listHeaderRow}>
       <Text style={styles.listHeaderTitle}>
@@ -2098,7 +2550,12 @@ const SuggestionScreen: React.FC = () => {
       {renderCategoryRail()}
       {renderPriorityRow()}
       {renderTrending()}
+      {renderLeaderboard()}
       {renderTags()}
+      {renderAnalytics()}
+      {renderVelocity()}
+      {renderMonthlyDigest()}
+      {renderTracking()}
       {renderRoadmap()}
       {renderListHeader()}
     </View>
@@ -2681,6 +3138,218 @@ const styles = StyleSheet.create({
   sheetLabel: { flex: 1, color: Colors.text.secondary, fontSize: 13 },
   sheetLabelActive: { color: Colors.tech.neonBlue, fontWeight: '800' },
   sheetCheck: { color: Colors.tech.neonBlue, fontSize: 16, fontWeight: '800' },
+
+  // Leaderboard
+  leaderCard: {
+    marginHorizontal: HORIZONTAL_PADDING,
+    backgroundColor: '#0D141B',
+    borderRadius: CARD_RADIUS,
+    padding: 8,
+    borderWidth: 1,
+    borderColor: '#ffffff10',
+  },
+  leaderRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 10,
+    paddingHorizontal: 8,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ffffff0E',
+  },
+  leaderRank: {
+    color: Colors.text.secondary,
+    fontSize: 16,
+    fontWeight: '900',
+    width: 36,
+    textAlign: 'center',
+  },
+  leaderAvatar: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 10,
+  },
+  leaderAvatarText: { fontSize: 18 },
+  leaderName: { color: Colors.text.primary, fontSize: 13, fontWeight: '800' },
+  leaderTag: { color: Colors.text.muted, fontSize: 11, marginTop: 2 },
+  leaderMetrics: { alignItems: 'flex-end' },
+  leaderVotes: { fontSize: 15, fontWeight: '900' },
+  leaderSub: { color: Colors.text.muted, fontSize: 10, marginTop: 2 },
+
+  // Analytics (shared w/ velocity)
+  analyticsCard: {
+    marginHorizontal: HORIZONTAL_PADDING,
+    backgroundColor: '#0D141B',
+    borderRadius: CARD_RADIUS,
+    padding: 14,
+    borderWidth: 1,
+    borderColor: '#ffffff10',
+  },
+  analyticsRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ffffff0E',
+  },
+  analyticsLabelCol: { width: IS_SMALL ? 130 : 150, marginRight: 10 },
+  analyticsName: { color: Colors.text.primary, fontSize: 12, fontWeight: '800' },
+  analyticsSub: { color: Colors.text.muted, fontSize: 10, marginTop: 2 },
+  analyticsBarCol: { flex: 1, flexDirection: 'row', alignItems: 'center' },
+  analyticsBarBg: {
+    flex: 1,
+    height: 8,
+    backgroundColor: '#ffffff12',
+    borderRadius: 6,
+    overflow: 'hidden',
+  },
+  analyticsBarFill: { height: 8, borderRadius: 6 },
+  analyticsValue: {
+    fontSize: 11,
+    fontWeight: '800',
+    marginLeft: 10,
+    minWidth: 36,
+    textAlign: 'right',
+  },
+
+  // Velocity
+  velocityCard: {
+    marginHorizontal: HORIZONTAL_PADDING,
+    backgroundColor: '#0D141B',
+    borderRadius: CARD_RADIUS,
+    padding: 16,
+    borderWidth: 1,
+    borderColor: '#ffffff10',
+  },
+  velocityChart: {
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    height: 150,
+    justifyContent: 'space-between',
+  },
+  velocityCol: { flex: 1, alignItems: 'center' },
+  velocityBarWrap: {
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    height: 130,
+    justifyContent: 'center',
+  },
+  velocityBarSub: {
+    width: 6,
+    marginRight: 2,
+    borderTopLeftRadius: 2,
+    borderTopRightRadius: 2,
+  },
+  velocityBarShip: {
+    width: 6,
+    borderTopLeftRadius: 2,
+    borderTopRightRadius: 2,
+  },
+  velocityLabel: {
+    color: Colors.text.muted,
+    fontSize: 9,
+    marginTop: 6,
+    fontWeight: '700',
+  },
+  velocityLegendRow: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: 10,
+  },
+  velocityLegend: { flexDirection: 'row', alignItems: 'center', marginHorizontal: 10 },
+  velocityLegendDot: { width: 10, height: 10, borderRadius: 3, marginRight: 6 },
+  velocityLegendText: { color: Colors.text.secondary, fontSize: 11 },
+
+  // Monthly digest
+  digestScroll: { paddingLeft: HORIZONTAL_PADDING, paddingRight: 10, paddingBottom: 6 },
+  digestCard: { width: IS_SMALL ? 240 : 270, marginRight: 12 },
+  digestGradient: {
+    borderRadius: 18,
+    padding: 14,
+    borderWidth: 1,
+    borderColor: '#ffffff18',
+    minHeight: 280,
+  },
+  digestMonth: { color: Colors.text.primary, fontSize: 16, fontWeight: '900' },
+  digestStatsRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 10,
+    marginBottom: 4,
+  },
+  digestStat: { flex: 1, alignItems: 'center' },
+  digestStatValue: { color: Colors.text.primary, fontSize: 18, fontWeight: '900' },
+  digestStatLabel: { color: Colors.text.muted, fontSize: 9, marginTop: 2, textAlign: 'center' },
+  digestTopLabel: {
+    color: Colors.text.muted,
+    fontSize: 9,
+    fontWeight: '800',
+    textTransform: 'uppercase',
+    letterSpacing: 1,
+    marginTop: 10,
+  },
+  digestTopText: { color: Colors.text.primary, fontSize: 12, marginTop: 4, fontWeight: '700', lineHeight: 17 },
+  digestTopVotes: { color: Colors.accent.softGold, fontSize: 11, marginTop: 4, fontWeight: '800' },
+  digestHighlightRow: { marginTop: 10, padding: 10, borderRadius: 10, backgroundColor: '#ffffff0E' },
+  digestHighlight: { color: Colors.text.secondary, fontSize: 11, fontStyle: 'italic', lineHeight: 15 },
+
+  // Submission tracking
+  trackCard: {
+    marginHorizontal: HORIZONTAL_PADDING,
+    marginBottom: 10,
+    padding: 14,
+    borderRadius: 16,
+    backgroundColor: '#0D141B',
+    borderLeftWidth: 3,
+  },
+  trackHeaderRow: { flexDirection: 'row', alignItems: 'flex-start' },
+  trackTitle: { flex: 1, color: Colors.text.primary, fontSize: 13, fontWeight: '800', lineHeight: 17 },
+  trackCatPill: {
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 10,
+    marginLeft: 10,
+  },
+  trackCatText: { fontSize: 10, fontWeight: '800' },
+  trackMeta: { color: Colors.text.muted, fontSize: 11, marginTop: 4 },
+  trackTimeline: { marginTop: 12 },
+  trackStep: { flexDirection: 'row', alignItems: 'flex-start', position: 'relative', paddingLeft: 2 },
+  trackDot: {
+    width: 16,
+    height: 16,
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 10,
+    marginTop: 2,
+  },
+  trackDotCheck: { color: '#000', fontSize: 10, fontWeight: '900' },
+  trackDotIdle: { width: 6, height: 6, borderRadius: 3, backgroundColor: '#ffffff33' },
+  trackConnector: {
+    position: 'absolute',
+    left: 9,
+    top: 18,
+    width: 2,
+    height: 18,
+  },
+  trackStepLabel: { fontSize: 12, fontWeight: '700' },
+  trackStepAt: { color: Colors.text.muted, fontSize: 10, marginTop: 1 },
+  trackNextRow: {
+    marginTop: 10,
+    padding: 10,
+    borderRadius: 10,
+    backgroundColor: '#ffffff0E',
+  },
+  trackNextLabel: {
+    color: Colors.text.muted,
+    fontSize: 9,
+    fontWeight: '800',
+    textTransform: 'uppercase',
+    letterSpacing: 1,
+  },
+  trackNextText: { color: Colors.text.secondary, fontSize: 12, marginTop: 3, lineHeight: 16 },
 });
 
 export default SuggestionScreen;
