@@ -1114,6 +1114,148 @@ const BUDGET_LINES: BudgetLine[] = [
   { id: 'bl-8', category: 'Core volunteer time', allocated: 2400, spent: 1460, unit: 'hours', note: 'Self-reported · only for capacity planning · never KPIs.', color: '#94A3B8', emoji: '⏱️' },
 ];
 
+// =====================================================
+// Phase 3w: deeper team structures
+// =====================================================
+
+interface SkillMatrixCell {
+  id: string;
+  deptId: string;
+  skill: string;
+  demand: 'high' | 'medium' | 'low';
+  coverage: number;
+  color: string;
+  emoji: string;
+}
+
+const SKILL_MATRIX: SkillMatrixCell[] = [
+  { id: 'sm-1',  deptId: 'core',         skill: 'Event choreography',        demand: 'high',   coverage: 0.72, color: '#00D4FF', emoji: '🎯' },
+  { id: 'sm-2',  deptId: 'core',         skill: 'Crisis communication',      demand: 'medium', coverage: 0.58, color: '#00D4FF', emoji: '📣' },
+  { id: 'sm-3',  deptId: 'content',      skill: 'Long-form writing · EN',    demand: 'high',   coverage: 0.81, color: '#F59E0B', emoji: '📝' },
+  { id: 'sm-4',  deptId: 'content',      skill: 'Long-form writing · HI',    demand: 'high',   coverage: 0.44, color: '#F59E0B', emoji: '🪶' },
+  { id: 'sm-5',  deptId: 'content',      skill: 'Research · climate data',   demand: 'medium', coverage: 0.62, color: '#F59E0B', emoji: '🌡️' },
+  { id: 'sm-6',  deptId: 'webdev',       skill: 'React Native · Android',    demand: 'high',   coverage: 0.67, color: '#00D4FF', emoji: '📱' },
+  { id: 'sm-7',  deptId: 'webdev',       skill: 'Accessibility audits',      demand: 'medium', coverage: 0.48, color: '#00D4FF', emoji: '♿' },
+  { id: 'sm-8',  deptId: 'design',       skill: 'Motion design · Lottie',    demand: 'high',   coverage: 0.56, color: '#F472B6', emoji: '🎞️' },
+  { id: 'sm-9',  deptId: 'design',       skill: 'Brand + poster craft',      demand: 'medium', coverage: 0.78, color: '#F472B6', emoji: '🖼️' },
+  { id: 'sm-10', deptId: 'video',        skill: 'Documentary editing',       demand: 'high',   coverage: 0.52, color: '#EF4444', emoji: '🎬' },
+  { id: 'sm-11', deptId: 'video',        skill: 'Colour + sound · polish',   demand: 'medium', coverage: 0.64, color: '#EF4444', emoji: '🎨' },
+  { id: 'sm-12', deptId: 'photo',        skill: 'Low-light field shoots',    demand: 'high',   coverage: 0.58, color: '#FFD166', emoji: '📷' },
+  { id: 'sm-13', deptId: 'photo',        skill: 'Archival · long-term care', demand: 'low',    coverage: 0.34, color: '#FFD166', emoji: '🗄️' },
+  { id: 'sm-14', deptId: 'pr',           skill: 'Press pitching · national', demand: 'medium', coverage: 0.46, color: '#7E57C2', emoji: '📰' },
+  { id: 'sm-15', deptId: 'pr',           skill: 'Partner care · NGO side',   demand: 'high',   coverage: 0.71, color: '#7E57C2', emoji: '🤝' },
+];
+
+interface AvailabilityWindow {
+  id: string;
+  member: string;
+  deptId: string;
+  dayBand: string;
+  hoursPerWeek: number;
+  color: string;
+  emoji: string;
+}
+
+const AVAILABILITY: AvailabilityWindow[] = [
+  { id: 'av-1',  member: 'Aarav Sharma',   deptId: 'core',    dayBand: 'Evenings · Mon–Thu',     hoursPerWeek: 10, color: '#00D4FF', emoji: '🧭' },
+  { id: 'av-2',  member: 'Ishita Verma',   deptId: 'core',    dayBand: 'Weekends · Sat',         hoursPerWeek: 8,  color: '#00D4FF', emoji: '🎯' },
+  { id: 'av-3',  member: 'Rahul Khanna',   deptId: 'content', dayBand: 'Evenings · Tue + Thu',   hoursPerWeek: 6,  color: '#F59E0B', emoji: '📝' },
+  { id: 'av-4',  member: 'Kavya Iyer',     deptId: 'content', dayBand: 'Mornings · Sun',         hoursPerWeek: 4,  color: '#F59E0B', emoji: '🪶' },
+  { id: 'av-5',  member: 'Sneha Pillai',   deptId: 'webdev',  dayBand: 'Late nights · Fri',      hoursPerWeek: 5,  color: '#00D4FF', emoji: '💻' },
+  { id: 'av-6',  member: 'Arjun Mehta',    deptId: 'webdev',  dayBand: 'Evenings · Mon + Wed',   hoursPerWeek: 7,  color: '#00D4FF', emoji: '🧱' },
+  { id: 'av-7',  member: 'Priya Kapoor',   deptId: 'design',  dayBand: 'Weekends · Sat–Sun',     hoursPerWeek: 9,  color: '#F472B6', emoji: '🎨' },
+  { id: 'av-8',  member: 'Tanvi Shah',     deptId: 'design',  dayBand: 'Evenings · Wed',         hoursPerWeek: 3,  color: '#F472B6', emoji: '🖌️' },
+  { id: 'av-9',  member: 'Vikram Joshi',   deptId: 'video',   dayBand: 'Nights · Thu + Fri',     hoursPerWeek: 6,  color: '#EF4444', emoji: '🎞️' },
+  { id: 'av-10', member: 'Maya Sinha',     deptId: 'photo',   dayBand: 'Early morning · Sat',    hoursPerWeek: 5,  color: '#FFD166', emoji: '📷' },
+  { id: 'av-11', member: 'Nikhil Desai',   deptId: 'pr',      dayBand: 'Evenings · Tue',         hoursPerWeek: 4,  color: '#7E57C2', emoji: '📣' },
+  { id: 'av-12', member: 'Ananya Rao',     deptId: 'pr',      dayBand: 'Weekends · Sun',         hoursPerWeek: 5,  color: '#7E57C2', emoji: '🤝' },
+];
+
+interface WellnessSignal {
+  id: string;
+  signal: string;
+  reading: string;
+  state: 'ok' | 'watch' | 'act';
+  action: string;
+  color: string;
+  emoji: string;
+}
+
+const WELLNESS_SIGNALS: WellnessSignal[] = [
+  { id: 'ws-1', signal: 'Average weekly hours',          reading: '7.2 h',         state: 'ok',    action: 'Keep within 10h ceiling · no stretch past that.',            color: '#22C55E', emoji: '⏱️' },
+  { id: 'ws-2', signal: 'Members at or past 10h',        reading: '3 of 62',       state: 'watch', action: 'Two-on-ones this week · offer a rest-quarter.',              color: '#F59E0B', emoji: '⚠️' },
+  { id: 'ws-3', signal: 'Open tasks over 14 days',       reading: '11 tasks',      state: 'watch', action: 'Review in stand-up · kill three · hand-off two.',            color: '#F59E0B', emoji: '📋' },
+  { id: 'ws-4', signal: 'Mental-health check-ins done',  reading: '58 of 62',      state: 'ok',    action: 'Follow up with the four quietly · never publicly.',          color: '#22C55E', emoji: '🫶' },
+  { id: 'ws-5', signal: 'Sleep-hour self-report',         reading: '6.8 h median', state: 'watch', action: 'Remind: no core task after 22:30 for under-20s.',           color: '#F59E0B', emoji: '🌙' },
+  { id: 'ws-6', signal: 'Critical incidents · last 30d',  reading: '0',            state: 'ok',    action: 'Post the streak on boards · quiet thanks to the crew.',     color: '#22C55E', emoji: '🕊️' },
+  { id: 'ws-7', signal: 'Conflict tickets · open',        reading: '1 (mediated)', state: 'ok',    action: 'Track weekly · close after the 30-day calm period.',        color: '#22C55E', emoji: '🪷' },
+];
+
+interface OKRBoard {
+  id: string;
+  owner: string;
+  objective: string;
+  kr1: string;
+  kr2: string;
+  kr3: string;
+  progress: number;
+  color: string;
+  emoji: string;
+}
+
+const TEAM_OKRS: OKRBoard[] = [
+  { id: 'to-1', owner: 'Whole team',           objective: 'Keep joy + rest in the system',           kr1: 'No member over 10 h/wk',                        kr2: '100% check-ins done every month',                    kr3: 'Zero anonymous "burn-out" tickets',            progress: 0.78, color: '#22C55E', emoji: '🌿' },
+  { id: 'to-2', owner: 'Core council',         objective: 'Widen the voice in decisions',            kr1: 'Two newcomers in every proposal review',        kr2: 'Every vote published within 48 h',                   kr3: 'One reversed decision documented',             progress: 0.66, color: '#00D4FF', emoji: '🗳️' },
+  { id: 'to-3', owner: 'Content wing',         objective: 'Lift content quality + reach',            kr1: '12 long-form pieces this term',                 kr2: 'Hindi subtitles on every video',                     kr3: 'Median time-to-publish ≤ 12 days',             progress: 0.58, color: '#F59E0B', emoji: '📝' },
+  { id: 'to-4', owner: 'Web + App wing',       objective: 'Ship a faster + kinder app',              kr1: '< 3.5 s cold start · median',                   kr2: 'Talkback pass on every flow',                        kr3: 'Crash-free ≥ 99.3% · 30-day',                  progress: 0.72, color: '#00D4FF', emoji: '📱' },
+  { id: 'to-5', owner: 'Design wing',          objective: 'Give every event a distinct voice',       kr1: 'Poster system · 6 event families',              kr2: 'Accessibility palette audit · monthly',              kr3: 'Two retrospectives with critique partners',    progress: 0.64, color: '#F472B6', emoji: '🎨' },
+  { id: 'to-6', owner: 'Video wing',           objective: 'Tell one long film per term',             kr1: '18-min documentary · shot by month 2',          kr2: 'Screening + Q&A · at least 80 seats',                kr3: 'Subtitle pair · Hindi + English',              progress: 0.48, color: '#EF4444', emoji: '🎬' },
+  { id: 'to-7', owner: 'Photo wing',           objective: 'Archive + share what happened',           kr1: '90% of events covered',                         kr2: 'Metadata + consent on every photo',                  kr3: 'Open gallery uploaded in 7 days',              progress: 0.81, color: '#FFD166', emoji: '📷' },
+  { id: 'to-8', owner: 'PR wing',              objective: 'Hold our partners well',                  kr1: 'Four quarter-end notes sent',                    kr2: 'Two new partner orgs · ethical fit',                 kr3: 'One partner-side retro published',             progress: 0.54, color: '#7E57C2', emoji: '🤝' },
+];
+
+interface HandoverNote {
+  id: string;
+  area: string;
+  from: string;
+  to: string;
+  transition: string;
+  status: 'drafted' | 'in-review' | 'handed-over';
+  color: string;
+  emoji: string;
+}
+
+const HANDOVERS: HandoverNote[] = [
+  { id: 'ho-1', area: 'Tools · Figma team + file index',       from: 'Tanvi Shah',     to: 'Priya Kapoor',   transition: '2 sessions · then watch me once',       status: 'handed-over', color: '#F472B6', emoji: '🎨' },
+  { id: 'ho-2', area: 'Android play-console + signing keys',   from: 'Arjun Mehta',    to: 'Sneha Pillai',   transition: 'Paper + offline transfer · watch me',   status: 'in-review',   color: '#00D4FF', emoji: '🔑' },
+  { id: 'ho-3', area: 'Mailing list + newsletter tools',        from: 'Nikhil Desai',   to: 'Kavya Iyer',     transition: '1 session · then co-send for a month',  status: 'in-review',   color: '#7E57C2', emoji: '📰' },
+  { id: 'ho-4', area: 'Camera + memory-card pool',             from: 'Maya Sinha',     to: 'Naina Gupta',    transition: 'Inventory + checkout sheet review',     status: 'handed-over', color: '#FFD166', emoji: '📷' },
+  { id: 'ho-5', area: 'Event-partner contact rolodex',          from: 'Ananya Rao',     to: 'Anika Jain',     transition: '3 intros · then written care-notes',    status: 'drafted',     color: '#7E57C2', emoji: '🤝' },
+  { id: 'ho-6', area: 'Budget spreadsheet · owner',             from: 'Ishita Verma',   to: 'Aarav Sharma',   transition: 'One month co-ownership · then handed',  status: 'in-review',   color: '#00D4FF', emoji: '📊' },
+  { id: 'ho-7', area: 'Film wing · drive + tape archive',       from: 'Vikram Joshi',   to: 'Zainab Khan',    transition: 'Physical handoff · labelled tapes',     status: 'drafted',     color: '#EF4444', emoji: '📼' },
+];
+
+interface CelebrationEntry {
+  id: string;
+  name: string;
+  kind: 'birthday' | 'anniversary' | 'milestone' | 'send-off';
+  on: string;
+  note: string;
+  color: string;
+  emoji: string;
+}
+
+const CELEBRATIONS: CelebrationEntry[] = [
+  { id: 'ce-1', name: 'Rahul · content',    kind: 'birthday',    on: '19 Apr', note: 'Brings home-made jalebi · team bakes cake · hand-written cards.', color: '#F472B6', emoji: '🎂' },
+  { id: 'ce-2', name: 'Ishita · core',       kind: 'anniversary', on: '02 May', note: 'Two years since her first shipment · photo + note on the wall.',   color: '#F59E0B', emoji: '📅' },
+  { id: 'ce-3', name: 'Wing · design',        kind: 'milestone',    on: '11 Apr', note: '100th poster shipped · open house · pizza + prints.',              color: '#F472B6', emoji: '🏆' },
+  { id: 'ce-4', name: 'Wing · video',          kind: 'milestone',    on: '25 Apr', note: 'First documentary crossed 10k views · screening repeat.',            color: '#EF4444', emoji: '🎞️' },
+  { id: 'ce-5', name: 'Dev · webdev',          kind: 'send-off',    on: '05 May', note: 'Moves to a climate start-up · alumni desk set + last open-mic.',    color: '#00D4FF', emoji: '🎒' },
+  { id: 'ce-6', name: 'Anmol · alumni',         kind: 'milestone',    on: '14 Apr', note: '10-year post-graduation · rolls a surprise lunch for juniors.',     color: '#A78BFA', emoji: '🎓' },
+  { id: 'ce-7', name: 'Priya · design',         kind: 'birthday',    on: '30 Apr', note: 'Loves silent parties · lights + low-volume playlist, no cake.',      color: '#F472B6', emoji: '🕯️' },
+  { id: 'ce-8', name: 'Club founding day',      kind: 'anniversary', on: '20 May', note: 'The whole team · old-posters wall · a long quiet moment together.', color: '#FFD166', emoji: '🌼' },
+];
+
 // -----------------------------------------------------
 // Component
 // -----------------------------------------------------
@@ -2588,6 +2730,188 @@ const TeamScreen: React.FC = () => {
     </Modal>
   );
 
+  // ------ Phase 3w deeper blocks ------
+  const renderSkillMatrix = () => (
+    <View style={[styles.sectionBlock, { paddingHorizontal: HORIZONTAL_PADDING }]}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🧠 Skill matrix · open gaps</Text>
+        <Text style={styles.sectionCaption}>{SKILL_MATRIX.length} skills tracked</Text>
+      </View>
+      {SKILL_MATRIX.map((s) => {
+        const pct = Math.round(s.coverage * 100);
+        const dColor = s.demand === 'high' ? '#EF4444' : s.demand === 'medium' ? '#F59E0B' : '#22C55E';
+        return (
+          <View key={s.id} style={[styles.smRow, { borderLeftColor: s.color }]}>
+            <Text style={styles.smEmoji}>{s.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <View style={styles.smTopRow}>
+                <Text style={styles.smSkill} numberOfLines={1}>{s.skill}</Text>
+                <View
+                  style={[
+                    styles.smDemandPill,
+                    { backgroundColor: dColor + '22', borderColor: dColor + '66' },
+                  ]}
+                >
+                  <Text style={[styles.smDemandText, { color: dColor }]}>{s.demand}</Text>
+                </View>
+              </View>
+              <View style={styles.smBarBg}>
+                <View style={[styles.smBarFill, { width: `${pct}%`, backgroundColor: s.color }]} />
+              </View>
+              <Text style={styles.smCoverage}>coverage · {pct}%</Text>
+            </View>
+          </View>
+        );
+      })}
+    </View>
+  );
+
+  const renderAvailability = () => (
+    <View style={[styles.sectionBlock, { paddingHorizontal: HORIZONTAL_PADDING }]}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🕰️ Availability windows</Text>
+        <Text style={styles.sectionCaption}>self-reported · rest-first</Text>
+      </View>
+      {AVAILABILITY.map((a) => (
+        <View key={a.id} style={[styles.avRow, { borderLeftColor: a.color }]}>
+          <Text style={styles.avEmoji}>{a.emoji}</Text>
+          <View style={{ flex: 1 }}>
+            <View style={styles.avTopRow}>
+              <Text style={styles.avName} numberOfLines={1}>{a.member}</Text>
+              <Text style={[styles.avHours, { color: a.color }]}>{a.hoursPerWeek} h/wk</Text>
+            </View>
+            <Text style={styles.avBand} numberOfLines={1}>{a.dayBand}</Text>
+          </View>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderWellness = () => (
+    <View style={[styles.sectionBlock, { paddingHorizontal: HORIZONTAL_PADDING }]}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🫶 Wellness signals</Text>
+        <Text style={styles.sectionCaption}>we watch these weekly</Text>
+      </View>
+      {WELLNESS_SIGNALS.map((w) => {
+        const sColor = w.state === 'ok' ? '#22C55E' : w.state === 'watch' ? '#F59E0B' : '#EF4444';
+        return (
+          <View key={w.id} style={[styles.wsCard, { borderLeftColor: sColor }]}>
+            <View style={styles.wsTopRow}>
+              <Text style={styles.wsEmoji}>{w.emoji}</Text>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.wsSignal} numberOfLines={1}>{w.signal}</Text>
+                <Text style={styles.wsReading} numberOfLines={1}>{w.reading}</Text>
+              </View>
+              <View
+                style={[
+                  styles.wsStatePill,
+                  { backgroundColor: sColor + '22', borderColor: sColor + '66' },
+                ]}
+              >
+                <Text style={[styles.wsStateText, { color: sColor }]}>{w.state}</Text>
+              </View>
+            </View>
+            <Text style={styles.wsAction} numberOfLines={2}>{w.action}</Text>
+          </View>
+        );
+      })}
+    </View>
+  );
+
+  const renderTeamOKRs = () => (
+    <View style={[styles.sectionBlock, { paddingHorizontal: HORIZONTAL_PADDING }]}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🎯 This term's team OKRs</Text>
+        <Text style={styles.sectionCaption}>{TEAM_OKRS.length} boards</Text>
+      </View>
+      {TEAM_OKRS.map((o) => (
+        <View key={o.id} style={[styles.toCard, { borderLeftColor: o.color }]}>
+          <View style={styles.toTopRow}>
+            <Text style={styles.toEmoji}>{o.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.toOwner} numberOfLines={1}>{o.owner}</Text>
+              <Text style={styles.toObjective} numberOfLines={2}>{o.objective}</Text>
+            </View>
+            <Text style={[styles.toProgress, { color: o.color }]}>{Math.round(o.progress * 100)}%</Text>
+          </View>
+          <View style={styles.toKrRow}>
+            <Text style={styles.toKrBullet}>·</Text>
+            <Text style={styles.toKrText} numberOfLines={2}>{o.kr1}</Text>
+          </View>
+          <View style={styles.toKrRow}>
+            <Text style={styles.toKrBullet}>·</Text>
+            <Text style={styles.toKrText} numberOfLines={2}>{o.kr2}</Text>
+          </View>
+          <View style={styles.toKrRow}>
+            <Text style={styles.toKrBullet}>·</Text>
+            <Text style={styles.toKrText} numberOfLines={2}>{o.kr3}</Text>
+          </View>
+          <View style={styles.toBarBg}>
+            <View style={[styles.toBarFill, { width: `${Math.round(o.progress * 100)}%`, backgroundColor: o.color }]} />
+          </View>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderHandovers = () => (
+    <View style={[styles.sectionBlock, { paddingHorizontal: HORIZONTAL_PADDING }]}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🔁 Handovers · bus-factor work</Text>
+        <Text style={styles.sectionCaption}>{HANDOVERS.length} in progress</Text>
+      </View>
+      {HANDOVERS.map((h) => {
+        const sColor =
+          h.status === 'handed-over' ? '#22C55E' : h.status === 'in-review' ? '#F59E0B' : '#94A3B8';
+        return (
+          <View key={h.id} style={[styles.hoCard, { borderLeftColor: h.color }]}>
+            <View style={styles.hoTopRow}>
+              <Text style={styles.hoEmoji}>{h.emoji}</Text>
+              <Text style={styles.hoArea} numberOfLines={2}>{h.area}</Text>
+              <View
+                style={[
+                  styles.hoStatus,
+                  { backgroundColor: sColor + '22', borderColor: sColor + '66' },
+                ]}
+              >
+                <Text style={[styles.hoStatusText, { color: sColor }]}>{h.status}</Text>
+              </View>
+            </View>
+            <Text style={styles.hoFlow} numberOfLines={1}>
+              {h.from} → {h.to}
+            </Text>
+            <Text style={styles.hoTransition} numberOfLines={2}>{h.transition}</Text>
+          </View>
+        );
+      })}
+    </View>
+  );
+
+  const renderCelebrations = () => (
+    <View style={[styles.sectionBlock, { paddingHorizontal: HORIZONTAL_PADDING }]}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🎉 Celebrations · coming up</Text>
+        <Text style={styles.sectionCaption}>quiet warmth · no pressure</Text>
+      </View>
+      {CELEBRATIONS.map((c) => (
+        <View key={c.id} style={[styles.ceRow, { borderLeftColor: c.color }]}>
+          <View style={styles.ceDateCol}>
+            <Text style={[styles.ceDate, { color: c.color }]}>{c.on}</Text>
+            <Text style={styles.ceKind}>{c.kind}</Text>
+          </View>
+          <View style={{ flex: 1 }}>
+            <View style={styles.ceTopRow}>
+              <Text style={styles.ceEmoji}>{c.emoji}</Text>
+              <Text style={styles.ceName} numberOfLines={1}>{c.name}</Text>
+            </View>
+            <Text style={styles.ceNote} numberOfLines={3}>{c.note}</Text>
+          </View>
+        </View>
+      ))}
+    </View>
+  );
+
   // ------ Main ------
   const listHeader = (
     <View>
@@ -2595,18 +2919,24 @@ const TeamScreen: React.FC = () => {
       {renderDepartments()}
       {renderHighlights()}
       {renderLeadershipBoard()}
+      {renderTeamOKRs()}
       {renderDeptAnalytics()}
+      {renderSkillMatrix()}
+      {renderWellness()}
+      {renderAvailability()}
       {renderOnCall()}
       {renderStandupLog()}
       {renderTopContributors()}
       {renderMentorshipTree()}
       {renderBuddyPairs()}
+      {renderHandovers()}
       {renderHiringPipeline()}
       {renderInterviewSlots()}
       {renderTownHalls()}
       {renderBudget()}
       {renderAgreements()}
       {renderTraditions()}
+      {renderCelebrations()}
       {renderTeamValues()}
       {renderTeamTestimonials()}
       {renderThanks()}
@@ -3617,6 +3947,137 @@ const styles = StyleSheet.create({
   },
   budgetBarFill: { height: '100%', borderRadius: 3 },
   budgetNote: { color: Colors.text.muted, fontSize: 10, lineHeight: 14, marginTop: 6 },
+
+  // --- Phase 3w: skill matrix ---
+  smRow: {
+    flexDirection: 'row',
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginBottom: 8,
+    borderLeftWidth: 3,
+  },
+  smEmoji: { fontSize: 22, marginRight: 10, marginTop: 2 },
+  smTopRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+  smSkill: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', flex: 1 },
+  smDemandPill: {
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: 999,
+    borderWidth: 1,
+    marginLeft: 8,
+  },
+  smDemandText: { fontSize: 9, fontWeight: '900', letterSpacing: 1, textTransform: 'uppercase' },
+  smBarBg: {
+    height: 4,
+    borderRadius: 2,
+    backgroundColor: 'rgba(255,255,255,0.06)',
+    marginTop: 8,
+    overflow: 'hidden',
+  },
+  smBarFill: { height: 4, borderRadius: 2 },
+  smCoverage: { color: Colors.text.muted, fontSize: 10, marginTop: 4 },
+
+  // --- Phase 3w: availability ---
+  avRow: {
+    flexDirection: 'row',
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginBottom: 8,
+    borderLeftWidth: 3,
+  },
+  avEmoji: { fontSize: 20, marginRight: 10, marginTop: 2 },
+  avTopRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+  avName: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', flex: 1 },
+  avHours: { fontSize: 12, fontWeight: '900', marginLeft: 8 },
+  avBand: { color: Colors.text.secondary, fontSize: 11, marginTop: 3 },
+
+  // --- Phase 3w: wellness ---
+  wsCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginBottom: 8,
+    borderLeftWidth: 3,
+  },
+  wsTopRow: { flexDirection: 'row', alignItems: 'center' },
+  wsEmoji: { fontSize: 22, marginRight: 10 },
+  wsSignal: { color: Colors.text.primary, fontSize: 13, fontWeight: '800' },
+  wsReading: { color: Colors.text.secondary, fontSize: 11, marginTop: 2 },
+  wsStatePill: {
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: 999,
+    borderWidth: 1,
+    marginLeft: 8,
+  },
+  wsStateText: { fontSize: 9, fontWeight: '900', letterSpacing: 1, textTransform: 'uppercase' },
+  wsAction: { color: Colors.text.muted, fontSize: 11, lineHeight: 15, marginTop: 8, paddingLeft: 32 },
+
+  // --- Phase 3w: team OKRs ---
+  toCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  toTopRow: { flexDirection: 'row', alignItems: 'flex-start' },
+  toEmoji: { fontSize: 22, marginRight: 10, marginTop: 2 },
+  toOwner: { color: Colors.text.muted, fontSize: 10, fontWeight: '700', letterSpacing: 0.5, textTransform: 'uppercase' },
+  toObjective: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', marginTop: 3, lineHeight: 17 },
+  toProgress: { fontSize: 13, fontWeight: '900', marginLeft: 8 },
+  toKrRow: { flexDirection: 'row', marginTop: 6, paddingLeft: 32 },
+  toKrBullet: { color: Colors.text.muted, fontSize: 12, marginRight: 6 },
+  toKrText: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, flex: 1 },
+  toBarBg: {
+    height: 4,
+    borderRadius: 2,
+    backgroundColor: 'rgba(255,255,255,0.06)',
+    marginTop: 10,
+    overflow: 'hidden',
+  },
+  toBarFill: { height: 4, borderRadius: 2 },
+
+  // --- Phase 3w: handovers ---
+  hoCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginBottom: 8,
+    borderLeftWidth: 3,
+  },
+  hoTopRow: { flexDirection: 'row', alignItems: 'center' },
+  hoEmoji: { fontSize: 20, marginRight: 10 },
+  hoArea: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', flex: 1, lineHeight: 17 },
+  hoStatus: {
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: 999,
+    borderWidth: 1,
+    marginLeft: 8,
+  },
+  hoStatusText: { fontSize: 9, fontWeight: '900', letterSpacing: 1, textTransform: 'uppercase' },
+  hoFlow: { color: Colors.tech.neonBlue, fontSize: 11, fontWeight: '800', marginTop: 6, paddingLeft: 30 },
+  hoTransition: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 30 },
+
+  // --- Phase 3w: celebrations ---
+  ceRow: {
+    flexDirection: 'row',
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginBottom: 8,
+    borderLeftWidth: 3,
+  },
+  ceDateCol: { width: 72, marginRight: 10 },
+  ceDate: { fontSize: 12, fontWeight: '900', letterSpacing: 0.5 },
+  ceKind: { color: Colors.text.muted, fontSize: 9, fontWeight: '700', letterSpacing: 1, textTransform: 'uppercase', marginTop: 2 },
+  ceTopRow: { flexDirection: 'row', alignItems: 'center' },
+  ceEmoji: { fontSize: 18, marginRight: 6 },
+  ceName: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', flex: 1 },
+  ceNote: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4 },
 });
 
 export default TeamScreen;
