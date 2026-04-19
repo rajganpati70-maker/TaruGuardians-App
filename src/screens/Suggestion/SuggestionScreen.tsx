@@ -1493,6 +1493,107 @@ const OPEN_CALLS: OpenCallToIdea[] = [
   { id: 'oc-7', title: 'A small, quiet ritual for goodbyes',     prompt: 'One paragraph · what should happen when a member steps away.',               deadline: '22 Jun',   wing: 'Whole team',           color: '#FFD166', emoji: '🕯️' },
 ];
 
+// =====================================================
+// Phase 3ae: deeper suggestion structures — round 2
+// =====================================================
+
+interface SuggestionIntake {
+  id: string;
+  channel: string;
+  owner: string;
+  response: string;
+  cadence: string;
+  color: string;
+  emoji: string;
+}
+
+const SUGGESTION_INTAKES: SuggestionIntake[] = [
+  { id: 'sin-1', channel: 'In-app suggestion box',        owner: 'Product council',            response: 'First human reply within 48 hours · always.',              cadence: 'Live',                color: '#00D4FF', emoji: '📥' },
+  { id: 'sin-2', channel: 'Anonymous box · physical',     owner: 'Campus council',              response: 'Opened every Monday 10 AM · posted to board by Wednesday.', cadence: 'Weekly',              color: '#A78BFA', emoji: '📮' },
+  { id: 'sin-3', channel: 'Open forum · last Friday',     owner: 'Rotating host',                response: 'Top-three suggestions printed + assigned within 7 days.',    cadence: 'Monthly',             color: '#F59E0B', emoji: '🎙️' },
+  { id: 'sin-4', channel: 'Hot-chocolate hour · juniors', owner: 'Hospitality crew',              response: 'Nothing is logged · lead carries the themes to the council.', cadence: 'Fortnight',           color: '#F472B6', emoji: '🍫' },
+  { id: 'sin-5', channel: 'Alumni first-Friday chai',      owner: 'Alumni council',                response: 'Two-pager typed within a week · shared with whole team.',    cadence: 'Monthly',             color: '#FFD166', emoji: '🍵' },
+  { id: 'sin-6', channel: 'Post-event pulse · 24 h',      owner: 'Event owner',                   response: 'Every rating gets a personal reply if they leave a name.',     cadence: 'Per event',           color: '#22C55E', emoji: '📈' },
+  { id: 'sin-7', channel: 'Whisper walk · founder',        owner: 'Founder + people lead',         response: 'Private · unlogged · for the hardest feedback.',               cadence: 'On request',           color: '#EF4444', emoji: '🤫' },
+];
+
+interface SuggestionTemplate {
+  id: string;
+  scenario: string;
+  template: string;
+  useWhen: string;
+  color: string;
+  emoji: string;
+}
+
+const SUGGESTION_TEMPLATES: SuggestionTemplate[] = [
+  { id: 'stp-1', scenario: 'Small bug · cosmetic',        template: '"When I tap X, Y happens · I expected Z. Screenshot attached."',                          useWhen: 'UI misbehaves · not urgent.',          color: '#00D4FF', emoji: '🐞' },
+  { id: 'stp-2', scenario: 'Feature idea · new section',   template: '"I often do A manually · because B is missing. A feature that does C would save D time."',  useWhen: 'You repeat a workflow ≥ 3× a week.',  color: '#A78BFA', emoji: '💡' },
+  { id: 'stp-3', scenario: 'Policy feedback',              template: '"The current rule around E · hurts F · by causing G. A softer version could look like H."',  useWhen: 'A rule is hurting more than helping.',  color: '#F59E0B', emoji: '🪴' },
+  { id: 'stp-4', scenario: 'Event idea',                    template: '"Format: I. Theme: J. Guests: K. Why this: L. One prior example: M."',                     useWhen: 'You want a new kind of event to run.',    color: '#F472B6', emoji: '🎫' },
+  { id: 'stp-5', scenario: 'Thank-you · public',             template: '"N did O for me · here\'s what it unlocked. Worth saying out loud."',                      useWhen: 'Someone quietly helped · you want it seen.', color: '#22C55E', emoji: '✨' },
+  { id: 'stp-6', scenario: 'Concern · interpersonal',        template: '"I\'d like to talk privately about P · I\'m open to Q format · here\'s a window R."',       useWhen: 'Something feels off between members.',   color: '#EF4444', emoji: '🫀' },
+  { id: 'stp-7', scenario: 'Sustainability nudge',           template: '"Our current practice · S · can be greener by · T. Small switch · big over time."',         useWhen: 'You see a habit we can tune.',          color: '#16A34A', emoji: '🌱' },
+];
+
+interface SuggestionGuardrail {
+  id: string;
+  guardrail: string;
+  oneLine: string;
+  why: string;
+  color: string;
+  emoji: string;
+}
+
+const SUGGESTION_GUARDRAILS: SuggestionGuardrail[] = [
+  { id: 'sgr-1', guardrail: 'No name-and-shame',                 oneLine: 'Point at the pattern · not the person.',                  why: 'Feedback dies when it stings · patterns survive when named.',                color: '#EF4444', emoji: '🛡️' },
+  { id: 'sgr-2', guardrail: 'No one-line "it\'s broken"',         oneLine: 'Give us steps · screenshot · or a bad day to remember it.', why: 'A good bug report shortens the fix by half.',                                  color: '#00D4FF', emoji: '🔍' },
+  { id: 'sgr-3', guardrail: 'Anonymous stays anonymous',         oneLine: 'We don\'t try to decode authorship · ever.',                 why: 'The box works only if the box is trusted.',                                     color: '#A78BFA', emoji: '🔒' },
+  { id: 'sgr-4', guardrail: 'Response time beats speed',           oneLine: '48 hours to acknowledge · months to ship is ok.',           why: 'A heard suggestion is already a partial win.',                                 color: '#F59E0B', emoji: '🕰️' },
+  { id: 'sgr-5', guardrail: 'We say no with reasons',               oneLine: 'Every rejection comes with the why.',                       why: 'No silent no\'s · no ghosted ideas · a reason is owed.',                        color: '#F472B6', emoji: '🪞' },
+  { id: 'sgr-6', guardrail: 'Green always gets the first vote',      oneLine: 'Sustainability suggestions skip the queue · by rule.',       why: 'We are slow on green by default · this corrects it structurally.',             color: '#22C55E', emoji: '🌿' },
+  { id: 'sgr-7', guardrail: 'Quiet weeks exist',                       oneLine: 'Suggestion box pauses the week before exams.',               why: 'Everyone deserves a closed loop · not more open threads.',                     color: '#FFD166', emoji: '🌙' },
+];
+
+interface SuggestionCase {
+  id: string;
+  idea: string;
+  origin: string;
+  outcome: string;
+  shippedOn: string;
+  daysToShip: number;
+  color: string;
+  emoji: string;
+}
+
+const SUGGESTION_CASES: SuggestionCase[] = [
+  { id: 'sc-1', idea: 'Reusable steel cups for all events',        origin: 'Anon box · Apr 2023',         outcome: 'Single-use cups phased out by end of 2023 · saved ₹ 42k · 3,800 cups diverted.',   shippedOn: 'Dec 2023', daysToShip: 242, color: '#22C55E', emoji: '🥤' },
+  { id: 'sc-2', idea: 'Mental-health counsellor access · subsidised', origin: 'Forum · Aug 2023',           outcome: 'Three counsellors on panel · alumni-funded · 58 sessions in year one.',              shippedOn: 'Jan 2024', daysToShip: 151, color: '#A78BFA', emoji: '🫀' },
+  { id: 'sc-3', idea: 'Newsletter in Hindi · alongside English',      origin: 'Alumni chai · Nov 2022',       outcome: 'Bilingual monthly digest since Feb 2023 · readership up 38%.',                     shippedOn: 'Feb 2023', daysToShip: 93,  color: '#F472B6', emoji: '🗞️' },
+  { id: 'sc-4', idea: 'Office hours · leads available to juniors',    origin: 'Forum · Jun 2023',             outcome: 'Each lead · one open hour per week · started July · 126 sessions in six months.',  shippedOn: 'Jul 2023', daysToShip: 34,  color: '#F59E0B', emoji: '🕰️' },
+  { id: 'sc-5', idea: 'Accessibility audit · our public events',       origin: 'Anon box · Mar 2023',          outcome: 'Ramp at amphitheatre · captions on live streams · audit repeated annually.',        shippedOn: 'Oct 2023', daysToShip: 214, color: '#00D4FF', emoji: '♿' },
+  { id: 'sc-6', idea: 'Rest fund · for members going through grief',   origin: 'Private note · Sep 2023',       outcome: 'Two weeks of paid cover + team\'s care package · used 3× so far.',                 shippedOn: 'Nov 2023', daysToShip: 72,  color: '#EF4444', emoji: '🤍' },
+  { id: 'sc-7', idea: 'Photo-credits · every digest photo named',      origin: 'Forum · Jan 2024',             outcome: 'All digests since Feb 2024 carry a credits line · photographers love it.',          shippedOn: 'Feb 2024', daysToShip: 42,  color: '#FFD166', emoji: '📸' },
+];
+
+interface SuggestionVoice {
+  id: string;
+  voice: string;
+  said: string;
+  about: string;
+  color: string;
+  emoji: string;
+}
+
+const SUGGESTION_VOICES: SuggestionVoice[] = [
+  { id: 'sv-1', voice: 'First-year · anon',             said: '"Suggestions actually go somewhere. I didn\'t expect a real reply in my second week."',   about: 'Intake experience',          color: '#00D4FF', emoji: '🫧' },
+  { id: 'sv-2', voice: 'Third-year · content',           said: '"The monthly digest lists rejected ideas + why. That honesty kept me from leaving last year."', about: 'Rejections with reasons',    color: '#F472B6', emoji: '🪞' },
+  { id: 'sv-3', voice: 'Alumnus · 2019',                  said: '"The first-Friday chai is where the best suggestions come from. Nothing beats face + chai."',  about: 'Alumni feedback loop',       color: '#F59E0B', emoji: '🍵' },
+  { id: 'sv-4', voice: 'Staff · mess',                    said: '"They asked us about the menu · and changed it. Small thing. Felt big."',                       about: 'Staff voice in feedback',     color: '#FFD166', emoji: '🍲' },
+  { id: 'sv-5', voice: 'Parent · attended event',          said: '"Filled the pulse form · got a call back the next week. I almost forgot I\'d written."',         about: 'Guest feedback reach',        color: '#A78BFA', emoji: '👋' },
+  { id: 'sv-6', voice: 'Sustainability committee',          said: '"Green suggestions skip the queue. That one rule changed how fast we decarbonise events."',      about: 'Green priority rule',          color: '#22C55E', emoji: '🌿' },
+];
+
 const SuggestionScreen: React.FC = () => {
   // ------------ State ------------
   const [suggestions, setSuggestions] = useState<ExtSuggestion[]>(SAMPLE_SUGGESTIONS);
@@ -3388,24 +3489,135 @@ const SuggestionScreen: React.FC = () => {
     </View>
   );
 
+  // ------ Phase 3ae blocks ------
+  const renderIntakes = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>📥 Intake channels · where feedback enters</Text>
+        <Text style={styles.sectionCaption}>{SUGGESTION_INTAKES.length} channels</Text>
+      </View>
+      {SUGGESTION_INTAKES.map((i) => (
+        <View key={i.id} style={[styles.sinCard, { borderLeftColor: i.color }]}>
+          <View style={styles.sinTopRow}>
+            <Text style={styles.sinEmoji}>{i.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.sinChannel} numberOfLines={1}>{i.channel}</Text>
+              <Text style={styles.sinOwner} numberOfLines={1}>owner · {i.owner}</Text>
+            </View>
+            <Text style={[styles.sinCadence, { color: i.color }]}>{i.cadence}</Text>
+          </View>
+          <Text style={styles.sinResponse} numberOfLines={2}>↳ {i.response}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderTemplates = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🧩 Templates · copy + edit</Text>
+        <Text style={styles.sectionCaption}>{SUGGESTION_TEMPLATES.length} templates</Text>
+      </View>
+      {SUGGESTION_TEMPLATES.map((t) => (
+        <View key={t.id} style={[styles.stpCard, { borderLeftColor: t.color }]}>
+          <View style={styles.stpTopRow}>
+            <Text style={styles.stpEmoji}>{t.emoji}</Text>
+            <Text style={styles.stpScenario} numberOfLines={1}>{t.scenario}</Text>
+          </View>
+          <Text style={styles.stpTemplate} numberOfLines={3}>{t.template}</Text>
+          <Text style={styles.stpUseWhen} numberOfLines={2}>use when · {t.useWhen}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderGuardrails = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🛡️ Guardrails · rules of the box</Text>
+        <Text style={styles.sectionCaption}>{SUGGESTION_GUARDRAILS.length} rules</Text>
+      </View>
+      {SUGGESTION_GUARDRAILS.map((g) => (
+        <View key={g.id} style={[styles.sgrCard, { borderLeftColor: g.color }]}>
+          <View style={styles.sgrTopRow}>
+            <Text style={styles.sgrEmoji}>{g.emoji}</Text>
+            <Text style={styles.sgrGuardrail} numberOfLines={2}>{g.guardrail}</Text>
+          </View>
+          <Text style={[styles.sgrOneLine, { color: g.color }]} numberOfLines={2}>{g.oneLine}</Text>
+          <Text style={styles.sgrWhy} numberOfLines={3}>→ {g.why}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderCases = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>📚 Case files · real shipped ideas</Text>
+        <Text style={styles.sectionCaption}>{SUGGESTION_CASES.length} cases</Text>
+      </View>
+      {SUGGESTION_CASES.map((c) => (
+        <View key={c.id} style={[styles.scCard, { borderLeftColor: c.color }]}>
+          <View style={styles.scTopRow}>
+            <Text style={styles.scEmoji}>{c.emoji}</Text>
+            <Text style={styles.scIdea} numberOfLines={2}>{c.idea}</Text>
+          </View>
+          <View style={styles.scMetaRow}>
+            <Text style={styles.scMetaLabel}>origin · <Text style={styles.scMetaValue}>{c.origin}</Text></Text>
+            <Text style={styles.scMetaLabel}>shipped · <Text style={[styles.scMetaValue, { color: c.color }]}>{c.shippedOn}</Text></Text>
+          </View>
+          <Text style={styles.scOutcome} numberOfLines={3}>→ {c.outcome}</Text>
+          <View style={[styles.scDaysPill, { borderColor: c.color + '66', backgroundColor: c.color + '18' }]}>
+            <Text style={[styles.scDaysText, { color: c.color }]}>{c.daysToShip} days from idea to live</Text>
+          </View>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderVoices = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🗣️ Voices · whose feedback we heard</Text>
+        <Text style={styles.sectionCaption}>{SUGGESTION_VOICES.length} voices</Text>
+      </View>
+      {SUGGESTION_VOICES.map((v) => (
+        <View key={v.id} style={[styles.svCard, { borderLeftColor: v.color }]}>
+          <View style={styles.svTopRow}>
+            <Text style={styles.svEmoji}>{v.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.svVoice} numberOfLines={1}>{v.voice}</Text>
+              <Text style={[styles.svAbout, { color: v.color }]}>about · {v.about}</Text>
+            </View>
+          </View>
+          <Text style={styles.svSaid} numberOfLines={4}>{v.said}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
   const listHeader = (
     <View>
       {renderHeader()}
       {renderCategoryRail()}
       {renderPriorityRow()}
+      {renderIntakes()}
       {renderTrending()}
       {renderLeaderboard()}
       {renderTags()}
+      {renderTemplates()}
       {renderAnalytics()}
       {renderReturnSignals()}
       {renderVelocity()}
       {renderVoterWeights()}
       {renderDecisionRights()}
+      {renderGuardrails()}
       {renderEscalation()}
       {renderStageTips()}
       {renderMonthlyDigest()}
       {renderTracking()}
       {renderShippedWins()}
+      {renderCases()}
       {renderDiscarded()}
       {renderDecisionJournal()}
       {renderDisagreeLog()}
@@ -3413,6 +3625,7 @@ const SuggestionScreen: React.FC = () => {
       {renderOwnershipMap()}
       {renderFeedbackLoops()}
       {renderFeedbackLoop()}
+      {renderVoices()}
       {renderTrustPromises()}
       {renderRoadmap()}
       {renderOpenCalls()}
@@ -4559,6 +4772,94 @@ const styles = StyleSheet.create({
   ocDeadline: { fontSize: 11, fontWeight: '900', marginLeft: 8, letterSpacing: 0.5 },
   ocPrompt: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4 },
   ocWing: { color: Colors.text.muted, fontSize: 10, marginTop: 4, fontStyle: 'italic' },
+
+  // --- Phase 3ae: intakes ---
+  sinCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginHorizontal: HORIZONTAL_PADDING,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  sinTopRow: { flexDirection: 'row', alignItems: 'center' },
+  sinEmoji: { fontSize: 22, marginRight: 10 },
+  sinChannel: { color: Colors.text.primary, fontSize: 13, fontWeight: '800' },
+  sinOwner: { color: Colors.text.muted, fontSize: 10, marginTop: 2 },
+  sinCadence: { fontSize: 10, fontWeight: '900', letterSpacing: 1, textTransform: 'uppercase', marginLeft: 8 },
+  sinResponse: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 6, paddingLeft: 32 },
+
+  // --- Phase 3ae: templates ---
+  stpCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginHorizontal: HORIZONTAL_PADDING,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  stpTopRow: { flexDirection: 'row', alignItems: 'center' },
+  stpEmoji: { fontSize: 22, marginRight: 10 },
+  stpScenario: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', flex: 1 },
+  stpTemplate: { color: Colors.text.primary, fontSize: 11, lineHeight: 15, marginTop: 6, paddingLeft: 32, fontStyle: 'italic' },
+  stpUseWhen: { color: Colors.text.muted, fontSize: 10, marginTop: 6, paddingLeft: 32 },
+
+  // --- Phase 3ae: guardrails ---
+  sgrCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginHorizontal: HORIZONTAL_PADDING,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  sgrTopRow: { flexDirection: 'row', alignItems: 'center' },
+  sgrEmoji: { fontSize: 22, marginRight: 10 },
+  sgrGuardrail: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', flex: 1, lineHeight: 17 },
+  sgrOneLine: { fontSize: 12, fontWeight: '700', marginTop: 6, paddingLeft: 32, fontStyle: 'italic' },
+  sgrWhy: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32 },
+
+  // --- Phase 3ae: cases ---
+  scCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginHorizontal: HORIZONTAL_PADDING,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  scTopRow: { flexDirection: 'row', alignItems: 'center' },
+  scEmoji: { fontSize: 22, marginRight: 10 },
+  scIdea: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', flex: 1, lineHeight: 17 },
+  scMetaRow: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 8, paddingLeft: 32 },
+  scMetaLabel: { color: Colors.text.muted, fontSize: 10 },
+  scMetaValue: { color: Colors.text.primary, fontSize: 11, fontWeight: '800' },
+  scOutcome: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 6, paddingLeft: 32 },
+  scDaysPill: {
+    alignSelf: 'flex-start',
+    marginTop: 8,
+    marginLeft: 32,
+    paddingHorizontal: 10,
+    paddingVertical: 3,
+    borderRadius: 999,
+    borderWidth: 1,
+  },
+  scDaysText: { fontSize: 10, fontWeight: '900', letterSpacing: 0.5 },
+
+  // --- Phase 3ae: voices ---
+  svCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginHorizontal: HORIZONTAL_PADDING,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  svTopRow: { flexDirection: 'row', alignItems: 'center' },
+  svEmoji: { fontSize: 22, marginRight: 10 },
+  svVoice: { color: Colors.text.primary, fontSize: 13, fontWeight: '800' },
+  svAbout: { fontSize: 10, fontWeight: '700', marginTop: 2, letterSpacing: 0.5 },
+  svSaid: { color: Colors.text.secondary, fontSize: 12, lineHeight: 16, marginTop: 8, paddingLeft: 32, fontStyle: 'italic' },
 });
 
 export default SuggestionScreen;
