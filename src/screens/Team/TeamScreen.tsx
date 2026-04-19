@@ -1260,6 +1260,131 @@ const CELEBRATIONS: CelebrationEntry[] = [
 // Component
 // -----------------------------------------------------
 
+// =====================================================
+// Phase 3ac: deeper team structures — round 2
+// =====================================================
+
+interface TeamCommitment {
+  id: string;
+  line: string;
+  detail: string;
+  owner: string;
+  color: string;
+  emoji: string;
+}
+
+const TEAM_COMMITMENTS: TeamCommitment[] = [
+  { id: 'tc-1', line: 'No one ships alone.',                   detail: 'Every PR has a second pair of eyes · every poem has a reader · every poster has a pre-crit.',        owner: 'All leads',                 color: '#00D4FF', emoji: '🤝' },
+  { id: 'tc-2', line: 'No surprise fires · Fridays are quiet.',  detail: 'If a thing isn\'t urgent · it lands in a doc · not in a ping · not on a Friday night.',              owner: 'Leads + release buddies',    color: '#F59E0B', emoji: '🧯' },
+  { id: 'tc-3', line: 'The first 30 days are held with care.',   detail: 'Every new member has a buddy · two rituals per week · no lonely weeks in month one.',              owner: 'Buddy rota · people lead',   color: '#F472B6', emoji: '🌱' },
+  { id: 'tc-4', line: 'Praise publicly · correct privately.',    detail: 'The kind public post · the kind private message · that order, always.',                              owner: 'Every lead · every member',   color: '#A78BFA', emoji: '🪞' },
+  { id: 'tc-5', line: 'Take the full leave · don\'t apologise.',  detail: 'Rest is a feature of the team · not a bug · we cover for each other without receipts.',              owner: 'Core council',                color: '#22C55E', emoji: '🛌' },
+  { id: 'tc-6', line: 'Every gift given with a thank-you note.',  detail: 'Sapling · sticker · certificate · none leave the team without a handwritten line.',                  owner: 'Hospitality + PR',            color: '#FFD166', emoji: '✉️' },
+  { id: 'tc-7', line: 'Retro every quarter · publish the notes.',  detail: '90-min retro · shared doc · top-three changes posted to the whole team within a week.',             owner: 'Core council',                color: '#EF4444', emoji: '📝' },
+];
+
+interface TeamRotation {
+  id: string;
+  role: string;
+  cadence: string;
+  current: string;
+  next: string;
+  handover: string;
+  color: string;
+  emoji: string;
+}
+
+const TEAM_ROTATIONS: TeamRotation[] = [
+  { id: 'trr-1', role: 'Standup host',             cadence: 'Weekly',       current: 'Rahul M. · wk 32',          next: 'Priyanka V. · wk 33',    handover: '15-min call + pinned doc on last 5 themes.',                 color: '#00D4FF', emoji: '🎙️' },
+  { id: 'trr-2', role: 'Release buddy',             cadence: 'Fortnight',    current: 'Aarav · release 1.2',      next: 'Ishita · release 1.3',    handover: 'On-call phone + post-mortem notes + release playbook.',         color: '#A78BFA', emoji: '🚢' },
+  { id: 'trr-3', role: 'Digest editor',             cadence: 'Monthly',      current: 'Meera · Aug digest',       next: 'Anmol · Sep digest',       handover: 'Shared doc with running list + three photos per wing.',         color: '#F472B6', emoji: '📰' },
+  { id: 'trr-4', role: 'Retro facilitator',         cadence: 'Quarterly',    current: 'Sunita · Q2',               next: 'Ravi · Q3',                 handover: 'Template + last retro\'s action items pinned on top.',           color: '#F59E0B', emoji: '🪞' },
+  { id: 'trr-5', role: 'Safety & wellbeing',        cadence: 'Quarterly',    current: 'Anika + Arjun',             next: 'Devika + Vikram',          handover: 'Training session + contacts + walk-around check-list.',          color: '#EF4444', emoji: '🛡️' },
+  { id: 'trr-6', role: 'Green drive lead',          cadence: 'Season',       current: 'Tara · monsoon',            next: 'Kabir · autumn',           handover: 'Sapling list · vendor list · post-drive photo archive.',         color: '#22C55E', emoji: '🌱' },
+  { id: 'trr-7', role: 'Library keeper',            cadence: 'Year',         current: 'Rohit',                      next: 'Elected · Dec',             handover: 'Catalogue + late slips + newly acquired titles list.',           color: '#FFD166', emoji: '📚' },
+];
+
+interface TeamSignal {
+  id: string;
+  signal: string;
+  metric: string;
+  target: string;
+  current: string;
+  state: 'healthy' | 'watch' | 'at-risk';
+  color: string;
+  emoji: string;
+}
+
+const TEAM_SIGNALS: TeamSignal[] = [
+  { id: 'tsg-1', signal: 'PR review cycle',              metric: 'Median time to first review', target: '< 24 h',            current: '18 h',           state: 'healthy', color: '#22C55E', emoji: '🔄' },
+  { id: 'tsg-2', signal: 'Standup attendance',            metric: 'Weekly showing up %',          target: '≥ 85%',             current: '91%',             state: 'healthy', color: '#22C55E', emoji: '🎙️' },
+  { id: 'tsg-3', signal: 'Weekend pings',                  metric: 'Weekend messages · team-wide', target: '≤ 4 / weekend',     current: '7 / weekend',      state: 'watch',   color: '#F59E0B', emoji: '📵' },
+  { id: 'tsg-4', signal: 'Hand-over quality',             metric: 'Hand-over doc present',         target: '100% · every rotation', current: '88%',             state: 'watch',    color: '#F59E0B', emoji: '🧳' },
+  { id: 'tsg-5', signal: 'Leave uptake',                   metric: 'Leave used vs. allocated',      target: '≥ 80%',             current: '62%',             state: 'at-risk', color: '#EF4444', emoji: '🛌' },
+  { id: 'tsg-6', signal: 'Buddy cover · month 1',          metric: 'New members with buddy',        target: '100%',               current: '100%',            state: 'healthy', color: '#22C55E', emoji: '🌱' },
+  { id: 'tsg-7', signal: 'Retro actions closed',           metric: 'Action items closed by next retro', target: '≥ 70%',         current: '74%',              state: 'healthy', color: '#22C55E', emoji: '📝' },
+  { id: 'tsg-8', signal: 'First-year speaking up',         metric: '% first-years speaking in town halls', target: '≥ 30%',          current: '22%',              state: 'watch',   color: '#F59E0B', emoji: '🗣️' },
+];
+
+interface TeamStudyCircle {
+  id: string;
+  topic: string;
+  leader: string;
+  members: number;
+  cadence: string;
+  output: string;
+  color: string;
+  emoji: string;
+}
+
+const TEAM_STUDY_CIRCLES: TeamStudyCircle[] = [
+  { id: 'tsc-1', topic: 'Software design · weekly read',            leader: 'Rahul M.',             members: 7,  cadence: 'Weekly · 50 min',    output: 'Team playbook gains a new pattern each month.',                       color: '#00D4FF', emoji: '🏛️' },
+  { id: 'tsc-2', topic: 'Design systems · Figma hours',              leader: 'Anika K.',             members: 6,  cadence: 'Bi-weekly · 60 min', output: 'Shared library grows by one component per meet.',                      color: '#F472B6', emoji: '🎨' },
+  { id: 'tsc-3', topic: 'Writing clinic · editorial',                 leader: 'Meera T.',             members: 5,  cadence: 'Weekly · 45 min',    output: 'One piece critiqued · one rewrite shipped the same week.',               color: '#F59E0B', emoji: '✍️' },
+  { id: 'tsc-4', topic: 'Photo film club',                              leader: 'Arjun P.',             members: 8,  cadence: 'Monthly · 90 min',   output: 'One short film watched · one photo-series paired.',                        color: '#A78BFA', emoji: '🎥' },
+  { id: 'tsc-5', topic: 'Green curriculum · sustainability reads',    leader: 'Tara + Kabir',          members: 9,  cadence: 'Monthly · 75 min',    output: 'One essay · one habit · one drive · per quarter.',                          color: '#22C55E', emoji: '🌿' },
+  { id: 'tsc-6', topic: 'Public speaking · weekly drills',             leader: 'Ishita R.',             members: 6,  cadence: 'Weekly · 40 min',     output: 'Each member gives a 3-min talk · peer-notes within 24 h.',                  color: '#FFD166', emoji: '🎙️' },
+  { id: 'tsc-7', topic: 'Case studies · what broke + why',              leader: 'Aarav S.',              members: 5,  cadence: 'Monthly · 60 min',    output: 'One post-mortem retold · written up for the next round.',                    color: '#EF4444', emoji: '🧯' },
+];
+
+interface TeamGoodbyePlaybook {
+  id: string;
+  stage: string;
+  action: string;
+  owner: string;
+  timing: string;
+  color: string;
+  emoji: string;
+}
+
+const TEAM_GOODBYE_PLAYBOOK: TeamGoodbyePlaybook[] = [
+  { id: 'tgp-1', stage: 'Heads-up',              action: 'Private chat with lead · at least four weeks before the last day.',                    owner: 'Leaving member',           timing: 'Week 0',    color: '#F59E0B', emoji: '📣' },
+  { id: 'tgp-2', stage: 'Hand-over plan',         action: 'Write a one-pager · open threads · owners · future questions.',                          owner: 'Leaving member + lead',     timing: 'Week 1',    color: '#00D4FF', emoji: '📝' },
+  { id: 'tgp-3', stage: 'Buddy assignment',       action: 'Pair with the person picking it up · shadow two working sessions.',                      owner: 'Lead',                      timing: 'Week 2',    color: '#A78BFA', emoji: '🤝' },
+  { id: 'tgp-4', stage: 'Team notice',            action: 'Post in the team channel · two lines + one photo · we make it warm.',                     owner: 'Core council',              timing: 'Week 3',    color: '#FFD166', emoji: '📢' },
+  { id: 'tgp-5', stage: 'Knowledge dump',         action: 'Short video or doc · "what only I know" · linked from the playbook.',                     owner: 'Leaving member',            timing: 'Week 3',    color: '#F472B6', emoji: '💾' },
+  { id: 'tgp-6', stage: 'Farewell ritual',        action: 'Team meet · one memory from each person · sapling + card.',                              owner: 'Hospitality crew',           timing: 'Last week',  color: '#22C55E', emoji: '🌱' },
+  { id: 'tgp-7', stage: 'Stay in touch',          action: 'Added to alumni circle · first-Friday chai invite · no pressure.',                        owner: 'Alumni wing',                timing: 'After',      color: '#EF4444', emoji: '🫶' },
+];
+
+interface TeamThankYouMoment {
+  id: string;
+  who: string;
+  what: string;
+  from: string;
+  color: string;
+  emoji: string;
+}
+
+const TEAM_THANK_YOUS: TeamThankYouMoment[] = [
+  { id: 'tty-1', who: 'Ramu chacha',    what: 'For every tree on the east walk · for teaching us names we now use.',                from: 'Green team',            color: '#22C55E', emoji: '🌳' },
+  { id: 'tty-2', who: 'Sunita didi',    what: 'For the extra plate at 11 PM during exam week · we noticed.',                             from: 'Mess goers',            color: '#F59E0B', emoji: '🍲' },
+  { id: 'tty-3', who: 'Arun uncle',     what: 'For the quiet carpentry · for never asking who broke the bench.',                        from: 'Hospitality crew',      color: '#A78BFA', emoji: '🔨' },
+  { id: 'tty-4', who: 'Rekha aunty',     what: 'For letting us sit past closing · for the patience.',                                    from: 'Readers',                color: '#00D4FF', emoji: '📚' },
+  { id: 'tty-5', who: 'Anonymous alum', what: 'For the folder of 2018 photos · for never asking for credit.',                            from: 'Photo wing',             color: '#F472B6', emoji: '📸' },
+  { id: 'tty-6', who: 'First-year batch · 2023', what: 'For showing up on the coldest morning · six of you · with saplings.',          from: 'Team',                   color: '#FFD166', emoji: '🌱' },
+];
+
 const TeamScreen: React.FC = () => {
   // ------ State ------
   const [selectedDept, setSelectedDept] = useState<DeptId>('all');
@@ -2912,6 +3037,153 @@ const TeamScreen: React.FC = () => {
     </View>
   );
 
+  // ------ Phase 3ac blocks ------
+  const renderTeamCommitments = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🤝 Commitments · we keep these</Text>
+        <Text style={styles.sectionCaption}>{TEAM_COMMITMENTS.length} promises</Text>
+      </View>
+      {TEAM_COMMITMENTS.map((c) => (
+        <View key={c.id} style={[styles.tcCard, { borderLeftColor: c.color }]}>
+          <View style={styles.tcTopRow}>
+            <Text style={styles.tcEmoji}>{c.emoji}</Text>
+            <Text style={styles.tcLine} numberOfLines={2}>{c.line}</Text>
+          </View>
+          <Text style={styles.tcDetail} numberOfLines={3}>{c.detail}</Text>
+          <Text style={styles.tcOwner} numberOfLines={1}>owner · {c.owner}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderTeamRotations = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🔄 Rotations · who has the baton</Text>
+        <Text style={styles.sectionCaption}>{TEAM_ROTATIONS.length} roles</Text>
+      </View>
+      {TEAM_ROTATIONS.map((r) => (
+        <View key={r.id} style={[styles.trrCard, { borderLeftColor: r.color }]}>
+          <View style={styles.trrTopRow}>
+            <Text style={styles.trrEmoji}>{r.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.trrRole} numberOfLines={1}>{r.role}</Text>
+              <Text style={[styles.trrCadence, { color: r.color }]}>{r.cadence}</Text>
+            </View>
+          </View>
+          <View style={styles.trrChipRow}>
+            <View style={[styles.trrChip, { borderColor: r.color + '66', backgroundColor: r.color + '18' }]}>
+              <Text style={styles.trrChipLabel}>now</Text>
+              <Text style={styles.trrChipValue} numberOfLines={1}>{r.current}</Text>
+            </View>
+            <View style={styles.trrChip}>
+              <Text style={styles.trrChipLabel}>next</Text>
+              <Text style={styles.trrChipValue} numberOfLines={1}>{r.next}</Text>
+            </View>
+          </View>
+          <Text style={styles.trrHandover} numberOfLines={2}>🧳 {r.handover}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderTeamSignals = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>📡 Signals · how the team actually feels</Text>
+        <Text style={styles.sectionCaption}>{TEAM_SIGNALS.length} signals</Text>
+      </View>
+      {TEAM_SIGNALS.map((s) => (
+        <View key={s.id} style={[styles.tsgCard, { borderLeftColor: s.color }]}>
+          <View style={styles.tsgTopRow}>
+            <Text style={styles.tsgEmoji}>{s.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.tsgSignal} numberOfLines={1}>{s.signal}</Text>
+              <Text style={styles.tsgMetric} numberOfLines={1}>{s.metric}</Text>
+            </View>
+            <View style={[styles.tsgStatePill, { backgroundColor: s.color + '22', borderColor: s.color + '66' }]}>
+              <Text style={[styles.tsgStateText, { color: s.color }]}>{s.state}</Text>
+            </View>
+          </View>
+          <View style={styles.tsgFooter}>
+            <Text style={styles.tsgFootLabel}>target · <Text style={styles.tsgFootValue}>{s.target}</Text></Text>
+            <Text style={styles.tsgFootLabel}>current · <Text style={[styles.tsgFootValue, { color: s.color }]}>{s.current}</Text></Text>
+          </View>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderTeamStudyCircles = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>📚 Study circles · small rooms</Text>
+        <Text style={styles.sectionCaption}>{TEAM_STUDY_CIRCLES.length} circles</Text>
+      </View>
+      {TEAM_STUDY_CIRCLES.map((t) => (
+        <View key={t.id} style={[styles.tscCard, { borderLeftColor: t.color }]}>
+          <View style={styles.tscTopRow}>
+            <Text style={styles.tscEmoji}>{t.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.tscTopic} numberOfLines={2}>{t.topic}</Text>
+              <Text style={styles.tscLeader} numberOfLines={1}>led by {t.leader}</Text>
+            </View>
+            <Text style={[styles.tscMembers, { color: t.color }]}>{t.members}</Text>
+          </View>
+          <Text style={styles.tscCadence} numberOfLines={1}>{t.cadence}</Text>
+          <Text style={styles.tscOutput} numberOfLines={2}>→ {t.output}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderTeamGoodbye = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🚪 Goodbye playbook · warm exits</Text>
+        <Text style={styles.sectionCaption}>{TEAM_GOODBYE_PLAYBOOK.length} steps</Text>
+      </View>
+      {TEAM_GOODBYE_PLAYBOOK.map((g, idx) => (
+        <View key={g.id} style={[styles.tgpRow, { borderLeftColor: g.color }]}>
+          <View style={[styles.tgpIndexCircle, { borderColor: g.color }]}>
+            <Text style={[styles.tgpIndex, { color: g.color }]}>{idx + 1}</Text>
+          </View>
+          <View style={{ flex: 1 }}>
+            <View style={styles.tgpTopRow}>
+              <Text style={styles.tgpEmoji}>{g.emoji}</Text>
+              <Text style={styles.tgpStage} numberOfLines={1}>{g.stage}</Text>
+              <Text style={[styles.tgpTiming, { color: g.color }]}>{g.timing}</Text>
+            </View>
+            <Text style={styles.tgpAction} numberOfLines={3}>{g.action}</Text>
+            <Text style={styles.tgpOwner} numberOfLines={1}>owner · {g.owner}</Text>
+          </View>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderTeamThankYous = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🫶 Thank-you moments · on record</Text>
+        <Text style={styles.sectionCaption}>{TEAM_THANK_YOUS.length} notes</Text>
+      </View>
+      {TEAM_THANK_YOUS.map((t) => (
+        <View key={t.id} style={[styles.ttyCard, { borderLeftColor: t.color }]}>
+          <View style={styles.ttyTopRow}>
+            <Text style={styles.ttyEmoji}>{t.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.ttyWho} numberOfLines={1}>{t.who}</Text>
+              <Text style={[styles.ttyFrom, { color: t.color }]}>from · {t.from}</Text>
+            </View>
+          </View>
+          <Text style={styles.ttyWhat} numberOfLines={3}>{t.what}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
   // ------ Main ------
   const listHeader = (
     <View>
@@ -2921,25 +3193,31 @@ const TeamScreen: React.FC = () => {
       {renderLeadershipBoard()}
       {renderTeamOKRs()}
       {renderDeptAnalytics()}
+      {renderTeamSignals()}
       {renderSkillMatrix()}
       {renderWellness()}
       {renderAvailability()}
       {renderOnCall()}
+      {renderTeamRotations()}
       {renderStandupLog()}
       {renderTopContributors()}
       {renderMentorshipTree()}
       {renderBuddyPairs()}
+      {renderTeamStudyCircles()}
       {renderHandovers()}
       {renderHiringPipeline()}
       {renderInterviewSlots()}
       {renderTownHalls()}
       {renderBudget()}
       {renderAgreements()}
+      {renderTeamCommitments()}
       {renderTraditions()}
       {renderCelebrations()}
       {renderTeamValues()}
       {renderTeamTestimonials()}
+      {renderTeamThankYous()}
       {renderThanks()}
+      {renderTeamGoodbye()}
       {renderApplyToJoin()}
       {renderListHeader()}
     </View>
@@ -4078,6 +4356,127 @@ const styles = StyleSheet.create({
   ceEmoji: { fontSize: 18, marginRight: 6 },
   ceName: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', flex: 1 },
   ceNote: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4 },
+
+  // --- Phase 3ac: team commitments ---
+  tcCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  tcTopRow: { flexDirection: 'row', alignItems: 'center' },
+  tcEmoji: { fontSize: 22, marginRight: 10 },
+  tcLine: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', flex: 1, lineHeight: 17 },
+  tcDetail: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 6, paddingLeft: 32 },
+  tcOwner: { color: Colors.text.muted, fontSize: 10, marginTop: 6, paddingLeft: 32, fontStyle: 'italic' },
+
+  // --- Phase 3ac: rotations ---
+  trrCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  trrTopRow: { flexDirection: 'row', alignItems: 'center' },
+  trrEmoji: { fontSize: 22, marginRight: 10 },
+  trrRole: { color: Colors.text.primary, fontSize: 13, fontWeight: '800' },
+  trrCadence: { fontSize: 10, fontWeight: '900', letterSpacing: 1, textTransform: 'uppercase', marginTop: 2 },
+  trrChipRow: { flexDirection: 'row', marginTop: 8, gap: 8 },
+  trrChip: {
+    flex: 1,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.08)',
+    backgroundColor: 'rgba(255,255,255,0.03)',
+  },
+  trrChipLabel: { color: Colors.text.muted, fontSize: 9, fontWeight: '800', letterSpacing: 1, textTransform: 'uppercase' },
+  trrChipValue: { color: Colors.text.primary, fontSize: 12, fontWeight: '700', marginTop: 3 },
+  trrHandover: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8 },
+
+  // --- Phase 3ac: signals ---
+  tsgCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  tsgTopRow: { flexDirection: 'row', alignItems: 'flex-start' },
+  tsgEmoji: { fontSize: 22, marginRight: 10, marginTop: 2 },
+  tsgSignal: { color: Colors.text.primary, fontSize: 13, fontWeight: '800' },
+  tsgMetric: { color: Colors.text.muted, fontSize: 10, marginTop: 2 },
+  tsgStatePill: {
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 999,
+    borderWidth: 1,
+    marginLeft: 8,
+  },
+  tsgStateText: { fontSize: 9, fontWeight: '900', letterSpacing: 1, textTransform: 'uppercase' },
+  tsgFooter: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 8, paddingLeft: 32 },
+  tsgFootLabel: { color: Colors.text.muted, fontSize: 10 },
+  tsgFootValue: { color: Colors.text.primary, fontSize: 11, fontWeight: '800' },
+
+  // --- Phase 3ac: study circles ---
+  tscCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  tscTopRow: { flexDirection: 'row', alignItems: 'center' },
+  tscEmoji: { fontSize: 22, marginRight: 10 },
+  tscTopic: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', lineHeight: 17 },
+  tscLeader: { color: Colors.tech.neonBlue, fontSize: 11, fontWeight: '700', marginTop: 2 },
+  tscMembers: { fontSize: 18, fontWeight: '900', marginLeft: 8 },
+  tscCadence: { color: Colors.text.muted, fontSize: 10, marginTop: 6, paddingLeft: 32, fontWeight: '700', letterSpacing: 0.5 },
+  tscOutput: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32, fontStyle: 'italic' },
+
+  // --- Phase 3ac: goodbye playbook ---
+  tgpRow: {
+    flexDirection: 'row',
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginBottom: 8,
+    borderLeftWidth: 3,
+  },
+  tgpIndexCircle: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    borderWidth: 2,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 10,
+    marginTop: 2,
+  },
+  tgpIndex: { fontSize: 12, fontWeight: '900' },
+  tgpTopRow: { flexDirection: 'row', alignItems: 'center' },
+  tgpEmoji: { fontSize: 16, marginRight: 6 },
+  tgpStage: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', flex: 1 },
+  tgpTiming: { fontSize: 10, fontWeight: '900', letterSpacing: 0.5, marginLeft: 8 },
+  tgpAction: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4 },
+  tgpOwner: { color: Colors.text.muted, fontSize: 10, marginTop: 3, fontStyle: 'italic' },
+
+  // --- Phase 3ac: thank yous ---
+  ttyCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  ttyTopRow: { flexDirection: 'row', alignItems: 'center' },
+  ttyEmoji: { fontSize: 24, marginRight: 10 },
+  ttyWho: { color: Colors.text.primary, fontSize: 14, fontWeight: '800' },
+  ttyFrom: { fontSize: 11, fontWeight: '700', marginTop: 2 },
+  ttyWhat: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 6, paddingLeft: 34 },
 });
 
 export default TeamScreen;
