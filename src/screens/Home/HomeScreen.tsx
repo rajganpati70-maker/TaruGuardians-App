@@ -1555,6 +1555,128 @@ const TRAIL_MARKERS: TrailMarker[] = [
   { id: 'tr-8', name: 'Owl-hoot evening loop',       distanceKm: 2.8, elevationM: 55,  minutes: 55,  difficulty: 'easy',   color: '#7E57C2', emoji: '🦉' },
 ];
 
+// =====================================================
+// Phase 3ab: deeper home structures — round 2
+// =====================================================
+
+interface CampusRitualHome {
+  id: string;
+  ritual: string;
+  day: string;
+  time: string;
+  where: string;
+  why: string;
+  color: string;
+  emoji: string;
+}
+
+const CAMPUS_RITUALS_HOME: CampusRitualHome[] = [
+  { id: 'crh-1', ritual: 'Sunrise walk · silent 10',         day: 'Tue + Fri',    time: '5:55 AM',  where: 'Old banyan gate',      why: 'Wake together without words · listen to the birds decide for us.',       color: '#F59E0B', emoji: '🌅' },
+  { id: 'crh-2', ritual: 'Wing mixer · hot chai',             day: 'Wed',          time: '6:30 PM',  where: 'Courtyard kettle',     why: 'Two wings at a time · one shared cup · fifteen quiet minutes.',            color: '#22C55E', emoji: '🍵' },
+  { id: 'crh-3', ritual: 'Reading hour · phones face-down',   day: 'Thu',          time: '8:00 PM',  where: 'Library lawn',         why: 'No small talk · one book · one candle · one hour.',                        color: '#A78BFA', emoji: '📖' },
+  { id: 'crh-4', ritual: 'Saturday seed-bomb factory',         day: 'Sat',          time: '10:00 AM', where: 'Green shed',            why: '50 seed bombs before lunch · we toss them on the Sunday walk.',            color: '#16A34A', emoji: '🌱' },
+  { id: 'crh-5', ritual: 'Sunday slow supper · potluck',       day: 'Sun',          time: '7:30 PM',  where: 'Mess hall · table 4',   why: 'Everyone brings one dish · sit with someone new · no phones.',             color: '#F472B6', emoji: '🍲' },
+  { id: 'crh-6', ritual: 'Full-moon poetry · open mic',        day: 'Full moon',    time: '8:45 PM',  where: 'Amphitheatre steps',    why: 'Read a poem you love · or one you wrote · either is welcome.',              color: '#00D4FF', emoji: '🌕' },
+  { id: 'crh-7', ritual: 'Monsoon playlist · one speaker',     day: 'First rain',   time: '5:15 PM',  where: 'Verandah step 3',       why: 'First real rain · one speaker · everyone adds one song.',                  color: '#38BDF8', emoji: '🎧' },
+];
+
+interface SeasonMoment {
+  id: string;
+  season: 'spring' | 'monsoon' | 'autumn' | 'winter';
+  moment: string;
+  detail: string;
+  color: string;
+  emoji: string;
+}
+
+const SEASON_MOMENTS: SeasonMoment[] = [
+  { id: 'sm-1',  season: 'spring',  moment: 'Yellow amaltas bloom',               detail: 'Late March · the old gate tree drops gold over the path to the amphitheatre.',                color: '#FFD166', emoji: '🌼' },
+  { id: 'sm-2',  season: 'spring',  moment: 'Sapling plant · west-corner',         detail: 'First Saturday of April · 20 saplings go in · one per first-year.',                             color: '#22C55E', emoji: '🌱' },
+  { id: 'sm-3',  season: 'monsoon', moment: 'First puddle races',                   detail: 'Paper boats · first real downpour · juniors usually win.',                                       color: '#38BDF8', emoji: '🌧️' },
+  { id: 'sm-4',  season: 'monsoon', moment: 'Pakora + poetry night',                detail: 'Mess kitchen opens up · hot pakoras · wet chappals lined up outside.',                            color: '#F59E0B', emoji: '🫕' },
+  { id: 'sm-5',  season: 'autumn',  moment: 'Kite day · Sunday tradition',          detail: 'Third Sunday of October · everyone brings a kite · we share the string.',                        color: '#A78BFA', emoji: '🪁' },
+  { id: 'sm-6',  season: 'autumn',  moment: 'Leaf-fall photo walk',                  detail: 'Evening light · fallen banyan leaves · one roll of film per person · develop together.',         color: '#F472B6', emoji: '🍂' },
+  { id: 'sm-7',  season: 'winter',  moment: 'Bonfire + alumni return',               detail: 'Last Friday of December · old members come home · no speeches · only stories.',                  color: '#EF4444', emoji: '🔥' },
+  { id: 'sm-8',  season: 'winter',  moment: 'Fog hike · before sunrise',              detail: 'Early January · flashlights on · no torches needed after the ridge.',                            color: '#60A5FA', emoji: '🌫️' },
+];
+
+interface LocalHero {
+  id: string;
+  name: string;
+  role: string;
+  story: string;
+  learned: string;
+  color: string;
+  emoji: string;
+}
+
+const LOCAL_HEROES: LocalHero[] = [
+  { id: 'lh-1', name: 'Ramu chacha',         role: 'Campus gardener · 28 years',          story: 'Plants every tree you walk under · knows each one by flowering week.',                         learned: 'Name every tree · then the tree calls you back.',                color: '#22C55E', emoji: '🌳' },
+  { id: 'lh-2', name: 'Sunita didi',         role: 'Mess cook · lifetime member',          story: 'Cooked through every exam season · quietly sets aside a plate for late-night poetry nights.', learned: 'Food is how a place says it loves you.',                          color: '#F59E0B', emoji: '🍲' },
+  { id: 'lh-3', name: 'Arun uncle',          role: 'Carpenter · mends every bench',       story: 'Fixes every broken step · never asks who broke it · always uses offcut wood.',                   learned: 'Repair quietly · credit isn\'t the point.',                     color: '#A78BFA', emoji: '🔨' },
+  { id: 'lh-4', name: 'Rekha aunty',         role: 'Library keeper',                       story: 'Keeps late-return slips in her drawer forever · has read every book twice.',                     learned: 'Patience is a form of teaching.',                                color: '#00D4FF', emoji: '📚' },
+  { id: 'lh-5', name: 'Mahesh bhaiya',       role: 'Night guard · storyteller',            story: 'Walks the full perimeter at 2 AM · always has a joke when we sneak out to the lawn.',           learned: 'Kindness and duty can share the same uniform.',                  color: '#F472B6', emoji: '🛡️' },
+  { id: 'lh-6', name: 'Lata aunty',          role: 'Tea-stall founder · corner gate',      story: 'Thirty years of chai · half the lessons on this campus happened on her plastic stools.',        learned: 'The best classrooms don\'t look like classrooms.',              color: '#FFD166', emoji: '🍵' },
+];
+
+interface GuardianHabit {
+  id: string;
+  habit: string;
+  details: string;
+  streak: number;
+  cadence: 'daily' | 'weekly' | 'monthly';
+  color: string;
+  emoji: string;
+}
+
+const GUARDIAN_HABITS: GuardianHabit[] = [
+  { id: 'gh-1',  habit: 'Pick up one piece of plastic per day',            details: 'From the path you walked in on · takes 6 seconds · worth more than it sounds.',             streak: 42, cadence: 'daily',   color: '#22C55E', emoji: '🚯' },
+  { id: 'gh-2',  habit: 'Refill · don\'t buy',                              details: 'Carry a bottle · the coolers near mess + library are filtered.',                                streak: 70, cadence: 'daily',   color: '#38BDF8', emoji: '💧' },
+  { id: 'gh-3',  habit: 'Two-minute tidy · shared spaces',                  details: 'Leave the lounge better than you found it · two minutes is enough.',                           streak: 28, cadence: 'daily',   color: '#F472B6', emoji: '🪴' },
+  { id: 'gh-4',  habit: 'Write one postcard · hand-delivered',              details: 'Once a week · to a member you haven\'t said thanks to yet.',                                  streak: 9,  cadence: 'weekly',  color: '#FFD166', emoji: '✉️' },
+  { id: 'gh-5',  habit: 'Read one thing outside your wing',                  details: 'One article · one poem · one repo · a brain needs cross-winds.',                                streak: 12, cadence: 'weekly',  color: '#A78BFA', emoji: '📚' },
+  { id: 'gh-6',  habit: 'Sapling check-in · the tree you planted',           details: 'Visit it · water if dry · note how it changed · tag it in the digest.',                        streak: 4,  cadence: 'monthly', color: '#16A34A', emoji: '🌱' },
+  { id: 'gh-7',  habit: 'Mentor a first-year · 30 minutes',                  details: 'Coffee · bench · no agenda · ask more than you answer.',                                        streak: 3,  cadence: 'monthly', color: '#00D4FF', emoji: '🤝' },
+  { id: 'gh-8',  habit: 'Power-down Sundays',                                details: 'All-club shared rest day · no posts · no DMs · unless it\'s a poem or a photo.',              streak: 15, cadence: 'weekly',  color: '#EF4444', emoji: '📴' },
+];
+
+interface ClubValue {
+  id: string;
+  value: string;
+  oneLine: string;
+  livesAs: string;
+  color: string;
+  emoji: string;
+}
+
+const CLUB_VALUES: ClubValue[] = [
+  { id: 'cv-1', value: 'Care first · then craft',               oneLine: 'No one ships hurt.',                                 livesAs: 'Pair rule · critique is feedback on pages, never on people.',                   color: '#F472B6', emoji: '🫶' },
+  { id: 'cv-2', value: 'Quiet excellence',                        oneLine: 'Loud is not the same as good.',                     livesAs: 'We don\'t announce what we haven\'t delivered.',                                  color: '#00D4FF', emoji: '🪞' },
+  { id: 'cv-3', value: 'Small consistent acts',                  oneLine: 'Ten consistent days > one loud night.',               livesAs: 'Weekly digests · weekly retros · weekly walks · over 7 years.',                color: '#22C55E', emoji: '🌱' },
+  { id: 'cv-4', value: 'Leave it greener',                        oneLine: 'The place should miss you · not be tired of you.',    livesAs: 'Sapling per drive · reusable mugs · no single-use merch.',                     color: '#16A34A', emoji: '🌿' },
+  { id: 'cv-5', value: 'Everyone\'s first story',                  oneLine: 'The first poem · the first PR · the first talk.',     livesAs: 'Open mic first slot is always a first-timer · we start with them.',            color: '#FFD166', emoji: '✨' },
+  { id: 'cv-6', value: 'The door stays open',                     oneLine: 'You can leave and still belong.',                    livesAs: 'Alumni chai on the first Friday · pause paths · return paths · no guilt.',      color: '#A78BFA', emoji: '🚪' },
+];
+
+interface WeeklyFocus {
+  id: string;
+  week: string;
+  theme: string;
+  anchor: string;
+  color: string;
+  emoji: string;
+}
+
+const WEEKLY_FOCUSES: WeeklyFocus[] = [
+  { id: 'wf-1', week: 'This week',      theme: 'Ship small · ship often',               anchor: 'Every wing ships one small thing · no matter how tiny.',                            color: '#00D4FF', emoji: '🚢' },
+  { id: 'wf-2', week: 'Next week',      theme: 'Crit with love',                         anchor: 'Open crit Fridays · three pieces per wing · two kind specific notes each.',        color: '#F472B6', emoji: '🪞' },
+  { id: 'wf-3', week: 'Week + 2',       theme: 'Clean desk · clear cache',               anchor: 'Tidy your shared folders · archive what\'s done · name what\'s open.',            color: '#A78BFA', emoji: '🗄️' },
+  { id: 'wf-4', week: 'Week + 3',       theme: 'Green drive',                             anchor: 'Plant · pick · pair · one action each before Sunday.',                              color: '#22C55E', emoji: '🌱' },
+  { id: 'wf-5', week: 'Week + 4',       theme: 'Cross-wing pair day',                    anchor: 'Pair with someone from another wing · tiny task · one story each.',                 color: '#FFD166', emoji: '🤝' },
+  { id: 'wf-6', week: 'Week + 5',       theme: 'Write what you learned',                 anchor: 'One paragraph · one wing · goes into the weekly digest.',                            color: '#F59E0B', emoji: '✍️' },
+  { id: 'wf-7', week: 'Week + 6',       theme: 'Rest + reset',                            anchor: 'Sunday off · nothing shipped · digital-off Saturday · reading Sunday.',             color: '#EF4444', emoji: '🌙' },
+];
+
 const HomeScreen: React.FC = () => {
   // ------ State ------
   const [refreshing, setRefreshing] = useState(false);
@@ -3273,6 +3395,138 @@ const HomeScreen: React.FC = () => {
     </Modal>
   );
 
+  // ------ Phase 3ab blocks ------
+  const renderCampusRituals = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🕯️ Campus rituals · we keep them</Text>
+        <Text style={styles.sectionCaption}>{CAMPUS_RITUALS_HOME.length} rituals</Text>
+      </View>
+      {CAMPUS_RITUALS_HOME.map((c) => (
+        <View key={c.id} style={[styles.crhCard, { borderLeftColor: c.color }]}>
+          <View style={styles.crhTopRow}>
+            <Text style={styles.crhEmoji}>{c.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.crhRitual} numberOfLines={2}>{c.ritual}</Text>
+              <Text style={styles.crhWhen} numberOfLines={1}>
+                <Text style={[styles.crhDay, { color: c.color }]}>{c.day}</Text>
+                {'  ·  '}{c.time}{'  ·  '}{c.where}
+              </Text>
+            </View>
+          </View>
+          <Text style={styles.crhWhy} numberOfLines={2}>{c.why}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderSeasonMoments = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🍃 Seasons · moments we wait for</Text>
+        <Text style={styles.sectionCaption}>{SEASON_MOMENTS.length} moments</Text>
+      </View>
+      {SEASON_MOMENTS.map((s) => (
+        <View key={s.id} style={[styles.smCard, { borderLeftColor: s.color }]}>
+          <View style={styles.smTopRow}>
+            <Text style={styles.smEmoji}>{s.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.smMoment} numberOfLines={1}>{s.moment}</Text>
+              <Text style={[styles.smSeason, { color: s.color }]}>{s.season}</Text>
+            </View>
+          </View>
+          <Text style={styles.smDetail} numberOfLines={3}>{s.detail}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderLocalHeroes = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🌟 Local heroes · not on the poster</Text>
+        <Text style={styles.sectionCaption}>{LOCAL_HEROES.length} people</Text>
+      </View>
+      {LOCAL_HEROES.map((h) => (
+        <View key={h.id} style={[styles.lhCard, { borderLeftColor: h.color }]}>
+          <View style={styles.lhTopRow}>
+            <Text style={styles.lhEmoji}>{h.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.lhName} numberOfLines={1}>{h.name}</Text>
+              <Text style={styles.lhRole} numberOfLines={1}>{h.role}</Text>
+            </View>
+          </View>
+          <Text style={styles.lhStory} numberOfLines={3}>{h.story}</Text>
+          <Text style={styles.lhLearned} numberOfLines={2}>→ {h.learned}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderGuardianHabits = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🌿 Guardian habits · streaks</Text>
+        <Text style={styles.sectionCaption}>{GUARDIAN_HABITS.length} habits</Text>
+      </View>
+      {GUARDIAN_HABITS.map((h) => (
+        <View key={h.id} style={[styles.ghCard, { borderLeftColor: h.color }]}>
+          <View style={styles.ghTopRow}>
+            <Text style={styles.ghEmoji}>{h.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.ghHabit} numberOfLines={2}>{h.habit}</Text>
+              <Text style={styles.ghCadence}>{h.cadence}</Text>
+            </View>
+            <Text style={[styles.ghStreak, { color: h.color }]}>{h.streak}🔥</Text>
+          </View>
+          <Text style={styles.ghDetail} numberOfLines={2}>{h.details}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderClubValues = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🪴 Values · how we actually behave</Text>
+        <Text style={styles.sectionCaption}>{CLUB_VALUES.length} values</Text>
+      </View>
+      {CLUB_VALUES.map((v) => (
+        <View key={v.id} style={[styles.cvCard, { borderLeftColor: v.color }]}>
+          <View style={styles.cvTopRow}>
+            <Text style={styles.cvEmoji}>{v.emoji}</Text>
+            <Text style={styles.cvValue} numberOfLines={2}>{v.value}</Text>
+          </View>
+          <Text style={[styles.cvOneLine, { color: v.color }]} numberOfLines={2}>{v.oneLine}</Text>
+          <Text style={styles.cvLivesAs} numberOfLines={3}>lives as · {v.livesAs}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderWeeklyFocus = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🎯 Weekly focus · next six weeks</Text>
+        <Text style={styles.sectionCaption}>{WEEKLY_FOCUSES.length} weeks</Text>
+      </View>
+      {WEEKLY_FOCUSES.map((w) => (
+        <View key={w.id} style={[styles.wfRow, { borderLeftColor: w.color }]}>
+          <View style={styles.wfLabelCol}>
+            <Text style={[styles.wfWeek, { color: w.color }]}>{w.week}</Text>
+          </View>
+          <View style={{ flex: 1 }}>
+            <View style={styles.wfTopRow}>
+              <Text style={styles.wfEmoji}>{w.emoji}</Text>
+              <Text style={styles.wfTheme} numberOfLines={2}>{w.theme}</Text>
+            </View>
+            <Text style={styles.wfAnchor} numberOfLines={2}>→ {w.anchor}</Text>
+          </View>
+        </View>
+      ))}
+    </View>
+  );
+
   // ------ Main ------
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
@@ -3296,17 +3550,21 @@ const HomeScreen: React.FC = () => {
         {renderHero()}
         {renderStats()}
         {renderWeatherStrip()}
+        {renderWeeklyFocus()}
         {renderQuickWins()}
         {renderQuickActions()}
         {renderAnnouncements()}
         {renderFeaturedEvents()}
         {renderCampusCal()}
+        {renderCampusRituals()}
         {renderSaplingPrograms()}
         {renderVolunteerSlots()}
         {renderMentorHours()}
         {renderRecommendedReads()}
         {renderEcoHabits()}
+        {renderGuardianHabits()}
         {renderTrails()}
+        {renderSeasonMoments()}
         {renderQuarterGoals()}
         {renderImpactRegions()}
         {renderWorkshops()}
@@ -3318,8 +3576,10 @@ const HomeScreen: React.FC = () => {
         {renderScoreboard()}
         {renderWeeklyDigest()}
         {renderMemberHighlights()}
+        {renderLocalHeroes()}
         {renderSpotlights()}
         {renderCollab()}
+        {renderClubValues()}
         {renderValues()}
         {renderNorms()}
         {renderLiveFeed()}
@@ -4508,6 +4768,101 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   trDiffText: { fontSize: 9, fontWeight: '900', letterSpacing: 1, textTransform: 'uppercase' },
+
+  // --- Phase 3ab: campus rituals ---
+  crhCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginHorizontal: HORIZONTAL_PADDING,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  crhTopRow: { flexDirection: 'row', alignItems: 'flex-start' },
+  crhEmoji: { fontSize: 22, marginRight: 10, marginTop: 2 },
+  crhRitual: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', lineHeight: 17 },
+  crhWhen: { color: Colors.text.secondary, fontSize: 11, marginTop: 3 },
+  crhDay: { fontSize: 11, fontWeight: '900', letterSpacing: 0.5 },
+  crhWhy: { color: Colors.text.muted, fontSize: 11, lineHeight: 15, marginTop: 8, paddingLeft: 32, fontStyle: 'italic' },
+
+  // --- Phase 3ab: seasons ---
+  smCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginHorizontal: HORIZONTAL_PADDING,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  smTopRow: { flexDirection: 'row', alignItems: 'center' },
+  smEmoji: { fontSize: 22, marginRight: 10 },
+  smMoment: { color: Colors.text.primary, fontSize: 13, fontWeight: '800' },
+  smSeason: { fontSize: 10, fontWeight: '900', letterSpacing: 1, textTransform: 'uppercase', marginTop: 2 },
+  smDetail: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 6, paddingLeft: 32 },
+
+  // --- Phase 3ab: local heroes ---
+  lhCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginHorizontal: HORIZONTAL_PADDING,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  lhTopRow: { flexDirection: 'row', alignItems: 'center' },
+  lhEmoji: { fontSize: 24, marginRight: 10 },
+  lhName: { color: Colors.text.primary, fontSize: 14, fontWeight: '800' },
+  lhRole: { color: Colors.tech.neonBlue, fontSize: 11, fontWeight: '700', marginTop: 2 },
+  lhStory: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 6, paddingLeft: 34 },
+  lhLearned: { color: Colors.accent.softGold, fontSize: 11, lineHeight: 15, marginTop: 6, paddingLeft: 34, fontStyle: 'italic' },
+
+  // --- Phase 3ab: guardian habits ---
+  ghCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginHorizontal: HORIZONTAL_PADDING,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  ghTopRow: { flexDirection: 'row', alignItems: 'flex-start' },
+  ghEmoji: { fontSize: 22, marginRight: 10, marginTop: 2 },
+  ghHabit: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', lineHeight: 17 },
+  ghCadence: { color: Colors.text.muted, fontSize: 10, fontWeight: '900', letterSpacing: 1, textTransform: 'uppercase', marginTop: 2 },
+  ghStreak: { fontSize: 14, fontWeight: '900', marginLeft: 8 },
+  ghDetail: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 6, paddingLeft: 32 },
+
+  // --- Phase 3ab: club values ---
+  cvCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginHorizontal: HORIZONTAL_PADDING,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  cvTopRow: { flexDirection: 'row', alignItems: 'center' },
+  cvEmoji: { fontSize: 22, marginRight: 10 },
+  cvValue: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', flex: 1, lineHeight: 17 },
+  cvOneLine: { fontSize: 12, fontWeight: '700', marginTop: 6, paddingLeft: 32, fontStyle: 'italic' },
+  cvLivesAs: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32 },
+
+  // --- Phase 3ab: weekly focus ---
+  wfRow: {
+    flexDirection: 'row',
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginHorizontal: HORIZONTAL_PADDING,
+    marginBottom: 8,
+    borderLeftWidth: 3,
+  },
+  wfLabelCol: { width: 68, marginRight: 10, paddingTop: 2 },
+  wfWeek: { fontSize: 11, fontWeight: '900', letterSpacing: 0.5 },
+  wfTopRow: { flexDirection: 'row', alignItems: 'center' },
+  wfEmoji: { fontSize: 18, marginRight: 8 },
+  wfTheme: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', flex: 1, lineHeight: 17 },
+  wfAnchor: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4 },
 });
 
 export default HomeScreen;
