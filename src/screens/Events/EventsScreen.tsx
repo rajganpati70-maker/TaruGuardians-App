@@ -1255,6 +1255,152 @@ const WEATHER_WATCH: WeatherWatch[] = [
   { id: 'ww-8', hour: '21:00', condition: 'Cool + calm',       tempC: 20, humidity: 66, note: 'Close-down shift · courtyard lights on · head-count done.', color: '#38BDF8', emoji: '✨' },
 ];
 
+// =====================================================
+// Phase 3z: deeper events structures
+// =====================================================
+
+interface GreenPledge {
+  id: string;
+  pledge: string;
+  target: string;
+  progress: number;
+  owner: string;
+  color: string;
+  emoji: string;
+}
+
+const GREEN_PLEDGES: GreenPledge[] = [
+  { id: 'gp-1',  pledge: 'Zero single-use plastic on-site',            target: '100% · all venues',                progress: 0.92, owner: 'Sustainability wing',  color: '#22C55E', emoji: '🚯' },
+  { id: 'gp-2',  pledge: 'Sapling per 10 attendees',                    target: '60+ saplings · Spring Festival',    progress: 0.75, owner: 'Green team',            color: '#16A34A', emoji: '🌱' },
+  { id: 'gp-3',  pledge: 'Reusable mug service · wash + return',        target: '150 mugs · 3 wash cycles',          progress: 0.48, owner: 'Mug desk volunteers',  color: '#00D4FF', emoji: '☕' },
+  { id: 'gp-4',  pledge: 'Carpool ratio · riders per car',              target: '≥ 2.8 riders/car',                   progress: 0.66, owner: 'PR + Ops wing',         color: '#A78BFA', emoji: '🚗' },
+  { id: 'gp-5',  pledge: 'All speaker gifts · sapling + card',          target: '100% · no imported boxes',          progress: 1.00, owner: 'Hospitality crew',      color: '#22C55E', emoji: '🎁' },
+  { id: 'gp-6',  pledge: 'Digital-only brochures',                       target: '0 printed pages',                    progress: 0.95, owner: 'Content wing',           color: '#F472B6', emoji: '📱' },
+  { id: 'gp-7',  pledge: 'Waste audit photo within 48 h',                target: 'Published + in digest',             progress: 0.80, owner: 'Sustainability wing',    color: '#F59E0B', emoji: '📸' },
+  { id: 'gp-8',  pledge: 'Local vendors only · within 200 km',           target: '≥ 85% of food + merch',             progress: 0.88, owner: 'Ops + Merch lead',       color: '#FFD166', emoji: '🥘' },
+];
+
+interface StagePlot {
+  id: string;
+  stage: string;
+  width: string;
+  height: string;
+  powerKw: number;
+  micChannels: number;
+  lighting: string;
+  note: string;
+  color: string;
+  emoji: string;
+}
+
+const STAGE_PLOTS: StagePlot[] = [
+  { id: 'sp-1', stage: 'Main stage · amphitheatre',      width: '12 m', height: '6 m', powerKw: 18, micChannels: 12, lighting: '8× LED PAR + 2× follow spot',      note: 'Rain cover up by 5:30 AM · tested with gusts to 40 kmph.',          color: '#00D4FF', emoji: '🎭' },
+  { id: 'sp-2', stage: 'Breakout stage · lawn',          width: '8 m',  height: '4 m', powerKw: 9,  micChannels: 6,  lighting: '4× LED PAR · warm',                   note: 'Folding risers · dismantled within 30 min at close.',              color: '#A78BFA', emoji: '🧩' },
+  { id: 'sp-3', stage: 'Workshop room 2A · indoor',       width: '6 m',  height: '3 m', powerKw: 4,  micChannels: 3,  lighting: 'House lights + 1 softbox',            note: 'No confetti indoors · AC runs at 24°C, lower only on request.',     color: '#F472B6', emoji: '🧪' },
+  { id: 'sp-4', stage: 'Poetry stage · library lawn',    width: '5 m',  height: '2.5 m',powerKw: 3,  micChannels: 4,  lighting: '2× warm spot + candles',              note: 'Silent quarter · kept acoustic from 6:30 PM.',                     color: '#FFD166', emoji: '📜' },
+  { id: 'sp-5', stage: 'Film tent · garden',              width: '7 m',  height: '3 m', powerKw: 5,  micChannels: 0,  lighting: 'Projector + ambient fairy',           note: '3D seating on carpet · seats 60 · silent-disco headphones as backup.', color: '#F59E0B', emoji: '🎬' },
+  { id: 'sp-6', stage: 'Quiet corner · meditation',       width: '4 m',  height: '2 m', powerKw: 1,  micChannels: 0,  lighting: 'Beeswax candles only',                note: 'Phones off · shoes off · facilitator rotates every 30 min.',       color: '#22C55E', emoji: '🕯️' },
+];
+
+interface RunOfShowCue {
+  id: string;
+  cue: string;
+  timeBefore: string;
+  owner: string;
+  backup: string;
+  note: string;
+  color: string;
+  emoji: string;
+}
+
+const RUN_OF_SHOW: RunOfShowCue[] = [
+  { id: 'ros-1',  cue: 'Doors open · ambient music up',          timeBefore: '− 30 min',  owner: 'Front-of-house · Priyanka',       backup: 'Aarav Sharma',   note: 'Mix playlist starts at soft 55 dB · ramps to 65 dB by doors.',        color: '#00D4FF', emoji: '🚪' },
+  { id: 'ros-2',  cue: 'Mic check · five mics, one speaker',       timeBefore: '− 20 min',  owner: 'Audio lead · Rahul',               backup: 'Video editor on-call',    note: 'Dynamic range check · sung tone, whispered tone, sustained ‘aaa’.',   color: '#A78BFA', emoji: '🎙️' },
+  { id: 'ros-3',  cue: 'Sapling tray arrives backstage',            timeBefore: '− 15 min', owner: 'Green team · Meera',               backup: 'Hospitality crew',         note: '12 saplings · cotton gloves · water spray kept near step-1.',         color: '#22C55E', emoji: '🌱' },
+  { id: 'ros-4',  cue: 'Host walks on · 60-sec welcome',             timeBefore: '00:00',    owner: 'Host · Ishita',                    backup: 'Pre-recorded welcome clip', note: 'Welcome is 55 seconds · lands on the first chord of song #1.',       color: '#F472B6', emoji: '🎤' },
+  { id: 'ros-5',  cue: 'Main act begins',                            timeBefore: '+ 03:00',  owner: 'Stage manager · Anmol',            backup: 'Audio lead',               note: 'Cue from SM only · not from the artist · prevents overlap.',          color: '#F59E0B', emoji: '🎬' },
+  { id: 'ros-6',  cue: 'Sapling giveaway · on-stage',                 timeBefore: '+ 42:00',  owner: 'Host + Green team',                 backup: 'Volunteer ushers',         note: 'Two volunteers walk in from side · 6 saplings on each tray.',          color: '#16A34A', emoji: '🌳' },
+  { id: 'ros-7',  cue: 'Q&A open · roaming mic',                       timeBefore: '+ 52:00',  owner: 'Audio lead + volunteer',           backup: 'Handheld wireless #3',     note: 'Four questions max · 90 sec each · SM signals for last call.',        color: '#A78BFA', emoji: '🗣️' },
+  { id: 'ros-8',  cue: 'Applause → outro music',                       timeBefore: '+ 62:00',  owner: 'Audio lead',                       backup: 'Plays fallback playlist',  note: 'Soft outro · fades within 45 sec · lights come up slow.',             color: '#FFD166', emoji: '👏' },
+  { id: 'ros-9',  cue: 'Close-out · final thank-you',                  timeBefore: '+ 65:00',  owner: 'Host',                             backup: 'Core council member',      note: '40 sec close · names only three volunteers · sapling credit line.',    color: '#EF4444', emoji: '🙏' },
+];
+
+interface EventTicketTier {
+  id: string;
+  tier: string;
+  priceInr: number;
+  includes: string;
+  quota: number;
+  sold: number;
+  color: string;
+  emoji: string;
+}
+
+const EVENT_TICKET_TIERS: EventTicketTier[] = [
+  { id: 'tt-1',  tier: 'Sapling · full day',                 priceInr: 0,    includes: 'Everything + a sapling to take home.',                    quota: 200, sold: 168, color: '#22C55E', emoji: '🌱' },
+  { id: 'tt-2',  tier: 'Sustainer · supports scholarships',  priceInr: 450,  includes: 'Entry + reusable mug + one scholarship seat funded.',   quota: 80,  sold: 54,  color: '#00D4FF', emoji: '🪴' },
+  { id: 'tt-3',  tier: 'Student · bring your ID',             priceInr: 120,  includes: 'Entry + lunch + workshop track.',                        quota: 300, sold: 244, color: '#FFD166', emoji: '🎓' },
+  { id: 'tt-4',  tier: 'Alumni · welcome home',                priceInr: 180,  includes: 'Entry + alumni lounge + reunion brunch.',                quota: 90,  sold: 61,  color: '#A78BFA', emoji: '🎓' },
+  { id: 'tt-5',  tier: 'Family · two adults + two kids',      priceInr: 550,  includes: 'Entry for 4 + nature-walk + kid-zone craft.',            quota: 40,  sold: 22,  color: '#F472B6', emoji: '👨\u200d👩\u200d👧' },
+  { id: 'tt-6',  tier: 'Mentor / speaker / volunteer',         priceInr: 0,    includes: 'Entry + green-room + travel token.',                     quota: 60,  sold: 48,  color: '#F59E0B', emoji: '🤝' },
+];
+
+interface SafetyBrief {
+  id: string;
+  area: string;
+  brief: string;
+  owner: string;
+  color: string;
+  emoji: string;
+}
+
+const SAFETY_BRIEFS: SafetyBrief[] = [
+  { id: 'sb-1',  area: 'Fire + stage',        brief: 'Two extinguishers per stage · checked 24 h before · drill done Thursday.',             owner: 'Ops wing',              color: '#EF4444', emoji: '🧯' },
+  { id: 'sb-2',  area: 'First aid',            brief: 'Two nurses + one doctor on-call · medicine kit at every stage.',                       owner: 'Medical desk',           color: '#F87171', emoji: '⛑️' },
+  { id: 'sb-3',  area: 'Crowd density',         brief: 'Max 180 per room · counted by door pass · volunteers hold line if capacity hit.',     owner: 'Volunteer line lead',     color: '#F59E0B', emoji: '🚶' },
+  { id: 'sb-4',  area: 'Child safety',          brief: 'Wristbands for under-12 · parent phone written · pickup desk near library lawn.',    owner: 'Hospitality crew',        color: '#22C55E', emoji: '👧' },
+  { id: 'sb-5',  area: 'Harassment protocol',   brief: 'Two trained responders on site · green lanyard · walk-away spaces on every floor.',   owner: 'Safety desk',             color: '#A78BFA', emoji: '🛡️' },
+  { id: 'sb-6',  area: 'Allergy info',           brief: 'Food signage lists top-8 · kitchen team sensitised · backup ingredient list ready.',   owner: 'Food coordinator',        color: '#FFD166', emoji: '🥗' },
+  { id: 'sb-7',  area: 'Electrical safety',      brief: 'RCD + extension check every 4 h · logged sheet at side of stage.',                    owner: 'Audio lead',              color: '#00D4FF', emoji: '⚡' },
+  { id: 'sb-8',  area: 'Weather · wind',          brief: 'Cancel outdoor stage if gusts > 55 kmph · move to Room 2A within 20 min.',              owner: 'Stage manager',           color: '#38BDF8', emoji: '🌬️' },
+];
+
+interface EventLesson {
+  id: string;
+  from: string;
+  lesson: string;
+  changeMade: string;
+  color: string;
+  emoji: string;
+}
+
+const EVENT_LESSONS: EventLesson[] = [
+  { id: 'el-1', from: 'Spring Festival 2023',       lesson: 'Queue outside main stage formed at 10 min before open · caused squeeze.',          changeMade: 'Doors open 15 min earlier · two queue lines · clearer signage.',       color: '#F59E0B', emoji: '⏱️' },
+  { id: 'el-2', from: 'Documentary Night 2023',     lesson: 'Poetry bleed-over from next stage disturbed film sound.',                              changeMade: 'Acoustic buffer zone · no mic stages within 30 m of film tent.',       color: '#A78BFA', emoji: '🎞️' },
+  { id: 'el-3', from: 'Monsoon Drive 2022',          lesson: 'Merch table got wet in a sudden shower · 30 tees affected.',                         changeMade: 'Merch always under tarpaulin + a spare table on standby.',               color: '#22C55E', emoji: '🌧️' },
+  { id: 'el-4', from: 'Alumni Reunion 2023',         lesson: 'Name badges ran out by 11:30 · first-timers felt excluded.',                          changeMade: 'Print 10% buffer · badges on recycled paper · sharpie always ready.',   color: '#F472B6', emoji: '🏷️' },
+  { id: 'el-5', from: 'Design Expo 2024',             lesson: 'Q&A dominated by same three voices · many first-timers didn\'t ask.',                changeMade: 'Roaming mic + explicit call for "first question from a first-timer".',   color: '#00D4FF', emoji: '🎙️' },
+  { id: 'el-6', from: 'Writers\' Night 2022',         lesson: 'Reader slots overran · the last poet got skipped.',                                   changeMade: 'Sand-timer on stage · volunteer silently shows last 20 sec card.',       color: '#FFD166', emoji: '📜' },
+  { id: 'el-7', from: 'Green Drive · Jun 2023',       lesson: 'Saplings handed out without care note · 12 died within a month.',                    changeMade: 'Printed care-card in Hindi + English · name + species + watering days.', color: '#16A34A', emoji: '🌱' },
+];
+
+interface CommunityPact {
+  id: string;
+  line: string;
+  detail: string;
+  color: string;
+  emoji: string;
+}
+
+const COMMUNITY_PACTS: CommunityPact[] = [
+  { id: 'cp-1', line: 'Leave the place greener than you found it.',          detail: 'Pick one thing up · even if it isn\'t yours. Bring one seed · even if you don\'t plant it.',    color: '#22C55E', emoji: '🌿' },
+  { id: 'cp-2', line: 'Use first names · no titles.',                          detail: 'No ‘sir’, no ‘ma\'am’ · inside the event. Alumni are guests, not authority.',               color: '#A78BFA', emoji: '🙌' },
+  { id: 'cp-3', line: 'Phones down during talks · up during ideas.',          detail: 'Silence mics during sessions · but capture notes and photos of saplings.',                   color: '#00D4FF', emoji: '📴' },
+  { id: 'cp-4', line: 'Ask before you photograph anyone.',                     detail: 'Consent first · green-lanyard means ‘yes, please’, red means ‘not today’.',                  color: '#F472B6', emoji: '📸' },
+  { id: 'cp-5', line: 'Cheer loudly for the first-timer.',                     detail: 'Open mic, first talk, first poem · we hold the room for them.',                               color: '#FFD166', emoji: '👏' },
+  { id: 'cp-6', line: 'Leftovers are shared · never thrown.',                    detail: 'Any unclaimed food goes to the Ops wing bag · carried to the shelter that same night.',      color: '#F59E0B', emoji: '🥡' },
+];
+
 const EventsScreen: React.FC = () => {
   // State
   const [activeTab, setActiveTab] = useState<'upcoming' | 'past'>('upcoming');
@@ -3272,17 +3418,195 @@ const EventsScreen: React.FC = () => {
     </View>
   );
 
+  // ------ Phase 3z deeper blocks ------
+  const renderGreenPledges = () => (
+    <View style={styles.extrasSection}>
+      <View style={styles.extrasHeaderRow}>
+        <Text style={styles.sectionTitle}>🌱 Green pledges · on-site</Text>
+        <Text style={styles.sectionHint}>{GREEN_PLEDGES.length} promises</Text>
+      </View>
+      {GREEN_PLEDGES.map((g) => {
+        const pct = Math.round(g.progress * 100);
+        return (
+          <View key={g.id} style={[styles.gpCard, { borderLeftColor: g.color }]}>
+            <View style={styles.gpTopRow}>
+              <Text style={styles.gpEmoji}>{g.emoji}</Text>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.gpPledge} numberOfLines={2}>{g.pledge}</Text>
+                <Text style={styles.gpTarget} numberOfLines={1}>{g.target}</Text>
+              </View>
+              <Text style={[styles.gpPct, { color: g.color }]}>{pct}%</Text>
+            </View>
+            <View style={styles.gpBarBg}>
+              <View style={[styles.gpBarFill, { width: `${pct}%`, backgroundColor: g.color }]} />
+            </View>
+            <Text style={styles.gpOwner} numberOfLines={1}>{g.owner}</Text>
+          </View>
+        );
+      })}
+    </View>
+  );
+
+  const renderStagePlots = () => (
+    <View style={styles.extrasSection}>
+      <View style={styles.extrasHeaderRow}>
+        <Text style={styles.sectionTitle}>🎛️ Stage plots · tech riders</Text>
+        <Text style={styles.sectionHint}>{STAGE_PLOTS.length} stages</Text>
+      </View>
+      {STAGE_PLOTS.map((s) => (
+        <View key={s.id} style={[styles.spCard, { borderLeftColor: s.color }]}>
+          <View style={styles.spTopRow}>
+            <Text style={styles.spEmoji}>{s.emoji}</Text>
+            <Text style={styles.spStage} numberOfLines={2}>{s.stage}</Text>
+          </View>
+          <View style={styles.spMetaGrid}>
+            <View style={styles.spMetaCell}>
+              <Text style={styles.spMetaLabel}>SIZE</Text>
+              <Text style={styles.spMetaVal}>{s.width} × {s.height}</Text>
+            </View>
+            <View style={styles.spMetaCell}>
+              <Text style={styles.spMetaLabel}>POWER</Text>
+              <Text style={styles.spMetaVal}>{s.powerKw} kW</Text>
+            </View>
+            <View style={styles.spMetaCell}>
+              <Text style={styles.spMetaLabel}>MICS</Text>
+              <Text style={styles.spMetaVal}>{s.micChannels}</Text>
+            </View>
+          </View>
+          <Text style={styles.spLighting} numberOfLines={1}>lighting · {s.lighting}</Text>
+          <Text style={styles.spNote} numberOfLines={2}>{s.note}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderRunOfShow = () => (
+    <View style={styles.extrasSection}>
+      <View style={styles.extrasHeaderRow}>
+        <Text style={styles.sectionTitle}>⏱️ Run of show · cue sheet</Text>
+        <Text style={styles.sectionHint}>{RUN_OF_SHOW.length} cues</Text>
+      </View>
+      {RUN_OF_SHOW.map((r) => (
+        <View key={r.id} style={[styles.rosRow, { borderLeftColor: r.color }]}>
+          <View style={styles.rosTimeCol}>
+            <Text style={[styles.rosTime, { color: r.color }]} numberOfLines={1}>{r.timeBefore}</Text>
+          </View>
+          <View style={{ flex: 1 }}>
+            <View style={styles.rosTopRow}>
+              <Text style={styles.rosEmoji}>{r.emoji}</Text>
+              <Text style={styles.rosCue} numberOfLines={2}>{r.cue}</Text>
+            </View>
+            <Text style={styles.rosOwner} numberOfLines={1}>owner · {r.owner}</Text>
+            <Text style={styles.rosBackup} numberOfLines={1}>backup · {r.backup}</Text>
+            <Text style={styles.rosNote} numberOfLines={2}>{r.note}</Text>
+          </View>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderTicketTiers = () => (
+    <View style={styles.extrasSection}>
+      <View style={styles.extrasHeaderRow}>
+        <Text style={styles.sectionTitle}>🎟️ Ticket tiers · kept honest</Text>
+        <Text style={styles.sectionHint}>{EVENT_TICKET_TIERS.length} tiers</Text>
+      </View>
+      {EVENT_TICKET_TIERS.map((t) => {
+        const pct = Math.round((t.sold / Math.max(1, t.quota)) * 100);
+        return (
+          <View key={t.id} style={[styles.ttCard, { borderLeftColor: t.color }]}>
+            <View style={styles.ttTopRow}>
+              <Text style={styles.ttEmoji}>{t.emoji}</Text>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.ttTier} numberOfLines={1}>{t.tier}</Text>
+                <Text style={styles.ttIncludes} numberOfLines={2}>{t.includes}</Text>
+              </View>
+              <Text style={[styles.ttPrice, { color: t.color }]}>
+                {t.priceInr === 0 ? 'free' : `₹${t.priceInr}`}
+              </Text>
+            </View>
+            <View style={styles.ttBarBg}>
+              <View style={[styles.ttBarFill, { width: `${pct}%`, backgroundColor: t.color }]} />
+            </View>
+            <Text style={styles.ttSold}>{t.sold} / {t.quota} claimed · {pct}%</Text>
+          </View>
+        );
+      })}
+    </View>
+  );
+
+  const renderSafetyBriefs = () => (
+    <View style={styles.extrasSection}>
+      <View style={styles.extrasHeaderRow}>
+        <Text style={styles.sectionTitle}>🛡️ Safety briefs · quietly ready</Text>
+        <Text style={styles.sectionHint}>{SAFETY_BRIEFS.length} desks</Text>
+      </View>
+      {SAFETY_BRIEFS.map((s) => (
+        <View key={s.id} style={[styles.sbCard, { borderLeftColor: s.color }]}>
+          <View style={styles.sbTopRow}>
+            <Text style={styles.sbEmoji}>{s.emoji}</Text>
+            <Text style={styles.sbArea} numberOfLines={1}>{s.area}</Text>
+          </View>
+          <Text style={styles.sbBrief} numberOfLines={3}>{s.brief}</Text>
+          <Text style={styles.sbOwner} numberOfLines={1}>→ {s.owner}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderEventLessons = () => (
+    <View style={styles.extrasSection}>
+      <View style={styles.extrasHeaderRow}>
+        <Text style={styles.sectionTitle}>📖 Lessons · from past events</Text>
+        <Text style={styles.sectionHint}>{EVENT_LESSONS.length} rewrites</Text>
+      </View>
+      {EVENT_LESSONS.map((l) => (
+        <View key={l.id} style={[styles.elCard, { borderLeftColor: l.color }]}>
+          <View style={styles.elTopRow}>
+            <Text style={styles.elEmoji}>{l.emoji}</Text>
+            <Text style={[styles.elFrom, { color: l.color }]} numberOfLines={1}>{l.from}</Text>
+          </View>
+          <Text style={styles.elLesson} numberOfLines={3}>{l.lesson}</Text>
+          <Text style={styles.elChange} numberOfLines={2}>→ {l.changeMade}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderCommunityPacts = () => (
+    <View style={styles.extrasSection}>
+      <View style={styles.extrasHeaderRow}>
+        <Text style={styles.sectionTitle}>🤝 Community pacts · the six</Text>
+        <Text style={styles.sectionHint}>{COMMUNITY_PACTS.length} lines</Text>
+      </View>
+      {COMMUNITY_PACTS.map((c) => (
+        <View key={c.id} style={[styles.cpCard, { borderLeftColor: c.color }]}>
+          <View style={styles.cpTopRow}>
+            <Text style={styles.cpEmoji}>{c.emoji}</Text>
+            <Text style={styles.cpLine} numberOfLines={2}>{c.line}</Text>
+          </View>
+          <Text style={styles.cpDetail} numberOfLines={3}>{c.detail}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
   const renderExtrasFooter = () => (
     <View>
       {renderCalendarSection()}
       {renderWeatherWatch()}
+      {renderGreenPledges()}
       {renderGreenOps()}
       {renderRiskRegister()}
+      {renderSafetyBriefs()}
       {renderPhotoBriefs()}
       {renderAfterParty()}
       {renderMerchSection()}
       {renderScheduleSection()}
+      {renderStagePlots()}
+      {renderRunOfShow()}
       {renderTicketsSection()}
+      {renderTicketTiers()}
       {renderSpeakersSection()}
       {renderSponsorsSection()}
       {renderVenuesSection()}
@@ -3296,10 +3620,12 @@ const EventsScreen: React.FC = () => {
       {renderStreamSection()}
       {renderFaqSection()}
       {renderConductSection()}
+      {renderCommunityPacts()}
       {renderConsentSection()}
       {renderChaptersSection()}
       {renderAccessibilitySection()}
       {renderVolunteerSection()}
+      {renderEventLessons()}
       {renderRecapsSection()}
       {renderCheckinSection()}
       <View style={styles.footerBand}>
@@ -5619,6 +5945,142 @@ const styles = StyleSheet.create({
   wwCondition: { color: Colors.text.primary, fontSize: 12, fontWeight: '700', marginTop: 4, lineHeight: 16 },
   wwHumidity: { color: Colors.text.muted, fontSize: 10, marginTop: 2 },
   wwNote: { color: Colors.text.secondary, fontSize: 10, lineHeight: 13, marginTop: 6 },
+
+  // --- Phase 3z: green pledges ---
+  gpCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginHorizontal: HORIZONTAL_PADDING,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  gpTopRow: { flexDirection: 'row', alignItems: 'flex-start' },
+  gpEmoji: { fontSize: 22, marginRight: 10, marginTop: 2 },
+  gpPledge: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', lineHeight: 17 },
+  gpTarget: { color: Colors.text.muted, fontSize: 10, marginTop: 2, fontStyle: 'italic' },
+  gpPct: { fontSize: 16, fontWeight: '900', marginLeft: 8 },
+  gpBarBg: {
+    height: 4,
+    borderRadius: 2,
+    backgroundColor: 'rgba(255,255,255,0.06)',
+    marginTop: 8,
+    overflow: 'hidden',
+  },
+  gpBarFill: { height: 4, borderRadius: 2 },
+  gpOwner: { color: Colors.text.secondary, fontSize: 10, marginTop: 6, paddingLeft: 32 },
+
+  // --- Phase 3z: stage plots ---
+  spCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginHorizontal: HORIZONTAL_PADDING,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  spTopRow: { flexDirection: 'row', alignItems: 'center' },
+  spEmoji: { fontSize: 22, marginRight: 10 },
+  spStage: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', flex: 1, lineHeight: 17 },
+  spMetaGrid: { flexDirection: 'row', marginTop: 10, gap: 8 },
+  spMetaCell: {
+    flex: 1,
+    backgroundColor: 'rgba(255,255,255,0.03)',
+    borderRadius: 10,
+    padding: 8,
+    alignItems: 'center',
+  },
+  spMetaLabel: { color: Colors.text.muted, fontSize: 9, fontWeight: '900', letterSpacing: 1.2 },
+  spMetaVal: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', marginTop: 3 },
+  spLighting: { color: Colors.text.secondary, fontSize: 11, marginTop: 8 },
+  spNote: { color: Colors.text.muted, fontSize: 11, lineHeight: 15, marginTop: 4, fontStyle: 'italic' },
+
+  // --- Phase 3z: run of show ---
+  rosRow: {
+    flexDirection: 'row',
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginHorizontal: HORIZONTAL_PADDING,
+    marginBottom: 8,
+    borderLeftWidth: 3,
+  },
+  rosTimeCol: { width: 62, marginRight: 10, paddingTop: 2 },
+  rosTime: { fontSize: 12, fontWeight: '900', letterSpacing: 0.5 },
+  rosTopRow: { flexDirection: 'row', alignItems: 'center' },
+  rosEmoji: { fontSize: 18, marginRight: 8 },
+  rosCue: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', flex: 1, lineHeight: 17 },
+  rosOwner: { color: Colors.tech.neonBlue, fontSize: 11, fontWeight: '700', marginTop: 4 },
+  rosBackup: { color: Colors.text.muted, fontSize: 10, marginTop: 2 },
+  rosNote: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4 },
+
+  // --- Phase 3z: ticket tiers ---
+  ttCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginHorizontal: HORIZONTAL_PADDING,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  ttTopRow: { flexDirection: 'row', alignItems: 'flex-start' },
+  ttEmoji: { fontSize: 24, marginRight: 10, marginTop: 2 },
+  ttTier: { color: Colors.text.primary, fontSize: 13, fontWeight: '800' },
+  ttIncludes: { color: Colors.text.secondary, fontSize: 11, marginTop: 2, lineHeight: 15 },
+  ttPrice: { fontSize: 14, fontWeight: '900', marginLeft: 8 },
+  ttBarBg: {
+    height: 4,
+    borderRadius: 2,
+    backgroundColor: 'rgba(255,255,255,0.06)',
+    marginTop: 10,
+    overflow: 'hidden',
+  },
+  ttBarFill: { height: 4, borderRadius: 2 },
+  ttSold: { color: Colors.text.muted, fontSize: 10, marginTop: 6 },
+
+  // --- Phase 3z: safety briefs ---
+  sbCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginHorizontal: HORIZONTAL_PADDING,
+    marginBottom: 8,
+    borderLeftWidth: 3,
+  },
+  sbTopRow: { flexDirection: 'row', alignItems: 'center' },
+  sbEmoji: { fontSize: 22, marginRight: 10 },
+  sbArea: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', flex: 1 },
+  sbBrief: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 6 },
+  sbOwner: { color: Colors.tech.neonBlue, fontSize: 11, fontWeight: '700', marginTop: 6 },
+
+  // --- Phase 3z: event lessons ---
+  elCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginHorizontal: HORIZONTAL_PADDING,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  elTopRow: { flexDirection: 'row', alignItems: 'center' },
+  elEmoji: { fontSize: 22, marginRight: 10 },
+  elFrom: { fontSize: 11, fontWeight: '900', letterSpacing: 0.5, textTransform: 'uppercase' },
+  elLesson: { color: Colors.text.primary, fontSize: 13, fontWeight: '700', marginTop: 6, lineHeight: 17 },
+  elChange: { color: Colors.accent.softGold, fontSize: 11, lineHeight: 15, marginTop: 6, fontStyle: 'italic' },
+
+  // --- Phase 3z: community pacts ---
+  cpCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginHorizontal: HORIZONTAL_PADDING,
+    marginBottom: 8,
+    borderLeftWidth: 3,
+  },
+  cpTopRow: { flexDirection: 'row', alignItems: 'center' },
+  cpEmoji: { fontSize: 22, marginRight: 10 },
+  cpLine: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', flex: 1, lineHeight: 17 },
+  cpDetail: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 6, paddingLeft: 32 },
 });
 
 export default EventsScreen;
