@@ -1,9 +1,9 @@
 // =====================================================
-// ULTRA PREMIUM HOME SCREEN
-// EXACTLY 10,000+ LINES OF QUALITY CODE
+// TARU GUARDIANS — HOME (Premium Landing)
+// Hero · stats · announcements · events · spotlights · gallery · timeline · pledges · quick actions
 // =====================================================
 
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import {
   View,
   Text,
@@ -14,1185 +14,1369 @@ import {
   Dimensions,
   StatusBar,
   FlatList,
-  Image,
   RefreshControl,
   Modal,
-  TextInput,
   Alert,
   Linking,
   Platform,
   Share,
-  SafeAreaView,
-  RefreshControlProps,
   Easing,
-  useWindowDimensions,
+  Pressable,
+  TextInput,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Colors } from '../../constants/colors';
-import { HomeStats, Announcement, Event, TeamMember } from '../../types/navigation';
+import { HomeStats, Announcement } from '../../types/navigation';
 
-// =====================================================
-// SCREEN DIMENSIONS
-// =====================================================
+// -----------------------------------------------------
+// Tokens
+// -----------------------------------------------------
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
-const isSmallScreen = SCREEN_WIDTH < 375;
-const isTablet = SCREEN_WIDTH >= 768;
+const IS_SMALL = SCREEN_WIDTH < 375;
+const IS_TABLET = SCREEN_WIDTH >= 768;
+const HORIZONTAL_PADDING = IS_SMALL ? 14 : 18;
+const CARD_RADIUS = 22;
+const HERO_HEIGHT = IS_SMALL ? 260 : 300;
 
-// =====================================================
-// ANIMATION CONFIGURATION
-// =====================================================
-
-const ANIMATION_CONFIG = {
-  duration: {
-    fast: 200,
-    normal: 300,
-    slow: 500,
-    verySlow: 800,
-  },
+const ANIM = {
+  duration: { fast: 200, normal: 360, slow: 520, xslow: 820 },
   easing: {
-    easeInOut: Easing.inOut(Easing.ease),
-    easeOut: Easing.out(Easing.ease),
-    spring: Easing.bezier(0.175, 0.885, 0.32, 1.275),
+    inOut: Easing.inOut(Easing.cubic),
+    out: Easing.out(Easing.cubic),
+    soft: Easing.bezier(0.25, 0.1, 0.25, 1),
+    overshoot: Easing.bezier(0.175, 0.885, 0.32, 1.275),
   },
 };
 
-// =====================================================
-// SAMPLE DATA - HOME STATS
-// =====================================================
+// -----------------------------------------------------
+// Hero slides
+// -----------------------------------------------------
 
-const HOME_STATS_DEFAULT: HomeStats = {
-  totalEvents: 50,
-  totalMembers: 200,
-  totalAlumni: 500,
-  totalProjects: 25,
-};
+interface HeroSlide {
+  id: string;
+  eyebrow: string;
+  title: string;
+  subtitle: string;
+  ctaLabel: string;
+  ctaTarget?: string;
+  gradient: readonly [string, string, ...string[]];
+}
 
-// =====================================================
-// SAMPLE DATA - ANNOUNCEMENTS
-// =====================================================
-
-const ANNOUNCEMENTS_DEFAULT: Announcement[] = [
+const HERO_SLIDES: HeroSlide[] = [
   {
-    id: '1',
-    title: '🌿 Annual Nature Camp 2026',
-    description: 'Join us for an unforgettable adventure in the mountains. Registration now open!',
-    date: '2026-04-15',
-    priority: 'high',
-    isNew: true,
+    id: 'hero-1',
+    eyebrow: '🌿 TARU GUARDIANS',
+    title: 'A tech club\nrooted in nature.',
+    subtitle:
+      'Sustainability × engineering × culture. Ship small. Plant often. Show up for each other.',
+    ctaLabel: 'See this week\'s events',
+    gradient: ['#042F1A', '#0A3F2A', '#0C5540'],
   },
   {
-    id: '2',
-    title: '🌱 Tree Plantation Drive',
-    description: 'Be part of our mission to plant 10,000 trees this year. Volunteers needed!',
-    date: '2026-04-10',
-    priority: 'medium',
-    isNew: true,
+    id: 'hero-2',
+    eyebrow: '🌱 SUSTAINABILITY DRIVE',
+    title: '12,000 saplings,\n6 semesters.',
+    subtitle:
+      '74% survival rate across 3 urban campuses. Curated with native species only.',
+    ctaLabel: 'Open impact dashboard',
+    gradient: ['#053049', '#064B6E', '#0B6B8F'],
   },
   {
-    id: '3',
-    title: '🔬 Tech for Nature Hackathon',
-    description: 'Innovative solutions for environmental challenges. Register your team now!',
-    date: '2026-04-05',
-    priority: 'high',
-    isNew: false,
+    id: 'hero-3',
+    eyebrow: '🧠 TECH FOR GOOD',
+    title: 'Build tools,\nnot noise.',
+    subtitle:
+      'We build small utilities for real people — no dashboards nobody reads, no hype trains.',
+    ctaLabel: 'Browse open issues',
+    gradient: ['#1C1038', '#2C1A58', '#3F2474'],
   },
   {
-    id: '4',
-    title: '🎓 Leadership Workshop',
-    description: 'Learn essential leadership skills from industry experts. Free for all members!',
-    date: '2026-03-28',
-    priority: 'medium',
-    isNew: false,
+    id: 'hero-4',
+    eyebrow: '🫶 COMMUNITY',
+    title: 'Kindness scales.\nChaos doesn\'t.',
+    subtitle:
+      'An honest, drama-free space to grow. Office hours, mentor circles, Friday no-laptop rituals.',
+    ctaLabel: 'Find a mentor',
+    gradient: ['#3A1240', '#531750', '#79266D'],
   },
   {
-    id: '5',
-    title: '📸 Nature Photography Contest',
-    description: 'Capture the beauty of nature. Amazing prizes await!',
-    date: '2026-03-20',
-    priority: 'low',
-    isNew: false,
-  },
-  {
-    id: '6',
-    title: '🤝 Global Climate Summit',
-    description: 'Represent Taru Guardians at the international climate summit.',
-    date: '2026-03-15',
-    priority: 'high',
-    isNew: false,
-  },
-  {
-    id: '7',
-    title: '🌾 Organic Farming Workshop',
-    description: 'Learn sustainable farming practices from experts.',
-    date: '2026-03-10',
-    priority: 'medium',
-    isNew: false,
-  },
-  {
-    id: '8',
-    title: '💧 Water Conservation Drive',
-    description: 'Our mission to save water resources needs your support.',
-    date: '2026-03-05',
-    priority: 'high',
-    isNew: false,
-  },
-  {
-    id: '9',
-    title: '🎨 Art for Earth Exhibition',
-    description: 'Showcase your artwork celebrating nature and environment.',
-    date: '2026-02-28',
-    priority: 'low',
-    isNew: false,
-  },
-  {
-    id: '10',
-    title: '🏕️ Wilderness Survival Training',
-    description: 'Essential survival skills for outdoor adventures.',
-    date: '2026-02-20',
-    priority: 'medium',
-    isNew: false,
-  },
-  {
-    id: '11',
-    title: '🌿 Medicinal Plant Garden',
-    description: 'Help us create a garden of Ayurvedic plants.',
-    date: '2026-02-15',
-    priority: 'medium',
-    isNew: false,
-  },
-  {
-    id: '12',
-    title: '📚 Environmental Awareness Quiz',
-    description: 'Test your knowledge and win exciting prizes!',
-    date: '2026-02-10',
-    priority: 'low',
-    isNew: false,
+    id: 'hero-5',
+    eyebrow: '🎉 FLAGSHIP',
+    title: 'Taru Fest 2026\nis close.',
+    subtitle: 'Four days. Six wings. One unforgettable weekend of building + learning + celebrating.',
+    ctaLabel: 'Reserve your spot',
+    gradient: ['#571607', '#7A1F0E', '#A3291A'],
   },
 ];
 
-// =====================================================
-// SAMPLE DATA - UPCOMING EVENTS
-// =====================================================
+// -----------------------------------------------------
+// Stats
+// -----------------------------------------------------
 
-const UPCOMING_EVENTS_DEFAULT: Event[] = [
+interface HomeStatCard {
+  id: string;
+  label: string;
+  value: string;
+  caption: string;
+  icon: string;
+  color: string;
+}
+
+const STATS: HomeStatCard[] = [
+  { id: 'members', label: 'Members', value: '210+', caption: 'Across 6 wings', icon: '🧑‍🤝‍🧑', color: '#38BDF8' },
+  { id: 'events', label: 'Events', value: '148', caption: 'All time', icon: '📅', color: '#4ADE80' },
+  { id: 'alumni', label: 'Alumni', value: '520+', caption: 'Giving back', icon: '🎓', color: '#FBBF24' },
+  { id: 'trees', label: 'Trees', value: '12,400', caption: 'Planted, 74% alive', icon: '🌳', color: '#22C55E' },
+  { id: 'shipped', label: 'Projects', value: '46', caption: 'Shipped, not shelved', icon: '🚀', color: '#A78BFA' },
+  { id: 'hours', label: 'Hours', value: '38k+', caption: 'Volunteered', icon: '⏱', color: '#F472B6' },
+];
+
+// -----------------------------------------------------
+// Announcements
+// -----------------------------------------------------
+
+interface ExtAnnouncement extends Announcement {
+  pinned?: boolean;
+  category: 'event' | 'drive' | 'program' | 'ops' | 'update';
+  color: string;
+  emoji: string;
+}
+
+const ANNOUNCEMENTS: ExtAnnouncement[] = [
   {
-    id: '1',
-    title: 'Mountain Trek Adventure',
-    description: 'A thrilling trek through the Himalayas',
-    date: '2026-05-01',
-    time: '06:00 AM',
-    location: 'Himalayas Base Camp',
-    imageUrl: 'https://example.com/mountain.jpg',
-    category: 'Adventure',
-    type: 'upcoming',
-    attendees: 45,
-    maxAttendees: 50,
-    price: 2500,
-    isFree: false,
-    organizer: 'Adventure Club',
-    contactEmail: 'adventure@taruguardians.org',
-    isFeature: true,
-    tags: ['trek', 'mountain', 'adventure'],
+    id: 'a-1',
+    title: 'Monsoon plantation drive',
+    description:
+      'June 28 · Cubbon Park. Native species only. 120 saplings, 40 volunteers. Transport + breakfast on us.',
+    date: '2026-06-28',
+    priority: 'high',
+    isNew: true,
+    pinned: true,
+    category: 'drive',
+    color: '#22C55E',
+    emoji: '🌱',
   },
   {
-    id: '2',
-    title: 'Tree Plantation Drive',
-    description: 'Plant trees for a greener future',
-    date: '2026-04-25',
-    time: '08:00 AM',
-    location: 'City Park',
-    imageUrl: 'https://example.com/tree.jpg',
-    category: 'Environment',
-    type: 'upcoming',
-    attendees: 150,
-    maxAttendees: 200,
-    price: 0,
-    isFree: true,
-    organizer: 'Green Team',
-    contactEmail: 'green@taruguardians.org',
-    isFeature: true,
-    tags: ['tree', 'plantation', 'green'],
+    id: 'a-2',
+    title: 'Taru Fest 2026 — call for volunteers',
+    description: 'We need 60 volunteers across 4 stages. Sign up closes Friday. First-years welcome.',
+    date: '2026-06-20',
+    priority: 'high',
+    isNew: true,
+    category: 'event',
+    color: '#F97316',
+    emoji: '🎉',
   },
   {
-    id: '3',
+    id: 'a-3',
+    title: 'New mentor cohort starting',
+    description: '14 alumni mentors. 5-week cohort. Free for members. Applications due Tuesday.',
+    date: '2026-06-18',
+    priority: 'medium',
+    isNew: true,
+    category: 'program',
+    color: '#38BDF8',
+    emoji: '🎓',
+  },
+  {
+    id: 'a-4',
+    title: 'App v2 beta opens',
+    description: 'Offline-first mode, push notifications, dark mode — help us test it.',
+    date: '2026-06-16',
+    priority: 'medium',
+    isNew: false,
+    category: 'update',
+    color: '#A78BFA',
+    emoji: '📱',
+  },
+  {
+    id: 'a-5',
+    title: 'Zero-waste catering for workshops',
+    description: 'Effective this semester — plates, spoons, banners — all compostable.',
+    date: '2026-06-12',
+    priority: 'low',
+    isNew: false,
+    category: 'ops',
+    color: '#4ADE80',
+    emoji: '♻️',
+  },
+  {
+    id: 'a-6',
+    title: 'Annual report (64 pages) now live',
+    description: 'Fully transparent: budgets, vendors, survival rates, failures. Read it with chai.',
+    date: '2026-06-08',
+    priority: 'low',
+    isNew: false,
+    category: 'ops',
+    color: '#FBBF24',
+    emoji: '📘',
+  },
+  {
+    id: 'a-7',
+    title: 'Leadership workshop — open seats',
+    description: 'Sunday at 10 AM, led by alumni from Atlassian + Zoho. 25 seats only.',
+    date: '2026-06-06',
+    priority: 'medium',
+    isNew: false,
+    category: 'event',
+    color: '#F472B6',
+    emoji: '🧭',
+  },
+  {
+    id: 'a-8',
+    title: 'Women in Tech dinner (free)',
+    description: 'Panel with 4 senior engineers from the alumni network. Food + transport covered.',
+    date: '2026-06-04',
+    priority: 'medium',
+    isNew: false,
+    category: 'event',
+    color: '#EC4899',
+    emoji: '🌸',
+  },
+];
+
+// -----------------------------------------------------
+// Featured events (trimmed for home)
+// -----------------------------------------------------
+
+interface FeaturedEvent {
+  id: string;
+  title: string;
+  date: string;
+  location: string;
+  category: string;
+  categoryColor: string;
+  description: string;
+  seats: { taken: number; total: number };
+  priceLabel: string;
+}
+
+const FEATURED_EVENTS: FeaturedEvent[] = [
+  {
+    id: 'e-1',
     title: 'Tech for Nature Hackathon',
-    description: '24-hour hackathon for environmental solutions',
-    date: '2026-04-20',
-    time: '10:00 AM',
-    location: 'Innovation Hub',
-    imageUrl: 'https://example.com/hackathon.jpg',
-    category: 'Technology',
-    type: 'upcoming',
-    attendees: 80,
-    maxAttendees: 100,
-    price: 500,
-    isFree: false,
-    organizer: 'Tech Wing',
-    contactEmail: 'tech@taruguardians.org',
-    isFeature: true,
-    tags: ['hackathon', 'tech', 'innovation'],
+    date: 'Fri 26 Jul · 10am',
+    location: 'Innovation Hub, Campus C',
+    category: 'Hackathon',
+    categoryColor: '#38BDF8',
+    description: '24-hour hackathon. Mentors from 6 alumni orgs. Food, swag, judge honorarium covered.',
+    seats: { taken: 82, total: 100 },
+    priceLabel: '₹200 · includes food',
   },
   {
-    id: '4',
-    title: 'Organic Farming Workshop',
-    description: 'Learn sustainable farming techniques',
-    date: '2026-04-18',
-    time: '09:00 AM',
-    location: 'Farm Center',
-    imageUrl: 'https://example.com/farm.jpg',
-    category: 'Agriculture',
-    type: 'upcoming',
-    attendees: 30,
-    maxAttendees: 40,
-    price: 0,
-    isFree: true,
-    organizer: 'Farm Wing',
-    contactEmail: 'farm@taruguardians.org',
-    isFeature: false,
-    tags: ['farming', 'organic', 'agriculture'],
+    id: 'e-2',
+    title: 'Monsoon Plantation Drive',
+    date: 'Sat 28 Jun · 7am',
+    location: 'Cubbon Park',
+    category: 'Sustainability',
+    categoryColor: '#22C55E',
+    description: '120 saplings, 40 volunteers, native species only. Transport + breakfast provided.',
+    seats: { taken: 37, total: 40 },
+    priceLabel: 'Free',
   },
   {
-    id: '5',
-    title: 'Photography Expedition',
-    description: 'Capture wildlife in their natural habitat',
-    date: '2026-04-15',
-    time: '05:00 AM',
-    location: 'Wildlife Sanctuary',
-    imageUrl: 'https://example.com/photo.jpg',
+    id: 'e-3',
+    title: 'Leadership Workshop',
+    date: 'Sun 14 Jul · 10am',
+    location: 'Club Room, Block B',
+    category: 'Workshop',
+    categoryColor: '#F472B6',
+    description: 'Hosted by 2 alumni senior engineers. Limited seats. Deep practice, not theory.',
+    seats: { taken: 22, total: 25 },
+    priceLabel: 'Free',
+  },
+  {
+    id: 'e-4',
+    title: 'Photography Walk — Wildlife',
+    date: 'Sat 20 Jul · 5am',
+    location: 'Bannerghatta Reserve',
     category: 'Photography',
-    type: 'upcoming',
-    attendees: 20,
-    maxAttendees: 25,
-    price: 1500,
-    isFree: false,
-    organizer: 'Photo Club',
-    contactEmail: 'photo@taruguardians.org',
-    isFeature: false,
-    tags: ['photography', 'wildlife', 'nature'],
+    categoryColor: '#FBBF24',
+    description: 'Early morning shoot. Bring your own gear. 1 mentor, 1 biologist, 1 guide.',
+    seats: { taken: 17, total: 25 },
+    priceLabel: '₹1500 · transport',
   },
   {
-    id: '6',
-    title: 'Leadership Summit',
-    description: 'Develop essential leadership skills',
-    date: '2026-04-12',
-    time: '02:00 PM',
-    location: 'Conference Hall',
-    imageUrl: 'https://example.com/leadership.jpg',
-    category: 'Development',
-    type: 'upcoming',
-    attendees: 60,
-    maxAttendees: 75,
-    price: 200,
-    isFree: false,
-    organizer: 'HR Wing',
-    contactEmail: 'hr@taruguardians.org',
-    isFeature: true,
-    tags: ['leadership', 'skills', 'development'],
+    id: 'e-5',
+    title: 'Art for Earth Exhibition',
+    date: 'Sat 10 Aug · 4pm',
+    location: 'Academic Block Atrium',
+    category: 'Culture',
+    categoryColor: '#A78BFA',
+    description: 'Student art centered around nature, climate, change, hope. Submit by 30 Jul.',
+    seats: { taken: 8, total: 40 },
+    priceLabel: 'Free · open to all',
   },
   {
-    id: '7',
-    title: 'Climate Action Rally',
-    description: 'Stand together for climate action',
-    date: '2026-04-10',
-    time: '10:00 AM',
-    location: 'City Center',
-    imageUrl: 'https://example.com/rally.jpg',
-    category: 'Advocacy',
-    type: 'upcoming',
-    attendees: 500,
-    maxAttendees: 1000,
-    price: 0,
-    isFree: true,
-    organizer: 'Advocacy Team',
-    contactEmail: 'advocacy@taruguardians.org',
-    isFeature: true,
-    tags: ['climate', 'rally', 'action'],
-  },
-  {
-    id: '8',
-    title: 'Water Conservation Workshop',
-    description: 'Learn water-saving techniques',
-    date: '2026-04-08',
-    time: '11:00 AM',
-    location: 'Community Center',
-    imageUrl: 'https://example.com/water.jpg',
-    category: 'Conservation',
-    type: 'upcoming',
-    attendees: 40,
-    maxAttendees: 50,
-    price: 0,
-    isFree: true,
-    organizer: 'Water Team',
-    contactEmail: 'water@taruguardians.org',
-    isFeature: false,
-    tags: ['water', 'conservation', 'workshop'],
+    id: 'e-6',
+    title: 'Open Office Hours — Founders',
+    date: 'Every Friday · 5pm',
+    location: 'Club Room, Block B',
+    category: 'Community',
+    categoryColor: '#06B6D4',
+    description: 'Bring your idea. Walk out with specific next steps. Alumni founders attend.',
+    seats: { taken: 10, total: 20 },
+    priceLabel: 'Free',
   },
 ];
 
-// =====================================================
-// SAMPLE DATA - FEATURED TEAM MEMBERS
-// =====================================================
+// -----------------------------------------------------
+// Quick actions
+// -----------------------------------------------------
 
-const FEATURED_MEMBERS_DEFAULT: TeamMember[] = [
+interface QuickAction {
+  id: string;
+  title: string;
+  subtitle: string;
+  icon: string;
+  color: string;
+  tabTarget?: string;
+}
+
+const QUICK_ACTIONS: QuickAction[] = [
+  { id: 'q-events', title: 'This week', subtitle: 'What\'s on', icon: '📅', color: '#F97316', tabTarget: 'EventsTab' },
+  { id: 'q-wings', title: '6 Wings', subtitle: 'Content · Dev · GD · Video · Photo · PR', icon: '🪶', color: '#38BDF8', tabTarget: 'TaruWingsTab' },
+  { id: 'q-team', title: 'The Team', subtitle: '60 members', icon: '🧑‍🤝‍🧑', color: '#4ADE80', tabTarget: 'TeamTab' },
+  { id: 'q-alumni', title: 'Alumni', subtitle: '520+ stories', icon: '🎓', color: '#FBBF24', tabTarget: 'AlumniTab' },
+  { id: 'q-mentor', title: 'Find a mentor', subtitle: '14 alumni mentors', icon: '🧭', color: '#A78BFA' },
+  { id: 'q-idea', title: 'Share an idea', subtitle: 'Go to Suggestion', icon: '💡', color: '#F472B6', tabTarget: 'SuggestionTab' },
+  { id: 'q-donate', title: 'Donate / Sponsor', subtitle: 'Transparent ledger', icon: '🤝', color: '#22C55E' },
+  { id: 'q-gallery', title: 'Gallery', subtitle: 'Moments from ‘25 - ‘26', icon: '📸', color: '#06B6D4' },
+];
+
+// -----------------------------------------------------
+// Team spotlight (3 picks)
+// -----------------------------------------------------
+
+interface Spotlight {
+  id: string;
+  name: string;
+  role: string;
+  department: string;
+  tagline: string;
+  emoji: string;
+  color: string;
+}
+
+const SPOTLIGHTS: Spotlight[] = [
   {
-    id: '1',
-    name: 'Aarav Sharma',
-    role: 'President',
-    department: 'Leadership',
-    year: '2024',
-    email: 'aarav@taruguardians.org',
-    phone: '+91 98765 43210',
-    imageUrl: 'https://example.com/aarav.jpg',
-    bio: 'Passionate about environmental conservation and sustainable development.',
-    skills: ['Leadership', 'Public Speaking', 'Strategy'],
-    socialLinks: {
-      linkedin: 'https://linkedin.com/in/aarav',
-      instagram: 'https://instagram.com/aarav',
-    },
-    achievements: ['Young Environmentalist Award 2025', 'Best Leader Award'],
-    projects: [],
+    id: 'sp-1',
+    name: 'Diya Mishra',
+    role: 'Sustainability Head',
+    department: 'Sustainability',
+    tagline: 'Grow slow. Grow native. (And yes — track survival rates.)',
+    emoji: '🌱',
+    color: '#22C55E',
   },
   {
-    id: '2',
-    name: 'Priya Patel',
-    role: 'Vice President',
-    department: 'Operations',
-    year: '2024',
-    email: 'priya@taruguardians.org',
-    phone: '+91 98765 43211',
-    imageUrl: 'https://example.com/priya.jpg',
-    bio: 'Committed to creating impactful environmental programs.',
-    skills: ['Operations', 'Project Management', 'Team Building'],
-    socialLinks: {
-      linkedin: 'https://linkedin.com/in/priya',
-    },
-    achievements: ['Excellence in Operations Award'],
-    projects: [],
-  },
-  {
-    id: '3',
+    id: 'sp-2',
     name: 'Raj Mehra',
     role: 'Tech Head',
     department: 'Technology',
-    year: '2025',
-    email: 'raj@taruguardians.org',
-    phone: '+91 98765 43212',
-    imageUrl: 'https://example.com/raj.jpg',
-    bio: 'Building tech solutions for environmental challenges.',
-    skills: ['App Development', 'AI/ML', 'Data Analysis'],
-    socialLinks: {
-      linkedin: 'https://linkedin.com/in/raj',
-      twitter: 'https://twitter.com/raj',
-    },
-    achievements: ['Best Tech Innovator Award'],
-    projects: [],
+    tagline: 'The best feature is shipped. Small tools, big joy.',
+    emoji: '💻',
+    color: '#38BDF8',
   },
   {
-    id: '4',
-    name: 'Ananya Singh',
-    role: 'Events Head',
-    department: 'Events',
-    year: '2025',
-    email: 'ananya@taruguardians.org',
-    phone: '+91 98765 43213',
-    imageUrl: 'https://example.com/ananya.jpg',
-    bio: 'Creating memorable experiences for all members.',
-    skills: ['Event Planning', 'Marketing', 'Coordination'],
-    socialLinks: {
-      instagram: 'https://instagram.com/ananya',
-    },
-    achievements: ['Best Event Award 2025'],
-    projects: [],
-  },
-  {
-    id: '5',
-    name: 'Kunal Verma',
-    role: 'Outreach Head',
-    department: 'Public Relations',
-    year: '2024',
-    email: 'kunal@taruguardians.org',
-    phone: '+91 98765 43214',
-    imageUrl: 'https://example.com/kunal.jpg',
-    bio: 'Building strong community partnerships.',
-    skills: ['Communication', 'Negotiation', 'Networking'],
-    socialLinks: {
-      linkedin: 'https://linkedin.com/in/kunal',
-    },
-    achievements: ['Best PR Award'],
-    projects: [],
-  },
-  {
-    id: '6',
+    id: 'sp-3',
     name: 'Neha Gupta',
-    role: 'Creative Head',
+    role: 'Design Head',
     department: 'Design',
-    year: '2025',
-    email: 'neha@taruguardians.org',
-    phone: '+91 98765 43215',
-    imageUrl: 'https://example.com/neha.jpg',
-    bio: 'Designing visually stunning campaigns.',
-    skills: ['Graphic Design', 'UI/UX', 'Branding'],
-    socialLinks: {
-      instagram: 'https://instagram.com/neha',
-      behance: 'https://behance.net/neha',
-    },
-    achievements: ['Best Design Award'],
-    projects: [],
+    tagline: 'Soft colors. Strong opinions. Earthy palettes. One bold accent.',
+    emoji: '🎨',
+    color: '#F472B6',
+  },
+];
+
+// -----------------------------------------------------
+// Testimonials
+// -----------------------------------------------------
+
+interface Testimonial {
+  id: string;
+  name: string;
+  role: string;
+  body: string;
+  avatarColor: string;
+}
+
+const TESTIMONIALS: Testimonial[] = [
+  {
+    id: 't-1',
+    name: 'Kavya Nair',
+    role: '1st-year · Research',
+    body: 'I joined for the hackathons, I stayed for the people. They expect you to show up, not to be polished.',
+    avatarColor: '#F472B6',
   },
   {
-    id: '7',
-    name: 'Arjun Kapoor',
-    role: 'Finance Head',
-    department: 'Finance',
+    id: 't-2',
+    name: 'Mayank Desai',
+    role: '2nd-year · Tech · Data',
+    body: 'Got my first real PR merged here. Now I mentor two juniors. Closing the loop feels great.',
+    avatarColor: '#38BDF8',
+  },
+  {
+    id: 't-3',
+    name: 'Pooja Bhalla',
+    role: '3rd-year · Sustainability',
+    body: 'I used to think "sustainability club" meant posters and drives. Here we also do measurement, policy, follow-up visits.',
+    avatarColor: '#22C55E',
+  },
+  {
+    id: 't-4',
+    name: 'Shaurya Taneja',
+    role: '3rd-year · Content · Editorial',
+    body: 'Nobody is too senior to edit your draft. Everybody is too kind to ghost your draft.',
+    avatarColor: '#FBBF24',
+  },
+  {
+    id: 't-5',
+    name: 'Dev Shukla',
+    role: '1st-year · Events',
+    body: 'My first event was chaos. My second was calm. The difference? Real mentoring from seniors.',
+    avatarColor: '#A78BFA',
+  },
+];
+
+// -----------------------------------------------------
+// Gallery
+// -----------------------------------------------------
+
+interface GalleryItem {
+  id: string;
+  caption: string;
+  color: string;
+  emoji: string;
+  date: string;
+}
+
+const GALLERY: GalleryItem[] = [
+  { id: 'g-1', caption: 'Monsoon drive · Cubbon', color: '#22C55E', emoji: '🌱', date: 'Jun 2025' },
+  { id: 'g-2', caption: 'Hackathon finale', color: '#38BDF8', emoji: '🏆', date: 'Apr 2025' },
+  { id: 'g-3', caption: 'Alumni meetup', color: '#FBBF24', emoji: '🎓', date: 'Mar 2025' },
+  { id: 'g-4', caption: 'Campus cleanup', color: '#4ADE80', emoji: '🧹', date: 'Feb 2025' },
+  { id: 'g-5', caption: 'Ladies in Tech dinner', color: '#EC4899', emoji: '🌸', date: 'Jan 2025' },
+  { id: 'g-6', caption: 'Zine print night', color: '#A78BFA', emoji: '📚', date: 'Dec 2024' },
+  { id: 'g-7', caption: 'Tree survival audit', color: '#22C55E', emoji: '🌲', date: 'Nov 2024' },
+  { id: 'g-8', caption: 'Founders office hours', color: '#06B6D4', emoji: '💡', date: 'Oct 2024' },
+  { id: 'g-9', caption: 'Photography walk', color: '#FBBF24', emoji: '📸', date: 'Sep 2024' },
+  { id: 'g-10', caption: 'Cultural night', color: '#F472B6', emoji: '🎶', date: 'Sep 2024' },
+];
+
+// -----------------------------------------------------
+// Sustainability timeline
+// -----------------------------------------------------
+
+interface TimelineItem {
+  id: string;
+  year: string;
+  title: string;
+  body: string;
+  color: string;
+}
+
+const TIMELINE: TimelineItem[] = [
+  {
+    id: 'tl-1',
+    year: '2022',
+    title: 'Club rebooted',
+    body: 'Handed over to a new leadership team. 12 active members at the start.',
+    color: '#94A3B8',
+  },
+  {
+    id: 'tl-2',
+    year: '2023',
+    title: 'First plantation drive',
+    body: '1,800 saplings across 2 urban campuses. Survival rate measured for the first time.',
+    color: '#4ADE80',
+  },
+  {
+    id: 'tl-3',
     year: '2024',
-    email: 'arjun@taruguardians.org',
-    phone: '+91 98765 43216',
-    imageUrl: 'https://example.com/arjun.jpg',
-    bio: 'Ensuring transparent and efficient financial management.',
-    skills: ['Finance', 'Accounting', 'Planning'],
-    socialLinks: {
-      linkedin: 'https://linkedin.com/in/arjun',
-    },
-    achievements: ['Best Finance Management Award'],
-    projects: [],
+    title: 'Tech wing founded',
+    body: 'React Native club app v0. Built-in 2 weeks. 120 members onboarded.',
+    color: '#38BDF8',
   },
   {
-    id: '8',
-    name: 'Sanya Malhotra',
-    role: 'Research Head',
-    department: 'Research',
+    id: 'tl-4',
+    year: '2024',
+    title: 'Alumni mentor circle',
+    body: '14 alumni signed up. 200+ one-on-one sessions.',
+    color: '#FBBF24',
+  },
+  {
+    id: 'tl-5',
     year: '2025',
-    email: 'sanya@taruguardians.org',
-    phone: '+91 98765 43217',
-    imageUrl: 'https://example.com/sanya.jpg',
-    bio: 'Leading cutting-edge environmental research.',
-    skills: ['Research', 'Data Analysis', 'Writing'],
-    socialLinks: {
-      linkedin: 'https://linkedin.com/in/sanya',
-    },
-    achievements: ['Best Research Paper Award'],
-    projects: [],
+    title: 'Annual report — public',
+    body: '64 pages. Transparent budgets. First time any student body here has done this.',
+    color: '#A78BFA',
+  },
+  {
+    id: 'tl-6',
+    year: '2025',
+    title: 'Taru Fest — first edition',
+    body: '2,000 footfalls. 4 days. 6 wings. One calm run-of-show spreadsheet.',
+    color: '#F97316',
+  },
+  {
+    id: 'tl-7',
+    year: '2026',
+    title: 'App v2',
+    body: 'Offline mode, push, dark theme, attendance automation. You\'re looking at it.',
+    color: '#22C55E',
   },
 ];
 
-// =====================================================
-// SAMPLE DATA - QUICK LINKS
-// =====================================================
+// -----------------------------------------------------
+// Pledges (sustainability)
+// -----------------------------------------------------
 
-const QUICK_LINKS_DEFAULT = [
-  { id: '1', title: 'Events', icon: '📅', color: Colors.tech.neonBlue, route: 'EventsTab' },
-  { id: '2', title: 'Team', icon: '👥', color: Colors.nature.leafGreen, route: 'TeamTab' },
-  { id: '3', title: 'Alumni', icon: '🎓', color: Colors.accent.softGold, route: 'AlumniTab' },
-  { id: '4', title: 'Wings', icon: '🌿', color: Colors.primary.jade, route: 'TaruWingsTab' },
-];
+interface Pledge {
+  id: string;
+  title: string;
+  body: string;
+  target: string;
+  progress: number;
+  color: string;
+}
 
-// =====================================================
-// SAMPLE DATA - ACTIVITIES
-// =====================================================
-
-const ACTIVITIES_DEFAULT = [
+const PLEDGES: Pledge[] = [
   {
-    id: '1',
-    title: 'Morning Yoga',
-    time: '6:00 AM',
-    icon: '🧘',
-    color: '#8BC34A',
-    participants: 25,
+    id: 'p-1',
+    title: 'Native saplings',
+    body: 'Only local species. Tracked monthly for 2 years after plantation.',
+    target: '20,000 by 2027',
+    progress: 0.62,
+    color: '#22C55E',
   },
   {
-    id: '2',
-    title: 'Tree Plantation',
-    time: '8:00 AM',
-    icon: '🌱',
-    color: '#4CAF50',
-    participants: 150,
+    id: 'p-2',
+    title: 'Zero-waste events',
+    body: 'Compostable cutlery, digital banners, no single-use plastic.',
+    target: '100% of events',
+    progress: 0.81,
+    color: '#4ADE80',
   },
   {
-    id: '3',
-    title: 'Workshop',
-    time: '10:00 AM',
-    icon: '📚',
-    color: '#2196F3',
-    participants: 40,
+    id: 'p-3',
+    title: 'Open budgets',
+    body: 'Every rupee spent is listed in the annual report.',
+    target: 'Every year, forever',
+    progress: 1.0,
+    color: '#FBBF24',
   },
   {
-    id: '4',
-    title: 'Team Meeting',
-    time: '2:00 PM',
-    icon: '👥',
-    color: '#9C27B0',
-    participants: 30,
+    id: 'p-4',
+    title: 'Women in Tech seats',
+    body: 'At least 40% women-identifying members in every technical cohort.',
+    target: '40% minimum',
+    progress: 0.46,
+    color: '#EC4899',
   },
   {
-    id: '5',
-    title: 'Photography Walk',
-    time: '4:00 PM',
-    icon: '📸',
-    color: '#FF9800',
-    participants: 20,
-  },
-  {
-    id: '6',
-    title: 'Evening Meditation',
-    time: '6:00 PM',
-    icon: '🌙',
-    color: '#3F51B5',
-    participants: 15,
+    id: 'p-5',
+    title: 'Mental-health support',
+    body: 'All wing heads MHFA-trained. Anonymous support channel open 24/7.',
+    target: '10/10 wing heads',
+    progress: 0.9,
+    color: '#A78BFA',
   },
 ];
 
-// =====================================================
-// SAMPLE DATA - ACHIEVEMENTS
-// =====================================================
+// -----------------------------------------------------
+// FAQ
+// -----------------------------------------------------
 
-const ACHIEVEMENTS_DEFAULT = [
-  { id: '1', title: 'Trees Planted', value: '50,000+', icon: '🌳', color: Colors.primary.jade },
-  { id: '2', title: 'Events Organized', value: '200+', icon: '🎉', color: Colors.tech.neonBlue },
-  { id: '3', title: 'Active Members', value: '500+', icon: '👥', color: Colors.accent.softGold },
-  { id: '4', title: 'Awards Won', value: '25+', icon: '🏆', color: '#E91E63' },
-  { id: '5', title: 'Partner NGOs', value: '50+', icon: '🤝', color: '#9C27B0' },
-  { id: '6', title: 'Hours Volunteered', value: '10,000+', icon: '⏱️', color: '#FF5722' },
+interface FAQ {
+  id: string;
+  q: string;
+  a: string;
+}
+
+const FAQ_ITEMS: FAQ[] = [
+  {
+    id: 'f-1',
+    q: 'I\'m a first-year. Can I join mid-semester?',
+    a: 'Yes. We onboard continuously. Apply, tell us what you care about, and the nearest wing head reaches out in 3 working days.',
+  },
+  {
+    id: 'f-2',
+    q: 'Do I have to pick one wing?',
+    a: 'No. You get a primary wing for accountability, but events and office hours are open across all 6.',
+  },
+  {
+    id: 'f-3',
+    q: 'How much time per week?',
+    a: 'Roughly 3 hours for members, 6-8 for core, 10-12 for leads. Nobody will guilt-trip you — we track load and redistribute.',
+  },
+  {
+    id: 'f-4',
+    q: 'Can I invite a friend from another college?',
+    a: 'Most of our events are open-campus. Share the link. Some smaller workshops are member-first with waiting-list.',
+  },
+  {
+    id: 'f-5',
+    q: 'Is there a cost?',
+    a: 'Membership is free. Some offsite events (treks, photo walks, travel) are paid at cost and subsidised for need-based members.',
+  },
 ];
 
-// =====================================================
-// MAIN HOME SCREEN COMPONENT
-// =====================================================
+// -----------------------------------------------------
+// Component
+// -----------------------------------------------------
 
 const HomeScreen: React.FC = () => {
-  // =====================================================
-  // STATE MANAGEMENT
-  // =====================================================
-
-  const [stats, setStats] = useState<HomeStats>(HOME_STATS_DEFAULT);
-  const [announcements, setAnnouncements] = useState<Announcement[]>(ANNOUNCEMENTS_DEFAULT);
-  const [upcomingEvents, setUpcomingEvents] = useState<Event[]>(UPCOMING_EVENTS_DEFAULT);
-  const [featuredMembers, setFeaturedMembers] = useState<TeamMember[]>(FEATURED_MEMBERS_DEFAULT);
-  const [quickLinks] = useState(QUICK_LINKS_DEFAULT);
-  const [activities] = useState(ACTIVITIES_DEFAULT);
-  const [achievements, setAchievements] = useState(ACHIEVEMENTS_DEFAULT);
+  // ------ State ------
   const [refreshing, setRefreshing] = useState(false);
-  const [selectedAnnouncement, setSelectedAnnouncement] = useState<Announcement | null>(null);
+  const [heroIndex, setHeroIndex] = useState(0);
+  const [newsletterEmail, setNewsletterEmail] = useState('');
+  const [newsletterStatus, setNewsletterStatus] = useState<'idle' | 'submitting' | 'done'>('idle');
+  const [expandedFAQ, setExpandedFAQ] = useState<string | null>(null);
+  const [announcementFilter, setAnnouncementFilter] = useState<ExtAnnouncement['category'] | 'all'>('all');
+  const [showQuickActionSheet, setShowQuickActionSheet] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState<FeaturedEvent | null>(null);
+  const [showEventModal, setShowEventModal] = useState(false);
+  const [selectedAnnouncement, setSelectedAnnouncement] = useState<ExtAnnouncement | null>(null);
   const [showAnnouncementModal, setShowAnnouncementModal] = useState(false);
 
-  // =====================================================
-  // ANIMATION REFS
-  // =====================================================
+  // ------ Animations ------
+  const heroScrollX = useRef(new Animated.Value(0)).current;
+  const heroRef = useRef<FlatList<HeroSlide>>(null);
+  const statsAnim = useRef(new Animated.Value(0)).current;
+  const rowStagger = useRef(new Animated.Value(0)).current;
+  const eventModalScale = useRef(new Animated.Value(0.9)).current;
+  const announcementModalScale = useRef(new Animated.Value(0.9)).current;
 
-  const scrollY = useRef(new Animated.Value(0)).current;
-  const headerOpacity = useRef(new Animated.Value(1)).current;
-  const headerScale = useRef(new Animated.Value(1)).current;
-
-  // Animation values array for staggered animations
-  const animationValues = useRef(
-    Array.from({ length: 20 }, () => ({
-      opacity: new Animated.Value(0),
-      translateY: new Animated.Value(50),
-    }))
-  ).current;
-
-  // =====================================================
-  // EFFECTS
-  // =====================================================
-
+  // Auto-rotate hero
   useEffect(() => {
-    // Start staggered animations on mount
-    startStaggeredAnimations();
+    const id = setInterval(() => {
+      setHeroIndex((i) => {
+        const next = (i + 1) % HERO_SLIDES.length;
+        heroRef.current?.scrollToOffset({ offset: next * SCREEN_WIDTH, animated: true });
+        return next;
+      });
+    }, 5200);
+    return () => clearInterval(id);
   }, []);
 
-  const startStaggeredAnimations = () => {
-    animationValues.forEach((anim, index) => {
-      Animated.parallel([
-        Animated.timing(anim.opacity, {
-          toValue: 1,
-          duration: ANIMATION_CONFIG.duration.slow,
-          delay: index * 100,
-          useNativeDriver: true,
-        }),
-        Animated.timing(anim.translateY, {
-          toValue: 0,
-          duration: ANIMATION_CONFIG.duration.slow,
-          delay: index * 100,
-          useNativeDriver: true,
-        }),
-      ]).start();
-    });
-  };
+  useEffect(() => {
+    Animated.stagger(150, [
+      Animated.timing(statsAnim, { toValue: 1, duration: ANIM.duration.slow, easing: ANIM.easing.out, useNativeDriver: true }),
+      Animated.timing(rowStagger, { toValue: 1, duration: ANIM.duration.slow, easing: ANIM.easing.out, useNativeDriver: true }),
+    ]).start();
+  }, [statsAnim, rowStagger]);
 
-  // =====================================================
-  // CALLBACKS
-  // =====================================================
+  useEffect(() => {
+    if (showEventModal) {
+      Animated.spring(eventModalScale, { toValue: 1, useNativeDriver: true, friction: 7 }).start();
+    } else {
+      eventModalScale.setValue(0.9);
+    }
+  }, [showEventModal, eventModalScale]);
+
+  useEffect(() => {
+    if (showAnnouncementModal) {
+      Animated.spring(announcementModalScale, { toValue: 1, useNativeDriver: true, friction: 7 }).start();
+    } else {
+      announcementModalScale.setValue(0.9);
+    }
+  }, [showAnnouncementModal, announcementModalScale]);
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
-    // Simulate refresh
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 2000);
+    setTimeout(() => setRefreshing(false), 1100);
   }, []);
 
-  const handleAnnouncementPress = (announcement: Announcement) => {
-    setSelectedAnnouncement(announcement);
-    setShowAnnouncementModal(true);
-  };
+  const onHeroScroll = useCallback(
+    (e: { nativeEvent: { contentOffset: { x: number } } }) => {
+      const x = e.nativeEvent.contentOffset.x;
+      heroScrollX.setValue(x);
+      const idx = Math.round(x / SCREEN_WIDTH);
+      if (idx !== heroIndex) setHeroIndex(idx);
+    },
+    [heroScrollX, heroIndex]
+  );
 
-  const handleShare = async () => {
+  const openEvent = useCallback((e: FeaturedEvent) => {
+    setSelectedEvent(e);
+    setShowEventModal(true);
+  }, []);
+
+  const closeEvent = useCallback(() => {
+    setShowEventModal(false);
+    setTimeout(() => setSelectedEvent(null), 200);
+  }, []);
+
+  const openAnnouncement = useCallback((a: ExtAnnouncement) => {
+    setSelectedAnnouncement(a);
+    setShowAnnouncementModal(true);
+  }, []);
+
+  const closeAnnouncement = useCallback(() => {
+    setShowAnnouncementModal(false);
+    setTimeout(() => setSelectedAnnouncement(null), 200);
+  }, []);
+
+  const submitNewsletter = useCallback(() => {
+    if (newsletterStatus === 'submitting') return;
+    const emailRe = /^\S+@\S+\.\S+$/;
+    if (!emailRe.test(newsletterEmail.trim())) {
+      Alert.alert('Hmm — that email looks off', 'Try again with a valid email address.');
+      return;
+    }
+    setNewsletterStatus('submitting');
+    setTimeout(() => {
+      setNewsletterStatus('done');
+      setNewsletterEmail('');
+      setTimeout(() => setNewsletterStatus('idle'), 2500);
+    }, 900);
+  }, [newsletterEmail, newsletterStatus]);
+
+  const shareClub = useCallback(async () => {
     try {
       await Share.share({
-        message: 'Check out Taru Guardians - A community dedicated to environmental conservation!',
+        message:
+          '🌿 Taru Guardians — tech × sustainability student club. Events, projects, mentorship and community. Check it out.',
       });
-    } catch (error) {
-      console.error('Error sharing:', error);
+    } catch {
+      /* cancelled */
     }
-  };
+  }, []);
 
-  const handleCall = () => {
-    Linking.openURL('tel:+919876543210');
-  };
+  const filteredAnnouncements = useMemo(() => {
+    if (announcementFilter === 'all') return ANNOUNCEMENTS;
+    return ANNOUNCEMENTS.filter((a) => a.category === announcementFilter);
+  }, [announcementFilter]);
 
-  const handleEmail = () => {
-    Linking.openURL('mailto:info@taruguardians.org');
-  };
-
-  const handleWebsite = () => {
-    Linking.openURL('https://taruguardians.org');
-  };
-
-  const handleEventPress = (event: Event) => {
-    // Handle event navigation
-    console.log('Event pressed:', event.title);
-  };
-
-  const handleMemberPress = (member: TeamMember) => {
-    // Handle member navigation
-    console.log('Member pressed:', member.name);
-  };
-
-  const handleQuickLinkPress = (route: string) => {
-    // Handle quick link navigation
-    console.log('Quick link pressed:', route);
-  };
-
-  // =====================================================
-  // RENDER HELPERS
-  // =====================================================
-
-  const renderHeader = () => (
-    <Animated.View
-      style={[
-        styles.headerContainer,
-        {
-          opacity: headerOpacity,
-          transform: [{ scale: headerScale }],
-        },
-      ]}
-    >
-      <LinearGradient
-        colors={[Colors.background.deepBlack, Colors.background.darkGreen]}
-        style={styles.headerGradient}
-      >
-        <View style={styles.headerContent}>
-          {/* Logo and Title */}
-          <View style={styles.logoSection}>
-            <View style={styles.logoContainer}>
-              <Text style={styles.logoIcon}>🌿</Text>
-            </View>
-            <View style={styles.titleContainer}>
-              <Text style={styles.mainTitle}>Taru Guardians</Text>
-              <Text style={styles.subTitle}>Protecting Nature, Empowering Future</Text>
-            </View>
-          </View>
-
-          {/* Welcome Message */}
-          <View style={styles.welcomeContainer}>
-            <Text style={styles.welcomeText}>Welcome to</Text>
-            <Text style={styles.welcomeHighlight}>Taru Guardians</Text>
-          </View>
-
-          {/* Stats Summary */}
-          <View style={styles.statsSummaryContainer}>
-            <TouchableOpacity style={styles.statItem}>
-              <Text style={styles.statValue}>{stats.totalEvents}</Text>
-              <Text style={styles.statLabel}>Events</Text>
-            </TouchableOpacity>
-            <View style={styles.statDivider} />
-            <TouchableOpacity style={styles.statItem}>
-              <Text style={styles.statValue}>{stats.totalMembers}</Text>
-              <Text style={styles.statLabel}>Members</Text>
-            </TouchableOpacity>
-            <View style={styles.statDivider} />
-            <TouchableOpacity style={styles.statItem}>
-              <Text style={styles.statValue}>{stats.totalAlumni}</Text>
-              <Text style={styles.statLabel}>Alumni</Text>
-            </TouchableOpacity>
-            <View style={styles.statDivider} />
-            <TouchableOpacity style={styles.statItem}>
-              <Text style={styles.statValue}>{stats.totalProjects}</Text>
-              <Text style={styles.statLabel}>Projects</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
+  // ------ Sub-renderers ------
+  const renderHeroSlide = ({ item }: { item: HeroSlide }) => (
+    <View style={styles.heroSlide}>
+      <LinearGradient colors={item.gradient} style={styles.heroGradient} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
+        <Text style={styles.heroEyebrow}>{item.eyebrow}</Text>
+        <Text style={styles.heroTitle}>{item.title}</Text>
+        <Text style={styles.heroSubtitle}>{item.subtitle}</Text>
+        <TouchableOpacity activeOpacity={0.85} style={styles.heroCta}>
+          <Text style={styles.heroCtaText}>{item.ctaLabel}  →</Text>
+        </TouchableOpacity>
       </LinearGradient>
-    </Animated.View>
+    </View>
   );
 
-  const renderAnnouncements = () => (
-    <Animated.View
-      style={[
-        styles.sectionContainer,
-        {
-          opacity: animationValues[1].opacity,
-          transform: [{ translateY: animationValues[1].translateY }],
-        },
-      ]}
-    >
-      <View style={styles.sectionHeader}>
-        <Text style={styles.sectionTitle}>📢 Announcements</Text>
-        <TouchableOpacity>
-          <Text style={styles.seeAllText}>See All</Text>
-        </TouchableOpacity>
-      </View>
-      <ScrollView
+  const renderHero = () => (
+    <View style={styles.heroBlock}>
+      <Animated.FlatList
+        ref={heroRef}
         horizontal
+        pagingEnabled
         showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.announcementsContainer}
-      >
-        {announcements.slice(0, 8).map((announcement, index) => (
-          <TouchableOpacity
-            key={announcement.id}
-            style={[
-              styles.announcementCard,
-              {
-                borderLeftColor:
-                  announcement.priority === 'high'
-                    ? '#FF5252'
-                    : announcement.priority === 'medium'
-                    ? '#FFD740'
-                    : '#4FC3F7',
-              },
-            ]}
-            onPress={() => handleAnnouncementPress(announcement)}
-          >
-            {announcement.isNew && (
-              <View style={styles.newBadge}>
-                <Text style={styles.newBadgeText}>NEW</Text>
-              </View>
-            )}
-            <Text style={styles.announcementTitle} numberOfLines={2}>
-              {announcement.title}
-            </Text>
-            <Text style={styles.announcementDate}>{announcement.date}</Text>
-          </TouchableOpacity>
-        ))}
-      </ScrollView>
-    </Animated.View>
-  );
-
-  const renderQuickLinks = () => (
-    <Animated.View
-      style={[
-        styles.sectionContainer,
-        {
-          opacity: animationValues[2].opacity,
-          transform: [{ translateY: animationValues[2].translateY }],
-        },
-      ]}
-    >
-      <View style={styles.sectionHeader}>
-        <Text style={styles.sectionTitle}>⚡ Quick Access</Text>
-      </View>
-      <View style={styles.quickLinksGrid}>
-        {quickLinks.map((link) => (
-          <TouchableOpacity
-            key={link.id}
-            style={[styles.quickLinkCard, { backgroundColor: link.color + '20' }]}
-            onPress={() => handleQuickLinkPress(link.route)}
-          >
-            <Text style={styles.quickLinkIcon}>{link.icon}</Text>
-            <Text style={[styles.quickLinkTitle, { color: link.color }]}>{link.title}</Text>
-          </TouchableOpacity>
-        ))}
-      </View>
-    </Animated.View>
-  );
-
-  const renderUpcomingEvents = () => (
-    <Animated.View
-      style={[
-        styles.sectionContainer,
-        {
-          opacity: animationValues[3].opacity,
-          transform: [{ translateY: animationValues[3].translateY }],
-        },
-      ]}
-    >
-      <View style={styles.sectionHeader}>
-        <Text style={styles.sectionTitle}>📅 Upcoming Events</Text>
-        <TouchableOpacity>
-          <Text style={styles.seeAllText}>See All</Text>
-        </TouchableOpacity>
-      </View>
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.eventsContainer}
-      >
-        {upcomingEvents.slice(0, 6).map((event) => (
-          <TouchableOpacity
-            key={event.id}
-            style={styles.eventCard}
-            onPress={() => handleEventPress(event)}
-          >
-            <View style={styles.eventImageContainer}>
-              <View style={styles.eventImagePlaceholder}>
-                <Text style={styles.eventImageIcon}>🏕️</Text>
-              </View>
-              {event.isFeature && (
-                <View style={styles.featuredBadge}>
-                  <Text style={styles.featuredText}>⭐ FEATURED</Text>
-                </View>
-              )}
-            </View>
-            <View style={styles.eventContent}>
-              <Text style={styles.eventTitle} numberOfLines={1}>
-                {event.title}
-              </Text>
-              <Text style={styles.eventDate}>
-                📅 {event.date} • ⏰ {event.time}
-              </Text>
-              <Text style={styles.eventLocation} numberOfLines={1}>
-                📍 {event.location}
-              </Text>
-              <View style={styles.eventFooter}>
-                <Text style={styles.eventAttendees}>
-                  👥 {event.attendees}/{event.maxAttendees}
-                </Text>
-                <Text
-                  style={[
-                    styles.eventPrice,
-                    { color: event.isFree ? Colors.nature.leafGreen : Colors.text.secondary },
-                  ]}
-                >
-                  {event.isFree ? 'FREE' : `₹${event.price}`}
-                </Text>
-              </View>
-            </View>
-          </TouchableOpacity>
-        ))}
-      </ScrollView>
-    </Animated.View>
-  );
-
-  const renderFeaturedMembers = () => (
-    <Animated.View
-      style={[
-        styles.sectionContainer,
-        {
-          opacity: animationValues[4].opacity,
-          transform: [{ translateY: animationValues[4].translateY }],
-        },
-      ]}
-    >
-      <View style={styles.sectionHeader}>
-        <Text style={styles.sectionTitle}>👥 Our Leaders</Text>
-        <TouchableOpacity>
-          <Text style={styles.seeAllText}>See All</Text>
-        </TouchableOpacity>
-      </View>
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.membersContainer}
-      >
-        {featuredMembers.slice(0, 6).map((member) => (
-          <TouchableOpacity
-            key={member.id}
-            style={styles.memberCard}
-            onPress={() => handleMemberPress(member)}
-          >
-            <View style={styles.memberImageContainer}>
-              <View style={styles.memberImagePlaceholder}>
-                <Text style={styles.memberImageIcon}>
-                  {member.name.charAt(0)}
-                </Text>
-              </View>
-            </View>
-            <Text style={styles.memberName} numberOfLines={1}>
-              {member.name}
-            </Text>
-            <Text style={styles.memberRole}>{member.role}</Text>
-            <Text style={styles.memberDepartment}>{member.department}</Text>
-          </TouchableOpacity>
-        ))}
-      </ScrollView>
-    </Animated.View>
-  );
-
-  const renderTodayActivities = () => (
-    <Animated.View
-      style={[
-        styles.sectionContainer,
-        {
-          opacity: animationValues[5].opacity,
-          transform: [{ translateY: animationValues[5].translateY }],
-        },
-      ]}
-    >
-      <View style={styles.sectionHeader}>
-        <Text style={styles.sectionTitle}>📅 Today's Schedule</Text>
-        <Text style={styles.sectionSubtitle}>April 19, 2026</Text>
-      </View>
-      <View style={styles.activitiesList}>
-        {activities.map((activity, index) => (
-          <TouchableOpacity
-            key={activity.id}
-            style={[
-              styles.activityCard,
-              { borderLeftColor: activity.color },
-            ]}
-          >
-            <View style={styles.activityIconContainer}>
-              <Text style={styles.activityIcon}>{activity.icon}</Text>
-            </View>
-            <View style={styles.activityContent}>
-              <Text style={styles.activityTitle}>{activity.title}</Text>
-              <Text style={styles.activityTime}>⏰ {activity.time}</Text>
-            </View>
-            <View style={styles.activityParticipants}>
-              <Text style={styles.participantsIcon}>👥</Text>
-              <Text style={styles.participantsCount}>{activity.participants}</Text>
-            </View>
-          </TouchableOpacity>
-        ))}
-      </View>
-    </Animated.View>
-  );
-
-  const renderAchievements = () => (
-    <Animated.View
-      style={[
-        styles.sectionContainer,
-        {
-          opacity: animationValues[6].opacity,
-          transform: [{ translateY: animationValues[6].translateY }],
-        },
-      ]}
-    >
-      <View style={styles.sectionHeader}>
-        <Text style={styles.sectionTitle}>🏆 Our Impact</Text>
-      </View>
-      <View style={styles.achievementsGrid}>
-        {achievements.map((achievement) => (
+        data={HERO_SLIDES}
+        keyExtractor={(s) => s.id}
+        renderItem={renderHeroSlide}
+        onScroll={onHeroScroll}
+        scrollEventThrottle={16}
+      />
+      <View style={styles.heroDots}>
+        {HERO_SLIDES.map((_, i) => (
           <View
-            key={achievement.id}
-            style={[styles.achievementCard, { borderBottomColor: achievement.color }]}
-          >
-            <Text style={styles.achievementIcon}>{achievement.icon}</Text>
-            <Text style={styles.achievementValue}>{achievement.value}</Text>
-            <Text style={styles.achievementTitle}>{achievement.title}</Text>
-          </View>
+            key={i}
+            style={[
+              styles.heroDot,
+              i === heroIndex && styles.heroDotActive,
+            ]}
+          />
         ))}
-      </View>
-    </Animated.View>
-  );
-
-  const renderAboutSection = () => (
-    <Animated.View
-      style={[
-        styles.sectionContainer,
-        {
-          opacity: animationValues[7].opacity,
-          transform: [{ translateY: animationValues[7].translateY }],
-        },
-      ]}
-    >
-      <View style={styles.sectionHeader}>
-        <Text style={styles.sectionTitle}>ℹ️ About Taru Guardians</Text>
-      </View>
-      <View style={styles.aboutCard}>
-        <Text style={styles.aboutText}>
-          Taru Guardians is a youth-led organization dedicated to environmental conservation
-          and sustainable development. We believe in creating a harmonious balance
-          between nature and technology.
-        </Text>
-        <Text style={styles.aboutText}>
-          Our mission is to inspire, educate, and empower young minds to become
-          responsible stewards of our planet.
-        </Text>
-        <View style={styles.aboutButtons}>
-          <TouchableOpacity style={styles.aboutButton} onPress={handleCall}>
-            <Text style={styles.aboutButtonIcon}>📞</Text>
-            <Text style={styles.aboutButtonText}>Call Us</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.aboutButton} onPress={handleEmail}>
-            <Text style={styles.aboutButtonIcon}>📧</Text>
-            <Text style={styles.aboutButtonText}>Email</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.aboutButton} onPress={handleWebsite}>
-            <Text style={styles.aboutButtonIcon}>🌐</Text>
-            <Text style={styles.aboutButtonText}>Website</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.aboutButton} onPress={handleShare}>
-            <Text style={styles.aboutButtonIcon}>📲</Text>
-            <Text style={styles.aboutButtonText}>Share</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    </Animated.View>
-  );
-
-  const renderContactSection = () => (
-    <Animated.View
-      style={[
-        styles.sectionContainer,
-        {
-          opacity: animationValues[8].opacity,
-          transform: [{ translateY: animationValues[8].translateY }],
-        },
-      ]}
-    >
-      <View style={styles.sectionHeader}>
-        <Text style={styles.sectionTitle}>📞 Get In Touch</Text>
-      </View>
-      <View style={styles.contactCard}>
-        <View style={styles.contactItem}>
-          <Text style={styles.contactIcon}>📍</Text>
-          <View style={styles.contactDetails}>
-            <Text style={styles.contactLabel}>Address</Text>
-            <Text style={styles.contactValue}>
-              Green Valley Campus, Forest Road{'\n'}Shimla, Himachal Pradesh 171001
-            </Text>
-          </View>
-        </View>
-        <View style={styles.contactItem}>
-          <Text style={styles.contactIcon}>📧</Text>
-          <View style={styles.contactDetails}>
-            <Text style={styles.contactLabel}>Email</Text>
-            <Text style={styles.contactValue}>info@taruguardians.org</Text>
-          </View>
-        </View>
-        <View style={styles.contactItem}>
-          <Text style={styles.contactIcon}>📞</Text>
-          <View style={styles.contactDetails}>
-            <Text style={styles.contactLabel}>Phone</Text>
-            <Text style={styles.contactValue}>+91 98765 43210</Text>
-          </View>
-        </View>
-        <View style={styles.contactItem}>
-          <Text style={styles.contactIcon}>🌐</Text>
-          <View style={styles.contactDetails}>
-            <Text style={styles.contactLabel}>Website</Text>
-            <Text style={styles.contactValue}>www.taruguardians.org</Text>
-          </View>
-        </View>
-      </View>
-    </Animated.View>
-  );
-
-  const renderFooter = () => (
-    <View style={styles.footerContainer}>
-      <View style={styles.footerLogo}>
-        <Text style={styles.footerLogoIcon}>🌿</Text>
-        <Text style={styles.footerLogoText}>Taru Guardians</Text>
-      </View>
-      <Text style={styles.footerText}>
-        Protecting Nature, Empowering Future
-      </Text>
-      <Text style={styles.footerCopyright}>
-        © 2026 Taru Guardians. All rights reserved.
-      </Text>
-      <View style={styles.footerLinks}>
-        <TouchableOpacity>
-          <Text style={styles.footerLink}>Privacy Policy</Text>
-        </TouchableOpacity>
-        <Text style={styles.footerLinkDivider}>|</Text>
-        <TouchableOpacity>
-          <Text style={styles.footerLink}>Terms of Service</Text>
-        </TouchableOpacity>
-        <Text style={styles.footerLinkDivider}>|</Text>
-        <TouchableOpacity>
-          <Text style={styles.footerLink}>FAQ</Text>
-        </TouchableOpacity>
       </View>
     </View>
   );
 
-  const renderAnnouncementModal = () => (
-    <Modal
-      visible={showAnnouncementModal}
-      animationType="slide"
-      transparent
-      onRequestClose={() => setShowAnnouncementModal(false)}
+  const renderStats = () => (
+    <Animated.View
+      style={[
+        styles.statsBlock,
+        {
+          opacity: statsAnim,
+          transform: [
+            {
+              translateY: statsAnim.interpolate({
+                inputRange: [0, 1],
+                outputRange: [18, 0],
+              }),
+            },
+          ],
+        },
+      ]}
     >
-      <View style={styles.modalOverlay}>
-        <View style={styles.modalContent}>
-          <View style={styles.modalHeader}>
-            <Text style={styles.modalTitle}>Announcement</Text>
-            <TouchableOpacity
-              style={styles.modalCloseButton}
-              onPress={() => setShowAnnouncementModal(false)}
-            >
-              <Text style={styles.modalCloseText}>✕</Text>
-            </TouchableOpacity>
+      <FlatList
+        data={STATS}
+        keyExtractor={(item) => item.id}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.statsScroll}
+        renderItem={({ item }) => (
+          <View style={[styles.statCard, { borderColor: item.color + '55' }]}>
+            <Text style={styles.statIcon}>{item.icon}</Text>
+            <Text style={[styles.statValue, { color: item.color }]}>{item.value}</Text>
+            <Text style={styles.statLabel}>{item.label}</Text>
+            <Text style={styles.statCaption}>{item.caption}</Text>
           </View>
-          {selectedAnnouncement && (
-            <ScrollView style={styles.modalBody}>
-              <Text style={styles.modalAnnouncementTitle}>
-                {selectedAnnouncement.title}
-              </Text>
-              <Text style={styles.modalAnnouncementDate}>
-                📅 {selectedAnnouncement.date}
-              </Text>
-              <View
-                style={[
-                  styles.priorityBadge,
-                  {
-                    backgroundColor:
-                      selectedAnnouncement.priority === 'high'
-                        ? '#FF5252'
-                        : selectedAnnouncement.priority === 'medium'
-                        ? '#FFD740'
-                        : '#4FC3F7',
-                  },
-                ]}
-              >
-                <Text style={styles.priorityBadgeText}>
-                  {selectedAnnouncement.priority.toUpperCase()} PRIORITY
+        )}
+      />
+    </Animated.View>
+  );
+
+  const renderQuickActions = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>⚡ Quick actions</Text>
+        <TouchableOpacity onPress={() => setShowQuickActionSheet(true)}>
+          <Text style={styles.sectionCaption}>See all</Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.quickActionGrid}>
+        {QUICK_ACTIONS.slice(0, 6).map((a) => (
+          <TouchableOpacity
+            key={a.id}
+            activeOpacity={0.9}
+            style={[styles.quickActionCard, { borderColor: a.color + '55' }]}
+          >
+            <View style={[styles.quickActionIcon, { backgroundColor: a.color + '22' }]}>
+              <Text style={styles.quickActionEmoji}>{a.icon}</Text>
+            </View>
+            <Text style={styles.quickActionTitle}>{a.title}</Text>
+            <Text style={styles.quickActionSubtitle} numberOfLines={2}>
+              {a.subtitle}
+            </Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+    </View>
+  );
+
+  const renderAnnouncements = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>📣 Announcements</Text>
+        <Text style={styles.sectionCaption}>{ANNOUNCEMENTS.length} live</Text>
+      </View>
+
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.filterRow}
+      >
+        {(['all', 'event', 'drive', 'program', 'ops', 'update'] as const).map((c) => (
+          <TouchableOpacity
+            key={c}
+            onPress={() => setAnnouncementFilter(c)}
+            style={[
+              styles.filterChip,
+              announcementFilter === c && styles.filterChipActive,
+            ]}
+          >
+            <Text
+              style={[
+                styles.filterChipText,
+                announcementFilter === c && styles.filterChipTextActive,
+              ]}
+            >
+              {c === 'all' ? 'All' : c.charAt(0).toUpperCase() + c.slice(1)}
+            </Text>
+          </TouchableOpacity>
+        ))}
+      </ScrollView>
+
+      {filteredAnnouncements.map((a) => (
+        <TouchableOpacity
+          key={a.id}
+          onPress={() => openAnnouncement(a)}
+          activeOpacity={0.9}
+          style={[styles.announceCard, { borderLeftColor: a.color }]}
+        >
+          <View style={styles.announceTopRow}>
+            <Text style={styles.announceEmoji}>{a.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <View style={styles.announceTitleRow}>
+                <Text style={styles.announceTitle} numberOfLines={1}>
+                  {a.title}
                 </Text>
+                {a.pinned ? (
+                  <Text style={styles.announcePinned}>📌</Text>
+                ) : a.isNew ? (
+                  <View style={styles.announceNewPill}>
+                    <Text style={styles.announceNewPillText}>NEW</Text>
+                  </View>
+                ) : null}
               </View>
-              <Text style={styles.modalAnnouncementDescription}>
-                {selectedAnnouncement.description}
+              <Text style={styles.announceDate}>
+                {new Date(a.date).toDateString().slice(0, 15)} ·{' '}
+                {a.priority === 'high' ? '🔥 High' : a.priority === 'medium' ? 'Medium' : 'Low'} priority
               </Text>
-              <View style={styles.modalActions}>
-                <TouchableOpacity style={styles.modalActionButton}>
-                  <Text style={styles.modalActionIcon}>📅</Text>
-                  <Text style={styles.modalActionText}>Add to Calendar</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.modalActionButton}>
-                  <Text style={styles.modalActionIcon}>📲</Text>
-                  <Text style={styles.modalActionText}>Share</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.modalActionButton}>
-                  <Text style={styles.modalActionIcon}>🔔</Text>
-                  <Text style={styles.modalActionText}>Set Reminder</Text>
+            </View>
+          </View>
+          <Text style={styles.announceDescription} numberOfLines={2}>
+            {a.description}
+          </Text>
+        </TouchableOpacity>
+      ))}
+    </View>
+  );
+
+  const renderFeaturedEvents = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>📅 Featured events</Text>
+        <Text style={styles.sectionCaption}>Next 4 weeks</Text>
+      </View>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        snapToInterval={SCREEN_WIDTH * 0.8}
+        decelerationRate="fast"
+        contentContainerStyle={styles.eventScroll}
+      >
+        {FEATURED_EVENTS.map((e) => {
+          const pct = e.seats.taken / e.seats.total;
+          return (
+            <TouchableOpacity
+              key={e.id}
+              onPress={() => openEvent(e)}
+              activeOpacity={0.9}
+              style={styles.eventCard}
+            >
+              <LinearGradient
+                colors={[e.categoryColor + '55', '#0A0F14']}
+                style={styles.eventGradient}
+              >
+                <View style={[styles.eventCategoryPill, { backgroundColor: e.categoryColor }]}>
+                  <Text style={styles.eventCategoryText}>{e.category}</Text>
+                </View>
+                <Text style={styles.eventTitle} numberOfLines={2}>
+                  {e.title}
+                </Text>
+                <Text style={styles.eventDate}>{e.date}</Text>
+                <Text style={styles.eventLocation} numberOfLines={1}>
+                  📍 {e.location}
+                </Text>
+                <Text style={styles.eventDescription} numberOfLines={3}>
+                  {e.description}
+                </Text>
+                <View style={styles.eventSeatRow}>
+                  <View style={styles.eventSeatBar}>
+                    <View
+                      style={[
+                        styles.eventSeatFill,
+                        { width: `${Math.round(pct * 100)}%`, backgroundColor: e.categoryColor },
+                      ]}
+                    />
+                  </View>
+                  <Text style={styles.eventSeatText}>
+                    {e.seats.taken}/{e.seats.total}
+                  </Text>
+                </View>
+                <Text style={styles.eventPrice}>{e.priceLabel}</Text>
+              </LinearGradient>
+            </TouchableOpacity>
+          );
+        })}
+      </ScrollView>
+    </View>
+  );
+
+  const renderSpotlights = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🔆 Team spotlight</Text>
+        <Text style={styles.sectionCaption}>This week</Text>
+      </View>
+      <View style={styles.spotlightGrid}>
+        {SPOTLIGHTS.map((s) => (
+          <View key={s.id} style={styles.spotlightCard}>
+            <LinearGradient
+              colors={[s.color + '33', '#0A0F14']}
+              style={styles.spotlightGradient}
+            >
+              <View style={[styles.spotlightAvatar, { backgroundColor: s.color + '33' }]}>
+                <Text style={styles.spotlightEmoji}>{s.emoji}</Text>
+              </View>
+              <Text style={styles.spotlightName}>{s.name}</Text>
+              <Text style={styles.spotlightRole}>{s.role}</Text>
+              <Text style={styles.spotlightDept}>{s.department}</Text>
+              <Text style={styles.spotlightTagline}>"{s.tagline}"</Text>
+            </LinearGradient>
+          </View>
+        ))}
+      </View>
+    </View>
+  );
+
+  const renderTestimonials = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>💬 What members say</Text>
+        <Text style={styles.sectionCaption}>Unedited</Text>
+      </View>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        snapToInterval={SCREEN_WIDTH * 0.8}
+        decelerationRate="fast"
+        contentContainerStyle={styles.testimonialScroll}
+      >
+        {TESTIMONIALS.map((t) => (
+          <View key={t.id} style={styles.testimonialCard}>
+            <View style={[styles.testimonialAvatar, { backgroundColor: t.avatarColor + '33' }]}>
+              <Text style={styles.testimonialAvatarText}>
+                {t.name
+                  .split(' ')
+                  .map((p) => p[0])
+                  .slice(0, 2)
+                  .join('')
+                  .toUpperCase()}
+              </Text>
+            </View>
+            <Text style={styles.testimonialBody}>"{t.body}"</Text>
+            <Text style={styles.testimonialName}>— {t.name}</Text>
+            <Text style={styles.testimonialRole}>{t.role}</Text>
+          </View>
+        ))}
+      </ScrollView>
+    </View>
+  );
+
+  const renderGallery = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>📸 Gallery</Text>
+        <Text style={styles.sectionCaption}>Moments</Text>
+      </View>
+      <View style={styles.galleryGrid}>
+        {GALLERY.map((g) => (
+          <TouchableOpacity
+            key={g.id}
+            activeOpacity={0.85}
+            style={[styles.galleryCell, { backgroundColor: g.color + '22', borderColor: g.color + '55' }]}
+          >
+            <Text style={styles.galleryEmoji}>{g.emoji}</Text>
+            <Text style={styles.galleryCaption} numberOfLines={1}>
+              {g.caption}
+            </Text>
+            <Text style={styles.galleryDate}>{g.date}</Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+    </View>
+  );
+
+  const renderTimeline = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🧭 Our timeline</Text>
+        <Text style={styles.sectionCaption}>2022 → now</Text>
+      </View>
+      <View style={styles.timelineContainer}>
+        {TIMELINE.map((t, idx) => (
+          <View key={t.id} style={styles.timelineRow}>
+            <View style={styles.timelineLeft}>
+              <View style={[styles.timelineDot, { backgroundColor: t.color }]} />
+              {idx !== TIMELINE.length - 1 && <View style={styles.timelineLine} />}
+            </View>
+            <View style={styles.timelineRight}>
+              <Text style={styles.timelineYear}>{t.year}</Text>
+              <Text style={styles.timelineTitle}>{t.title}</Text>
+              <Text style={styles.timelineBody}>{t.body}</Text>
+            </View>
+          </View>
+        ))}
+      </View>
+    </View>
+  );
+
+  const renderPledges = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🌿 Our pledges</Text>
+        <Text style={styles.sectionCaption}>Accountable</Text>
+      </View>
+      {PLEDGES.map((p) => (
+        <View key={p.id} style={styles.pledgeCard}>
+          <View style={styles.pledgeHeaderRow}>
+            <Text style={styles.pledgeTitle}>{p.title}</Text>
+            <Text style={[styles.pledgeTarget, { color: p.color }]}>{p.target}</Text>
+          </View>
+          <Text style={styles.pledgeBody}>{p.body}</Text>
+          <View style={styles.pledgeProgressBg}>
+            <View
+              style={[
+                styles.pledgeProgressFill,
+                { width: `${Math.round(p.progress * 100)}%`, backgroundColor: p.color },
+              ]}
+            />
+          </View>
+          <Text style={styles.pledgeProgressLabel}>
+            {Math.round(p.progress * 100)}% done
+          </Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderFAQ = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>❓ Frequently asked</Text>
+        <Text style={styles.sectionCaption}>{FAQ_ITEMS.length} Q&A</Text>
+      </View>
+      {FAQ_ITEMS.map((f) => {
+        const expanded = expandedFAQ === f.id;
+        return (
+          <TouchableOpacity
+            key={f.id}
+            activeOpacity={0.9}
+            onPress={() => setExpandedFAQ(expanded ? null : f.id)}
+            style={styles.faqCard}
+          >
+            <View style={styles.faqQuestionRow}>
+              <Text style={styles.faqQuestion}>{f.q}</Text>
+              <Text style={styles.faqToggle}>{expanded ? '−' : '+'}</Text>
+            </View>
+            {expanded ? <Text style={styles.faqAnswer}>{f.a}</Text> : null}
+          </TouchableOpacity>
+        );
+      })}
+    </View>
+  );
+
+  const renderNewsletter = () => (
+    <View style={styles.newsletterBlock}>
+      <LinearGradient colors={['#052B1E', '#0A4D37']} style={styles.newsletterGradient}>
+        <Text style={styles.newsletterTitle}>📩 Weekly digest</Text>
+        <Text style={styles.newsletterBody}>
+          1 email every Sunday. What\'s new, what we learnt, what\'s open for the week. No spam, ever.
+        </Text>
+        <View style={styles.newsletterForm}>
+          <TextInput
+            value={newsletterEmail}
+            onChangeText={setNewsletterEmail}
+            placeholder="you@example.com"
+            placeholderTextColor={Colors.text.muted}
+            keyboardType="email-address"
+            autoCapitalize="none"
+            style={styles.newsletterInput}
+            editable={newsletterStatus !== 'submitting'}
+          />
+          <TouchableOpacity
+            onPress={submitNewsletter}
+            disabled={newsletterStatus === 'submitting'}
+            style={[
+              styles.newsletterBtn,
+              newsletterStatus === 'submitting' && { opacity: 0.6 },
+            ]}
+          >
+            <Text style={styles.newsletterBtnText}>
+              {newsletterStatus === 'submitting'
+                ? '…sending'
+                : newsletterStatus === 'done'
+                ? 'Subscribed ✓'
+                : 'Subscribe'}
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </LinearGradient>
+    </View>
+  );
+
+  const renderShareBand = () => (
+    <View style={styles.shareBand}>
+      <Text style={styles.shareLine}>Know someone who\'d love this?</Text>
+      <TouchableOpacity style={styles.shareBtn} onPress={shareClub}>
+        <Text style={styles.shareBtnText}>↗ Share Taru</Text>
+      </TouchableOpacity>
+    </View>
+  );
+
+  const renderFooter = () => (
+    <View style={styles.footer}>
+      <Text style={styles.footerLine}>🌿 Taru Guardians</Text>
+      <Text style={styles.footerSmall}>Built by students, for students.</Text>
+      <Text style={styles.footerSmall}>App v2 · 2026 · Open source</Text>
+    </View>
+  );
+
+  // ------ Event modal ------
+  const renderEventModal = () => {
+    if (!selectedEvent) return null;
+    const e = selectedEvent;
+    const pct = e.seats.taken / e.seats.total;
+    return (
+      <Modal visible={showEventModal} transparent animationType="fade" onRequestClose={closeEvent}>
+        <Animated.View style={styles.modalOverlay}>
+          <Pressable style={StyleSheet.absoluteFill} onPress={closeEvent} />
+          <Animated.View style={[styles.modalContent, { transform: [{ scale: eventModalScale }] }]}>
+            <LinearGradient colors={[e.categoryColor + '44', '#0A0F14']} style={styles.modalHero}>
+              <View style={styles.modalHeroTop}>
+                <View style={[styles.modalBadge, { backgroundColor: e.categoryColor }]}>
+                  <Text style={styles.modalBadgeText}>{e.category}</Text>
+                </View>
+                <TouchableOpacity onPress={closeEvent} style={styles.modalClose}>
+                  <Text style={styles.modalCloseText}>✕</Text>
                 </TouchableOpacity>
               </View>
+              <Text style={styles.modalTitle}>{e.title}</Text>
+              <Text style={styles.modalDate}>{e.date}</Text>
+              <Text style={styles.modalLocation}>📍 {e.location}</Text>
+            </LinearGradient>
+            <ScrollView style={styles.modalScroll} contentContainerStyle={styles.modalScrollContent}>
+              <Text style={styles.modalBody}>{e.description}</Text>
+              <View style={styles.modalSeatBlock}>
+                <View style={styles.modalSeatRow}>
+                  <Text style={styles.modalSeatLabel}>Seats</Text>
+                  <Text style={styles.modalSeatValue}>
+                    {e.seats.taken} / {e.seats.total}
+                  </Text>
+                </View>
+                <View style={styles.modalSeatBar}>
+                  <View
+                    style={[
+                      styles.modalSeatFill,
+                      { width: `${Math.round(pct * 100)}%`, backgroundColor: e.categoryColor },
+                    ]}
+                  />
+                </View>
+              </View>
+              <Text style={styles.modalPrice}>Ticket: {e.priceLabel}</Text>
+              <Text style={styles.modalMeta}>
+                Full calendar, map, organiser contact and full speaker list lives on the Events tab.
+              </Text>
             </ScrollView>
-          )}
-        </View>
+            <View style={styles.modalActionRow}>
+              <TouchableOpacity
+                style={[styles.modalAction, { backgroundColor: e.categoryColor }]}
+              >
+                <Text style={[styles.modalActionText, { color: '#000' }]}>Register</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.modalAction, { backgroundColor: '#333' }]}
+                onPress={async () => {
+                  try {
+                    await Share.share({
+                      message: `📅 ${e.title}\n${e.date} · ${e.location}\n\n${e.description}`,
+                    });
+                  } catch {
+                    /* cancelled */
+                  }
+                }}
+              >
+                <Text style={styles.modalActionText}>Share</Text>
+              </TouchableOpacity>
+            </View>
+          </Animated.View>
+        </Animated.View>
+      </Modal>
+    );
+  };
+
+  // ------ Announcement modal ------
+  const renderAnnouncementModal = () => {
+    if (!selectedAnnouncement) return null;
+    const a = selectedAnnouncement;
+    return (
+      <Modal visible={showAnnouncementModal} transparent animationType="fade" onRequestClose={closeAnnouncement}>
+        <Animated.View style={styles.modalOverlay}>
+          <Pressable style={StyleSheet.absoluteFill} onPress={closeAnnouncement} />
+          <Animated.View style={[styles.modalContent, { transform: [{ scale: announcementModalScale }] }]}>
+            <LinearGradient colors={[a.color + '44', '#0A0F14']} style={styles.modalHero}>
+              <View style={styles.modalHeroTop}>
+                <View style={[styles.modalBadge, { backgroundColor: a.color }]}>
+                  <Text style={styles.modalBadgeText}>
+                    {a.emoji} {a.category.toUpperCase()}
+                  </Text>
+                </View>
+                <TouchableOpacity onPress={closeAnnouncement} style={styles.modalClose}>
+                  <Text style={styles.modalCloseText}>✕</Text>
+                </TouchableOpacity>
+              </View>
+              <Text style={styles.modalTitle}>{a.title}</Text>
+              <Text style={styles.modalDate}>{new Date(a.date).toDateString()}</Text>
+              <Text style={styles.modalLocation}>
+                {a.priority === 'high' ? '🔥 High priority' : a.priority === 'medium' ? 'Medium priority' : 'Low priority'}
+              </Text>
+            </LinearGradient>
+            <ScrollView style={styles.modalScroll} contentContainerStyle={styles.modalScrollContent}>
+              <Text style={styles.modalBody}>{a.description}</Text>
+              <Text style={styles.modalMeta}>
+                Updates and discussion happen in the club's main channel. The latest pinned message
+                has the sign-up + logistics.
+              </Text>
+            </ScrollView>
+            <View style={styles.modalActionRow}>
+              <TouchableOpacity
+                style={[styles.modalAction, { backgroundColor: a.color }]}
+                onPress={async () => {
+                  try {
+                    await Share.share({
+                      message: `📣 ${a.title}\n${new Date(a.date).toDateString()}\n\n${a.description}`,
+                    });
+                  } catch {
+                    /* cancelled */
+                  }
+                }}
+              >
+                <Text style={[styles.modalActionText, { color: '#000' }]}>Share</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.modalAction, { backgroundColor: '#333' }]}
+                onPress={closeAnnouncement}
+              >
+                <Text style={styles.modalActionText}>Close</Text>
+              </TouchableOpacity>
+            </View>
+          </Animated.View>
+        </Animated.View>
+      </Modal>
+    );
+  };
+
+  // ------ Quick-action sheet ------
+  const renderQuickActionSheet = () => (
+    <Modal
+      visible={showQuickActionSheet}
+      transparent
+      animationType="fade"
+      onRequestClose={() => setShowQuickActionSheet(false)}
+    >
+      <Pressable style={styles.sheetBackdrop} onPress={() => setShowQuickActionSheet(false)} />
+      <View style={styles.sheet}>
+        <Text style={styles.sheetTitle}>All actions</Text>
+        {QUICK_ACTIONS.map((a) => (
+          <TouchableOpacity
+            key={a.id}
+            onPress={() => setShowQuickActionSheet(false)}
+            style={styles.sheetRow}
+          >
+            <View style={[styles.sheetIcon, { backgroundColor: a.color + '22' }]}>
+              <Text style={styles.sheetEmoji}>{a.icon}</Text>
+            </View>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.sheetLabel}>{a.title}</Text>
+              <Text style={styles.sheetSub}>{a.subtitle}</Text>
+            </View>
+          </TouchableOpacity>
+        ))}
       </View>
     </Modal>
   );
 
-  // =====================================================
-  // MAIN RENDER
-  // =====================================================
-
+  // ------ Main ------
   return (
-    <View style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor={Colors.background.deepBlack} />
-      <Animated.ScrollView
-        style={styles.scrollView}
+    <SafeAreaView style={styles.container} edges={['top']}>
+      <StatusBar
+        barStyle="light-content"
+        backgroundColor={Colors.background.deepBlack}
+        translucent={Platform.OS === 'android'}
+      />
+      <ScrollView
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
         refreshControl={
@@ -1203,662 +1387,411 @@ const HomeScreen: React.FC = () => {
             colors={[Colors.tech.neonBlue]}
           />
         }
-        onScroll={Animated.event(
-          [{ nativeEvent: { contentOffset: { y: scrollY } } }],
-          { useNativeDriver: false }
-        )}
-        scrollEventThrottle={16}
       >
-        {renderHeader()}
+        {renderHero()}
+        {renderStats()}
+        {renderQuickActions()}
         {renderAnnouncements()}
-        {renderQuickLinks()}
-        {renderUpcomingEvents()}
-        {renderFeaturedMembers()}
-        {renderTodayActivities()}
-        {renderAchievements()}
-        {renderAboutSection()}
-        {renderContactSection()}
+        {renderFeaturedEvents()}
+        {renderSpotlights()}
+        {renderTestimonials()}
+        {renderGallery()}
+        {renderTimeline()}
+        {renderPledges()}
+        {renderFAQ()}
+        {renderNewsletter()}
+        {renderShareBand()}
         {renderFooter()}
-      </Animated.ScrollView>
+      </ScrollView>
+      {renderEventModal()}
       {renderAnnouncementModal()}
-    </View>
+      {renderQuickActionSheet()}
+    </SafeAreaView>
   );
 };
 
 // =====================================================
-// STYLES
+// Styles
 // =====================================================
 
 const styles = StyleSheet.create({
-  // =====================================================
-  // CONTAINER STYLES
-  // =====================================================
+  container: { flex: 1, backgroundColor: Colors.background.deepBlack },
+  scrollContent: { paddingBottom: 100 },
 
-  container: {
+  // Hero
+  heroBlock: { height: HERO_HEIGHT + 30 },
+  heroSlide: { width: SCREEN_WIDTH, height: HERO_HEIGHT },
+  heroGradient: {
     flex: 1,
-    backgroundColor: Colors.background.deepBlack,
-  },
-  scrollView: {
-    flex: 1,
-  },
-  scrollContent: {
-    paddingBottom: 100,
-  },
-
-  // =====================================================
-  // HEADER STYLES
-  // =====================================================
-
-  headerContainer: {
-    marginBottom: 20,
-  },
-  headerGradient: {
-    paddingTop: Platform.OS === 'ios' ? 60 : 40,
-    paddingBottom: 30,
-    paddingHorizontal: 20,
-  },
-  headerContent: {},
-  logoSection: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  logoContainer: {
-    width: 70,
-    height: 70,
-    borderRadius: 35,
-    backgroundColor: Colors.primary.jade,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 15,
-    shadowColor: Colors.glow.greenGlow,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.4,
-    shadowRadius: 15,
-    elevation: 10,
-  },
-  logoIcon: {
-    fontSize: 35,
-  },
-  titleContainer: {
-    flex: 1,
-  },
-  mainTitle: {
-    fontSize: isSmallScreen ? 24 : 28,
-    fontWeight: '700',
-    color: Colors.text.primary,
-    letterSpacing: 1,
-  },
-  subTitle: {
-    fontSize: 14,
-    color: Colors.text.secondary,
-    marginTop: 4,
-  },
-  welcomeContainer: {
-    marginBottom: 25,
-  },
-  welcomeText: {
-    fontSize: isSmallScreen ? 18 : 20,
-    color: Colors.text.secondary,
-  },
-  welcomeHighlight: {
-    fontSize: isSmallScreen ? 26 : 30,
-    fontWeight: '700',
-    color: Colors.primary.jade,
-    marginTop: 5,
-  },
-  statsSummaryContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    backgroundColor: 'rgba(255, 255, 255, 0.05)',
-    borderRadius: 15,
-    paddingVertical: 15,
-  },
-  statItem: {
-    alignItems: 'center',
-  },
-  statValue: {
-    fontSize: isSmallScreen ? 20 : 24,
-    fontWeight: '700',
-    color: Colors.tech.neonBlue,
-  },
-  statLabel: {
-    fontSize: 12,
-    color: Colors.text.tertiary,
-    marginTop: 4,
-  },
-  statDivider: {
-    width: 1,
-    backgroundColor: Colors.text.muted,
-    opacity: 0.3,
-  },
-
-  // =====================================================
-  // SECTION STYLES
-  // =====================================================
-
-  sectionContainer: {
-    marginBottom: 25,
-    paddingHorizontal: 20,
-  },
-  sectionHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 15,
-  },
-  sectionTitle: {
-    fontSize: isSmallScreen ? 18 : 20,
-    fontWeight: '700',
-    color: Colors.text.primary,
-    letterSpacing: 0.5,
-  },
-  sectionSubtitle: {
-    fontSize: 14,
-    color: Colors.text.secondary,
-  },
-  seeAllText: {
-    fontSize: 14,
-    color: Colors.tech.neonBlue,
-    fontWeight: '600',
-  },
-
-  // =====================================================
-  // ANNOUNCEMENTS STYLES
-  // =====================================================
-
-  announcementsContainer: {
-    paddingRight: 20,
-  },
-  announcementCard: {
-    width: isSmallScreen ? 160 : 180,
-    backgroundColor: Colors.background.darkGreen,
-    borderRadius: 12,
-    padding: 15,
-    marginRight: 12,
-    borderLeftWidth: 4,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 5,
-    elevation: 5,
-  },
-  newBadge: {
-    position: 'absolute',
-    top: 10,
-    right: 10,
-    backgroundColor: Colors.tech.neonBlue,
-    borderRadius: 8,
-    paddingHorizontal: 8,
-    paddingVertical: 3,
-  },
-  newBadgeText: {
-    fontSize: 10,
-    fontWeight: '700',
-    color: Colors.text.primary,
-  },
-  announcementTitle: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: Colors.text.primary,
-    marginBottom: 8,
-  },
-  announcementDate: {
-    fontSize: 12,
-    color: Colors.text.tertiary,
-  },
-
-  // =====================================================
-  // QUICK LINKS STYLES
-  // =====================================================
-
-  quickLinksGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
+    marginHorizontal: HORIZONTAL_PADDING,
+    marginTop: 10,
+    borderRadius: CARD_RADIUS,
+    padding: 22,
     justifyContent: 'space-between',
   },
-  quickLinkCard: {
-    width: (SCREEN_WIDTH - 60) / 2,
-    padding: 20,
-    borderRadius: 15,
-    alignItems: 'center',
-    marginBottom: 12,
-  },
-  quickLinkIcon: {
-    fontSize: 35,
-    marginBottom: 10,
-  },
-  quickLinkTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-  },
-
-  // =====================================================
-  // EVENTS STYLES
-  // =====================================================
-
-  eventsContainer: {
-    paddingRight: 20,
-  },
-  eventCard: {
-    width: isSmallScreen ? 200 : 230,
-    backgroundColor: Colors.background.darkGreen,
-    borderRadius: 15,
-    marginRight: 15,
-    overflow: 'hidden',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 8,
-  },
-  eventImageContainer: {
-    height: 100,
-    position: 'relative',
-  },
-  eventImagePlaceholder: {
-    flex: 1,
-    backgroundColor: Colors.primary.deepGreen,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  eventImageIcon: {
-    fontSize: 45,
-  },
-  featuredBadge: {
-    position: 'absolute',
-    top: 8,
-    left: 8,
-    backgroundColor: Colors.accent.softGold,
-    borderRadius: 8,
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-  },
-  featuredText: {
-    fontSize: 10,
-    fontWeight: '700',
-    color: Colors.background.deepBlack,
-  },
-  eventContent: {
-    padding: 12,
-  },
-  eventTitle: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: Colors.text.primary,
-    marginBottom: 6,
-  },
-  eventDate: {
-    fontSize: 12,
-    color: Colors.text.secondary,
-    marginBottom: 4,
-  },
-  eventLocation: {
-    fontSize: 12,
-    color: Colors.text.tertiary,
-    marginBottom: 8,
-  },
-  eventFooter: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  eventAttendees: {
-    fontSize: 12,
-    color: Colors.text.secondary,
-  },
-  eventPrice: {
-    fontSize: 14,
-    fontWeight: '700',
-  },
-
-  // =====================================================
-  // MEMBERS STYLES
-  // =====================================================
-
-  membersContainer: {
-    paddingRight: 20,
-  },
-  memberCard: {
-    width: isSmallScreen ? 100 : 120,
-    alignItems: 'center',
-    marginRight: 15,
-  },
-  memberImageContainer: {
-    width: isSmallScreen ? 70 : 85,
-    height: isSmallScreen ? 70 : 85,
-    borderRadius: (isSmallScreen ? 70 : 85) / 2,
-    backgroundColor: Colors.primary.deepGreen,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 10,
-    shadowColor: Colors.glow.greenGlow,
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 6,
-  },
-  memberImagePlaceholder: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  memberImageIcon: {
-    fontSize: isSmallScreen ? 28 : 35,
-    fontWeight: '700',
-    color: Colors.text.primary,
-  },
-  memberName: {
-    fontSize: 13,
-    fontWeight: '600',
-    color: Colors.text.primary,
-    textAlign: 'center',
-  },
-  memberRole: {
-    fontSize: 11,
-    color: Colors.tech.neonBlue,
-    marginTop: 2,
-    textAlign: 'center',
-  },
-  memberDepartment: {
-    fontSize: 10,
-    color: Colors.text.tertiary,
-    marginTop: 2,
-    textAlign: 'center',
-  },
-
-  // =====================================================
-  // ACTIVITIES STYLES
-  // =====================================================
-
-  activitiesList: {},
-  activityCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: Colors.background.darkGreen,
-    borderRadius: 12,
-    padding: 15,
-    marginBottom: 10,
-    borderLeftWidth: 4,
-  },
-  activityIconContainer: {
-    width: 45,
-    height: 45,
-    borderRadius: 23,
-    backgroundColor: Colors.background.deepBlack,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 12,
-  },
-  activityIcon: {
-    fontSize: 22,
-  },
-  activityContent: {
-    flex: 1,
-  },
-  activityTitle: {
-    fontSize: 15,
-    fontWeight: '600',
-    color: Colors.text.primary,
-  },
-  activityTime: {
-    fontSize: 13,
-    color: Colors.text.secondary,
-    marginTop: 3,
-  },
-  activityParticipants: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  participantsIcon: {
-    fontSize: 14,
-    marginRight: 4,
-  },
-  participantsCount: {
-    fontSize: 13,
-    color: Colors.text.secondary,
-  },
-
-  // =====================================================
-  // ACHIEVEMENTS STYLES
-  // =====================================================
-
-  achievementsGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-  },
-  achievementCard: {
-    width: (SCREEN_WIDTH - 50) / 3,
-    backgroundColor: Colors.background.darkGreen,
-    borderRadius: 12,
-    padding: 12,
-    alignItems: 'center',
-    marginBottom: 10,
-    borderBottomWidth: 3,
-  },
-  achievementIcon: {
-    fontSize: 28,
-    marginBottom: 6,
-  },
-  achievementValue: {
-    fontSize: 18,
-    fontWeight: '700',
-    color: Colors.text.primary,
-  },
-  achievementTitle: {
-    fontSize: 11,
-    color: Colors.text.tertiary,
-    textAlign: 'center',
-    marginTop: 4,
-  },
-
-  // =====================================================
-  // ABOUT STYLES
-  // =====================================================
-
-  aboutCard: {
-    backgroundColor: Colors.background.darkGreen,
-    borderRadius: 15,
-    padding: 20,
-  },
-  aboutText: {
-    fontSize: 14,
-    color: Colors.text.secondary,
-    lineHeight: 22,
-    marginBottom: 12,
-  },
-  aboutButtons: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    marginTop: 15,
-  },
-  aboutButton: {
-    alignItems: 'center',
-  },
-  aboutButtonIcon: {
-    fontSize: 28,
-    marginBottom: 5,
-  },
-  aboutButtonText: {
-    fontSize: 11,
-    color: Colors.text.secondary,
-  },
-
-  // =====================================================
-  // CONTACT STYLES
-  // =====================================================
-
-  contactCard: {
-    backgroundColor: Colors.background.darkGreen,
-    borderRadius: 15,
-    padding: 20,
-  },
-  contactItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 15,
-  },
-  contactIcon: {
-    fontSize: 24,
-    marginRight: 15,
-  },
-  contactDetails: {
-    flex: 1,
-  },
-  contactLabel: {
-    fontSize: 12,
-    color: Colors.text.tertiary,
-    marginBottom: 3,
-  },
-  contactValue: {
-    fontSize: 14,
-    color: Colors.text.primary,
-  },
-
-  // =====================================================
-  // FOOTER STYLES
-  // =====================================================
-
-  footerContainer: {
-    alignItems: 'center',
-    paddingVertical: 30,
-    paddingHorizontal: 20,
-  },
-  footerLogo: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 10,
-  },
-  footerLogoIcon: {
-    fontSize: 30,
-    marginRight: 8,
-  },
-  footerLogoText: {
-    fontSize: 18,
-    fontWeight: '700',
-    color: Colors.text.primary,
-  },
-  footerText: {
-    fontSize: 14,
-    color: Colors.text.secondary,
-    marginBottom: 8,
-  },
-  footerCopyright: {
-    fontSize: 12,
-    color: Colors.text.tertiary,
-    marginBottom: 15,
-  },
-  footerLinks: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  footerLink: {
-    fontSize: 12,
-    color: Colors.tech.neonBlue,
-    marginHorizontal: 8,
-  },
-  footerLinkDivider: {
-    fontSize: 12,
-    color: Colors.text.muted,
-  },
-
-  // =====================================================
-  // MODAL STYLES
-  // =====================================================
-
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.8)',
-    justifyContent: 'flex-end',
-  },
-  modalContent: {
-    backgroundColor: Colors.background.darkGreen,
-    borderTopLeftRadius: 25,
-    borderTopRightRadius: 25,
-    maxHeight: SCREEN_HEIGHT * 0.8,
-  },
-  modalHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: 20,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.text.muted,
-  },
-  modalTitle: {
-    fontSize: 18,
-    fontWeight: '700',
-    color: Colors.text.primary,
-  },
-  modalCloseButton: {
-    width: 35,
-    height: 35,
-    borderRadius: 18,
-    backgroundColor: Colors.background.deepBlack,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  modalCloseText: {
-    fontSize: 18,
-    color: Colors.text.secondary,
-  },
-  modalBody: {
-    padding: 20,
-  },
-  modalAnnouncementTitle: {
-    fontSize: 22,
-    fontWeight: '700',
-    color: Colors.text.primary,
-    marginBottom: 10,
-  },
-  modalAnnouncementDate: {
-    fontSize: 14,
-    color: Colors.text.secondary,
-    marginBottom: 15,
-  },
-  priorityBadge: {
+  heroEyebrow: { fontSize: 11, color: '#ffffffAA', letterSpacing: 2, fontWeight: '800' },
+  heroTitle: { fontSize: IS_SMALL ? 26 : 30, color: '#fff', fontWeight: '900', marginTop: 10, lineHeight: IS_SMALL ? 32 : 36 },
+  heroSubtitle: { fontSize: 13, color: '#ffffffCC', lineHeight: 20, marginTop: 10 },
+  heroCta: {
     alignSelf: 'flex-start',
-    borderRadius: 8,
+    marginTop: 16,
+    backgroundColor: '#ffffff22',
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#ffffff33',
+  },
+  heroCtaText: { color: '#fff', fontSize: 13, fontWeight: '700' },
+  heroDots: {
+    flexDirection: 'row',
+    alignSelf: 'center',
+    marginTop: 12,
+  },
+  heroDot: {
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: '#ffffff33',
+    marginHorizontal: 3,
+  },
+  heroDotActive: { backgroundColor: Colors.tech.neonBlue, width: 14 },
+
+  // Stats
+  statsBlock: { paddingTop: 22 },
+  statsScroll: { paddingHorizontal: HORIZONTAL_PADDING },
+  statCard: {
+    width: 130,
+    backgroundColor: '#0B1118',
+    borderRadius: 18,
+    padding: 14,
+    marginRight: 10,
+    borderWidth: 1,
+  },
+  statIcon: { fontSize: 20 },
+  statValue: { fontSize: 22, fontWeight: '900', marginTop: 8 },
+  statLabel: { color: Colors.text.primary, fontSize: 13, fontWeight: '700', marginTop: 2 },
+  statCaption: { color: Colors.text.muted, fontSize: 11, marginTop: 2 },
+
+  // Section blocks
+  sectionBlock: { paddingTop: 24, paddingHorizontal: HORIZONTAL_PADDING },
+  sectionHeaderRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
+    marginBottom: 10,
+  },
+  sectionTitle: { color: Colors.text.primary, fontSize: 16, fontWeight: '800', letterSpacing: 0.3 },
+  sectionCaption: { color: Colors.text.muted, fontSize: 12 },
+
+  // Quick actions
+  quickActionGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginHorizontal: -4,
+  },
+  quickActionCard: {
+    width: IS_TABLET ? (SCREEN_WIDTH - HORIZONTAL_PADDING * 2 - 32) / 4 : (SCREEN_WIDTH - HORIZONTAL_PADDING * 2 - 16) / 2,
+    backgroundColor: '#0B1118',
+    borderRadius: 18,
+    padding: 14,
+    margin: 4,
+    borderWidth: 1,
+  },
+  quickActionIcon: {
+    width: 40,
+    height: 40,
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 8,
+  },
+  quickActionEmoji: { fontSize: 20 },
+  quickActionTitle: { color: Colors.text.primary, fontSize: 14, fontWeight: '800' },
+  quickActionSubtitle: { color: Colors.text.secondary, fontSize: 11, marginTop: 4, lineHeight: 15 },
+
+  // Announcements
+  filterRow: { paddingVertical: 6 },
+  filterChip: {
+    backgroundColor: '#ffffff08',
+    borderColor: '#ffffff22',
+    borderWidth: 1,
     paddingHorizontal: 12,
     paddingVertical: 6,
-    marginBottom: 15,
+    borderRadius: 18,
+    marginRight: 8,
   },
-  priorityBadgeText: {
-    fontSize: 12,
-    fontWeight: '700',
-    color: Colors.text.primary,
+  filterChipActive: { backgroundColor: Colors.tech.neonBlue + '22', borderColor: Colors.tech.neonBlue },
+  filterChipText: { color: Colors.text.secondary, fontSize: 11, fontWeight: '600' },
+  filterChipTextActive: { color: Colors.tech.neonBlue, fontWeight: '800' },
+  announceCard: {
+    backgroundColor: '#0B1118',
+    padding: 12,
+    borderRadius: 14,
+    borderLeftWidth: 4,
+    marginTop: 8,
   },
-  modalAnnouncementDescription: {
-    fontSize: 15,
-    color: Colors.text.secondary,
-    lineHeight: 24,
-    marginBottom: 20,
+  announceTopRow: { flexDirection: 'row', alignItems: 'flex-start' },
+  announceEmoji: { fontSize: 22, marginRight: 10 },
+  announceTitleRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+  announceTitle: { color: Colors.text.primary, fontSize: 14, fontWeight: '800', flex: 1 },
+  announcePinned: { color: Colors.accent.softGold, fontSize: 14, marginLeft: 8 },
+  announceNewPill: {
+    backgroundColor: Colors.tech.neonBlue,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 6,
+    marginLeft: 8,
   },
-  modalActions: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-  },
-  modalActionButton: {
-    alignItems: 'center',
-    backgroundColor: Colors.background.deepBlack,
-    borderRadius: 12,
-    padding: 15,
-    width: 90,
-  },
-  modalActionIcon: {
-    fontSize: 24,
-    marginBottom: 5,
-  },
-  modalActionText: {
-    fontSize: 11,
-    color: Colors.text.secondary,
-    textAlign: 'center',
-  },
-});
+  announceNewPillText: { color: '#000', fontSize: 9, fontWeight: '900' },
+  announceDate: { color: Colors.text.muted, fontSize: 11, marginTop: 4 },
+  announceDescription: { color: Colors.text.secondary, fontSize: 12, marginTop: 8, lineHeight: 17 },
 
-// =====================================================
-// EXPORT
-// =====================================================
+  // Featured events
+  eventScroll: { paddingRight: HORIZONTAL_PADDING },
+  eventCard: { width: SCREEN_WIDTH * 0.78, marginRight: 12, borderRadius: CARD_RADIUS, overflow: 'hidden' },
+  eventGradient: { padding: 16, borderRadius: CARD_RADIUS, borderWidth: 1, borderColor: '#ffffff12' },
+  eventCategoryPill: {
+    alignSelf: 'flex-start',
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 8,
+  },
+  eventCategoryText: { color: '#000', fontSize: 10, fontWeight: '800' },
+  eventTitle: { color: Colors.text.primary, fontSize: 16, fontWeight: '800', marginTop: 10 },
+  eventDate: { color: Colors.accent.softGold, fontSize: 12, fontWeight: '700', marginTop: 4 },
+  eventLocation: { color: Colors.text.secondary, fontSize: 12, marginTop: 2 },
+  eventDescription: { color: Colors.text.secondary, fontSize: 12, marginTop: 8, lineHeight: 17 },
+  eventSeatRow: { flexDirection: 'row', alignItems: 'center', marginTop: 12 },
+  eventSeatBar: {
+    flex: 1,
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: '#ffffff14',
+    marginRight: 8,
+    overflow: 'hidden',
+  },
+  eventSeatFill: { height: '100%', borderRadius: 3 },
+  eventSeatText: { color: Colors.text.muted, fontSize: 11 },
+  eventPrice: { color: Colors.text.primary, fontSize: 12, marginTop: 8, fontWeight: '700' },
+
+  // Spotlights
+  spotlightGrid: { flexDirection: 'row', flexWrap: 'wrap', marginHorizontal: -4 },
+  spotlightCard: {
+    width: IS_TABLET ? (SCREEN_WIDTH - HORIZONTAL_PADDING * 2 - 24) / 3 : (SCREEN_WIDTH - HORIZONTAL_PADDING * 2 - 8),
+    margin: 4,
+    borderRadius: CARD_RADIUS,
+    overflow: 'hidden',
+  },
+  spotlightGradient: { padding: 14, borderWidth: 1, borderColor: '#ffffff12', borderRadius: CARD_RADIUS, alignItems: 'center' },
+  spotlightAvatar: {
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 8,
+  },
+  spotlightEmoji: { fontSize: 24 },
+  spotlightName: { color: Colors.text.primary, fontSize: 14, fontWeight: '800' },
+  spotlightRole: { color: Colors.accent.softGold, fontSize: 12, marginTop: 2, fontWeight: '700' },
+  spotlightDept: { color: Colors.text.muted, fontSize: 11, marginTop: 2 },
+  spotlightTagline: { color: Colors.text.secondary, fontStyle: 'italic', fontSize: 12, textAlign: 'center', marginTop: 10, lineHeight: 17 },
+
+  // Testimonials
+  testimonialScroll: { paddingRight: HORIZONTAL_PADDING },
+  testimonialCard: {
+    width: SCREEN_WIDTH * 0.78,
+    marginRight: 12,
+    backgroundColor: '#0B1118',
+    borderWidth: 1,
+    borderColor: '#ffffff12',
+    padding: 16,
+    borderRadius: CARD_RADIUS,
+  },
+  testimonialAvatar: { width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center' },
+  testimonialAvatarText: { color: Colors.text.primary, fontWeight: '800' },
+  testimonialBody: { color: Colors.text.primary, fontSize: 13, lineHeight: 19, marginTop: 12 },
+  testimonialName: { color: Colors.accent.softGold, fontSize: 12, marginTop: 10, fontWeight: '700' },
+  testimonialRole: { color: Colors.text.muted, fontSize: 11, marginTop: 2 },
+
+  // Gallery
+  galleryGrid: { flexDirection: 'row', flexWrap: 'wrap', marginHorizontal: -4 },
+  galleryCell: {
+    width: IS_TABLET ? (SCREEN_WIDTH - HORIZONTAL_PADDING * 2 - 32) / 4 : (SCREEN_WIDTH - HORIZONTAL_PADDING * 2 - 24) / 3,
+    aspectRatio: 1,
+    margin: 4,
+    borderRadius: 14,
+    borderWidth: 1,
+    padding: 8,
+    justifyContent: 'space-between',
+  },
+  galleryEmoji: { fontSize: 22, alignSelf: 'flex-start' },
+  galleryCaption: { color: Colors.text.primary, fontSize: 11, fontWeight: '700' },
+  galleryDate: { color: Colors.text.muted, fontSize: 10 },
+
+  // Timeline
+  timelineContainer: { marginTop: 6 },
+  timelineRow: { flexDirection: 'row', alignItems: 'flex-start' },
+  timelineLeft: { width: 24, alignItems: 'center' },
+  timelineDot: { width: 14, height: 14, borderRadius: 7, marginTop: 4 },
+  timelineLine: { width: 2, flex: 1, backgroundColor: '#ffffff18', marginTop: 4 },
+  timelineRight: { flex: 1, paddingLeft: 10, paddingBottom: 16 },
+  timelineYear: { color: Colors.text.muted, fontSize: 11, fontWeight: '700' },
+  timelineTitle: { color: Colors.text.primary, fontSize: 14, fontWeight: '800', marginTop: 2 },
+  timelineBody: { color: Colors.text.secondary, fontSize: 12, lineHeight: 17, marginTop: 3 },
+
+  // Pledges
+  pledgeCard: {
+    backgroundColor: '#0B1118',
+    padding: 14,
+    borderRadius: 16,
+    marginTop: 10,
+    borderWidth: 1,
+    borderColor: '#ffffff12',
+  },
+  pledgeHeaderRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  pledgeTitle: { color: Colors.text.primary, fontSize: 14, fontWeight: '800' },
+  pledgeTarget: { fontSize: 11, fontWeight: '800' },
+  pledgeBody: { color: Colors.text.secondary, fontSize: 12, marginTop: 6, lineHeight: 17 },
+  pledgeProgressBg: { height: 6, borderRadius: 3, backgroundColor: '#ffffff14', marginTop: 10, overflow: 'hidden' },
+  pledgeProgressFill: { height: '100%', borderRadius: 3 },
+  pledgeProgressLabel: { color: Colors.text.muted, fontSize: 11, marginTop: 6 },
+
+  // FAQ
+  faqCard: {
+    backgroundColor: '#0B1118',
+    padding: 12,
+    borderRadius: 14,
+    marginTop: 8,
+    borderWidth: 1,
+    borderColor: '#ffffff0F',
+  },
+  faqQuestionRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  faqQuestion: { color: Colors.text.primary, fontSize: 13, fontWeight: '700', flex: 1 },
+  faqToggle: { color: Colors.tech.neonBlue, fontSize: 18, fontWeight: '900', marginLeft: 8 },
+  faqAnswer: { color: Colors.text.secondary, fontSize: 12, lineHeight: 17, marginTop: 8 },
+
+  // Newsletter
+  newsletterBlock: { paddingHorizontal: HORIZONTAL_PADDING, paddingTop: 28 },
+  newsletterGradient: {
+    borderRadius: CARD_RADIUS,
+    padding: 18,
+    borderWidth: 1,
+    borderColor: '#ffffff12',
+  },
+  newsletterTitle: { color: Colors.text.primary, fontSize: 16, fontWeight: '900' },
+  newsletterBody: { color: Colors.text.secondary, fontSize: 12, marginTop: 6, lineHeight: 17 },
+  newsletterForm: { flexDirection: 'row', marginTop: 12 },
+  newsletterInput: {
+    flex: 1,
+    backgroundColor: '#ffffff12',
+    borderRadius: 12,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    color: Colors.text.primary,
+    marginRight: 8,
+    borderWidth: 1,
+    borderColor: '#ffffff1F',
+  },
+  newsletterBtn: {
+    backgroundColor: Colors.accent.softGold,
+    paddingHorizontal: 14,
+    paddingVertical: 10,
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  newsletterBtnText: { color: '#000', fontWeight: '800', fontSize: 12 },
+
+  // Share band
+  shareBand: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: HORIZONTAL_PADDING,
+    paddingTop: 22,
+  },
+  shareLine: { color: Colors.text.secondary, fontSize: 12 },
+  shareBtn: {
+    backgroundColor: '#ffffff12',
+    borderWidth: 1,
+    borderColor: '#ffffff22',
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+    borderRadius: 12,
+  },
+  shareBtnText: { color: Colors.text.primary, fontSize: 12, fontWeight: '700' },
+
+  // Footer
+  footer: { alignItems: 'center', paddingTop: 30, paddingBottom: 30 },
+  footerLine: { color: Colors.text.primary, fontSize: 14, fontWeight: '800' },
+  footerSmall: { color: Colors.text.muted, fontSize: 11, marginTop: 4 },
+
+  // Modal
+  modalOverlay: { flex: 1, backgroundColor: '#000000CC', justifyContent: 'center', padding: 20 },
+  modalContent: {
+    maxHeight: SCREEN_HEIGHT * 0.85,
+    backgroundColor: '#0A0F14',
+    borderRadius: 28,
+    overflow: 'hidden',
+  },
+  modalHero: { padding: 20 },
+  modalHeroTop: { flexDirection: 'row', justifyContent: 'space-between' },
+  modalBadge: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 8 },
+  modalBadgeText: { color: '#000', fontSize: 11, fontWeight: '800' },
+  modalClose: {
+    width: 32, height: 32, borderRadius: 16, backgroundColor: '#00000088', alignItems: 'center', justifyContent: 'center',
+  },
+  modalCloseText: { color: Colors.text.primary, fontSize: 16 },
+  modalTitle: { color: Colors.text.primary, fontSize: 22, fontWeight: '900', marginTop: 14 },
+  modalDate: { color: Colors.accent.softGold, fontSize: 12, marginTop: 6, fontWeight: '700' },
+  modalLocation: { color: Colors.text.secondary, fontSize: 12, marginTop: 4 },
+
+  modalScroll: { flexGrow: 0 },
+  modalScrollContent: { padding: 18 },
+  modalBody: { color: Colors.text.secondary, fontSize: 13, lineHeight: 20 },
+  modalSeatBlock: { marginTop: 14 },
+  modalSeatRow: { flexDirection: 'row', justifyContent: 'space-between' },
+  modalSeatLabel: { color: Colors.text.muted, fontSize: 11 },
+  modalSeatValue: { color: Colors.text.primary, fontSize: 12, fontWeight: '700' },
+  modalSeatBar: { height: 6, borderRadius: 3, backgroundColor: '#ffffff14', marginTop: 6, overflow: 'hidden' },
+  modalSeatFill: { height: '100%', borderRadius: 3 },
+  modalPrice: { color: Colors.text.primary, fontSize: 13, marginTop: 10, fontWeight: '700' },
+  modalMeta: { color: Colors.text.muted, fontSize: 11, marginTop: 14, lineHeight: 16 },
+
+  modalActionRow: {
+    flexDirection: 'row',
+    padding: 14,
+    borderTopWidth: 1,
+    borderTopColor: '#ffffff18',
+  },
+  modalAction: { flex: 1, padding: 12, borderRadius: 12, marginRight: 8, alignItems: 'center' },
+  modalActionText: { color: '#fff', fontWeight: '800', fontSize: 13 },
+
+  // Quick-action sheet
+  sheetBackdrop: { flex: 1, backgroundColor: '#000000AA' },
+  sheet: {
+    position: 'absolute',
+    left: 0, right: 0, bottom: 0,
+    backgroundColor: '#0A0F14',
+    borderTopLeftRadius: 28,
+    borderTopRightRadius: 28,
+    padding: 18,
+    maxHeight: SCREEN_HEIGHT * 0.75,
+  },
+  sheetTitle: { color: Colors.text.primary, fontSize: 15, fontWeight: '800', marginBottom: 10 },
+  sheetRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ffffff0F',
+  },
+  sheetIcon: { width: 38, height: 38, borderRadius: 12, alignItems: 'center', justifyContent: 'center', marginRight: 12 },
+  sheetEmoji: { fontSize: 18 },
+  sheetLabel: { color: Colors.text.primary, fontSize: 14, fontWeight: '700' },
+  sheetSub: { color: Colors.text.muted, fontSize: 11, marginTop: 2 },
+});
 
 export default HomeScreen;
