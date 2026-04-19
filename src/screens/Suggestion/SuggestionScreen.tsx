@@ -1369,6 +1369,130 @@ const STAGE_TIPS: SuggestionStageTip[] = [
   { id: 'st-6', stage: 'After it ships',      tip: 'Write two lines in the digest · name the helpers.',         exampleDone: '"Shipped · thanks to Meera, Rohit, Anmol."',               exampleNot: 'No retro line · silent merge.',                                           color: '#00D4FF', emoji: '📣' },
 ];
 
+// =====================================================
+// Phase 3y: deeper suggestion structures
+// =====================================================
+
+interface DecisionRight {
+  id: string;
+  scope: string;
+  decider: string;
+  consulted: string;
+  informed: string;
+  color: string;
+  emoji: string;
+}
+
+const DECISION_RIGHTS: DecisionRight[] = [
+  { id: 'dr-1', scope: 'Tiny tweak · one-wing fix',                      decider: 'Wing lead',                       consulted: 'One affected member',       informed: 'Digest next month',                 color: '#22C55E', emoji: '🪴' },
+  { id: 'dr-2', scope: 'Cross-wing process change',                      decider: 'Core council · simple majority', consulted: 'Every wing lead',           informed: 'Whole club · within 7 days',        color: '#F59E0B', emoji: '🧭' },
+  { id: 'dr-3', scope: 'Policy · code of conduct edits',                 decider: 'Council + two alumni advisors',   consulted: 'Open town hall · 14 days',  informed: 'Every member · by email + app',     color: '#A78BFA', emoji: '🛡️' },
+  { id: 'dr-4', scope: 'Spend over ₹15k or 10 volunteer hours',          decider: 'Council + budget steward',        consulted: 'Wing that will do the work',informed: 'Published in the monthly digest',   color: '#F472B6', emoji: '💸' },
+  { id: 'dr-5', scope: 'New ongoing partnership',                        decider: 'Council + PR lead',               consulted: 'All wings · 1 meet',         informed: 'Partner-side too · written note',    color: '#00D4FF', emoji: '🤝' },
+  { id: 'dr-6', scope: 'Event cancellation or postponement',             decider: 'Event owner + one lead',          consulted: 'Everyone with a ticket',     informed: 'App notice + digest + social',       color: '#EF4444', emoji: '⛔' },
+  { id: 'dr-7', scope: 'Member pause or step-away',                      decider: 'The member · always',             consulted: 'Wing lead · in private',     informed: 'No one · unless they say so',        color: '#94A3B8', emoji: '🕊️' },
+];
+
+interface DisagreeLog {
+  id: string;
+  topic: string;
+  sideA: string;
+  sideB: string;
+  outcome: 'sideA' | 'sideB' | 'merged' | 'deferred';
+  learning: string;
+  color: string;
+  emoji: string;
+}
+
+const DISAGREE_LOG: DisagreeLog[] = [
+  { id: 'dl-1', topic: 'Open critique vs. private feedback',    sideA: 'Public crits grow us faster',             sideB: 'Private first · protects beginners',         outcome: 'merged',   learning: 'First crit is private · second is public · with consent.',     color: '#F472B6', emoji: '💬' },
+  { id: 'dl-2', topic: 'Hindi-first posters vs. English-first',  sideA: 'Hindi-first for reach',                    sideB: 'English-first for inter-college traction',   outcome: 'merged',   learning: 'Bilingual posters · same size · no hierarchy.',                 color: '#F59E0B', emoji: '📰' },
+  { id: 'dl-3', topic: 'Paid speakers vs. honoraria only',        sideA: 'Paid slots attract seniors',               sideB: 'Honoraria keep us honest',                    outcome: 'sideB',    learning: 'Honoraria only · capped · no invoicing.',                      color: '#22C55E', emoji: '🎤' },
+  { id: 'dl-4', topic: 'Expanding tabs in the app',              sideA: 'One more tab for ‘Pledges’',               sideB: 'Keep 6 tabs · put it inside Home',            outcome: 'sideB',    learning: 'Six tabs forever · pledges surface inside Home.',              color: '#00D4FF', emoji: '📱' },
+  { id: 'dl-5', topic: 'Sponsor branding intensity',             sideA: 'Bigger logos for bigger sponsors',         sideB: 'One size · based on contribution tier',       outcome: 'sideB',    learning: 'One poster size · three tiers · same typography.',             color: '#A78BFA', emoji: '🎛️' },
+  { id: 'dl-6', topic: 'Documentary runtime',                     sideA: 'Short cuts travel further',                sideB: 'Long cuts do the emotional work',             outcome: 'merged',   learning: 'One 3-min cut + one 15-min cut · same film, two lives.',       color: '#EF4444', emoji: '🎞️' },
+  { id: 'dl-7', topic: 'Open vs. quiet birthday rituals',         sideA: 'Loud · shared on boards',                  sideB: 'Quiet · card only if member agrees',          outcome: 'sideB',    learning: 'Ask the member first · default is quiet.',                     color: '#FFD166', emoji: '🎂' },
+];
+
+interface ReturnSignal {
+  id: string;
+  metric: string;
+  measuredBy: string;
+  target: string;
+  current: string;
+  state: 'healthy' | 'watch' | 'at-risk';
+  color: string;
+  emoji: string;
+}
+
+const RETURN_SIGNALS: ReturnSignal[] = [
+  { id: 'rs-1', metric: 'Time from idea → decision',      measuredBy: 'Average · last 50 cards',  target: 'Under 14 days',           current: '11.4 days',           state: 'healthy', color: '#22C55E', emoji: '⏱️' },
+  { id: 'rs-2', metric: 'Time from decision → ship',      measuredBy: 'Average · last 50 cards',  target: 'Under 45 days',           current: '38 days',             state: 'healthy', color: '#22C55E', emoji: '🚢' },
+  { id: 'rs-3', metric: '% ideas that got a reply',        measuredBy: 'Within 72 hours',           target: '100%',                     current: '94%',                 state: 'watch',   color: '#F59E0B', emoji: '🗣️' },
+  { id: 'rs-4', metric: '% ideas reversed after trial',    measuredBy: 'Of shipped ideas',          target: '10–25% (healthy reverse)', current: '18%',                 state: 'healthy', color: '#22C55E', emoji: '🔁' },
+  { id: 'rs-5', metric: 'Anonymous ratio',                 measuredBy: 'Of new cards',              target: '5–15% (we never push it down)', current: '9%',             state: 'healthy', color: '#22C55E', emoji: '🕵️' },
+  { id: 'rs-6', metric: 'First-timer authors',              measuredBy: 'New members · last 30d',    target: '≥ 40%',                    current: '34%',                 state: 'watch',   color: '#F59E0B', emoji: '🌱' },
+  { id: 'rs-7', metric: 'Unresolved over 60 days',          measuredBy: 'Any stage',                  target: '0',                         current: '3',                  state: 'at-risk', color: '#EF4444', emoji: '⌛' },
+];
+
+interface FeedbackLoop {
+  id: string;
+  cadence: string;
+  ritual: string;
+  who: string;
+  output: string;
+  color: string;
+  emoji: string;
+}
+
+const FEEDBACK_LOOPS: FeedbackLoop[] = [
+  { id: 'fb-1', cadence: 'Weekly',   ritual: 'Idea-triage stand-up · 20 min',          who: 'Council + one rotating member',    output: 'One decision per card touched that week.',                    color: '#00D4FF', emoji: '📋' },
+  { id: 'fb-2', cadence: 'Weekly',   ritual: 'Writer\'s desk for rough cards',          who: 'Anyone stuck in drafting',          output: 'A short edit pass · published or retired within 48 h.',         color: '#F472B6', emoji: '✍️' },
+  { id: 'fb-3', cadence: 'Monthly',  ritual: 'Digest day · 2-hour write-up',            who: 'Digest editor · one name',          output: 'A public summary · who suggested, what changed, what didn\'t.', color: '#F59E0B', emoji: '📰' },
+  { id: 'fb-4', cadence: 'Monthly',  ritual: 'Town hall · open mic, 45 min',            who: 'Anyone in the club',                 output: 'Spoken questions logged · answered within a week.',              color: '#22C55E', emoji: '🎤' },
+  { id: 'fb-5', cadence: 'Quarterly',ritual: 'Retro-of-ideas · 60 min',                  who: 'Council + two first-timers',         output: 'Three keep · three kill · three try-bigger.',                   color: '#A78BFA', emoji: '🪞' },
+  { id: 'fb-6', cadence: 'Quarterly',ritual: 'Alumni read-back · 30 min over tea',      who: 'Two alumni advisors',                 output: 'Written ‘what would we re-do’ · kept in archive.',              color: '#FFD166', emoji: '🍵' },
+  { id: 'fb-7', cadence: 'Yearly',   ritual: 'Decision-right review · 90 min',           who: 'Whole council + alumni',              output: 'Rewritten RACI · one paragraph per scope.',                     color: '#EF4444', emoji: '📜' },
+];
+
+interface TrustPromise {
+  id: string;
+  promise: string;
+  why: string;
+  how: string;
+  color: string;
+  emoji: string;
+}
+
+const TRUST_PROMISES: TrustPromise[] = [
+  { id: 'tp-1', promise: 'Every card gets a human reply within 72 hours',   why: 'Silence kills participation.',                                       how: 'Shared inbox · two rotating members · one ack is enough.',                        color: '#22C55E', emoji: '🗣️' },
+  { id: 'tp-2', promise: 'No-one is punished for disagreeing',              why: 'Healthy dissent is rare · we protect it.',                            how: 'Conflict log · quarterly · no names in public.',                                   color: '#00D4FF', emoji: '🕊️' },
+  { id: 'tp-3', promise: 'Anonymity stays anonymous',                       why: 'We want quiet truths too.',                                           how: 'Hashed author ID · only two people can see the map · audited twice a year.',      color: '#A78BFA', emoji: '🕵️' },
+  { id: 'tp-4', promise: 'Retired ideas don\'t vanish',                     why: 'We learn from what failed.',                                          how: 'Archive channel · with the reason · searchable.',                                  color: '#F87171', emoji: '🪦' },
+  { id: 'tp-5', promise: 'Credit is explicit',                               why: 'Silence feels like erasure.',                                         how: 'Every shipped change names one or more authors · sign-off required.',              color: '#F59E0B', emoji: '🏷️' },
+  { id: 'tp-6', promise: 'Decision makers say no with reasons',              why: '‘No’ without a reason is cruel.',                                     how: 'Two-sentence reason · in the digest · with a maybe-later tag if relevant.',       color: '#F472B6', emoji: '✋' },
+];
+
+interface OpenCallToIdea {
+  id: string;
+  title: string;
+  prompt: string;
+  deadline: string;
+  wing: string;
+  color: string;
+  emoji: string;
+}
+
+const OPEN_CALLS: OpenCallToIdea[] = [
+  { id: 'oc-1', title: 'Campus tree-walk · 2.0',               prompt: 'A fresh script · 40 minutes · inclusive of night-walk.',                     deadline: '12 May',   wing: 'Content + PR',        color: '#22C55E', emoji: '🌳' },
+  { id: 'oc-2', title: 'Alumni-in-residence · programme',       prompt: 'How would a one-week alumni visit look · week-long rhythm.',                 deadline: '18 May',   wing: 'PR + Alumni desk',    color: '#A78BFA', emoji: '🎓' },
+  { id: 'oc-3', title: 'Poster system · open-source kit',       prompt: 'A shareable kit · so other colleges can make Taru-style posters.',           deadline: '22 May',   wing: 'Design',              color: '#F472B6', emoji: '🖼️' },
+  { id: 'oc-4', title: 'First-year on-boarding · kinder flow',  prompt: 'Where does the flow hurt · rewrite the first two weeks.',                    deadline: '30 May',   wing: 'Core + Content',      color: '#F59E0B', emoji: '🪴' },
+  { id: 'oc-5', title: 'Accessibility audit · whole app',        prompt: 'A structured pass · talkback, contrast, gesture alternatives.',             deadline: '08 Jun',   wing: 'Web + App',            color: '#00D4FF', emoji: '♿' },
+  { id: 'oc-6', title: 'Partners we\'d want to say yes to',      prompt: 'Five orgs · why · ethical fit · what we would offer.',                        deadline: '14 Jun',   wing: 'PR',                    color: '#7E57C2', emoji: '🤝' },
+  { id: 'oc-7', title: 'A small, quiet ritual for goodbyes',     prompt: 'One paragraph · what should happen when a member steps away.',               deadline: '22 Jun',   wing: 'Whole team',           color: '#FFD166', emoji: '🕯️' },
+];
+
 const SuggestionScreen: React.FC = () => {
   // ------------ State ------------
   const [suggestions, setSuggestions] = useState<ExtSuggestion[]>(SAMPLE_SUGGESTIONS);
@@ -3088,6 +3212,182 @@ const SuggestionScreen: React.FC = () => {
     </View>
   );
 
+  // ------ Phase 3y deeper blocks ------
+  const renderDecisionRights = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>📜 Decision rights · who calls what</Text>
+        <Text style={styles.sectionCaption}>{DECISION_RIGHTS.length} scopes</Text>
+      </View>
+      {DECISION_RIGHTS.map((d) => (
+        <View key={d.id} style={[styles.drCard, { borderLeftColor: d.color }]}>
+          <View style={styles.drTopRow}>
+            <Text style={styles.drEmoji}>{d.emoji}</Text>
+            <Text style={styles.drScope} numberOfLines={2}>{d.scope}</Text>
+          </View>
+          <View style={styles.drKvRow}>
+            <Text style={styles.drKey}>DECIDES</Text>
+            <Text style={styles.drVal} numberOfLines={1}>{d.decider}</Text>
+          </View>
+          <View style={styles.drKvRow}>
+            <Text style={styles.drKey}>CONSULTS</Text>
+            <Text style={styles.drVal} numberOfLines={1}>{d.consulted}</Text>
+          </View>
+          <View style={styles.drKvRow}>
+            <Text style={styles.drKey}>INFORMS</Text>
+            <Text style={styles.drVal} numberOfLines={1}>{d.informed}</Text>
+          </View>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderDisagreeLog = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>💬 Disagree-log · healthy dissent</Text>
+        <Text style={styles.sectionCaption}>{DISAGREE_LOG.length} resolved</Text>
+      </View>
+      {DISAGREE_LOG.map((d) => {
+        const oColor =
+          d.outcome === 'merged' ? '#A78BFA' :
+          d.outcome === 'sideA' ? '#00D4FF' :
+          d.outcome === 'sideB' ? '#22C55E' : '#94A3B8';
+        return (
+          <View key={d.id} style={[styles.dlCard, { borderLeftColor: d.color }]}>
+            <View style={styles.dlTopRow}>
+              <Text style={styles.dlEmoji}>{d.emoji}</Text>
+              <Text style={styles.dlTopic} numberOfLines={2}>{d.topic}</Text>
+              <View
+                style={[
+                  styles.dlOutcome,
+                  { backgroundColor: oColor + '22', borderColor: oColor + '66' },
+                ]}
+              >
+                <Text style={[styles.dlOutcomeText, { color: oColor }]}>{d.outcome}</Text>
+              </View>
+            </View>
+            <View style={styles.dlSideRow}>
+              <View style={styles.dlSideCol}>
+                <Text style={[styles.dlSideLabel, { color: '#00D4FF' }]}>A</Text>
+                <Text style={styles.dlSideText} numberOfLines={3}>{d.sideA}</Text>
+              </View>
+              <View style={styles.dlSideCol}>
+                <Text style={[styles.dlSideLabel, { color: '#22C55E' }]}>B</Text>
+                <Text style={styles.dlSideText} numberOfLines={3}>{d.sideB}</Text>
+              </View>
+            </View>
+            <Text style={styles.dlLearning} numberOfLines={2}>{d.learning}</Text>
+          </View>
+        );
+      })}
+    </View>
+  );
+
+  const renderReturnSignals = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>📈 Return signals · health dashboard</Text>
+        <Text style={styles.sectionCaption}>watched monthly</Text>
+      </View>
+      {RETURN_SIGNALS.map((r) => {
+        const sColor =
+          r.state === 'healthy' ? '#22C55E' :
+          r.state === 'watch' ? '#F59E0B' : '#EF4444';
+        return (
+          <View key={r.id} style={[styles.rsCard, { borderLeftColor: sColor }]}>
+            <View style={styles.rsTopRow}>
+              <Text style={styles.rsEmoji}>{r.emoji}</Text>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.rsMetric} numberOfLines={1}>{r.metric}</Text>
+                <Text style={styles.rsMeasured} numberOfLines={1}>{r.measuredBy}</Text>
+              </View>
+              <View
+                style={[
+                  styles.rsStatePill,
+                  { backgroundColor: sColor + '22', borderColor: sColor + '66' },
+                ]}
+              >
+                <Text style={[styles.rsStateText, { color: sColor }]}>{r.state}</Text>
+              </View>
+            </View>
+            <View style={styles.rsKvRow}>
+              <Text style={styles.rsKey}>TARGET</Text>
+              <Text style={styles.rsVal} numberOfLines={1}>{r.target}</Text>
+            </View>
+            <View style={styles.rsKvRow}>
+              <Text style={styles.rsKey}>NOW</Text>
+              <Text style={[styles.rsVal, { color: sColor }]} numberOfLines={1}>{r.current}</Text>
+            </View>
+          </View>
+        );
+      })}
+    </View>
+  );
+
+  const renderFeedbackLoops = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🔁 Feedback loops · rituals</Text>
+        <Text style={styles.sectionCaption}>{FEEDBACK_LOOPS.length} cadences</Text>
+      </View>
+      {FEEDBACK_LOOPS.map((f) => (
+        <View key={f.id} style={[styles.flpCard, { borderLeftColor: f.color }]}>
+          <View style={styles.flpTopRow}>
+            <Text style={styles.flpEmoji}>{f.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={[styles.flpCadence, { color: f.color }]}>{f.cadence}</Text>
+              <Text style={styles.flpRitual} numberOfLines={2}>{f.ritual}</Text>
+            </View>
+          </View>
+          <Text style={styles.flpWho} numberOfLines={1}>{f.who}</Text>
+          <Text style={styles.flpOutput} numberOfLines={3}>→ {f.output}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderTrustPromises = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🫶 Trust promises · what we'll hold</Text>
+        <Text style={styles.sectionCaption}>{TRUST_PROMISES.length} quiet vows</Text>
+      </View>
+      {TRUST_PROMISES.map((t) => (
+        <View key={t.id} style={[styles.tpCard, { borderLeftColor: t.color }]}>
+          <View style={styles.tpTopRow}>
+            <Text style={styles.tpEmoji}>{t.emoji}</Text>
+            <Text style={styles.tpPromise} numberOfLines={2}>{t.promise}</Text>
+          </View>
+          <Text style={styles.tpWhy} numberOfLines={2}>why · {t.why}</Text>
+          <Text style={styles.tpHow} numberOfLines={3}>how · {t.how}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderOpenCalls = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>📣 Open calls · we'd love ideas on</Text>
+        <Text style={styles.sectionCaption}>{OPEN_CALLS.length} prompts</Text>
+      </View>
+      {OPEN_CALLS.map((o) => (
+        <View key={o.id} style={[styles.ocRow, { borderLeftColor: o.color }]}>
+          <Text style={styles.ocEmoji}>{o.emoji}</Text>
+          <View style={{ flex: 1 }}>
+            <View style={styles.ocTopRow}>
+              <Text style={styles.ocTitle} numberOfLines={1}>{o.title}</Text>
+              <Text style={[styles.ocDeadline, { color: o.color }]}>{o.deadline}</Text>
+            </View>
+            <Text style={styles.ocPrompt} numberOfLines={2}>{o.prompt}</Text>
+            <Text style={styles.ocWing} numberOfLines={1}>{o.wing}</Text>
+          </View>
+        </View>
+      ))}
+    </View>
+  );
+
   const listHeader = (
     <View>
       {renderHeader()}
@@ -3097,8 +3397,10 @@ const SuggestionScreen: React.FC = () => {
       {renderLeaderboard()}
       {renderTags()}
       {renderAnalytics()}
+      {renderReturnSignals()}
       {renderVelocity()}
       {renderVoterWeights()}
+      {renderDecisionRights()}
       {renderEscalation()}
       {renderStageTips()}
       {renderMonthlyDigest()}
@@ -3106,10 +3408,14 @@ const SuggestionScreen: React.FC = () => {
       {renderShippedWins()}
       {renderDiscarded()}
       {renderDecisionJournal()}
+      {renderDisagreeLog()}
       {renderQuarterlyRetro()}
       {renderOwnershipMap()}
+      {renderFeedbackLoops()}
       {renderFeedbackLoop()}
+      {renderTrustPromises()}
       {renderRoadmap()}
+      {renderOpenCalls()}
       {renderListHeader()}
     </View>
   );
@@ -4138,6 +4444,121 @@ const styles = StyleSheet.create({
   tipExLabel: { fontSize: 9, fontWeight: '900', letterSpacing: 1.5, marginBottom: 4 },
   tipExDone: { color: Colors.text.primary, fontSize: 10, lineHeight: 13 },
   tipExNot: { color: Colors.text.muted, fontSize: 10, lineHeight: 13, fontStyle: 'italic' },
+
+  // --- Phase 3y: decision rights ---
+  drCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginHorizontal: HORIZONTAL_PADDING,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  drTopRow: { flexDirection: 'row', alignItems: 'flex-start' },
+  drEmoji: { fontSize: 22, marginRight: 10, marginTop: 2 },
+  drScope: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', flex: 1, lineHeight: 17 },
+  drKvRow: { flexDirection: 'row', alignItems: 'flex-start', marginTop: 8, paddingLeft: 32 },
+  drKey: { color: Colors.text.muted, fontSize: 9, fontWeight: '900', letterSpacing: 1.2, width: 74 },
+  drVal: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, flex: 1 },
+
+  // --- Phase 3y: disagree log ---
+  dlCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginHorizontal: HORIZONTAL_PADDING,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  dlTopRow: { flexDirection: 'row', alignItems: 'center' },
+  dlEmoji: { fontSize: 20, marginRight: 10 },
+  dlTopic: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', flex: 1, lineHeight: 17 },
+  dlOutcome: {
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: 999,
+    borderWidth: 1,
+    marginLeft: 8,
+  },
+  dlOutcomeText: { fontSize: 9, fontWeight: '900', letterSpacing: 1, textTransform: 'uppercase' },
+  dlSideRow: { flexDirection: 'row', marginTop: 10, gap: 10 },
+  dlSideCol: { flex: 1, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 10, padding: 8 },
+  dlSideLabel: { fontSize: 9, fontWeight: '900', letterSpacing: 1.5 },
+  dlSideText: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4 },
+  dlLearning: { color: Colors.accent.softGold, fontSize: 11, lineHeight: 15, marginTop: 10, fontStyle: 'italic' },
+
+  // --- Phase 3y: return signals ---
+  rsCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginHorizontal: HORIZONTAL_PADDING,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  rsTopRow: { flexDirection: 'row', alignItems: 'center' },
+  rsEmoji: { fontSize: 20, marginRight: 10 },
+  rsMetric: { color: Colors.text.primary, fontSize: 13, fontWeight: '800' },
+  rsMeasured: { color: Colors.text.muted, fontSize: 10, marginTop: 2, fontStyle: 'italic' },
+  rsStatePill: {
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: 999,
+    borderWidth: 1,
+    marginLeft: 8,
+  },
+  rsStateText: { fontSize: 9, fontWeight: '900', letterSpacing: 1, textTransform: 'uppercase' },
+  rsKvRow: { flexDirection: 'row', marginTop: 6, paddingLeft: 30 },
+  rsKey: { color: Colors.text.muted, fontSize: 9, fontWeight: '900', letterSpacing: 1.2, width: 60 },
+  rsVal: { color: Colors.text.secondary, fontSize: 11, flex: 1 },
+
+  // --- Phase 3y: feedback loops ---
+  flpCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginHorizontal: HORIZONTAL_PADDING,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  flpTopRow: { flexDirection: 'row', alignItems: 'flex-start' },
+  flpEmoji: { fontSize: 22, marginRight: 10, marginTop: 2 },
+  flpCadence: { fontSize: 10, fontWeight: '900', letterSpacing: 1.2, textTransform: 'uppercase' },
+  flpRitual: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', marginTop: 2, lineHeight: 17 },
+  flpWho: { color: Colors.tech.neonBlue, fontSize: 11, fontWeight: '700', marginTop: 6, paddingLeft: 32 },
+  flpOutput: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32 },
+
+  // --- Phase 3y: trust promises ---
+  tpCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginHorizontal: HORIZONTAL_PADDING,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  tpTopRow: { flexDirection: 'row', alignItems: 'flex-start' },
+  tpEmoji: { fontSize: 22, marginRight: 10, marginTop: 2 },
+  tpPromise: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', flex: 1, lineHeight: 17 },
+  tpWhy: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 6, paddingLeft: 32 },
+  tpHow: { color: Colors.text.muted, fontSize: 11, lineHeight: 15, marginTop: 3, paddingLeft: 32 },
+
+  // --- Phase 3y: open calls ---
+  ocRow: {
+    flexDirection: 'row',
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginHorizontal: HORIZONTAL_PADDING,
+    marginBottom: 8,
+    borderLeftWidth: 3,
+  },
+  ocEmoji: { fontSize: 22, marginRight: 10, marginTop: 2 },
+  ocTopRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+  ocTitle: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', flex: 1 },
+  ocDeadline: { fontSize: 11, fontWeight: '900', marginLeft: 8, letterSpacing: 0.5 },
+  ocPrompt: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4 },
+  ocWing: { color: Colors.text.muted, fontSize: 10, marginTop: 4, fontStyle: 'italic' },
 });
 
 export default SuggestionScreen;
