@@ -1816,6 +1816,70 @@ const SUGG_COMM_CADENCES: SuggCommunicationCadence[] = [
   { id: 'sxc-7', cadence: 'Year-end proposal book',                              channel: 'Printed + open PDF',                                              audience: 'Everyone · alumni · future members',                     rhythm: 'Every December · proposals of the year · decisions · outcomes · lessons.',                        color: '#EF4444', emoji: '📖' },
 ];
 
+// =====================================================
+// Phase 3ax: deeper suggestion structures — round 5
+// =====================================================
+
+interface SuggestionPilotRecipe {
+  id: string;
+  name: string;
+  scope: string;
+  budget: string;
+  exitPlan: string;
+  color: string;
+  emoji: string;
+}
+
+const SUGGESTION_PILOT_RECIPES: SuggestionPilotRecipe[] = [
+  { id: 'spr-1', name: 'The 2-week test',                        scope: 'Single cohort · one wing · one artefact',                 budget: '₹0–₹2k · whatever is already in the desk drawer',                exitPlan: 'At day 14 · one question asked in a circle · keep · kill · extend 14 more.',                        color: '#00D4FF', emoji: '🧪' },
+  { id: 'spr-2', name: 'The 30-day season',                               scope: 'Two wings · one month · clear kpi',                                   budget: '₹5–₹10k · one-time · documented',                                           exitPlan: 'At day 30 · written retro · council vote to continue · refine · or stop with thanks.',                          color: '#F59E0B', emoji: '🌓' },
+  { id: 'spr-3', name: 'The one-semester arc',                                          scope: 'Full club · one semester · one proposer',                                              budget: 'Up to ₹25k · quarterly check-ins',                                                        exitPlan: 'End of semester · public retro · keep as rhythm · archive as experiment.',                                          color: '#F472B6', emoji: '🌘' },
+  { id: 'spr-4', name: 'The shadow pilot',                                                          scope: 'New idea tested in parallel with existing · no swap',                                                   budget: 'Zero additional · volunteer time only',                                                          exitPlan: 'Compare at month 2 · better outcome wins · no outcome · we sunset quietly.',                                                     color: '#A78BFA', emoji: '👥' },
+  { id: 'spr-5', name: 'The silent trial',                                                                     scope: 'One person · one month · no announcement',                                                                         budget: 'Zero · craftperson tries it on themselves',                                                                   exitPlan: 'At month-end · craftperson writes one page · we read aloud · decide together.',                                                              color: '#22C55E', emoji: '🔇' },
+  { id: 'spr-6', name: 'The seasonal pop-up',                                                                                 scope: 'One week · festival · high-energy window',                                                                                    budget: 'Small materials cost · shared with one sponsor',                                                                          exitPlan: 'Post-festival · 3 voice-notes · one circle · go/no-go for next festival.',                                                                        color: '#FFD166', emoji: '🎪' },
+  { id: 'spr-7', name: 'The partner experiment',                                                                                              scope: 'Co-designed with an NGO or alumni chapter',                                                                                                  budget: 'Grant-funded · ₹15–₹50k · line-item',                                                                                      exitPlan: 'End of engagement · joint retro · joint decision · joint credit.',                                                                                    color: '#EF4444', emoji: '🤝' },
+];
+
+interface SuggestionImpactLedger {
+  id: string;
+  shipped: string;
+  cost: string;
+  benefit: string;
+  followUp: string;
+  color: string;
+  emoji: string;
+}
+
+const SUGGESTION_IMPACT_LEDGER: SuggestionImpactLedger[] = [
+  { id: 'sil-1', shipped: 'Moved read-aloud to Fridays',                               cost: '₹0 · changed a habit · took two weeks',                                 benefit: 'Attendance up 60% · ending the week together · calmer Mondays.',                                          followUp: 'Kept · now a tradition · read-aloud has outlived three cohorts.',                          color: '#F59E0B', emoji: '📚' },
+  { id: 'sil-2', shipped: 'Replaced disposable cups with steel mugs',                                  cost: '₹18k one-time · 80 mugs · etched numbers',                                              benefit: '~2000 disposable cups avoided per year · ongoing savings · small ritual added.',                                                    followUp: 'Saw 5 mugs lost in 2 years · replacement fund set up · still cheaper than disposables.',                                     color: '#22C55E', emoji: '🥤' },
+  { id: 'sil-3', shipped: 'Added a wellness lead role',                                                          cost: '₹0 cash · 3 hours of role-writing · consent of council',                                                           benefit: 'Two members who would have left stayed · three faster grievance responses documented.',                                                          followUp: 'Made permanent in year 2 · has a buddy · documented in playbook.',                                          color: '#EF4444', emoji: '🫖' },
+  { id: 'sil-4', shipped: 'Opened grove plots to farewell plantings',                                                                    cost: '₹3k seedlings + ₹5k fence · one Saturday of labour',                                                                  benefit: '40 saplings in year 1 · memory practice for leaving seniors · shared across cohorts.',                                                              followUp: 'Extended to alumni chapters · global grove practice now active.',                                                        color: '#00D4FF', emoji: '🌱' },
+  { id: 'sil-5', shipped: 'Created anonymous feedback mailbox',                                                                                    cost: '₹1k · physical box · padlock · card stock',                                                                                         benefit: '18 surfaced concerns in year 1 · 12 acted on · 4 turned into practices · hard truths heard.',                                                             followUp: 'Dual (physical+digital) rolled out · council reviews every two weeks · public summary quarterly.',                                                    color: '#A78BFA', emoji: '📮' },
+  { id: 'sil-6', shipped: 'Weekly quiet hour · no-phone · no-laptop',                                                                                             cost: '₹0 · schedule reshuffle only',                                                                                                     benefit: 'Focus reports rising · journal entries gaining depth · hour has become "non-negotiable" for many.',                                                              followUp: 'Duration extended to 90 min · one expression-circle added after · regular attendance.',                                                           color: '#F472B6', emoji: '🤫' },
+  { id: 'sil-7', shipped: 'Printed the year-end proposal book',                                                                                                            cost: '₹12k · design + print run of 150',                                                                                                                    benefit: 'Alumni engagement up · used by 4 other clubs as template · archive quality rose.',                                                                                             followUp: 'Annual tradition · redesigned each year · one alumna designs it as gift.',                                                                                      color: '#FFD166', emoji: '📘' },
+];
+
+interface SuggestionFollowUpRing {
+  id: string;
+  after: string;
+  checkIn: string;
+  signal: string;
+  responder: string;
+  color: string;
+  emoji: string;
+}
+
+const SUGGESTION_FOLLOWUP_RINGS: SuggestionFollowUpRing[] = [
+  { id: 'sfr-1', after: 'Day 7 after shipping',                             checkIn: 'Short note to proposer · 3 sentences',                             signal: 'How does it feel so far · one line of truth asked for.',                             responder: 'Original reviewer',                                color: '#00D4FF', emoji: '⏱️' },
+  { id: 'sfr-2', after: 'Day 30 after shipping',                                        checkIn: 'One-on-one with two users · quick voice call',                                        signal: 'Actually-used or quietly-ignored · willingness to write 3 sentences.',                                        responder: 'Wing lead + craftperson',                                             color: '#22C55E', emoji: '🌱' },
+  { id: 'sfr-3', after: 'Day 90 after shipping',                                                    checkIn: 'Cohort-wide note · optional 3-question pulse',                                                     signal: 'Adoption vs. adaptation vs. abandonment · simple label.',                                                      responder: 'Council rotating',                                                            color: '#F472B6', emoji: '📡' },
+  { id: 'sfr-4', after: 'Day 180 after shipping',                                                                 checkIn: 'Written mid-life retro · 1-pager',                                                                      signal: 'Keep · refine · retire · one-word verdict with reasons.',                                                                  responder: 'Proposer + wing lead',                                                                 color: '#F59E0B', emoji: '📝' },
+  { id: 'sfr-5', after: 'Day 365 after shipping',                                                                             checkIn: 'Birthday retro · circle + shared meal',                                                                                   signal: 'Has this become part of us · or left the building?',                                                                                   responder: 'Whole club · rotating facilitator',                                                                    color: '#A78BFA', emoji: '🎂' },
+  { id: 'sfr-6', after: 'Day 730 · second year',                                                                                           checkIn: 'Letter to the next cohort · from the proposer',                                                                                                 signal: 'Does this deserve a permanent sentence in the playbook?',                                                                                                   responder: 'Proposer + council',                                                                                                 color: '#FFD166', emoji: '📜' },
+  { id: 'sfr-7', after: 'Day 1000 · legacy review',                                                                                                     checkIn: 'Public archive entry · named · dated',                                                                                                               signal: 'Did it change how we work · or become furniture?',                                                                                                                    responder: 'Archive keeper + council chair',                                                                                                                  color: '#EF4444', emoji: '🗄️' },
+];
+
 const SuggestionScreen: React.FC = () => {
   // ------------ State ------------
   const [suggestions, setSuggestions] = useState<ExtSuggestion[]>(SAMPLE_SUGGESTIONS);
@@ -4050,6 +4114,69 @@ const SuggestionScreen: React.FC = () => {
     </View>
   );
 
+  // ------ Phase 3ax: round 5 suggestion blocks ------
+  const renderSuggPilotRecipes = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🧪 Pilot recipes · small tests before big changes</Text>
+        <Text style={styles.sectionCaption}>{SUGGESTION_PILOT_RECIPES.length} recipes</Text>
+      </View>
+      {SUGGESTION_PILOT_RECIPES.map((p) => (
+        <View key={p.id} style={[styles.sprCard, { borderLeftColor: p.color }]}>
+          <View style={styles.sprTopRow}>
+            <Text style={styles.sprEmoji}>{p.emoji}</Text>
+            <Text style={styles.sprName} numberOfLines={1}>{p.name}</Text>
+          </View>
+          <Text style={[styles.sprScope, { color: p.color }]} numberOfLines={2}>scope · {p.scope}</Text>
+          <Text style={styles.sprBudget} numberOfLines={2}>budget · {p.budget}</Text>
+          <Text style={styles.sprExit} numberOfLines={3}>exit plan · {p.exitPlan}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderSuggImpactLedger = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>📒 Impact ledger · what shipped actually changed</Text>
+        <Text style={styles.sectionCaption}>{SUGGESTION_IMPACT_LEDGER.length} entries</Text>
+      </View>
+      {SUGGESTION_IMPACT_LEDGER.map((i) => (
+        <View key={i.id} style={[styles.silCard, { borderLeftColor: i.color }]}>
+          <View style={styles.silTopRow}>
+            <Text style={styles.silEmoji}>{i.emoji}</Text>
+            <Text style={styles.silShipped} numberOfLines={2}>{i.shipped}</Text>
+          </View>
+          <Text style={[styles.silCost, { color: i.color }]} numberOfLines={2}>cost · {i.cost}</Text>
+          <Text style={styles.silBenefit} numberOfLines={3}>benefit · {i.benefit}</Text>
+          <Text style={styles.silFollowUp} numberOfLines={2}>follow-up · {i.followUp}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderSuggFollowUpRings = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>📡 Follow-up rings · we check back · we don&apos;t vanish</Text>
+        <Text style={styles.sectionCaption}>{SUGGESTION_FOLLOWUP_RINGS.length} rings</Text>
+      </View>
+      {SUGGESTION_FOLLOWUP_RINGS.map((r) => (
+        <View key={r.id} style={[styles.sfrCard, { borderLeftColor: r.color }]}>
+          <View style={styles.sfrTopRow}>
+            <Text style={styles.sfrEmoji}>{r.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.sfrAfter} numberOfLines={1}>{r.after}</Text>
+              <Text style={[styles.sfrCheckIn, { color: r.color }]} numberOfLines={1}>{r.checkIn}</Text>
+            </View>
+          </View>
+          <Text style={styles.sfrSignal} numberOfLines={2}>signal · {r.signal}</Text>
+          <Text style={styles.sfrResponder} numberOfLines={1}>responder · {r.responder}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
   const listHeader = (
     <View>
       {renderHeader()}
@@ -4094,6 +4221,9 @@ const SuggestionScreen: React.FC = () => {
       {renderSuggReviewerPrinciples()}
       {renderSuggConflictPaths()}
       {renderSuggCommCadences()}
+      {renderSuggPilotRecipes()}
+      {renderSuggImpactLedger()}
+      {renderSuggFollowUpRings()}
       {renderListHeader()}
     </View>
   );
@@ -5422,6 +5552,33 @@ const styles = StyleSheet.create({
   sxcChannel: { fontSize: 11, fontWeight: '700', marginTop: 2 },
   sxcAudience: { color: Colors.text.muted, fontSize: 11, marginTop: 8, paddingLeft: 32 },
   sxcRhythm: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32 },
+
+  // --- Phase 3ax: pilot recipes ---
+  sprCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  sprTopRow: { flexDirection: 'row', alignItems: 'center' },
+  sprEmoji: { fontSize: 22, marginRight: 10 },
+  sprName: { color: Colors.text.primary, fontSize: 13, fontWeight: '900', flex: 1 },
+  sprScope: { fontSize: 11, fontWeight: '700', marginTop: 8, paddingLeft: 32 },
+  sprBudget: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32 },
+  sprExit: { color: Colors.text.muted, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32, fontStyle: 'italic' },
+
+  // --- Phase 3ax: impact ledger ---
+  silCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  silTopRow: { flexDirection: 'row', alignItems: 'center' },
+  silEmoji: { fontSize: 22, marginRight: 10 },
+  silShipped: { color: Colors.text.primary, fontSize: 13, fontWeight: '900', flex: 1, lineHeight: 17 },
+  silCost: { fontSize: 11, fontWeight: '700', marginTop: 8, paddingLeft: 32 },
+  silBenefit: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32 },
+  silFollowUp: { color: Colors.accent.softGold, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32, fontStyle: 'italic' },
+
+  // --- Phase 3ax: follow-up rings ---
+  sfrCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  sfrTopRow: { flexDirection: 'row', alignItems: 'center' },
+  sfrEmoji: { fontSize: 22, marginRight: 10 },
+  sfrAfter: { color: Colors.text.primary, fontSize: 13, fontWeight: '900' },
+  sfrCheckIn: { fontSize: 11, fontWeight: '700', marginTop: 2 },
+  sfrSignal: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8, paddingLeft: 32 },
+  sfrResponder: { color: Colors.text.muted, fontSize: 11, marginTop: 4, paddingLeft: 32 },
 });
 
 export default SuggestionScreen;
