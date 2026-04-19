@@ -1769,6 +1769,70 @@ const EVENT_LEGACY_MARKERS: EventLegacyMarker[] = [
   { id: 'elm-7', marker: 'Leftover food = shared food · no exception',                                                     origin: '2012 · canteen asked what to do with extras · we drove to shelter · never stopped',                                                       kept: 'Every event · leftover food goes to local shelter · within 2 hours · driven · not dumped.',                                                color: '#EF4444', emoji: '🍲' },
 ];
 
+// =====================================================
+// Phase 3ay: deeper events structures — round 5
+// =====================================================
+
+interface EventMorningBrief {
+  id: string;
+  when: string;
+  circle: string;
+  agenda: string;
+  holder: string;
+  color: string;
+  emoji: string;
+}
+
+const EVENT_MORNING_BRIEFS: EventMorningBrief[] = [
+  { id: 'emb-1', when: 'T-1 · 7:00 AM',                 circle: 'Core crew · 8 people',                        agenda: 'Walk the venue · read the run-sheet aloud · every role confirms · 20 minutes flat.',                             holder: 'Stage manager',                                    color: '#00D4FF', emoji: '🌅' },
+  { id: 'emb-2', when: 'T-0 · 5:30 AM · event day',                 circle: 'Full crew + volunteers · 35 people',                    agenda: 'Ten deep breaths · one line of care from each · map on wall · questions until there are none.',                       holder: 'Host of the day',                                               color: '#F59E0B', emoji: '🌄' },
+  { id: 'emb-3', when: 'T-0 · 7:00 AM · event day',                                circle: 'Volunteers only · 25 people',                              agenda: 'Badge up · pods assigned · buddies paired · first-aid points shown · snacks · into position.',                                  holder: 'Volunteer coordinator',                                                  color: '#F472B6', emoji: '🎽' },
+  { id: 'emb-4', when: 'Between sessions · 15 min',                                          circle: 'All wings · quick dip',                                                    agenda: 'Anything unspoken? one question from each wing · one adjustment made · back to work.',                                               holder: 'Rotating mid-day chair',                                                             color: '#A78BFA', emoji: '🫖' },
+  { id: 'emb-5', when: 'Day-2 · 6:45 AM · multi-day events',                                                      circle: 'Core crew · 8 people',                                                              agenda: 'What drained yesterday · what worked · one-line vow for today · before coffee.',                                                              holder: 'Stage manager',                                                                         color: '#22C55E', emoji: '☀️' },
+  { id: 'emb-6', when: 'Closing day · end of show',                                                                        circle: 'Full crew on stage',                                                                          agenda: 'One sentence each · hand on shoulder · no notes · no phones · then applause.',                                                                       holder: 'Host of the day',                                                                                  color: '#FFD166', emoji: '🤝' },
+  { id: 'emb-7', when: 'Next morning · always',                                                                                    circle: 'Core crew · breakfast',                                                                                   agenda: 'What we learnt · what we carry · pancakes · no slides · 90 minutes · go slow.',                                                                                          holder: 'Whoever cooks',                                                                                      color: '#EF4444', emoji: '🥞' },
+];
+
+interface EventRecoveryWeek {
+  id: string;
+  day: string;
+  practice: string;
+  reason: string;
+  note: string;
+  color: string;
+  emoji: string;
+}
+
+const EVENT_RECOVERY_WEEK: EventRecoveryWeek[] = [
+  { id: 'erw-1', day: 'Day +1 · quiet day',                   practice: 'No club work · no reply to thank-yous · only rest.',                reason: 'Adrenaline fades · body catches up · we insist.',                   note: 'Wellness lead sends a short voice-note · nothing else.',                    color: '#00D4FF', emoji: '🛌' },
+  { id: 'erw-2', day: 'Day +2 · thank-yous',                           practice: 'Each crew member writes 3 thank-yous · no more · by hand.',                          reason: 'Gratitude is practice · not performance.',                                    note: 'Post-boxes in the office · volunteers hand-deliver to vendors.',                                   color: '#F59E0B', emoji: '💌' },
+  { id: 'erw-3', day: 'Day +3 · numbers + notes',                                  practice: 'Logistics logs closed · receipts scanned · attendance tallied.',                                            reason: 'Numbers while fresh · memory fades fast.',                                             note: 'Finance wing leads · others contribute quietly.',                                            color: '#F472B6', emoji: '🧮' },
+  { id: 'erw-4', day: 'Day +4 · feedback read',                                                practice: 'All feedback read aloud in a circle · no rebuttal · only listening.',                                                            reason: 'Audience voice shapes next year.',                                                                note: 'Quotes copied to archive · tagged by theme · shared internally.',                                                    color: '#A78BFA', emoji: '👂' },
+  { id: 'erw-5', day: 'Day +5 · craft retro',                                                         practice: 'Wing-level retros · 45 min each · what we\'d do differently.',                                                                          reason: 'Craft knowledge travels only through retros.',                                                                             note: 'One wing-elder joins · mostly listens · closes the loop.',                                                       color: '#22C55E', emoji: '🔄' },
+  { id: 'erw-6', day: 'Day +6 · vendor day',                                                                   practice: 'Payments closed · vendors called · each thanked by name.',                                                                                     reason: 'Relationships outlive events · we keep them warm.',                                                                                note: 'Shortlist for next year drawn from this day\'s conversations.',                                                                color: '#FFD166', emoji: '📞' },
+  { id: 'erw-7', day: 'Day +7 · archive + walk',                                                                                 practice: 'Archive box sealed · photos filed · one long walk together · no talk about the event.',                                                                            reason: 'Closing the week · something else must begin.',                                                                                         note: 'Tea and biscuits after · then back to normal rhythm.',                                                                                    color: '#EF4444', emoji: '📦' },
+];
+
+interface EventAccessibilityPromise {
+  id: string;
+  promise: string;
+  mechanism: string;
+  signage: string;
+  owner: string;
+  color: string;
+  emoji: string;
+}
+
+const EVENT_ACCESSIBILITY_PROMISES: EventAccessibilityPromise[] = [
+  { id: 'eap-1', promise: 'Ramp at every entry',                         mechanism: 'Permanent ramps or rented modular · checked 48h before.',                    signage: 'Wheelchair icon + arrow at gate · high-contrast · on every map.',                    owner: 'Venue lead',                              color: '#00D4FF', emoji: '♿' },
+  { id: 'eap-2', promise: 'Quiet room on every floor',                             mechanism: 'One room per floor · dim light · soft seating · no entry for anyone working.',                             signage: 'Tent card + door decal · "quiet here" · in 3 languages.',                                      owner: 'Wellness lead',                                       color: '#F59E0B', emoji: '🤫' },
+  { id: 'eap-3', promise: 'Live captions on main stage',                                      mechanism: 'Contracted captioner · backup AI with human review · 2 screens.',                                             signage: 'CC badge in corner · mention in open · reminder at breaks.',                                                      owner: 'AV lead',                                                   color: '#F472B6', emoji: '🎙️' },
+  { id: 'eap-4', promise: 'Sensory bags available',                                                 mechanism: 'Kits at registration · ear-plugs · tinted glasses · fidget · chewables.',                                                             signage: 'Mention in registration confirmation · pick-up badge on map.',                                                                owner: 'Volunteer lead',                                                                 color: '#A78BFA', emoji: '🎒' },
+  { id: 'eap-5', promise: 'Interpreters · on request',                                                           mechanism: 'ISL interpreter on call · booked 10 days out · visible on main stage.',                                                                  signage: 'Form on registration · email reminder at T-7 · name on run-sheet.',                                                                       owner: 'Inclusion lead',                                                                  color: '#22C55E', emoji: '🤟' },
+  { id: 'eap-6', promise: 'Dietary transparency',                                                                     mechanism: 'Every dish labelled · allergens · vegan · jain · onion-free · clear.',                                                                              signage: 'Cards at every station · colour-coded · ingredient list laminated.',                                                                               owner: 'F&B lead',                                                                                  color: '#FFD166', emoji: '🍱' },
+  { id: 'eap-7', promise: 'No flash · no sudden sound',                                                                                 mechanism: 'Lighting designer briefed · sound lead briefed · warnings before transitions.',                                                                                           signage: 'Announced at open · in programme · visible during show.',                                                                                                      owner: 'AV lead + host',                                                                                           color: '#EF4444', emoji: '🔇' },
+];
+
 const EventsScreen: React.FC = () => {
   // State
   const [activeTab, setActiveTab] = useState<'upcoming' | 'past'>('upcoming');
@@ -4340,6 +4404,69 @@ const EventsScreen: React.FC = () => {
     </View>
   );
 
+  // ------ Phase 3ay: round 5 events blocks ------
+  const renderEventMorningBriefs = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🌅 Morning briefs · what we say before the doors open</Text>
+        <Text style={styles.sectionCaption}>{EVENT_MORNING_BRIEFS.length} circles</Text>
+      </View>
+      {EVENT_MORNING_BRIEFS.map((b) => (
+        <View key={b.id} style={[styles.embCard, { borderLeftColor: b.color }]}>
+          <View style={styles.embTopRow}>
+            <Text style={styles.embEmoji}>{b.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.embWhen} numberOfLines={1}>{b.when}</Text>
+              <Text style={[styles.embCircle, { color: b.color }]} numberOfLines={1}>{b.circle}</Text>
+            </View>
+          </View>
+          <Text style={styles.embAgenda} numberOfLines={3}>agenda · {b.agenda}</Text>
+          <Text style={styles.embHolder} numberOfLines={1}>holder · {b.holder}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderEventRecoveryWeek = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🌿 Recovery week · the seven days after a big show</Text>
+        <Text style={styles.sectionCaption}>{EVENT_RECOVERY_WEEK.length} days</Text>
+      </View>
+      {EVENT_RECOVERY_WEEK.map((d) => (
+        <View key={d.id} style={[styles.erwCard, { borderLeftColor: d.color }]}>
+          <View style={styles.erwTopRow}>
+            <Text style={styles.erwEmoji}>{d.emoji}</Text>
+            <Text style={styles.erwDay} numberOfLines={1}>{d.day}</Text>
+          </View>
+          <Text style={[styles.erwPractice, { color: d.color }]} numberOfLines={2}>{d.practice}</Text>
+          <Text style={styles.erwReason} numberOfLines={2}>{d.reason}</Text>
+          <Text style={styles.erwNote} numberOfLines={2}>{d.note}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderEventAccessibilityPromises = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>♿ Access promises · what we guarantee · every event</Text>
+        <Text style={styles.sectionCaption}>{EVENT_ACCESSIBILITY_PROMISES.length} promises</Text>
+      </View>
+      {EVENT_ACCESSIBILITY_PROMISES.map((p) => (
+        <View key={p.id} style={[styles.eapCard, { borderLeftColor: p.color }]}>
+          <View style={styles.eapTopRow}>
+            <Text style={styles.eapEmoji}>{p.emoji}</Text>
+            <Text style={styles.eapPromise} numberOfLines={2}>{p.promise}</Text>
+          </View>
+          <Text style={[styles.eapMechanism, { color: p.color }]} numberOfLines={3}>mechanism · {p.mechanism}</Text>
+          <Text style={styles.eapSignage} numberOfLines={2}>signage · {p.signage}</Text>
+          <Text style={styles.eapOwner} numberOfLines={1}>owner · {p.owner}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
   const renderExtrasFooter = () => (
     <View>
       {renderAccessGuides()}
@@ -4395,6 +4522,9 @@ const EventsScreen: React.FC = () => {
       {renderEventRainyPlans()}
       {renderEventAftercareSteps()}
       {renderEventLegacyMarkers()}
+      {renderEventMorningBriefs()}
+      {renderEventRecoveryWeek()}
+      {renderEventAccessibilityPromises()}
       <View style={styles.footerBand}>
         <Text style={styles.footerLine}>
           Built with saplings, scripts + slow weekends.
@@ -7078,6 +7208,33 @@ const styles = StyleSheet.create({
   elmMarker: { color: Colors.text.primary, fontSize: 13, fontWeight: '900', flex: 1, lineHeight: 17 },
   elmOrigin: { color: Colors.accent.softGold, fontSize: 11, lineHeight: 15, marginTop: 8, paddingLeft: 32, fontStyle: 'italic' },
   elmKept: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32 },
+
+  // --- Phase 3ay: morning briefs ---
+  embCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  embTopRow: { flexDirection: 'row', alignItems: 'center' },
+  embEmoji: { fontSize: 22, marginRight: 10 },
+  embWhen: { color: Colors.text.primary, fontSize: 13, fontWeight: '900' },
+  embCircle: { fontSize: 11, fontWeight: '700', marginTop: 2 },
+  embAgenda: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8, paddingLeft: 32 },
+  embHolder: { color: Colors.text.muted, fontSize: 11, marginTop: 4, paddingLeft: 32 },
+
+  // --- Phase 3ay: recovery week ---
+  erwCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  erwTopRow: { flexDirection: 'row', alignItems: 'center' },
+  erwEmoji: { fontSize: 22, marginRight: 10 },
+  erwDay: { color: Colors.text.primary, fontSize: 13, fontWeight: '900', flex: 1 },
+  erwPractice: { fontSize: 11, fontWeight: '700', marginTop: 8, paddingLeft: 32 },
+  erwReason: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32 },
+  erwNote: { color: Colors.text.muted, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32, fontStyle: 'italic' },
+
+  // --- Phase 3ay: accessibility promises ---
+  eapCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  eapTopRow: { flexDirection: 'row', alignItems: 'center' },
+  eapEmoji: { fontSize: 22, marginRight: 10 },
+  eapPromise: { color: Colors.text.primary, fontSize: 13, fontWeight: '900', flex: 1, lineHeight: 17 },
+  eapMechanism: { fontSize: 11, fontWeight: '700', marginTop: 8, paddingLeft: 32, lineHeight: 15 },
+  eapSignage: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32 },
+  eapOwner: { color: Colors.text.muted, fontSize: 11, marginTop: 4, paddingLeft: 32 },
 });
 
 export default EventsScreen;
