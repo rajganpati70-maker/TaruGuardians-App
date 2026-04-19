@@ -380,6 +380,229 @@ const METRICS: WingMetric[] = [
 ];
 
 // -----------------------------------------------------
+// Growth paths — per wing beginner → core → lead milestones
+// -----------------------------------------------------
+
+interface GrowthStep {
+  id: string;
+  level: 'beginner' | 'contributor' | 'core' | 'lead';
+  title: string;
+  body: string;
+  skills: string[];
+  weeks: number;
+}
+
+interface WingGrowthPath {
+  wingId: string;
+  title: string;
+  subtitle: string;
+  steps: GrowthStep[];
+}
+
+const GROWTH_PATHS: WingGrowthPath[] = [
+  {
+    wingId: 'content',
+    title: 'From first draft to editorial lead',
+    subtitle: 'No prior writing credits required. We teach the craft in public.',
+    steps: [
+      { id: 'c-g1', level: 'beginner', title: 'Open notebook', body: 'Write one 300-word post per week for 4 weeks. Any topic. Anything un-PR-friendly.', skills: ['voice', 'drafts'], weeks: 4 },
+      { id: 'c-g2', level: 'contributor', title: 'Edit-in-public', body: 'Pair-edit with a senior every Thursday. Ship one article to the club newsletter.', skills: ['editing', 'newsletter', 'feedback'], weeks: 6 },
+      { id: 'c-g3', level: 'core', title: 'Own a beat', body: 'Pick a beat (sustainability, alumni, campus ops). Ship at least 2 pieces a month with research cadence.', skills: ['beat', 'research', 'interviewing'], weeks: 10 },
+      { id: 'c-g4', level: 'lead', title: 'Editorial lead', body: 'Run a sub-desk. Mentor 3 new writers. Set quarterly storyboards with the PR wing.', skills: ['mentorship', 'strategy', 'storyboarding'], weeks: 16 },
+    ],
+  },
+  {
+    wingId: 'webapp',
+    title: 'Zero merge to release owner',
+    subtitle: 'You will ship by week 2. We will not let you ship alone.',
+    steps: [
+      { id: 'w-g1', level: 'beginner', title: 'First PR Friday', body: 'Pair with a maintainer. Ship a tiny UI or docs PR. Green CI is the goal.', skills: ['git', 'reading code', 'PR etiquette'], weeks: 2 },
+      { id: 'w-g2', level: 'contributor', title: 'Owned feature', body: 'Scope, estimate, ship, document one small feature end-to-end. Write the post-mortem.', skills: ['scoping', 'testing', 'post-mortems'], weeks: 6 },
+      { id: 'w-g3', level: 'core', title: 'Release weeks', body: 'Run a release rotation. Triage 50+ issues. Close at least 20 in a week.', skills: ['triage', 'release mgmt', 'on-call'], weeks: 10 },
+      { id: 'w-g4', level: 'lead', title: 'Platform ownership', body: 'Own a sub-system (auth, RN bridge, infra, analytics). Mentor 5 contributors. Roadmap it.', skills: ['architecture', 'mentorship', 'roadmaps'], weeks: 20 },
+    ],
+  },
+  {
+    wingId: 'gd',
+    title: 'From first poster to visual systems',
+    subtitle: 'No fine-arts background needed. Strong opinions, held loosely.',
+    steps: [
+      { id: 'g-g1', level: 'beginner', title: 'Poster practice', body: 'Redraw 10 existing club posters in 4 weeks. Critique each in 1 paragraph.', skills: ['figma', 'type hierarchy', 'grid'], weeks: 4 },
+      { id: 'g-g2', level: 'contributor', title: 'Shipped artefact', body: 'Own 1 end-to-end deliverable — poster, reel cover, newsletter header — per week.', skills: ['brand fit', 'export discipline', 'feedback loops'], weeks: 8 },
+      { id: 'g-g3', level: 'core', title: 'Design kit owner', body: 'Curate a template kit. Train 3 juniors on it. Review all wing output in a weekly crit.', skills: ['systems', 'crit', 'mentorship'], weeks: 12 },
+      { id: 'g-g4', level: 'lead', title: 'Visual systems lead', body: 'Own the brand library — logo, palette, type, motion. Pair with PR on every external surface.', skills: ['brand', 'motion', 'governance'], weeks: 18 },
+    ],
+  },
+  {
+    wingId: 'video',
+    title: 'Shoot → story → schedule',
+    subtitle: 'Phone-first is welcome. We promote taste over gear.',
+    steps: [
+      { id: 'v-g1', level: 'beginner', title: 'Story of 60 sec', body: 'Produce one 60-second vertical piece every fortnight. Pair with a writer.', skills: ['storyboard', 'cut', 'music licence'], weeks: 4 },
+      { id: 'v-g2', level: 'contributor', title: 'Event recap owner', body: 'Take full recap responsibility of 2 events — shoot, cut, caption, ship within 48 hrs.', skills: ['deadline shipping', 'colour', 'sound mix'], weeks: 8 },
+      { id: 'v-g3', level: 'core', title: 'Series producer', body: 'Run a recurring series (monthly alumni, weekly field, etc.) with calendar and stats.', skills: ['series pipeline', 'analytics', 'calendar'], weeks: 12 },
+      { id: 'v-g4', level: 'lead', title: 'Video wing lead', body: 'Plan the year, budget the gear, rotate the roles, protect the editors from burnout.', skills: ['planning', 'budgeting', 'wellbeing'], weeks: 20 },
+    ],
+  },
+  {
+    wingId: 'photo',
+    title: 'From phone photographer to archive steward',
+    subtitle: 'Kit agnostic. Eye first. Archive discipline next.',
+    steps: [
+      { id: 'p-g1', level: 'beginner', title: 'Walk and shoot', body: 'Attend 2 photo walks. Submit 20 frames with captions. 5 go to the club feed.', skills: ['composition', 'caption', 'light'], weeks: 3 },
+      { id: 'p-g2', level: 'contributor', title: 'Event archive', body: 'Cover 2 events. Turn in tagged, ready-to-use archive within 72 hours of shooting.', skills: ['metadata', 'colour', 'archive'], weeks: 6 },
+      { id: 'p-g3', level: 'core', title: 'Beat photographer', body: 'Own a beat (sustainability field, portraits, night). Publish 1 mini-story a month.', skills: ['beat', 'story', 'relationships'], weeks: 12 },
+      { id: 'p-g4', level: 'lead', title: 'Archive & photo lead', body: 'Curate the 4-year archive. Publish an annual zine. Train 4 new beat shooters.', skills: ['archive ops', 'zines', 'mentorship'], weeks: 20 },
+    ],
+  },
+  {
+    wingId: 'pr',
+    title: 'Outreach that doesn\'t burn bridges',
+    subtitle: 'We run PR slow, human, and on the record.',
+    steps: [
+      { id: 'pr-g1', level: 'beginner', title: 'Inbox triage', body: 'Learn the tone guide. Reply to 20 emails under senior review. No cold decks.', skills: ['tone', 'CRM', 'empathy'], weeks: 3 },
+      { id: 'pr-g2', level: 'contributor', title: 'Event lead', body: 'Take full ownership of one small event — partners, comms, run-of-show, post-mortem.', skills: ['event ops', 'partners', 'run-of-show'], weeks: 6 },
+      { id: 'pr-g3', level: 'core', title: 'Sponsorship cohort', body: 'Run a quarterly sponsor cohort — at-cost, honest, re-inviteable.', skills: ['sponsorship', 'budgets', 'honesty'], weeks: 12 },
+      { id: 'pr-g4', level: 'lead', title: 'Wing lead', body: 'Own alumni pipeline, press list, chapter ops, and the 3-year narrative.', skills: ['narrative', 'pipelines', 'trust'], weeks: 24 },
+    ],
+  },
+];
+
+// -----------------------------------------------------
+// Awards (per wing)
+// -----------------------------------------------------
+
+interface WingAward {
+  id: string;
+  wingId: string;
+  year: string;
+  title: string;
+  body: string;
+  emoji: string;
+  color: string;
+}
+
+const WING_AWARDS: WingAward[] = [
+  { id: 'wa-1', wingId: 'content', year: '2025', title: 'Campus long-form of the year', body: 'Sapling-story piece · 11k organic reads · republished by The Canopy Press.', emoji: '🏆', color: '#F59E0B' },
+  { id: 'wa-2', wingId: 'content', year: '2024', title: 'Newsletter of the year', body: 'Open rate 52%. Reply rate 14%. No sponsored content, ever.', emoji: '📨', color: '#FDBA74' },
+  { id: 'wa-3', wingId: 'content', year: '2023', title: 'Handbook impact prize', body: '38-page onboarding handbook adopted by 4 partner clubs.', emoji: '📖', color: '#FCD34D' },
+
+  { id: 'wa-4', wingId: 'webapp', year: '2025', title: 'Tool of the year', body: 'Sapling health classifier · used by 14 volunteer teams.', emoji: '🤖', color: '#00D4FF' },
+  { id: 'wa-5', wingId: 'webapp', year: '2024', title: 'Open-source award', body: '12 repositories · 480 stars cumulative · 120 PRs by students.', emoji: '⭐', color: '#38BDF8' },
+  { id: 'wa-6', wingId: 'webapp', year: '2023', title: 'Best release discipline', body: 'Shipped weekly without a rollback for 27 consecutive weeks.', emoji: '🚀', color: '#6366F1' },
+
+  { id: 'wa-7', wingId: 'gd', year: '2025', title: 'Visual identity of the year', body: 'Unified brand kit — logo, type, motion, export presets.', emoji: '🎨', color: '#A78BFA' },
+  { id: 'wa-8', wingId: 'gd', year: '2024', title: 'Best poster series', body: 'Earth Day x 30 — 30 posters in 30 days, co-authored by 12 designers.', emoji: '🖼️', color: '#C084FC' },
+
+  { id: 'wa-9', wingId: 'video', year: '2025', title: 'Annual recap prize', body: 'The 6-minute annual recap anchored the mid-year fundraiser.', emoji: '🎬', color: '#F472B6' },
+  { id: 'wa-10', wingId: 'video', year: '2024', title: 'Most-watched reel series', body: '30 stories in 30 days · 1.2M aggregate reach.', emoji: '🎞️', color: '#EC4899' },
+
+  { id: 'wa-11', wingId: 'photo', year: '2025', title: 'Archive steward prize', body: '4 years of unlabelled photos → fully tagged, searchable library.', emoji: '🗂️', color: '#FB7185' },
+  { id: 'wa-12', wingId: 'photo', year: '2024', title: 'Photo walk impact', body: '9 photo walks · 4 campuses · 3 alumni hubs.', emoji: '🚶', color: '#F87171' },
+
+  { id: 'wa-13', wingId: 'pr', year: '2025', title: 'Chapter expansion award', body: '3 new city chapters — Bengaluru, Hyderabad, Pune.', emoji: '🏙️', color: '#FBBF24' },
+  { id: 'wa-14', wingId: 'pr', year: '2024', title: 'Sponsor cohort award', body: '12 sponsors, 0 conflicts. All reinvited in 2025.', emoji: '🤝', color: '#F59E0B' },
+];
+
+// -----------------------------------------------------
+// Wing journal (weekly notes)
+// -----------------------------------------------------
+
+interface JournalEntry {
+  id: string;
+  wingId: string;
+  weekOf: string;
+  title: string;
+  body: string;
+  wins: string[];
+  learnings: string[];
+  author: string;
+}
+
+const WING_JOURNAL: JournalEntry[] = [
+  {
+    id: 'jn-1',
+    wingId: 'content',
+    weekOf: 'Apr 15, 2026',
+    title: 'Long-form sapling piece landed',
+    body: 'We took three drafts to get there. The second draft was the honest one — but the third let the honesty breathe. 11k reads in ten days, two republications, no weird comments.',
+    wins: ['11k organic reads', 'Republished by Canopy Press', '2 interview requests'],
+    learnings: ['Draft 2 was honest but rough. Edit 3 kept the honesty, added room to breathe.'],
+    author: 'Ananya P.',
+  },
+  {
+    id: 'jn-2',
+    wingId: 'webapp',
+    weekOf: 'Apr 15, 2026',
+    title: 'RN crash on Android 11 fixed',
+    body: 'A permissions race in the RSVP flow. Repro on a real Moto G30. 4 first-time contributors paired in to help triage.',
+    wins: ['Crash rate down 92% in 24 hours', '4 first-time contributors shipped a fix'],
+    learnings: ['Stop assuming emulator behaviour matches real low-end devices.'],
+    author: 'Vivaan S.',
+  },
+  {
+    id: 'jn-3',
+    wingId: 'gd',
+    weekOf: 'Apr 15, 2026',
+    title: 'Poster kit sign-off',
+    body: 'We shipped the first public poster kit — 12 templates, 3 grids, editable in Figma and Canva. The crit session was gentler than usual. Progress.',
+    wins: ['12 templates shipped', 'Zero duplicated jobs this week'],
+    learnings: ['Kinder crits produced better posters, not worse.'],
+    author: 'Ishita K.',
+  },
+  {
+    id: 'jn-4',
+    wingId: 'video',
+    weekOf: 'Apr 15, 2026',
+    title: 'Reel #24 went viral',
+    body: 'Short, grainy, real. No wide angles. Filmed on a OnePlus. 420k views in three days. The club spent the week reminding itself why we don\'t chase virality.',
+    wins: ['420k views on Reel #24', '+38 subscribers'],
+    learnings: ['Grain wins over gloss when the story is real.'],
+    author: 'Aryan D.',
+  },
+  {
+    id: 'jn-5',
+    wingId: 'photo',
+    weekOf: 'Apr 15, 2026',
+    title: 'Cubbon Park sunrise walk',
+    body: '35 walkers. Zero flash. Many pauses. We left the bird feeders alone and mostly photographed light on bark.',
+    wins: ['35 walkers, most new', '200 photos added to archive', '6 new taggers'],
+    learnings: ['Slower walks → better frames.'],
+    author: 'Mira J.',
+  },
+  {
+    id: 'jn-6',
+    wingId: 'pr',
+    weekOf: 'Apr 15, 2026',
+    title: 'Sponsor roundtable — at-cost model',
+    body: 'We pitched the at-cost sponsor model to six partners over tea. Four opted in. Two opted out — politely, and we kept the bridges.',
+    wins: ['4 sponsors confirmed', 'All 6 agreed to stay in touch'],
+    learnings: ['Slower outreach keeps more doors open than aggressive decks.'],
+    author: 'Dhruv N.',
+  },
+  {
+    id: 'jn-7',
+    wingId: 'content',
+    weekOf: 'Apr 8, 2026',
+    title: 'Handbook v4 shipped',
+    body: 'The handbook got a refresh — onboarding page rewritten in plain prose, mentor rota added, email templates inlined for quick copy-paste.',
+    wins: ['PDF + on-site version in parity', '11 clubs downloaded v4'],
+    learnings: ['Plain prose outperformed bullet lists for first-week members.'],
+    author: 'Nivedita R.',
+  },
+  {
+    id: 'jn-8',
+    wingId: 'webapp',
+    weekOf: 'Apr 8, 2026',
+    title: 'Release week triage rotation',
+    body: '60 issues triaged in a single week. The rotation kept nobody on-call more than 6 hours.',
+    wins: ['22 issues closed', 'Median triage age dropped 3.4 days'],
+    learnings: ['Pairing juniors with a maintainer doubled throughput without burning anyone out.'],
+    author: 'Rohit B.',
+  },
+];
+
+// -----------------------------------------------------
 // Component
 // -----------------------------------------------------
 
@@ -999,6 +1222,155 @@ const TaruWingsScreen: React.FC = () => {
     );
   };
 
+  const renderGrowthPathBlock = () => {
+    if (!selectedWing) return null;
+    const path = GROWTH_PATHS.find((p) => p.wingId === selectedWing.id);
+    if (!path) return null;
+    const levelColor: Record<GrowthStep['level'], string> = {
+      beginner: '#4ADE80',
+      contributor: '#38BDF8',
+      core: '#A78BFA',
+      lead: '#F59E0B',
+    };
+    return (
+      <View style={styles.sectionBlock}>
+        <View style={styles.sectionHeaderRow}>
+          <Text style={styles.sectionTitle}>🌱 Growth path</Text>
+          <Text style={styles.sectionCaption}>{path.steps.length} milestones</Text>
+        </View>
+        <Text style={styles.growthTitle}>{path.title}</Text>
+        <Text style={styles.growthSubtitle}>{path.subtitle}</Text>
+        <View style={styles.growthTimeline}>
+          {path.steps.map((s, idx) => (
+            <View key={s.id} style={styles.growthStep}>
+              <View
+                style={[
+                  styles.growthDot,
+                  { backgroundColor: levelColor[s.level] },
+                ]}
+              />
+              {idx < path.steps.length - 1 ? (
+                <View style={styles.growthConnector} />
+              ) : null}
+              <View style={styles.growthBody}>
+                <View style={styles.growthRow}>
+                  <View
+                    style={[
+                      styles.growthLevelPill,
+                      { backgroundColor: levelColor[s.level] + '22' },
+                    ]}
+                  >
+                    <Text
+                      style={[
+                        styles.growthLevelText,
+                        { color: levelColor[s.level] },
+                      ]}
+                    >
+                      {s.level.toUpperCase()}
+                    </Text>
+                  </View>
+                  <Text style={styles.growthWeeks}>{s.weeks} wks</Text>
+                </View>
+                <Text style={styles.growthStepTitle}>{s.title}</Text>
+                <Text style={styles.growthStepBody}>{s.body}</Text>
+                <View style={styles.growthSkillsRow}>
+                  {s.skills.map((sk) => (
+                    <View key={sk} style={styles.growthSkillPill}>
+                      <Text style={styles.growthSkillText}>{sk}</Text>
+                    </View>
+                  ))}
+                </View>
+              </View>
+            </View>
+          ))}
+        </View>
+      </View>
+    );
+  };
+
+  const renderAwardsBlock = () => {
+    if (!selectedWing) return null;
+    const awards = WING_AWARDS.filter((a) => a.wingId === selectedWing.id);
+    if (awards.length === 0) return null;
+    return (
+      <View style={styles.sectionBlock}>
+        <View style={styles.sectionHeaderRow}>
+          <Text style={styles.sectionTitle}>🏅 Awards & recognition</Text>
+          <Text style={styles.sectionCaption}>{awards.length} honoured</Text>
+        </View>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.awardsScroll}
+        >
+          {awards.map((a) => (
+            <View key={a.id} style={styles.awardCard}>
+              <LinearGradient
+                colors={[a.color + '33', '#0A0F14']}
+                style={styles.awardGradient}
+              >
+                <View style={styles.awardTopRow}>
+                  <Text style={styles.awardEmoji}>{a.emoji}</Text>
+                  <View style={[styles.awardYearPill, { backgroundColor: a.color + '22' }]}>
+                    <Text style={[styles.awardYearText, { color: a.color }]}>{a.year}</Text>
+                  </View>
+                </View>
+                <Text style={styles.awardTitle}>{a.title}</Text>
+                <Text style={styles.awardBody}>{a.body}</Text>
+              </LinearGradient>
+            </View>
+          ))}
+        </ScrollView>
+      </View>
+    );
+  };
+
+  const renderJournalBlock = () => {
+    if (!selectedWing) return null;
+    const entries = WING_JOURNAL.filter((j) => j.wingId === selectedWing.id);
+    if (entries.length === 0) return null;
+    return (
+      <View style={styles.sectionBlock}>
+        <View style={styles.sectionHeaderRow}>
+          <Text style={styles.sectionTitle}>📝 Wing journal</Text>
+          <Text style={styles.sectionCaption}>{entries.length} entries</Text>
+        </View>
+        {entries.map((j) => (
+          <View
+            key={j.id}
+            style={[
+              styles.journalCard,
+              { borderLeftColor: selectedWing.color },
+            ]}
+          >
+            <View style={styles.journalHeaderRow}>
+              <Text style={styles.journalWeek}>{j.weekOf}</Text>
+              <Text style={styles.journalAuthor}>— {j.author}</Text>
+            </View>
+            <Text style={styles.journalTitle}>{j.title}</Text>
+            <Text style={styles.journalBody}>{j.body}</Text>
+            <View style={styles.journalSection}>
+              <Text style={styles.journalSectionLabel}>✨ Wins</Text>
+              {j.wins.map((w, i) => (
+                <Text key={`${j.id}-w-${i}`} style={styles.journalBullet}>
+                  • {w}
+                </Text>
+              ))}
+            </View>
+            <View style={styles.journalSection}>
+              <Text style={styles.journalSectionLabel}>🔎 Learnings</Text>
+              {j.learnings.map((l, i) => (
+                <Text key={`${j.id}-l-${i}`} style={styles.journalBullet}>
+                  • {l}
+                </Text>
+              ))}
+            </View>
+          </View>
+        ))}
+      </View>
+    );
+  };
+
   const renderMemberModal = () => {
     if (!selectedMember) return null;
     const m = selectedMember;
@@ -1254,9 +1626,12 @@ const TaruWingsScreen: React.FC = () => {
     >
       {renderWingDetailHeader()}
       {renderToolsBlock()}
+      {renderGrowthPathBlock()}
       {renderOpenRoles()}
       {renderProjectsBlock()}
+      {renderAwardsBlock()}
       {renderEventsBlock()}
+      {renderJournalBlock()}
       {renderMembersBlock()}
     </ScrollView>
   );
@@ -1612,6 +1987,163 @@ const styles = StyleSheet.create({
   applySuccessEmoji: { fontSize: 36 },
   applySuccessText: { color: Colors.text.primary, fontSize: 16, fontWeight: '800', marginTop: 10 },
   applySuccessSub: { color: Colors.text.muted, fontSize: 12, marginTop: 6, textAlign: 'center' },
+
+  // Growth path
+  growthTitle: {
+    color: Colors.text.primary,
+    fontSize: 16,
+    fontWeight: '800',
+    paddingHorizontal: HORIZONTAL_PADDING,
+    marginTop: 4,
+  },
+  growthSubtitle: {
+    color: Colors.text.secondary,
+    fontSize: 12,
+    paddingHorizontal: HORIZONTAL_PADDING,
+    marginTop: 4,
+    lineHeight: 17,
+  },
+  growthTimeline: {
+    paddingHorizontal: HORIZONTAL_PADDING,
+    marginTop: 14,
+  },
+  growthStep: {
+    flexDirection: 'row',
+    paddingLeft: 4,
+    paddingBottom: 18,
+  },
+  growthDot: {
+    width: 14,
+    height: 14,
+    borderRadius: 7,
+    marginTop: 4,
+    marginRight: 14,
+    borderWidth: 2,
+    borderColor: '#0A0F14',
+  },
+  growthConnector: {
+    position: 'absolute',
+    left: 10,
+    top: 20,
+    bottom: -4,
+    width: 2,
+    backgroundColor: '#ffffff14',
+  },
+  growthBody: { flex: 1 },
+  growthRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  growthLevelPill: {
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 8,
+  },
+  growthLevelText: { fontSize: 10, fontWeight: '900', letterSpacing: 0.8 },
+  growthWeeks: { color: Colors.text.muted, fontSize: 11, fontWeight: '700' },
+  growthStepTitle: {
+    color: Colors.text.primary,
+    fontSize: 14,
+    fontWeight: '800',
+    marginTop: 4,
+  },
+  growthStepBody: {
+    color: Colors.text.secondary,
+    fontSize: 12,
+    lineHeight: 17,
+    marginTop: 3,
+  },
+  growthSkillsRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginTop: 6,
+  },
+  growthSkillPill: {
+    backgroundColor: '#ffffff12',
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 8,
+    marginRight: 6,
+    marginTop: 4,
+  },
+  growthSkillText: { color: Colors.text.secondary, fontSize: 10, fontWeight: '700' },
+
+  // Awards
+  awardsScroll: { paddingLeft: HORIZONTAL_PADDING, paddingRight: 10 },
+  awardCard: { width: 240, marginRight: 12 },
+  awardGradient: {
+    borderRadius: 16,
+    padding: 14,
+    borderWidth: 1,
+    borderColor: '#ffffff18',
+    minHeight: 140,
+  },
+  awardTopRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  awardEmoji: { fontSize: 24 },
+  awardYearPill: {
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 8,
+  },
+  awardYearText: { fontSize: 10, fontWeight: '800' },
+  awardTitle: {
+    color: Colors.text.primary,
+    fontSize: 13,
+    fontWeight: '800',
+    marginTop: 10,
+  },
+  awardBody: {
+    color: Colors.text.secondary,
+    fontSize: 11,
+    marginTop: 6,
+    lineHeight: 15,
+  },
+
+  // Journal
+  journalCard: {
+    marginHorizontal: HORIZONTAL_PADDING,
+    marginBottom: 10,
+    padding: 14,
+    borderRadius: 14,
+    backgroundColor: '#0D141B',
+    borderLeftWidth: 3,
+  },
+  journalHeaderRow: {
+    flexDirection: 'row',
+    alignItems: 'baseline',
+    justifyContent: 'space-between',
+  },
+  journalWeek: { color: Colors.text.muted, fontSize: 11, fontWeight: '700' },
+  journalAuthor: { color: Colors.text.muted, fontSize: 11 },
+  journalTitle: {
+    color: Colors.text.primary,
+    fontSize: 14,
+    fontWeight: '800',
+    marginTop: 4,
+  },
+  journalBody: {
+    color: Colors.text.secondary,
+    fontSize: 12,
+    marginTop: 6,
+    lineHeight: 17,
+  },
+  journalSection: { marginTop: 8 },
+  journalSectionLabel: {
+    color: Colors.text.primary,
+    fontSize: 11,
+    fontWeight: '800',
+    marginBottom: 4,
+  },
+  journalBullet: {
+    color: Colors.text.secondary,
+    fontSize: 11,
+    lineHeight: 15,
+  },
 });
 
 export default TaruWingsScreen;
