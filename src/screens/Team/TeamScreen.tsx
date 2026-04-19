@@ -1656,6 +1656,96 @@ const TEAM_MENTOR_LINES: TeamMentorLine[] = [
   { id: 'tml-7', pair: 'Outgoing chair ↔ incoming chair',                                                                                     cadence: 'Weekly hand-off · monthly check-in',                                                              focus: 'Governance rhythms · decision making · conflict de-escalation.',                                                                                                       artefact: 'Handoff document · updated annually · living artifact.',                                                                color: '#EF4444', emoji: '🪔' },
 ];
 
+// =====================================================
+// Phase 3bb: deeper team structures — round 6
+// =====================================================
+
+interface TeamRotationSwap {
+  id: string;
+  pair: string;
+  duration: string;
+  learning: string;
+  hand_off: string;
+  color: string;
+  emoji: string;
+}
+
+const TEAM_ROTATION_SWAPS: TeamRotationSwap[] = [
+  { id: 'trs-1', pair: 'Content chair ↔ web chair',                        duration: '2 weeks',                          learning: 'Understanding how writers experience the publishing pipeline · and how engineers shape it.',                       hand_off: 'Shared doc of 10 surprises + 5 fixes · folded into next quarter\'s plan.',                    color: '#00D4FF', emoji: '🔄' },
+  { id: 'trs-2', pair: 'PR chair ↔ graphic chair',                                     duration: '2 weeks',                                                learning: 'Seeing how pitches translate to visuals · and how visuals constrain story arcs.',                                                   hand_off: 'Five new shared templates · retired 3 outdated ones · posted to library.',                                         color: '#F472B6', emoji: '🎨' },
+  { id: 'trs-3', pair: 'Video chair ↔ photo chair',                                                 duration: '3 weeks',                                                                learning: 'How moving image and still image read differently · and where they can help each other.',                                                               hand_off: 'One collaborative photo-film hybrid project · now a permanent wing.',                                                            color: '#A78BFA', emoji: '🎞️' },
+  { id: 'trs-4', pair: 'Wellness lead ↔ council chair',                                                          duration: '1 month',                                                                              learning: 'Leadership through well-being · and the emotional undercurrent of decisions.',                                                                                 hand_off: 'New checklist · every major decision now has a well-being line item.',                                                                    color: '#22C55E', emoji: '🌱' },
+  { id: 'trs-5', pair: 'Archivist ↔ operations lead',                                                                       duration: '2 weeks',                                                                                             learning: 'How records inform operations · and how operations keep records alive.',                                                                                                   hand_off: 'Unified tagging system for artefacts and tasks · saved 12 hours/week team-wide.',                                                                        color: '#FFD166', emoji: '🗂️' },
+  { id: 'trs-6', pair: 'Alumni liaison ↔ new-member mentor',                                                                                  duration: '2 weeks',                                                                                                            learning: 'What alumni wish new members knew · and what new members wish alumni knew.',                                                                                                              hand_off: 'Revised welcome letter · revised alumni updates · both voices present in both.',                                                                                   color: '#EF4444', emoji: '💌' },
+  { id: 'trs-7', pair: 'Finance lead ↔ events chair',                                                                                                     duration: '3 weeks',                                                                                                                                   learning: 'How money shapes events · and how event dreams stress-test finance models.',                                                                                                                           hand_off: 'Revised event budget template · now used for every flagship event · trimmed 18% waste.',                                                                                           color: '#16A34A', emoji: '💰' },
+  { id: 'trs-8', pair: 'Safety officer ↔ hospitality lead',                                                                                                                duration: '2 weeks',                                                                                                                                                  learning: 'Where safety and hospitality intersect · where they diverge · how to hold both.',                                                                                                                                         hand_off: 'Shared venue playbook · one page · covers both domains · adopted for all major events.',                                                                                                    color: '#F59E0B', emoji: '🛡️' },
+];
+
+interface TeamMemberTile {
+  id: string;
+  role: string;
+  name: string;
+  tenure: string;
+  signature: string;
+  color: string;
+  emoji: string;
+}
+
+const TEAM_MEMBER_TILES: TeamMemberTile[] = [
+  { id: 'tmt-1', role: 'Council chair',                        name: 'Priya N.',                   tenure: '3rd year · 5 semesters on council',                signature: 'Always starts meetings with the same line: "Who are we thinking of?"',         color: '#00D4FF', emoji: '🪔' },
+  { id: 'tmt-2', role: 'Wellness lead',                                  name: 'Meera K.',                             tenure: '2nd year · 3 semesters on wellness team',                           signature: 'Keeps tea brewing during hard conversations · doesn\'t talk unless asked.',                        color: '#22C55E', emoji: '🫖' },
+  { id: 'tmt-3', role: 'Content editor',                                              name: 'Rohan S.',                                       tenure: '4th year · 7 semesters in content wing',                                                   signature: 'Says "one more read-aloud · then ship" · every single draft.',                                            color: '#F59E0B', emoji: '📖' },
+  { id: 'tmt-4', role: 'Web/App lead',                                                           name: 'Tanvi P.',                                                  tenure: '3rd year · 4 semesters leading builds',                                                                  signature: 'Ships a tiny delight with every big feature · people remember the delights.',                                            color: '#00D4FF', emoji: '💻' },
+  { id: 'tmt-5', role: 'Graphic principal',                                                                  name: 'Kabir V.',                                                             tenure: '4th year · 6 semesters in design',                                                                                  signature: 'Retires one colour from the club palette every semester · "taste is subtraction".',                                              color: '#F472B6', emoji: '🎨' },
+  { id: 'tmt-6', role: 'Video director',                                                                               name: 'Iman R.',                                                                          tenure: '3rd year · 4 semesters filming',                                                                                                    signature: 'Watches the final cut in silence · no notes · just presence · before any discussion.',                                             color: '#A78BFA', emoji: '🎞️' },
+  { id: 'tmt-7', role: 'Photo lead',                                                                                             name: 'Nidhi B.',                                                                                    tenure: '3rd year · 4 semesters in photo wing',                                                                                                                signature: 'Hangs one physical print in the corridor every month · never announces it · always signed.',                                            color: '#22C55E', emoji: '📷' },
+  { id: 'tmt-8', role: 'PR lead',                                                                                                          name: 'Rehan A.',                                                                                                tenure: '4th year · 6 semesters in PR',                                                                                                                                   signature: 'Writes 30 handwritten thank-you notes after every event · never stopped · never slowed.',                                              color: '#FFD166', emoji: '📞' },
+  { id: 'tmt-9', role: 'Archive keeper',                                                                                                                  name: 'Sana L.',                                                                                                      tenure: '2nd year · 3 semesters archiving',                                                                                                                                                  signature: 'Every artefact is tagged · captioned · dated · even the receipts · even the scraps.',                                                      color: '#FFD166', emoji: '📂' },
+  { id: 'tmt-10', role: 'Alumni liaison',                                                                                                                             name: 'Aarav J.',                                                                                                                 tenure: '4th year · 5 semesters liaising',                                                                                                                                                                 signature: 'Knows 400+ alumni by first name · remembers their kids · sends real birthday notes.',                                                                color: '#EF4444', emoji: '💌' },
+];
+
+interface TeamWeeklyRhythm {
+  id: string;
+  day: string;
+  rhythm: string;
+  holder: string;
+  purpose: string;
+  color: string;
+  emoji: string;
+}
+
+const TEAM_WEEKLY_RHYTHMS: TeamWeeklyRhythm[] = [
+  { id: 'twr-1', day: 'Monday · 10 AM',                rhythm: 'Council stand-up · 15 min · chairs only · one win · one worry',                         holder: 'Council chair',             purpose: 'Set week\'s energy · surface blockers early · not solve · just surface.',                color: '#00D4FF', emoji: '🪔' },
+  { id: 'twr-2', day: 'Tuesday · 4 PM',                             rhythm: 'All-hands · 30 min · any topic · rotating host',                                           holder: 'Rotating member',                             purpose: 'Practice speaking to the whole club · junior members rotate in · stage expanded.',                           color: '#F59E0B', emoji: '🎤' },
+  { id: 'twr-3', day: 'Wednesday · 11 AM',                                      rhythm: 'Wellness check · 20 min · optional · circle format',                                                       holder: 'Wellness lead',                                                  purpose: 'Pulse-check on team mood · catch early signs of burnout · act on them.',                                            color: '#22C55E', emoji: '🌱' },
+  { id: 'twr-4', day: 'Thursday · 2 PM',                                                 rhythm: 'Inter-wing lunch · pairs wings weekly · bring one dish',                                                                     holder: 'Rotating wings',                                                                 purpose: 'Break silos · build cross-wing familiarity · food as bridge.',                                                                     color: '#A78BFA', emoji: '🍲' },
+  { id: 'twr-5', day: 'Friday · 5 PM',                                                               rhythm: 'Read-aloud · 30 min · one piece · rotating reader · silence after',                                                                                   holder: 'Content wing rotation',                                                                              purpose: 'Close the week with attention to words · no discussion · just hearing.',                                                                          color: '#F472B6', emoji: '📖' },
+  { id: 'twr-6', day: 'Saturday · 10 AM',                                                                           rhythm: 'Grove work · 2 hours · watering · pruning · no phones',                                                                                                 holder: 'Grove keeper',                                                                                                   purpose: 'Hands in earth · physical memory tended · the club\'s non-digital heartbeat.',                                                                                color: '#FFD166', emoji: '🪴' },
+  { id: 'twr-7', day: 'Sunday · noon',                                                                                          rhythm: 'Slow brunch · rotating host · no club-work talk',                                                                                                                       holder: 'Rotating host',                                                                                                                                 purpose: 'Remember we are people first · the day insists on it.',                                                                                                        color: '#EF4444', emoji: '🥞' },
+  { id: 'twr-8', day: 'Sunday · 7 PM',                                                                                                     rhythm: 'Letters-home hour · write one letter · to parent · mentor · old friend',                                                                                                                                     holder: 'Wellness lead',                                                                                                                                                             purpose: 'End week outward · attention goes home · remember who carried us.',                                                                                                          color: '#16A34A', emoji: '✉️' },
+];
+
+interface TeamHandoffRitual {
+  id: string;
+  moment: string;
+  ritual: string;
+  holder: string;
+  artefact: string;
+  color: string;
+  emoji: string;
+}
+
+const TEAM_HANDOFF_RITUALS: TeamHandoffRitual[] = [
+  { id: 'thr-1', moment: 'End of semester',            ritual: 'Written reflection · 500 words · 3 highs · 2 hards · 1 thanks',          holder: 'Every council member',         artefact: 'Sealed · opened at year-end bonfire · read aloud by successor.',                 color: '#00D4FF', emoji: '📝' },
+  { id: 'thr-2', moment: 'Role handoff',                         ritual: 'Walk-and-talk · 1 hour · no notes · successor leads questions',                                 holder: 'Outgoing + incoming',                        artefact: 'Successor writes a summary · outgoing signs off · archived.',                                        color: '#F59E0B', emoji: '🚶' },
+  { id: 'thr-3', moment: 'Leaving the club',                                  ritual: 'Farewell circle · 10 min · each member says one line · chair closes',                                                 holder: 'Council chair',                                                 artefact: 'Photo of the circle · emailed to the leaver · kept in archive.',                                                         color: '#F472B6', emoji: '🫱' },
+  { id: 'thr-4', moment: 'After a hard event',                                              ritual: 'Recovery circle · 20 min · what drained · what delighted · what next',                                                                    holder: 'Wellness lead',                                                                     artefact: 'Notes added to event playbook · folded into next iteration.',                                                                      color: '#22C55E', emoji: '🫖' },
+  { id: 'thr-5', moment: 'New member week-4',                                                            ritual: 'Depth interview · 45 min · what do you want from us · what can you offer',                                                                                 holder: 'Alumni liaison rotating',                                                                                  artefact: 'Interview summary · stored in member file · checked quarterly.',                                                                                color: '#A78BFA', emoji: '🎙️' },
+  { id: 'thr-6', moment: 'Conflict resolution',                                                                      ritual: 'Third-party circle · 3 members · 2 speak · 1 listens · swap · close',                                                                                                 holder: 'Wellness + council chair',                                                                                                        artefact: 'Shared agreements signed · kept in conflict log · revisited in 30 days.',                                                                                         color: '#FFD166', emoji: '🕊️' },
+  { id: 'thr-7', moment: 'Annual anniversary',                                                                                          ritual: 'Sealed letters opened · promises reviewed · new ones written',                                                                                                                holder: 'Council chair + alumni',                                                                                                                                 artefact: 'New sealed envelopes · stored in archive · opened next year.',                                                                                                         color: '#EF4444', emoji: '🗓️' },
+  { id: 'thr-8', moment: '10-year return',                                                                                                         ritual: 'Alumni homecoming · read old letter · speak to present council · plant a tree',                                                                                                                                      holder: 'Alumni liaison + grove keeper',                                                                                                                                                      artefact: 'Sapling planted with alumni name plaque · grove grows · memory roots.',                                                                                                                          color: '#16A34A', emoji: '🌳' },
+];
+
 const TeamScreen: React.FC = () => {
   // ------ State ------
   const [selectedDept, setSelectedDept] = useState<DeptId>('all');
@@ -3732,6 +3822,95 @@ const TeamScreen: React.FC = () => {
     </View>
   );
 
+  // ------ Phase 3bb: round 6 team blocks ------
+  const renderTeamRotationSwaps = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🔄 Rotation swaps · how leaders learn each other's work</Text>
+        <Text style={styles.sectionCaption}>{TEAM_ROTATION_SWAPS.length} swaps</Text>
+      </View>
+      {TEAM_ROTATION_SWAPS.map((s) => (
+        <View key={s.id} style={[styles.trsCard, { borderLeftColor: s.color }]}>
+          <View style={styles.trsTopRow}>
+            <Text style={styles.trsEmoji}>{s.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.trsPair} numberOfLines={2}>{s.pair}</Text>
+              <Text style={[styles.trsDuration, { color: s.color }]} numberOfLines={1}>{s.duration}</Text>
+            </View>
+          </View>
+          <Text style={styles.trsLearning} numberOfLines={3}>learning · {s.learning}</Text>
+          <Text style={styles.trsHandoff} numberOfLines={2}>hand-off · {s.hand_off}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderTeamMemberTiles = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🪪 Member tiles · tenure + signature gesture</Text>
+        <Text style={styles.sectionCaption}>{TEAM_MEMBER_TILES.length} leads</Text>
+      </View>
+      {TEAM_MEMBER_TILES.map((t) => (
+        <View key={t.id} style={[styles.tmtCard, { borderLeftColor: t.color }]}>
+          <View style={styles.tmtTopRow}>
+            <Text style={styles.tmtEmoji}>{t.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.tmtName} numberOfLines={1}>{t.name}</Text>
+              <Text style={[styles.tmtRole, { color: t.color }]} numberOfLines={1}>{t.role}</Text>
+            </View>
+          </View>
+          <Text style={styles.tmtTenure} numberOfLines={1}>{t.tenure}</Text>
+          <Text style={styles.tmtSignature} numberOfLines={3}>signature · {t.signature}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderTeamWeeklyRhythms = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>📆 Weekly rhythms · the shape our team keeps</Text>
+        <Text style={styles.sectionCaption}>{TEAM_WEEKLY_RHYTHMS.length} rhythms</Text>
+      </View>
+      {TEAM_WEEKLY_RHYTHMS.map((w) => (
+        <View key={w.id} style={[styles.twrCard, { borderLeftColor: w.color }]}>
+          <View style={styles.twrTopRow}>
+            <Text style={styles.twrEmoji}>{w.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.twrDay} numberOfLines={1}>{w.day}</Text>
+              <Text style={[styles.twrRhythm, { color: w.color }]} numberOfLines={2}>{w.rhythm}</Text>
+            </View>
+          </View>
+          <Text style={styles.twrHolder} numberOfLines={1}>holder · {w.holder}</Text>
+          <Text style={styles.twrPurpose} numberOfLines={2}>{w.purpose}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderTeamHandoffRituals = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🕊️ Handoff rituals · moments we close well</Text>
+        <Text style={styles.sectionCaption}>{TEAM_HANDOFF_RITUALS.length} rituals</Text>
+      </View>
+      {TEAM_HANDOFF_RITUALS.map((h) => (
+        <View key={h.id} style={[styles.thrCard, { borderLeftColor: h.color }]}>
+          <View style={styles.thrTopRow}>
+            <Text style={styles.thrEmoji}>{h.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.thrMoment} numberOfLines={1}>{h.moment}</Text>
+              <Text style={[styles.thrRitual, { color: h.color }]} numberOfLines={2}>{h.ritual}</Text>
+            </View>
+          </View>
+          <Text style={styles.thrHolder} numberOfLines={1}>holder · {h.holder}</Text>
+          <Text style={styles.thrArtefact} numberOfLines={3}>artefact · {h.artefact}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
   const renderTeamGrievancePath = () => (
     <View style={styles.sectionBlock}>
       <View style={styles.sectionHeaderRow}>
@@ -3798,6 +3977,10 @@ const TeamScreen: React.FC = () => {
       {renderTeamOnboardingDays()}
       {renderTeamDayInLife()}
       {renderTeamMentorLines()}
+      {renderTeamRotationSwaps()}
+      {renderTeamMemberTiles()}
+      {renderTeamWeeklyRhythms()}
+      {renderTeamHandoffRituals()}
       {renderThanks()}
       {renderTeamGoodbye()}
       {renderApplyToJoin()}
@@ -5178,6 +5361,42 @@ const styles = StyleSheet.create({
   tmlCadence: { fontSize: 11, fontWeight: '700', marginTop: 8, paddingLeft: 32 },
   tmlFocus: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32 },
   tmlArtefact: { color: Colors.text.muted, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32, fontStyle: 'italic' },
+
+  // --- Phase 3bb: rotation swaps ---
+  trsCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  trsTopRow: { flexDirection: 'row', alignItems: 'center' },
+  trsEmoji: { fontSize: 22, marginRight: 10 },
+  trsPair: { color: Colors.text.primary, fontSize: 13, fontWeight: '900', lineHeight: 17 },
+  trsDuration: { fontSize: 11, fontWeight: '700', marginTop: 2 },
+  trsLearning: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8, paddingLeft: 32 },
+  trsHandoff: { color: Colors.text.muted, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32, fontStyle: 'italic' },
+
+  // --- Phase 3bb: member tiles ---
+  tmtCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  tmtTopRow: { flexDirection: 'row', alignItems: 'center' },
+  tmtEmoji: { fontSize: 22, marginRight: 10 },
+  tmtName: { color: Colors.text.primary, fontSize: 14, fontWeight: '900' },
+  tmtRole: { fontSize: 12, fontWeight: '700', marginTop: 2 },
+  tmtTenure: { color: Colors.text.muted, fontSize: 11, marginTop: 8, paddingLeft: 32 },
+  tmtSignature: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32, fontStyle: 'italic' },
+
+  // --- Phase 3bb: weekly rhythms ---
+  twrCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  twrTopRow: { flexDirection: 'row', alignItems: 'center' },
+  twrEmoji: { fontSize: 22, marginRight: 10 },
+  twrDay: { color: Colors.text.primary, fontSize: 13, fontWeight: '900' },
+  twrRhythm: { fontSize: 12, fontWeight: '700', marginTop: 2, lineHeight: 16 },
+  twrHolder: { color: Colors.text.muted, fontSize: 11, marginTop: 8, paddingLeft: 32 },
+  twrPurpose: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32 },
+
+  // --- Phase 3bb: handoff rituals ---
+  thrCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  thrTopRow: { flexDirection: 'row', alignItems: 'center' },
+  thrEmoji: { fontSize: 22, marginRight: 10 },
+  thrMoment: { color: Colors.text.primary, fontSize: 13, fontWeight: '900' },
+  thrRitual: { fontSize: 12, fontWeight: '700', marginTop: 2, lineHeight: 16 },
+  thrHolder: { color: Colors.text.muted, fontSize: 11, marginTop: 8, paddingLeft: 32 },
+  thrArtefact: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32 },
 });
 
 export default TeamScreen;
