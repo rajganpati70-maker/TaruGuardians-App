@@ -2070,6 +2070,150 @@ const ALUMNI_SIGN_OFFS: AlumniSignOffQuote[] = [
   { id: 'aso-6', quote: 'You will not remember the deliverables. You will remember the people who sat with you at 2 AM.',         who: 'Vikram P. · 2014',  color: '#A78BFA', emoji: '🫶' },
 ];
 
+// =====================================================
+// Phase 3ak: deeper alumni structures — round 3
+// =====================================================
+
+interface AlumniMentorPod {
+  id: string;
+  podName: string;
+  mentor: string;
+  focus: string;
+  meetingCadence: string;
+  seats: string;
+  color: string;
+  emoji: string;
+}
+
+const ALUMNI_MENTOR_PODS: AlumniMentorPod[] = [
+  { id: 'amp-1', podName: 'Writer\'s dojo',         mentor: 'Priya N. · content, 2017',       focus: 'Long-reads · editorial voice · newsletter basics.',               meetingCadence: 'Saturday · 90 min · online',     seats: '3 open of 6',  color: '#F59E0B', emoji: '📝' },
+  { id: 'amp-2', podName: 'Full-stack sandbox',      mentor: 'Sameer M. · tech, 2015',          focus: 'Ship end-to-end features · read codebases · mock interviews.',   meetingCadence: 'Sunday · 2 hr · hybrid',          seats: '2 open of 5',  color: '#00D4FF', emoji: '💻' },
+  { id: 'amp-3', podName: 'Brand studio',             mentor: 'Ananya R. · design, 2016',        focus: 'Systems-thinking · poster kits · typography crits.',              meetingCadence: 'Fortnight · Friday · in-person', seats: 'Full',         color: '#F472B6', emoji: '🎨' },
+  { id: 'amp-4', podName: 'Story room',               mentor: 'Zara S. · video, 2020',           focus: 'Cuts to story · colour starter kit · interview prep.',             meetingCadence: 'Weekly · Thursday · online',      seats: '1 open of 4',  color: '#A78BFA', emoji: '🎞️' },
+  { id: 'amp-5', podName: 'Photo walks',              mentor: 'Arjun K. · photo, 2014',           focus: 'Light reading · culling honestly · essay-building.',               meetingCadence: 'Monthly · first Saturday',        seats: '4 open of 8',  color: '#22C55E', emoji: '📷' },
+  { id: 'amp-6', podName: 'Campaign clinic',           mentor: 'Dev P. · PR, 2018',               focus: 'Cold pitches · press kits · partner playbook.',                   meetingCadence: 'Bi-weekly · Wednesday · online',  seats: '2 open of 5',  color: '#FFD166', emoji: '📰' },
+  { id: 'amp-7', podName: 'Founder\'s table',         mentor: 'Ishita T. · founder, 2013',        focus: 'Early-stage clarity · first 10 users · ramen-profit runway.',     meetingCadence: 'Monthly · last Sunday',           seats: '2 open of 4',  color: '#EF4444', emoji: '🚀' },
+];
+
+interface AlumniCareerCheckpoint {
+  id: string;
+  year: string;
+  checkpoint: string;
+  prompt: string;
+  color: string;
+  emoji: string;
+}
+
+const ALUMNI_CAREER_CHECKPOINTS: AlumniCareerCheckpoint[] = [
+  { id: 'ack-1', year: 'Graduation + 0',   checkpoint: 'First paycheck call',           prompt: 'Who do you thank · first job specifics · what surprised you in month 1.',                color: '#00D4FF', emoji: '💼' },
+  { id: 'ack-2', year: 'Graduation + 1',   checkpoint: 'Year-one reflection',            prompt: 'One thing you would tell the junior you · one decision you would make again today.',    color: '#F59E0B', emoji: '🪞' },
+  { id: 'ack-3', year: 'Graduation + 2',   checkpoint: 'Craft-check',                     prompt: 'One artefact you shipped · what you learned · what you wish you had learned faster.',    color: '#A78BFA', emoji: '🎯' },
+  { id: 'ack-4', year: 'Graduation + 3',   checkpoint: 'Mentor ask',                      prompt: 'One junior you want to mentor · one opening you can offer from your company.',         color: '#F472B6', emoji: '🤝' },
+  { id: 'ack-5', year: 'Graduation + 5',   checkpoint: 'Pivot audit',                      prompt: 'Staying · pivoting · building own thing? Walk us through the math you used.',            color: '#22C55E', emoji: '🔀' },
+  { id: 'ack-6', year: 'Graduation + 7',   checkpoint: 'Giving-back choice',                prompt: 'Grant · mentor-pod · campaign · which of these will you fund or lead this year?',       color: '#FFD166', emoji: '🎁' },
+  { id: 'ack-7', year: 'Graduation + 10',  checkpoint: 'Decade letter',                    prompt: 'Write the ten-year open letter · pin it in the Alumni Hall · it matters.',              color: '#EF4444', emoji: '📜' },
+];
+
+interface AlumniReturnProgram {
+  id: string;
+  program: string;
+  who: string;
+  commitment: string;
+  payoff: string;
+  color: string;
+  emoji: string;
+}
+
+const ALUMNI_RETURN_PROGRAMS: AlumniReturnProgram[] = [
+  { id: 'arp-1', program: 'Guest crit · open studio',            who: '3+ years out · any discipline',        commitment: '2 hours · in person or online · one weekend.',                             payoff: 'Fresh eye for juniors · your own voice sharpened.',                color: '#00D4FF', emoji: '🪞' },
+  { id: 'arp-2', program: 'Mock interview camp',                  who: 'Tech · product · PR alumni',            commitment: 'Saturday · 10–4 · 4 rounds of 30-min.',                                    payoff: 'Seven juniors leave ready · one company may hire on the spot.',    color: '#A78BFA', emoji: '🎙️' },
+  { id: 'arp-3', program: 'Open letter · back to first-years',    who: 'Any alumnus · any year',                commitment: '800–1200 words · read-aloud on induction weekend.',                         payoff: 'The hardest onboarding question answered kindly.',                  color: '#F59E0B', emoji: '✉️' },
+  { id: 'arp-4', program: 'Field trip host · cities you live in', who: '5+ alumni within a city',               commitment: 'Half-day walk · one meal · one studio visit if possible.',                   payoff: 'A junior leaves seeing their own future more clearly.',              color: '#22C55E', emoji: '🚌' },
+  { id: 'arp-5', program: 'Bonfire week · closing camp',           who: 'Any alumnus returning in December',     commitment: 'Three nights on campus · one story · one skill-share.',                       payoff: 'The calendar keeps being the calendar · because you show up.',       color: '#EF4444', emoji: '🔥' },
+  { id: 'arp-6', program: 'Quarterly open office hours',           who: 'Any alumnus · any discipline',          commitment: '60 min · once a quarter · public booking page.',                               payoff: 'Juniors learn how to ask well · you meet the next version of you.',  color: '#FFD166', emoji: '🗓️' },
+  { id: 'arp-7', program: 'Archive rescue · digitise old work',    who: '2018 and before graduates',             commitment: 'One afternoon · scan · label · upload · share stories.',                        payoff: 'Twenty years of work · preserved · credited · findable.',           color: '#A78BFA', emoji: '🗄️' },
+];
+
+interface AlumniHonourList {
+  id: string;
+  honour: string;
+  recipient: string;
+  year: string;
+  citation: string;
+  color: string;
+  emoji: string;
+}
+
+const ALUMNI_HONOUR_LIST: AlumniHonourList[] = [
+  { id: 'ahl-1', honour: 'Guardian of the Grove',       recipient: 'Ramu chacha + alumni batch 2015',  year: '2023',   citation: 'Planted and guarded the extension grove · 3,000 trees · still visiting every season.',            color: '#22C55E', emoji: '🌳' },
+  { id: 'ahl-2', honour: 'Craft kept alive award',      recipient: 'Priya N. · content, 2017',          year: '2024',   citation: 'Eight years of Friday edits · unbroken streak of paying forward what was paid to her.',           color: '#F59E0B', emoji: '📝' },
+  { id: 'ahl-3', honour: 'Quiet builder medal',         recipient: 'Sameer M. · tech, 2015',            year: '2023',   citation: 'Seventeen pull-requests reviewed at midnight · no brag · no post · just the junior thanking him.',  color: '#00D4FF', emoji: '🔧' },
+  { id: 'ahl-4', honour: 'Hospitality laurel',          recipient: 'Sunita didi + 2018 batch',           year: '2024',   citation: 'Fed every returning alumnus · every bonfire · for a decade · with the same warm eyes.',           color: '#F472B6', emoji: '🍲' },
+  { id: 'ahl-5', honour: 'Bridge-builder award',        recipient: 'Dev P. · PR, 2018',                   year: '2023',   citation: 'Wrote forty-three pitches · landed twenty-eight · opened eleven press doors for the club.',       color: '#FFD166', emoji: '🌉' },
+  { id: 'ahl-6', honour: 'Keeper of the archive',        recipient: 'Arjun K. · photo, 2014',              year: '2024',   citation: 'Digitised ten years of prints · restored two lost collections · taught three juniors to do same.', color: '#A78BFA', emoji: '🗄️' },
+  { id: 'ahl-7', honour: 'Lifetime guardian',            recipient: 'Founding circle · 1998',              year: '2024',   citation: 'Built the grove · wrote the first covenant · still returns every bonfire without fail.',           color: '#EF4444', emoji: '🎖️' },
+];
+
+interface AlumniLetterHome {
+  id: string;
+  excerpt: string;
+  writer: string;
+  when: string;
+  color: string;
+  emoji: string;
+}
+
+const ALUMNI_LETTERS_HOME: AlumniLetterHome[] = [
+  { id: 'alh-1', excerpt: 'The grove held me when the city forgot me · come back when it forgets you too · it will · and it will be okay.',                                       writer: 'Priya N. · 2017',     when: 'Written from Berlin · 2021',      color: '#F59E0B', emoji: '🌳' },
+  { id: 'alh-2', excerpt: 'The only advice I trust anymore is the kind that was given slowly · by someone who had watched me long enough to mean it.',                            writer: 'Sameer M. · 2015',    when: 'From Bangalore · 2022',             color: '#00D4FF', emoji: '📝' },
+  { id: 'alh-3', excerpt: 'The rituals that survived · were the ones nobody tried to scale · scale quietly · stay strange · stay ours.',                                          writer: 'Ananya R. · 2016',    when: 'From Bombay · 2023',                color: '#F472B6', emoji: '🎨' },
+  { id: 'alh-4', excerpt: 'I never became the person in my year-one résumé · thank god · thank the club · for keeping me honest.',                                                writer: 'Arjun K. · 2014',     when: 'From Delhi · 2020',                 color: '#A78BFA', emoji: '📷' },
+  { id: 'alh-5', excerpt: 'The most expensive thing I learned was that kindness scales · and that it costs more than speed · pay it anyway.',                                    writer: 'Dev P. · 2018',        when: 'From Hyderabad · 2024',             color: '#FFD166', emoji: '🫂' },
+  { id: 'alh-6', excerpt: 'If you are the smartest person at the table · leave the table · go plant something · come back quieter.',                                              writer: 'Zara S. · 2020',       when: 'From Pune · 2024',                  color: '#22C55E', emoji: '🌱' },
+  { id: 'alh-7', excerpt: 'The club is a garden · not a ladder · please keep it a garden · or go find another garden · do not make it a ladder.',                                  writer: 'Ishita T. · 2013',     when: 'From Kolkata · 2019',                color: '#EF4444', emoji: '🌼' },
+];
+
+interface AlumniRegionCircle {
+  id: string;
+  region: string;
+  anchor: string;
+  meetups: string;
+  members: string;
+  color: string;
+  emoji: string;
+}
+
+const ALUMNI_REGION_CIRCLES: AlumniRegionCircle[] = [
+  { id: 'arc-1', region: 'Bangalore circle',     anchor: 'Priya + Sameer',                meetups: 'Third Sunday · breakfast walk',      members: '42 active · 28 joined last year',         color: '#00D4FF', emoji: '🌆' },
+  { id: 'arc-2', region: 'Delhi + NCR circle',    anchor: 'Arjun + Ritika',                 meetups: 'Last Saturday · rooftop potluck',   members: '38 active · 19 first-jobbers',           color: '#F472B6', emoji: '🏙️' },
+  { id: 'arc-3', region: 'Bombay circle',         anchor: 'Ananya + Tanvi',                 meetups: 'First Saturday · studio visit',     members: '34 active · design-heavy',                color: '#A78BFA', emoji: '🌉' },
+  { id: 'arc-4', region: 'Hyderabad circle',      anchor: 'Dev + Kavya',                     meetups: 'Alternate Sundays · chai + walk',   members: '24 active · mostly PR + tech',             color: '#FFD166', emoji: '📡' },
+  { id: 'arc-5', region: 'Pune circle',            anchor: 'Zara + Ravi',                     meetups: 'Monthly · film night',              members: '22 active · storytelling-heavy',         color: '#F59E0B', emoji: '🎬' },
+  { id: 'arc-6', region: 'Berlin + EU circle',    anchor: 'Priya (roaming)',                  meetups: 'Quarterly · wherever someone hosts', members: '11 active · growing',                      color: '#EF4444', emoji: '🛫' },
+  { id: 'arc-7', region: 'New York + US circle',  anchor: 'Ritika (remote)',                  meetups: 'Quarterly · zoom + one potluck',     members: '14 active · mostly 2018–2022',            color: '#22C55E', emoji: '🗽' },
+];
+
+interface AlumniCraftArchive {
+  id: string;
+  archive: string;
+  period: string;
+  keeper: string;
+  size: string;
+  status: string;
+  color: string;
+  emoji: string;
+}
+
+const ALUMNI_CRAFT_ARCHIVES: AlumniCraftArchive[] = [
+  { id: 'aca-1', archive: 'Posters · 2008–2015',              period: '7 years',  keeper: 'Ananya R.',              size: '1,240 files · 8.1 GB',    status: 'Digitised · tagged · public share link live.',        color: '#F472B6', emoji: '🎨' },
+  { id: 'aca-2', archive: 'Print editorial · magazines',      period: '2010–2020', keeper: 'Priya N.',               size: '64 issues · 2.4 GB',       status: 'Scanned · captions 80% done · searchable.',           color: '#F59E0B', emoji: '📰' },
+  { id: 'aca-3', archive: 'Open-source code · internal',       period: '2012–2024', keeper: 'Sameer M.',              size: '22 repos · 4 languages',   status: 'Hosted on our org · MIT-licensed · documented.',     color: '#00D4FF', emoji: '💻' },
+  { id: 'aca-4', archive: 'Documentary shorts',                period: '2014–2023', keeper: 'Zara S.',                size: '18 films · 310 GB',        status: 'Cold storage + DVD copies · survivors curated.',     color: '#A78BFA', emoji: '🎞️' },
+  { id: 'aca-5', archive: 'Nature photography',                 period: '2006–2024', keeper: 'Arjun K.',               size: '5,800 frames · 92 GB',      status: 'RAW archive · contact sheets · essays indexed.',      color: '#22C55E', emoji: '📷' },
+  { id: 'aca-6', archive: 'Press coverage scrapbook',            period: '1998–2024', keeper: 'Dev P.',                  size: '310 clippings · 26 years',   status: 'Scanned · cross-referenced · on display in library.', color: '#FFD166', emoji: '🗞️' },
+  { id: 'aca-7', archive: 'Handwritten journal stack',           period: '1998–2008', keeper: 'Founding circle',          size: '12 notebooks · fragile',     status: 'Archive-safe box · read-only visits by appointment.', color: '#EF4444', emoji: '📓' },
+];
+
 const AlumniScreen: React.FC = () => {
   // -------------- State ------------------
   const [selectedBatch, setSelectedBatch] = useState<'all' | string>('all');
@@ -3925,6 +4069,157 @@ const AlumniScreen: React.FC = () => {
     </View>
   );
 
+  // ------ Phase 3ak: round 3 alumni blocks ------
+  const renderAlumniMentorPods = () => (
+    <View style={[styles.sectionBlock, { paddingHorizontal: HORIZONTAL_PADDING }]}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🧭 Mentor pods · apply · learn · pay it back</Text>
+        <Text style={styles.sectionCaption}>{ALUMNI_MENTOR_PODS.length} pods</Text>
+      </View>
+      {ALUMNI_MENTOR_PODS.map((p) => (
+        <View key={p.id} style={[styles.ampCard, { borderLeftColor: p.color }]}>
+          <View style={styles.ampTopRow}>
+            <Text style={styles.ampEmoji}>{p.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.ampName} numberOfLines={1}>{p.podName}</Text>
+              <Text style={[styles.ampMentor, { color: p.color }]}>{p.mentor}</Text>
+            </View>
+            <Text style={styles.ampSeats} numberOfLines={1}>{p.seats}</Text>
+          </View>
+          <Text style={styles.ampFocus} numberOfLines={3}>{p.focus}</Text>
+          <Text style={styles.ampCadence} numberOfLines={1}>📅 {p.meetingCadence}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderAlumniCheckpoints = () => (
+    <View style={[styles.sectionBlock, { paddingHorizontal: HORIZONTAL_PADDING }]}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🎯 Career checkpoints · the post-graduation path</Text>
+        <Text style={styles.sectionCaption}>{ALUMNI_CAREER_CHECKPOINTS.length} checkpoints</Text>
+      </View>
+      {ALUMNI_CAREER_CHECKPOINTS.map((c) => (
+        <View key={c.id} style={[styles.ackCard, { borderLeftColor: c.color }]}>
+          <View style={styles.ackTopRow}>
+            <Text style={styles.ackEmoji}>{c.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.ackYear} numberOfLines={1}>{c.year}</Text>
+              <Text style={[styles.ackName, { color: c.color }]}>{c.checkpoint}</Text>
+            </View>
+          </View>
+          <Text style={styles.ackPrompt} numberOfLines={3}>{c.prompt}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderAlumniReturnPrograms = () => (
+    <View style={[styles.sectionBlock, { paddingHorizontal: HORIZONTAL_PADDING }]}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🔁 Return programs · come back shapes</Text>
+        <Text style={styles.sectionCaption}>{ALUMNI_RETURN_PROGRAMS.length} programs</Text>
+      </View>
+      {ALUMNI_RETURN_PROGRAMS.map((r) => (
+        <View key={r.id} style={[styles.arpCard, { borderLeftColor: r.color }]}>
+          <View style={styles.arpTopRow}>
+            <Text style={styles.arpEmoji}>{r.emoji}</Text>
+            <Text style={styles.arpProgram} numberOfLines={2}>{r.program}</Text>
+          </View>
+          <Text style={styles.arpWho} numberOfLines={1}>who · {r.who}</Text>
+          <Text style={styles.arpCommit} numberOfLines={2}>commit · {r.commitment}</Text>
+          <Text style={styles.arpPayoff} numberOfLines={2}>payoff · {r.payoff}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderAlumniHonourList = () => (
+    <View style={[styles.sectionBlock, { paddingHorizontal: HORIZONTAL_PADDING }]}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🎖️ Honour list · the ones we bow to</Text>
+        <Text style={styles.sectionCaption}>{ALUMNI_HONOUR_LIST.length} honours</Text>
+      </View>
+      {ALUMNI_HONOUR_LIST.map((h) => (
+        <View key={h.id} style={[styles.ahlCard, { borderLeftColor: h.color }]}>
+          <View style={styles.ahlTopRow}>
+            <Text style={styles.ahlEmoji}>{h.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.ahlHonour} numberOfLines={1}>{h.honour}</Text>
+              <Text style={[styles.ahlRecipient, { color: h.color }]}>{h.recipient}</Text>
+            </View>
+            <Text style={styles.ahlYear} numberOfLines={1}>{h.year}</Text>
+          </View>
+          <Text style={styles.ahlCitation} numberOfLines={4}>{h.citation}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderAlumniLettersHome = () => (
+    <View style={[styles.sectionBlock, { paddingHorizontal: HORIZONTAL_PADDING }]}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>✉️ Letters home · on the wall</Text>
+        <Text style={styles.sectionCaption}>{ALUMNI_LETTERS_HOME.length} letters</Text>
+      </View>
+      {ALUMNI_LETTERS_HOME.map((l) => (
+        <View key={l.id} style={[styles.alhCard, { borderLeftColor: l.color }]}>
+          <Text style={[styles.alhEmoji, { color: l.color }]}>{l.emoji}</Text>
+          <Text style={styles.alhExcerpt} numberOfLines={5}>&quot;{l.excerpt}&quot;</Text>
+          <View style={styles.alhFooter}>
+            <Text style={[styles.alhWriter, { color: l.color }]}>— {l.writer}</Text>
+            <Text style={styles.alhWhen} numberOfLines={1}>{l.when}</Text>
+          </View>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderAlumniRegionCircles = () => (
+    <View style={[styles.sectionBlock, { paddingHorizontal: HORIZONTAL_PADDING }]}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🌍 Region circles · where the club still meets</Text>
+        <Text style={styles.sectionCaption}>{ALUMNI_REGION_CIRCLES.length} circles</Text>
+      </View>
+      {ALUMNI_REGION_CIRCLES.map((r) => (
+        <View key={r.id} style={[styles.arcCard, { borderLeftColor: r.color }]}>
+          <View style={styles.arcTopRow}>
+            <Text style={styles.arcEmoji}>{r.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.arcRegion} numberOfLines={1}>{r.region}</Text>
+              <Text style={[styles.arcAnchor, { color: r.color }]}>anchor · {r.anchor}</Text>
+            </View>
+          </View>
+          <Text style={styles.arcMeetups} numberOfLines={1}>🗓️ {r.meetups}</Text>
+          <Text style={styles.arcMembers} numberOfLines={1}>👥 {r.members}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderAlumniCraftArchives = () => (
+    <View style={[styles.sectionBlock, { paddingHorizontal: HORIZONTAL_PADDING }]}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🗄️ Craft archive · what we saved · what endures</Text>
+        <Text style={styles.sectionCaption}>{ALUMNI_CRAFT_ARCHIVES.length} archives</Text>
+      </View>
+      {ALUMNI_CRAFT_ARCHIVES.map((a) => (
+        <View key={a.id} style={[styles.acaCard, { borderLeftColor: a.color }]}>
+          <View style={styles.acaTopRow}>
+            <Text style={styles.acaEmoji}>{a.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.acaName} numberOfLines={1}>{a.archive}</Text>
+              <Text style={[styles.acaPeriod, { color: a.color }]}>{a.period}</Text>
+            </View>
+          </View>
+          <Text style={styles.acaKeeper} numberOfLines={1}>keeper · {a.keeper}</Text>
+          <Text style={styles.acaSize} numberOfLines={1}>size · {a.size}</Text>
+          <Text style={styles.acaStatus} numberOfLines={2}>{a.status}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
   const headerComponent = (
     <View>
       {renderHeader()}
@@ -3961,6 +4256,13 @@ const AlumniScreen: React.FC = () => {
       {renderPublications()}
       {renderPledges()}
       {renderSignOffs()}
+      {renderAlumniMentorPods()}
+      {renderAlumniCheckpoints()}
+      {renderAlumniReturnPrograms()}
+      {renderAlumniHonourList()}
+      {renderAlumniLettersHome()}
+      {renderAlumniRegionCircles()}
+      {renderAlumniCraftArchives()}
       {renderAlumniListHeader()}
     </View>
   );
@@ -5266,6 +5568,69 @@ const styles = StyleSheet.create({
   asoFooter: { flexDirection: 'row', alignItems: 'center', marginTop: 10 },
   asoEmoji: { fontSize: 16, marginRight: 6 },
   asoWho: { color: Colors.text.muted, fontSize: 11, fontWeight: '700' },
+
+  // --- Phase 3ak: mentor pods ---
+  ampCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginBottom: 10, borderLeftWidth: 3 },
+  ampTopRow: { flexDirection: 'row', alignItems: 'center' },
+  ampEmoji: { fontSize: 22, marginRight: 10 },
+  ampName: { color: Colors.text.primary, fontSize: 13, fontWeight: '900' },
+  ampMentor: { fontSize: 11, fontWeight: '700', marginTop: 2 },
+  ampSeats: { color: Colors.accent.softGold, fontSize: 10, fontWeight: '900', letterSpacing: 0.5, marginLeft: 8 },
+  ampFocus: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8, paddingLeft: 32 },
+  ampCadence: { color: Colors.text.muted, fontSize: 11, marginTop: 4, paddingLeft: 32 },
+
+  // --- Phase 3ak: checkpoints ---
+  ackCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginBottom: 10, borderLeftWidth: 3 },
+  ackTopRow: { flexDirection: 'row', alignItems: 'center' },
+  ackEmoji: { fontSize: 22, marginRight: 10 },
+  ackYear: { color: Colors.text.muted, fontSize: 10, fontWeight: '900', letterSpacing: 1, textTransform: 'uppercase' },
+  ackName: { fontSize: 13, fontWeight: '800', marginTop: 2 },
+  ackPrompt: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8, paddingLeft: 32 },
+
+  // --- Phase 3ak: return programs ---
+  arpCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginBottom: 10, borderLeftWidth: 3 },
+  arpTopRow: { flexDirection: 'row', alignItems: 'center' },
+  arpEmoji: { fontSize: 22, marginRight: 10 },
+  arpProgram: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', flex: 1, lineHeight: 17 },
+  arpWho: { color: Colors.text.muted, fontSize: 11, marginTop: 8, paddingLeft: 32 },
+  arpCommit: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 3, paddingLeft: 32 },
+  arpPayoff: { color: Colors.accent.softGold, fontSize: 11, lineHeight: 15, marginTop: 3, paddingLeft: 32, fontStyle: 'italic' },
+
+  // --- Phase 3ak: honour list ---
+  ahlCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginBottom: 10, borderLeftWidth: 3 },
+  ahlTopRow: { flexDirection: 'row', alignItems: 'center' },
+  ahlEmoji: { fontSize: 22, marginRight: 10 },
+  ahlHonour: { color: Colors.text.primary, fontSize: 13, fontWeight: '900' },
+  ahlRecipient: { fontSize: 11, fontWeight: '700', marginTop: 2 },
+  ahlYear: { color: Colors.text.muted, fontSize: 11, fontWeight: '700', marginLeft: 8 },
+  ahlCitation: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8, paddingLeft: 32 },
+
+  // --- Phase 3ak: letters home ---
+  alhCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 14, marginBottom: 10, borderLeftWidth: 3 },
+  alhEmoji: { fontSize: 24, marginBottom: 8 },
+  alhExcerpt: { color: Colors.text.primary, fontSize: 13, lineHeight: 18, fontStyle: 'italic' },
+  alhFooter: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 },
+  alhWriter: { fontSize: 11, fontWeight: '800' },
+  alhWhen: { color: Colors.text.muted, fontSize: 10, fontStyle: 'italic' },
+
+  // --- Phase 3ak: region circles ---
+  arcCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginBottom: 10, borderLeftWidth: 3 },
+  arcTopRow: { flexDirection: 'row', alignItems: 'center' },
+  arcEmoji: { fontSize: 22, marginRight: 10 },
+  arcRegion: { color: Colors.text.primary, fontSize: 13, fontWeight: '900' },
+  arcAnchor: { fontSize: 11, fontWeight: '700', marginTop: 2 },
+  arcMeetups: { color: Colors.text.secondary, fontSize: 11, marginTop: 8, paddingLeft: 32 },
+  arcMembers: { color: Colors.text.muted, fontSize: 11, marginTop: 2, paddingLeft: 32 },
+
+  // --- Phase 3ak: craft archives ---
+  acaCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginBottom: 10, borderLeftWidth: 3 },
+  acaTopRow: { flexDirection: 'row', alignItems: 'center' },
+  acaEmoji: { fontSize: 22, marginRight: 10 },
+  acaName: { color: Colors.text.primary, fontSize: 13, fontWeight: '800' },
+  acaPeriod: { fontSize: 10, fontWeight: '900', letterSpacing: 1, marginTop: 2 },
+  acaKeeper: { color: Colors.text.muted, fontSize: 11, marginTop: 8, paddingLeft: 32 },
+  acaSize: { color: Colors.text.secondary, fontSize: 11, marginTop: 2, paddingLeft: 32 },
+  acaStatus: { color: Colors.accent.softGold, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32, fontStyle: 'italic' },
 });
 
 export default AlumniScreen;
