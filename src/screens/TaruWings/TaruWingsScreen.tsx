@@ -1525,6 +1525,111 @@ const WING_STUDY_GROUPS: WingStudyGroup[] = [
   { id: 'wsg-pr-2',  wingId: 'pr',      group: 'Public-speaking practice circle',                                                                                              cadence: 'Bi-weekly · 45 min',                                                                               curriculum: '3-min talk each · no slides · feedback on clarity · no platitudes.',                                                                                      signal: 'Zero bombed pitches in alumni summit 2024. Not one.',                                                                                                                             color: '#FFD166', emoji: '🎤' },
 ];
 
+// =====================================================
+// Phase 3ba: deeper wing structures — round 6
+// =====================================================
+
+interface WingWeeklyPulse {
+  id: string;
+  wingId: string;
+  day: string;
+  pulse: string;
+  holder: string;
+  outcome: string;
+  color: string;
+  emoji: string;
+}
+
+const WING_WEEKLY_PULSES: WingWeeklyPulse[] = [
+  { id: 'wwp-c-1',  wingId: 'content', day: 'Monday · 10 AM',            pulse: 'Editor inbox · triage 15 min · say yes/no with a reason',                                     holder: 'Rotating editor',                    outcome: 'Writers know the week\'s slate by 11 AM · no ghost drafts.',                    color: '#F59E0B', emoji: '📝' },
+  { id: 'wwp-c-2',  wingId: 'content', day: 'Thursday · 3 PM',                      pulse: 'Voice workshop · 45 min · one member reads their draft aloud',                                              holder: 'Voice coach',                                 outcome: 'Drafts gain rhythm · members hear themselves for the first time.',                             color: '#F59E0B', emoji: '🎙️' },
+  { id: 'wwp-w-1',  wingId: 'web',     day: 'Tuesday · 11 AM',                                 pulse: 'Stand-up · 10 min · what shipped · what\'s blocked · one ask each',                                                     holder: 'Sprint captain',                                               outcome: 'Blockers surface in day 2 · not day 6.',                                                                      color: '#00D4FF', emoji: '🧪' },
+  { id: 'wwp-w-2',  wingId: 'web',     day: 'Friday · 4 PM',                                               pulse: 'Demo hour · each member shows a 5-min slice · cheers not critique',                                                                   holder: 'Demo host',                                                                    outcome: 'Motivation stays high · juniors see seniors struggle · which is the whole point.',                              color: '#00D4FF', emoji: '🎬' },
+  { id: 'wwp-g-1',  wingId: 'graphic', day: 'Wednesday · 2 PM',                                                         pulse: 'Crit hour · pin 3 works · peer feedback · silent first · words after',                                                                                    holder: 'Crit facilitator',                                                                                outcome: 'Design language tightens · members grow critical eyes without crushing ones.',                                           color: '#F472B6', emoji: '🎨' },
+  { id: 'wwp-g-2',  wingId: 'graphic', day: 'Saturday · 10 AM',                                                                     pulse: 'Type hour · practise one typographic exercise · share outcomes online',                                                                                              holder: 'Type mentor',                                                                                                   outcome: 'Members ship one type-focused artefact every month · building a public portfolio.',                           color: '#F472B6', emoji: '🔤' },
+  { id: 'wwp-v-1',  wingId: 'video',   day: 'Monday · 6 PM',                                                                                 pulse: 'B-roll cafe · open editing · shared bin · anyone can pull · anyone can give',                                                                                                        holder: 'Bin keeper',                                                                                                                     outcome: 'Footage reuse up · shoot fatigue down · films get richer.',                                                                     color: '#A78BFA', emoji: '🎥' },
+  { id: 'wwp-v-2',  wingId: 'video',   day: 'Thursday · 7 PM',                                                                                              pulse: 'Story circle · read one screenplay page aloud · discuss beat · nothing else',                                                                                                                 holder: 'Story lead',                                                                                                                                      outcome: 'Editors think in story · not cuts · before opening timeline.',                                                                                 color: '#A78BFA', emoji: '📖' },
+  { id: 'wwp-p-1',  wingId: 'photo',   day: 'Tuesday · dusk',                                                                                                            pulse: 'Golden-hour walk · one roll · one theme · no talking',                                                                                                                                    holder: 'Walk curator',                                                                                                                                                         outcome: 'Members re-see their city · monthly portfolio piece emerges from walks.',                                                                                                     color: '#22C55E', emoji: '🌇' },
+  { id: 'wwp-p-2',  wingId: 'photo',   day: 'Sunday · morning',                                                                                                                      pulse: 'Print bench · one print each · wet-ink critique · hands before words',                                                                                                                                         holder: 'Print keeper',                                                                                                                                                                            outcome: 'Printed archive grows · members learn to love the physical object again.',                                                                                                                                color: '#22C55E', emoji: '🖼️' },
+  { id: 'wwp-pr-1', wingId: 'pr',      day: 'Monday · 9 AM',                                                                                                                                    pulse: 'Press sweep · 30 min · scan 5 outlets · summarise 3 threads for the club',                                                                                                                                                 holder: 'Press scout',                                                                                                                                                                                                  outcome: 'Club speaks to current news · not last month\'s · our posts land.',                                                                                                                                                                  color: '#FFD166', emoji: '📰' },
+  { id: 'wwp-pr-2', wingId: 'pr',      day: 'Friday · 5 PM',                                                                                                                                              pulse: 'Story pitching lab · 3 members pitch · group chooses top 2 for the week',                                                                                                                                                                            holder: 'Pitch lead',                                                                                                                                                                                                                       outcome: 'Pitches graduate from bold to targeted · our hit rate doubled in 2024.',                                                                                                                                                                                   color: '#FFD166', emoji: '🎯' },
+];
+
+interface WingProjectStage {
+  id: string;
+  wingId: string;
+  stage: string;
+  artefact: string;
+  signoff: string;
+  color: string;
+  emoji: string;
+}
+
+const WING_PROJECT_STAGES: WingProjectStage[] = [
+  { id: 'wps-c-1',  wingId: 'content', stage: 'Pitch · 1 paragraph · 1 reader in mind',                           artefact: 'Brief doc · 200 words · 1 reference link',                                   signoff: 'Editor + one writer ack',                             color: '#F59E0B', emoji: '✏️' },
+  { id: 'wps-c-2',  wingId: 'content', stage: 'Voice memo · 5 min · read draft aloud',                                        artefact: 'Audio file · stored in content vault',                                                     signoff: 'Voice coach · thumbs up',                                                      color: '#F59E0B', emoji: '🎙️' },
+  { id: 'wps-w-1',  wingId: 'web',     stage: 'Prototype · click-through · no real data',                                                    artefact: 'Figma + Expo Snack link',                                                                      signoff: 'Design + eng lead',                                                                             color: '#00D4FF', emoji: '🧪' },
+  { id: 'wps-w-2',  wingId: 'web',     stage: 'Alpha release · 20 internal users',                                                                  artefact: 'Changelog · user notes · 10 bug tickets',                                                                          signoff: 'QA lead + 2 wing members',                                                                                       color: '#00D4FF', emoji: '🚧' },
+  { id: 'wps-g-1',  wingId: 'graphic', stage: 'Moodboard · 15 references · 1 page',                                                                                artefact: 'PDF moodboard · tags · palette',                                                                                          signoff: 'Art director · acknowledges 3 influences',                                                                                           color: '#F472B6', emoji: '🖼️' },
+  { id: 'wps-g-2',  wingId: 'graphic', stage: 'System delivery · components · type · tokens',                                                                                              artefact: 'Figma library · 20+ tokens · 10+ components',                                                                                                  signoff: 'Design council · 3-member sign',                                                                                                               color: '#F472B6', emoji: '🎨' },
+  { id: 'wps-v-1',  wingId: 'video',   stage: 'Story board · 12 panels · beats marked',                                                                                                            artefact: 'Storyboard sheet · timing notes',                                                                                                                      signoff: 'Story lead',                                                                                                                       color: '#A78BFA', emoji: '🎞️' },
+  { id: 'wps-v-2',  wingId: 'video',   stage: 'Rough cut · full length · rough audio',                                                                                                                         artefact: 'Video file · 1080p · watermarked',                                                                                                                                           signoff: 'Director + sound lead',                                                                                                                                   color: '#A78BFA', emoji: '🎬' },
+  { id: 'wps-p-1',  wingId: 'photo',   stage: 'Contact sheet · 36 frames · marked',                                                                                                                                          artefact: 'PDF sheet · annotated',                                                                                                                                                                     signoff: 'Photo mentor',                                                                                                                                                                    color: '#22C55E', emoji: '📸' },
+  { id: 'wps-p-2',  wingId: 'photo',   stage: 'Final edit · 10 selects · print-ready',                                                                                                                                                       artefact: 'Hi-res TIFF set · colour-graded',                                                                                                                                                                                            signoff: 'Print keeper · colour pass',                                                                                                                                                                          color: '#22C55E', emoji: '🖼️' },
+  { id: 'wps-pr-1', wingId: 'pr',      stage: 'Angle doc · 3 angles · 1 preferred',                                                                                                                                                                         artefact: 'Short doc · 300 words',                                                                                                                                                                                                                     signoff: 'PR lead',                                                                                                                                                                                                                color: '#FFD166', emoji: '🎯' },
+  { id: 'wps-pr-2', wingId: 'pr',      stage: 'Outreach kit · email · one-pager · image pack',                                                                                                                                                                                    artefact: 'Folder in PR vault · version-tagged',                                                                                                                                                                                                                                            signoff: 'PR + content lead',                                                                                                                                                                                                                                             color: '#FFD166', emoji: '📦' },
+];
+
+interface WingLifecycleRite {
+  id: string;
+  wingId: string;
+  rite: string;
+  when: string;
+  meaning: string;
+  color: string;
+  emoji: string;
+}
+
+const WING_LIFECYCLE_RITES: WingLifecycleRite[] = [
+  { id: 'wlr-c-1',  wingId: 'content', rite: 'Pen-passing · senior hands pen to new joinee',                                     when: 'First day',                                                meaning: 'Voice is carried forward · not owned.',                              color: '#F59E0B', emoji: '🖊️' },
+  { id: 'wlr-c-2',  wingId: 'content', rite: 'First byline · read the piece aloud in circle',                                                 when: 'First published article',                                                        meaning: 'Public work begins with a public voice.',                                                                color: '#F59E0B', emoji: '📜' },
+  { id: 'wlr-w-1',  wingId: 'web',     rite: 'First deploy party · green build · slow clap',                                                              when: 'First merged PR',                                                                                 meaning: 'Shipping is sacred · no deploy is ordinary.',                                                                                color: '#00D4FF', emoji: '🚀' },
+  { id: 'wlr-w-2',  wingId: 'web',     rite: 'Midnight fix-up story · told at bonfire',                                                                                 when: 'After hotfix season',                                                                                              meaning: 'We honour the tired · name what we learned.',                                                                                                         color: '#00D4FF', emoji: '🌙' },
+  { id: 'wlr-g-1',  wingId: 'graphic', rite: 'Palette-vow · new designer chooses 1 colour to retire',                                                                                 when: 'Induction',                                                                                                                     meaning: 'Taste is also subtraction · we learn to let go.',                                                                                                                       color: '#F472B6', emoji: '🎨' },
+  { id: 'wlr-g-2',  wingId: 'graphic', rite: 'Wall show · one frame · open hour · walk-throughs',                                                                                                   when: 'Every semester',                                                                                                                                meaning: 'Work goes on walls · feedback lives in faces.',                                                                                                                                               color: '#F472B6', emoji: '🖼️' },
+  { id: 'wlr-v-1',  wingId: 'video',   rite: 'Clap-board blessing · first film · wing signs the slate',                                                                                                              when: 'First short release',                                                                                                                                         meaning: 'Tools inherit blessings · not just hands.',                                                                                                                                                                     color: '#A78BFA', emoji: '🎬' },
+  { id: 'wlr-v-2',  wingId: 'video',   rite: 'Silent viewing · team watches final cut · no talking',                                                                                                                           when: 'Final picture lock',                                                                                                                                                                         meaning: 'Story gets uninterrupted attention · we bear witness.',                                                                                                                                                                                        color: '#A78BFA', emoji: '🤫' },
+  { id: 'wlr-p-1',  wingId: 'photo',   rite: 'Lens-lending · senior lends prime to junior · for 30 days',                                                                                                                                         when: 'After first portfolio review',                                                                                                                                                                                                       meaning: 'Tools circulate · trust is demonstrated · seen in use.',                                                                                                                                                                                                                         color: '#22C55E', emoji: '🔭' },
+  { id: 'wlr-p-2',  wingId: 'photo',   rite: 'Print walk · photographer hangs their best print in campus corridor · left 1 week',                                                                                                                                                                       when: 'Year-end',                                                                                                                                                                                                                                              meaning: 'Photography meets the public · not the feed.',                                                                                                                                                                                                                                                          color: '#22C55E', emoji: '🚶' },
+  { id: 'wlr-pr-1', wingId: 'pr',      rite: 'Voice rehearsal · first podcast episode · practice 3 times',                                                                                                                                                                                                                     when: 'First episode',                                                                                                                                                                                                                                                                                    meaning: 'Public voice earns its first airing.',                                                                                                                                                                                                                                                                                                     color: '#FFD166', emoji: '🎤' },
+  { id: 'wlr-pr-2', wingId: 'pr',      rite: 'Press card passing · senior hands printed card · tells one old story',                                                                                                                                                                                                                                    when: 'Promotion to spokesperson',                                                                                                                                                                                                                                                                                                                     meaning: 'Representation carries memory · not just authority.',                                                                                                                                                                                                                                                                                                                                                color: '#FFD166', emoji: '🎟️' },
+];
+
+interface WingExitGift {
+  id: string;
+  wingId: string;
+  gift: string;
+  given: string;
+  why: string;
+  color: string;
+  emoji: string;
+}
+
+const WING_EXIT_GIFTS: WingExitGift[] = [
+  { id: 'weg-c-1',  wingId: 'content', gift: 'Bound copy · 20 favourite drafts · hand-stitched cover',                 given: 'By successor editor',                 why: 'Voice is a library · leavers take a shelf with them.',               color: '#F59E0B', emoji: '📚' },
+  { id: 'weg-c-2',  wingId: 'content', gift: 'Voice-memo playlist · 30 min · favourite readings',                             given: 'By voice coach',                                   why: 'A sonic memory of their hours in the studio.',                                             color: '#F59E0B', emoji: '🎧' },
+  { id: 'weg-w-1',  wingId: 'web',     gift: 'Laptop sticker set · 1 per shipped project · signed by team',                                given: 'By sprint captain',                                            why: 'Every sticker is a hour · a bug · a joy.',                                                               color: '#00D4FF', emoji: '💻' },
+  { id: 'weg-w-2',  wingId: 'web',     gift: 'Tech-debt ledger · what they fixed · what they left · honest',                                              given: 'By eng council',                                                             why: 'Engineering is honest handoff · not heroics.',                                                                                 color: '#00D4FF', emoji: '🧾' },
+  { id: 'weg-g-1',  wingId: 'graphic', gift: 'Printed poster wall · 10 pieces · selected by peers',                                                                given: 'By crit circle',                                                                                 why: 'Their visual legacy on a wall · not a drive.',                                                                                              color: '#F472B6', emoji: '🖼️' },
+  { id: 'weg-g-2',  wingId: 'graphic', gift: 'Typeface kit · 3 custom letters · engraved in wood',                                                                             given: 'By type mentor',                                                                                              why: 'Type they chose becomes a thing they hold.',                                                                                                         color: '#F472B6', emoji: '🔤' },
+  { id: 'weg-v-1',  wingId: 'video',   gift: 'Reel montage · 3 min · soundtrack personal',                                                                                               given: 'By editor council',                                                                                                       why: 'A film about them · made by them · without them.',                                                                                                                                color: '#A78BFA', emoji: '🎞️' },
+  { id: 'weg-v-2',  wingId: 'video',   gift: 'Clapboard with signatures · filmography listed',                                                                                                            given: 'By director circle',                                                                                                                                 why: 'A physical anchor for their film years.',                                                                                                                                                                 color: '#A78BFA', emoji: '🎬' },
+  { id: 'weg-p-1',  wingId: 'photo',   gift: 'Framed print · their single best · hand-signed by peers',                                                                                                                             given: 'By print keeper',                                                                                                                                                  why: 'One frame · their legacy in the wing hallway.',                                                                                                                                                                                                color: '#22C55E', emoji: '🖼️' },
+  { id: 'weg-p-2',  wingId: 'photo',   gift: 'Field-kit wrapped in hand-drawn map of best locations',                                                                                                                                          given: 'By walk curator',                                                                                                                                                                    why: 'A map of where they looked · for the next eyes.',                                                                                                                                                                                                                color: '#22C55E', emoji: '🗺️' },
+  { id: 'weg-pr-1', wingId: 'pr',      gift: 'Press-clip binder · all their bylines + mentions',                                                                                                                                                                   given: 'By PR lead',                                                                                                                                                                                   why: 'Their public voice bound · countable · remembered.',                                                                                                                                                                                                                                        color: '#FFD166', emoji: '📰' },
+  { id: 'weg-pr-2', wingId: 'pr',      gift: 'Open mic card · good for one guest hour · anytime · forever',                                                                                                                                                                                       given: 'By PR lead',                                                                                                                                                                                                                              why: 'Alumni voice is always welcome · the stage stays open.',                                                                                                                                                                                                                                                                color: '#FFD166', emoji: '🎟️' },
+];
+
 const TaruWingsScreen: React.FC = () => {
   const [selectedWingId, setSelectedWingId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -3551,6 +3656,106 @@ const TaruWingsScreen: React.FC = () => {
     );
   };
 
+  // ------ Phase 3ba: round 6 deeper wing blocks ------
+  const renderWingWeeklyPulsesBlock = () => {
+    if (!selectedWing) return null;
+    const items = WING_WEEKLY_PULSES.filter((p) => p.wingId === selectedWing.id);
+    if (items.length === 0) return null;
+    return (
+      <View style={styles.sectionBlock}>
+        <View style={styles.sectionHeaderRow}>
+          <Text style={styles.sectionTitle}>🫀 Weekly pulse · this wing · its heartbeat</Text>
+          <Text style={styles.sectionCaption}>{items.length} pulses</Text>
+        </View>
+        {items.map((p) => (
+          <View key={p.id} style={[styles.wwpCard, { borderLeftColor: p.color }]}>
+            <View style={styles.wwpTopRow}>
+              <Text style={styles.wwpEmoji}>{p.emoji}</Text>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.wwpDay} numberOfLines={1}>{p.day}</Text>
+                <Text style={[styles.wwpPulse, { color: p.color }]} numberOfLines={2}>{p.pulse}</Text>
+              </View>
+            </View>
+            <Text style={styles.wwpHolder} numberOfLines={1}>holder · {p.holder}</Text>
+            <Text style={styles.wwpOutcome} numberOfLines={2}>{p.outcome}</Text>
+          </View>
+        ))}
+      </View>
+    );
+  };
+
+  const renderWingProjectStagesBlock = () => {
+    if (!selectedWing) return null;
+    const items = WING_PROJECT_STAGES.filter((p) => p.wingId === selectedWing.id);
+    if (items.length === 0) return null;
+    return (
+      <View style={styles.sectionBlock}>
+        <View style={styles.sectionHeaderRow}>
+          <Text style={styles.sectionTitle}>🪜 Project stages · how work moves · start to ship</Text>
+          <Text style={styles.sectionCaption}>{items.length} stages</Text>
+        </View>
+        {items.map((p) => (
+          <View key={p.id} style={[styles.wpsCard, { borderLeftColor: p.color }]}>
+            <View style={styles.wpsTopRow}>
+              <Text style={styles.wpsEmoji}>{p.emoji}</Text>
+              <Text style={styles.wpsStage} numberOfLines={2}>{p.stage}</Text>
+            </View>
+            <Text style={[styles.wpsArtefact, { color: p.color }]} numberOfLines={2}>artefact · {p.artefact}</Text>
+            <Text style={styles.wpsSignoff} numberOfLines={1}>sign-off · {p.signoff}</Text>
+          </View>
+        ))}
+      </View>
+    );
+  };
+
+  const renderWingLifecycleRitesBlock = () => {
+    if (!selectedWing) return null;
+    const items = WING_LIFECYCLE_RITES.filter((r) => r.wingId === selectedWing.id);
+    if (items.length === 0) return null;
+    return (
+      <View style={styles.sectionBlock}>
+        <View style={styles.sectionHeaderRow}>
+          <Text style={styles.sectionTitle}>🕯️ Lifecycle rites · moments we never skip</Text>
+          <Text style={styles.sectionCaption}>{items.length} rites</Text>
+        </View>
+        {items.map((r) => (
+          <View key={r.id} style={[styles.wlrCard, { borderLeftColor: r.color }]}>
+            <View style={styles.wlrTopRow}>
+              <Text style={styles.wlrEmoji}>{r.emoji}</Text>
+              <Text style={styles.wlrRite} numberOfLines={2}>{r.rite}</Text>
+            </View>
+            <Text style={[styles.wlrWhen, { color: r.color }]} numberOfLines={1}>when · {r.when}</Text>
+            <Text style={styles.wlrMeaning} numberOfLines={2}>{r.meaning}</Text>
+          </View>
+        ))}
+      </View>
+    );
+  };
+
+  const renderWingExitGiftsBlock = () => {
+    if (!selectedWing) return null;
+    const items = WING_EXIT_GIFTS.filter((g) => g.wingId === selectedWing.id);
+    if (items.length === 0) return null;
+    return (
+      <View style={styles.sectionBlock}>
+        <View style={styles.sectionHeaderRow}>
+          <Text style={styles.sectionTitle}>🎁 Exit gifts · what leavers carry forward</Text>
+          <Text style={styles.sectionCaption}>{items.length} gifts</Text>
+        </View>
+        {items.map((g) => (
+          <View key={g.id} style={[styles.wegCard, { borderLeftColor: g.color }]}>
+            <View style={styles.wegTopRow}>
+              <Text style={styles.wegEmoji}>{g.emoji}</Text>
+              <Text style={styles.wegGift} numberOfLines={2}>{g.gift}</Text>
+            </View>
+            <Text style={[styles.wegGiven, { color: g.color }]} numberOfLines={1}>given · {g.given}</Text>
+            <Text style={styles.wegWhy} numberOfLines={3}>{g.why}</Text>
+          </View>
+        ))}
+      </View>
+    );
+  };
+
   const renderDetail = () => (
     <ScrollView
       contentContainerStyle={styles.scrollContent}
@@ -3605,6 +3810,10 @@ const TaruWingsScreen: React.FC = () => {
       {renderWingApprenticeshipTracksBlock()}
       {renderWingMasterclassesBlock()}
       {renderWingStudyGroupsBlock()}
+      {renderWingWeeklyPulsesBlock()}
+      {renderWingProjectStagesBlock()}
+      {renderWingLifecycleRitesBlock()}
+      {renderWingExitGiftsBlock()}
       {renderMembersBlock()}
     </ScrollView>
   );
@@ -4679,6 +4888,39 @@ const styles = StyleSheet.create({
   wsgCadence: { fontSize: 11, fontWeight: '700', marginTop: 2 },
   wsgCurriculum: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8, paddingLeft: 32 },
   wsgSignal: { color: Colors.accent.softGold, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32, fontStyle: 'italic' },
+
+  // --- Phase 3ba: weekly pulse ---
+  wwpCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  wwpTopRow: { flexDirection: 'row', alignItems: 'center' },
+  wwpEmoji: { fontSize: 22, marginRight: 10 },
+  wwpDay: { color: Colors.text.primary, fontSize: 13, fontWeight: '900' },
+  wwpPulse: { fontSize: 12, fontWeight: '700', marginTop: 2, lineHeight: 16 },
+  wwpHolder: { color: Colors.text.muted, fontSize: 11, marginTop: 8, paddingLeft: 32 },
+  wwpOutcome: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32 },
+
+  // --- Phase 3ba: project stages ---
+  wpsCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  wpsTopRow: { flexDirection: 'row', alignItems: 'center' },
+  wpsEmoji: { fontSize: 22, marginRight: 10 },
+  wpsStage: { color: Colors.text.primary, fontSize: 13, fontWeight: '900', flex: 1, lineHeight: 17 },
+  wpsArtefact: { fontSize: 11, fontWeight: '700', marginTop: 8, paddingLeft: 32, lineHeight: 15 },
+  wpsSignoff: { color: Colors.text.muted, fontSize: 11, marginTop: 4, paddingLeft: 32 },
+
+  // --- Phase 3ba: lifecycle rites ---
+  wlrCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  wlrTopRow: { flexDirection: 'row', alignItems: 'center' },
+  wlrEmoji: { fontSize: 22, marginRight: 10 },
+  wlrRite: { color: Colors.text.primary, fontSize: 13, fontWeight: '900', flex: 1, lineHeight: 17 },
+  wlrWhen: { fontSize: 11, fontWeight: '700', marginTop: 8, paddingLeft: 32 },
+  wlrMeaning: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32, fontStyle: 'italic' },
+
+  // --- Phase 3ba: exit gifts ---
+  wegCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  wegTopRow: { flexDirection: 'row', alignItems: 'center' },
+  wegEmoji: { fontSize: 22, marginRight: 10 },
+  wegGift: { color: Colors.text.primary, fontSize: 13, fontWeight: '900', flex: 1, lineHeight: 17 },
+  wegGiven: { fontSize: 11, fontWeight: '700', marginTop: 8, paddingLeft: 32 },
+  wegWhy: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32 },
 });
 
 export default TaruWingsScreen;
