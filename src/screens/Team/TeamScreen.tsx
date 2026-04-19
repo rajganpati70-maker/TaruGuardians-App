@@ -1385,6 +1385,108 @@ const TEAM_THANK_YOUS: TeamThankYouMoment[] = [
   { id: 'tty-6', who: 'First-year batch · 2023', what: 'For showing up on the coldest morning · six of you · with saplings.',          from: 'Team',                   color: '#FFD166', emoji: '🌱' },
 ];
 
+// =====================================================
+// Phase 3aj: deeper team structures — round 3
+// =====================================================
+
+interface TeamCareSignal {
+  id: string;
+  signal: string;
+  cadence: string;
+  responder: string;
+  nextStep: string;
+  color: string;
+  emoji: string;
+}
+
+const TEAM_CARE_SIGNALS: TeamCareSignal[] = [
+  { id: 'tcs-1', signal: 'Someone has gone quiet for 10+ days',            cadence: 'Weekly sweep', responder: 'Buddy + lead',      nextStep: 'A gentle message · coffee if nearby · no guilt.',                              color: '#F472B6', emoji: '🫶' },
+  { id: 'tcs-2', signal: 'Three late-nights in a week',                   cadence: 'Standup note', responder: 'Wing lead',          nextStep: 'Reassign ownership · shorten deadline · protect the weekend.',                 color: '#F59E0B', emoji: '🕯️' },
+  { id: 'tcs-3', signal: 'Retro feedback says "meeting fatigue"',          cadence: 'Quarterly',    responder: 'Ops + core council', nextStep: 'Cancel 1 recurring · shift 1 to async · publish the change within a week.',   color: '#A78BFA', emoji: '📅' },
+  { id: 'tcs-4', signal: 'Pledges slipping · streak < 60 days',            cadence: 'Bi-weekly',    responder: 'Green lead',         nextStep: 'Refresh · pair people · celebrate small wins publicly.',                      color: '#22C55E', emoji: '🌱' },
+  { id: 'tcs-5', signal: 'Mentor inbox · no reply > 5 days',               cadence: 'Weekly',       responder: 'Mentor buddy',       nextStep: 'Nudge kindly · offer to redirect · never shame.',                              color: '#00D4FF', emoji: '📮' },
+  { id: 'tcs-6', signal: 'New member feels lost at day-14',                cadence: 'Per cohort',   responder: 'People lead',        nextStep: 'Swap buddy · two ritual invites · reading pack refresh.',                      color: '#FFD166', emoji: '🧭' },
+  { id: 'tcs-7', signal: 'Leave taken < 3 days this quarter',              cadence: 'Quarterly',    responder: 'Core council',       nextStep: 'Private note · plan a block-out · find a cover buddy.',                        color: '#EF4444', emoji: '🛌' },
+];
+
+interface TeamHireLadder {
+  id: string;
+  role: string;
+  level: string;
+  mustHave: string;
+  niceHave: string;
+  growsInto: string;
+  color: string;
+  emoji: string;
+}
+
+const TEAM_HIRE_LADDER: TeamHireLadder[] = [
+  { id: 'thl-1', role: 'Content junior',       level: 'Year 1',    mustHave: 'One published piece · clear point of view.',                 niceHave: 'Newsletter of their own · even 50 subscribers.',         growsInto: 'Content senior · editor in two cycles.',            color: '#F59E0B', emoji: '📝' },
+  { id: 'thl-2', role: 'Web junior',            level: 'Year 1',    mustHave: 'One merged PR in a public repo · understands the review loop.', niceHave: 'Built a tiny tool · solved a real problem for one person.', growsInto: 'Web senior · mobile lead if they want.',            color: '#00D4FF', emoji: '💻' },
+  { id: 'thl-3', role: 'Design junior',         level: 'Year 1',    mustHave: 'Three posters in three variants · knows kerning isn\'t cheating.', niceHave: 'Type-only experiments · sketchbook habit.',            growsInto: 'Design senior · brand keeper.',                       color: '#F472B6', emoji: '🎨' },
+  { id: 'thl-4', role: 'Video junior',          level: 'Year 1',    mustHave: 'One edited reel · can read a waveform.',                     niceHave: 'Documentary short · any length.',                         growsInto: 'Video senior · colour + sound path open.',          color: '#A78BFA', emoji: '🎞️' },
+  { id: 'thl-5', role: 'Photo junior',          level: 'Year 1',    mustHave: 'Shoots manual · one culled set with captions.',              niceHave: 'Nature or nightscape interest · patience for waiting.',   growsInto: 'Photo senior · archive keeper.',                     color: '#22C55E', emoji: '📷' },
+  { id: 'thl-6', role: 'PR junior',             level: 'Year 1',    mustHave: 'Wrote + landed one story somewhere · even a class blog counts.', niceHave: 'Cold-emailed a stranger · got a kind reply.',              growsInto: 'PR senior · campaign lead in 18 months.',           color: '#FFD166', emoji: '📰' },
+  { id: 'thl-7', role: 'Wing lead',              level: 'Year 3',    mustHave: 'Mentored 2 juniors · shipped 2 flagship pieces.',            niceHave: 'Owns a ritual · writes retros that other wings read.',     growsInto: 'Core council seat · outgoing mentor network.',    color: '#D4AF37', emoji: '🎖️' },
+];
+
+interface TeamKindness {
+  id: string;
+  moment: string;
+  who: string;
+  what: string;
+  color: string;
+  emoji: string;
+}
+
+const TEAM_KINDNESSES: TeamKindness[] = [
+  { id: 'tk-1', moment: 'Exam week · March',         who: 'Sameer + tech wing',          what: 'Stayed up to stream the hackathon for juniors who couldn\'t attend · no credit taken.',     color: '#00D4FF', emoji: '💻' },
+  { id: 'tk-2', moment: 'Monsoon · first flood',      who: 'Ishita + Ravi',                 what: 'Sandbagged the library basement · saved 400 books · silently.',                              color: '#38BDF8', emoji: '📚' },
+  { id: 'tk-3', moment: 'Winter · bonfire night',     who: 'Hospitality rota',              what: 'Made sure every alumnus who returned had a plate in their hand inside 90 seconds.',         color: '#EF4444', emoji: '🔥' },
+  { id: 'tk-4', moment: 'Placement season',           who: 'Arjun · alumnus',               what: 'Flew back to do mock interviews across two weekends · refused to be named.',               color: '#A78BFA', emoji: '🎙️' },
+  { id: 'tk-5', moment: 'Any random Tuesday',         who: 'Sunita didi',                    what: 'Sets aside a plate for the nights someone is working alone at the shed · every time.',     color: '#F59E0B', emoji: '🍲' },
+  { id: 'tk-6', moment: 'After a hard retro',          who: 'Priya N. · alumna',              what: 'Recorded a kind voice note for the junior whose work was critiqued · no-one asked her to.', color: '#F472B6', emoji: '🎧' },
+  { id: 'tk-7', moment: 'Closing day',                  who: 'Whole club',                     what: 'Chairs stacked · posters collected · grove swept · always · without needing to be told.',   color: '#22C55E', emoji: '🧹' },
+];
+
+interface TeamCraftBracket {
+  id: string;
+  discipline: string;
+  junior: string;
+  mid: string;
+  senior: string;
+  color: string;
+  emoji: string;
+}
+
+const TEAM_CRAFT_BRACKETS: TeamCraftBracket[] = [
+  { id: 'tcb-1', discipline: 'Content',            junior: 'Outlines before drafting · 600 words a week.',         mid: '1,500 words a week · two formats · can edit a peer.',           senior: 'Owns a column · coaches two juniors · ships one long-read a quarter.',       color: '#F59E0B', emoji: '📝' },
+  { id: 'tcb-2', discipline: 'Web / App',          junior: 'Lands merged PRs · knows the test loop.',                mid: 'Ships features end-to-end · writes follow-up tickets.',          senior: 'Owns a module · mentors + reviews · oncall without flinching.',              color: '#00D4FF', emoji: '💻' },
+  { id: 'tcb-3', discipline: 'Design',             junior: 'Follows library · ships one poster a week.',              mid: 'Extends library · owns event kit end-to-end.',                    senior: 'Keeps the brand · writes design notes others quote.',                        color: '#F472B6', emoji: '🎨' },
+  { id: 'tcb-4', discipline: 'Video',               junior: 'Rough cut on deadline · reads notes without ego.',        mid: 'Owns an event reel · colour + sound in their lane.',             senior: 'Teaches cutting-to-story · mentors one junior a cycle.',                    color: '#A78BFA', emoji: '🎞️' },
+  { id: 'tcb-5', discipline: 'Photography',         junior: 'Manual mode · clean frames · ten keepers a week.',        mid: 'Owns an event set · leads a shoot · culls honestly.',             senior: 'Photo essays · archive keeper · runs junior walks.',                        color: '#22C55E', emoji: '📷' },
+  { id: 'tcb-6', discipline: 'Public Relations',    junior: 'Writes + pitches · learns the no gracefully.',            mid: 'Owns a partner · runs a press kit refresh.',                        senior: 'Campaign lead · trusted outside the club · pipeline keeper.',                color: '#FFD166', emoji: '📰' },
+];
+
+interface TeamFieldNote {
+  id: string;
+  note: string;
+  writtenBy: string;
+  occasion: string;
+  color: string;
+  emoji: string;
+}
+
+const TEAM_FIELD_NOTES: TeamFieldNote[] = [
+  { id: 'tfn-1', note: 'The retro stopped being scary the moment we made it not about finger-pointing · it started being about habits.',                             writtenBy: 'Rahul M. · 2012',      occasion: 'After Q2 retro · 2014',      color: '#00D4FF', emoji: '🪞' },
+  { id: 'tfn-2', note: 'The best hires are the ones who volunteer without being asked for six months straight · notice them · promote them.',                        writtenBy: 'Priya N. · 2017',      occasion: 'Closing note · 2020',       color: '#F59E0B', emoji: '📝' },
+  { id: 'tfn-3', note: 'A club that plants trees outlives the people who planted them · design your rituals to outlive you too.',                                   writtenBy: 'Ananya R. · 2016',     occasion: 'Convocation speech · 2019', color: '#22C55E', emoji: '🌳' },
+  { id: 'tfn-4', note: 'If the junior is scared to say they\'re stuck · your team is not safe yet · keep working.',                                                    writtenBy: 'Arjun K. · 2014',      occasion: 'After onboarding review · 2018', color: '#EF4444', emoji: '🫂' },
+  { id: 'tfn-5', note: 'Ship small · ship often · ship together · all three matter · drop any one and the other two weaken.',                                         writtenBy: 'Dev P. · 2018',         occasion: 'Retrospective · 2022',       color: '#FFD166', emoji: '🚢' },
+  { id: 'tfn-6', note: 'You are not behind · the timeline is arbitrary · the only true cadence is the one that doesn\'t break people.',                              writtenBy: 'Zara S. · 2020',        occasion: 'Open letter · 2024',         color: '#A78BFA', emoji: '⏳' },
+  { id: 'tfn-7', note: 'Say the quiet part out loud · especially the appreciation · it\'s the only way the culture compounds.',                                        writtenBy: 'Ritika B. · 2019',       occasion: 'Farewell note · 2023',       color: '#F472B6', emoji: '📣' },
+];
+
 const TeamScreen: React.FC = () => {
   // ------ State ------
   const [selectedDept, setSelectedDept] = useState<DeptId>('all');
@@ -3184,6 +3286,121 @@ const TeamScreen: React.FC = () => {
     </View>
   );
 
+  // ------ Phase 3aj: round 3 team blocks ------
+  const renderTeamCareSignals = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🫶 Care signals · people before the plan</Text>
+        <Text style={styles.sectionCaption}>{TEAM_CARE_SIGNALS.length} signals</Text>
+      </View>
+      {TEAM_CARE_SIGNALS.map((s) => (
+        <View key={s.id} style={[styles.tcsCard, { borderLeftColor: s.color }]}>
+          <View style={styles.tcsTopRow}>
+            <Text style={styles.tcsEmoji}>{s.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.tcsSignal} numberOfLines={2}>{s.signal}</Text>
+              <Text style={[styles.tcsCadence, { color: s.color }]}>{s.cadence}</Text>
+            </View>
+          </View>
+          <Text style={styles.tcsResponder} numberOfLines={1}>responder · {s.responder}</Text>
+          <Text style={styles.tcsStep} numberOfLines={3}>→ {s.nextStep}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderTeamHireLadder = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🪜 Hire ladder · what we hire for · what grows</Text>
+        <Text style={styles.sectionCaption}>{TEAM_HIRE_LADDER.length} roles</Text>
+      </View>
+      {TEAM_HIRE_LADDER.map((h) => (
+        <View key={h.id} style={[styles.thlCard, { borderLeftColor: h.color }]}>
+          <View style={styles.thlTopRow}>
+            <Text style={styles.thlEmoji}>{h.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.thlRole} numberOfLines={1}>{h.role}</Text>
+              <Text style={[styles.thlLevel, { color: h.color }]}>{h.level}</Text>
+            </View>
+          </View>
+          <Text style={styles.thlMust} numberOfLines={2}>must · {h.mustHave}</Text>
+          <Text style={styles.thlNice} numberOfLines={2}>nice · {h.niceHave}</Text>
+          <Text style={styles.thlGrow} numberOfLines={2}>grows into · {h.growsInto}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderTeamKindnesses = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🕯️ Kindness log · on record · no receipts asked</Text>
+        <Text style={styles.sectionCaption}>{TEAM_KINDNESSES.length} entries</Text>
+      </View>
+      {TEAM_KINDNESSES.map((k) => (
+        <View key={k.id} style={[styles.tkCard, { borderLeftColor: k.color }]}>
+          <View style={styles.tkTopRow}>
+            <Text style={styles.tkEmoji}>{k.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.tkMoment} numberOfLines={1}>{k.moment}</Text>
+              <Text style={[styles.tkWho, { color: k.color }]}>{k.who}</Text>
+            </View>
+          </View>
+          <Text style={styles.tkWhat} numberOfLines={3}>{k.what}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderTeamCraftBrackets = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>📐 Craft brackets · junior · mid · senior</Text>
+        <Text style={styles.sectionCaption}>{TEAM_CRAFT_BRACKETS.length} disciplines</Text>
+      </View>
+      {TEAM_CRAFT_BRACKETS.map((b) => (
+        <View key={b.id} style={[styles.tcbCard, { borderLeftColor: b.color }]}>
+          <View style={styles.tcbTopRow}>
+            <Text style={styles.tcbEmoji}>{b.emoji}</Text>
+            <Text style={styles.tcbDisc} numberOfLines={1}>{b.discipline}</Text>
+          </View>
+          <View style={styles.tcbRow}>
+            <Text style={[styles.tcbLabel, { color: b.color }]}>JR</Text>
+            <Text style={styles.tcbText} numberOfLines={2}>{b.junior}</Text>
+          </View>
+          <View style={styles.tcbRow}>
+            <Text style={[styles.tcbLabel, { color: b.color }]}>MID</Text>
+            <Text style={styles.tcbText} numberOfLines={2}>{b.mid}</Text>
+          </View>
+          <View style={styles.tcbRow}>
+            <Text style={[styles.tcbLabel, { color: b.color }]}>SR</Text>
+            <Text style={styles.tcbText} numberOfLines={2}>{b.senior}</Text>
+          </View>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderTeamFieldNotes = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>📓 Field notes from past council</Text>
+        <Text style={styles.sectionCaption}>{TEAM_FIELD_NOTES.length} notes</Text>
+      </View>
+      {TEAM_FIELD_NOTES.map((n) => (
+        <View key={n.id} style={[styles.tfnCard, { borderLeftColor: n.color }]}>
+          <View style={styles.tfnTopRow}>
+            <Text style={styles.tfnEmoji}>{n.emoji}</Text>
+            <Text style={styles.tfnOccasion} numberOfLines={1}>{n.occasion}</Text>
+          </View>
+          <Text style={styles.tfnNote} numberOfLines={4}>&quot;{n.note}&quot;</Text>
+          <Text style={[styles.tfnAuthor, { color: n.color }]}>— {n.writtenBy}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
   // ------ Main ------
   const listHeader = (
     <View>
@@ -3211,11 +3428,16 @@ const TeamScreen: React.FC = () => {
       {renderBudget()}
       {renderAgreements()}
       {renderTeamCommitments()}
+      {renderTeamCareSignals()}
+      {renderTeamHireLadder()}
+      {renderTeamCraftBrackets()}
       {renderTraditions()}
       {renderCelebrations()}
       {renderTeamValues()}
       {renderTeamTestimonials()}
       {renderTeamThankYous()}
+      {renderTeamKindnesses()}
+      {renderTeamFieldNotes()}
       {renderThanks()}
       {renderTeamGoodbye()}
       {renderApplyToJoin()}
@@ -4477,6 +4699,50 @@ const styles = StyleSheet.create({
   ttyWho: { color: Colors.text.primary, fontSize: 14, fontWeight: '800' },
   ttyFrom: { fontSize: 11, fontWeight: '700', marginTop: 2 },
   ttyWhat: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 6, paddingLeft: 34 },
+
+  // --- Phase 3aj: care signals ---
+  tcsCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  tcsTopRow: { flexDirection: 'row', alignItems: 'center' },
+  tcsEmoji: { fontSize: 22, marginRight: 10 },
+  tcsSignal: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', lineHeight: 17 },
+  tcsCadence: { fontSize: 10, fontWeight: '900', letterSpacing: 1, textTransform: 'uppercase', marginTop: 2 },
+  tcsResponder: { color: Colors.text.muted, fontSize: 11, marginTop: 6, paddingLeft: 32 },
+  tcsStep: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32 },
+
+  // --- Phase 3aj: hire ladder ---
+  thlCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  thlTopRow: { flexDirection: 'row', alignItems: 'center' },
+  thlEmoji: { fontSize: 22, marginRight: 10 },
+  thlRole: { color: Colors.text.primary, fontSize: 13, fontWeight: '900' },
+  thlLevel: { fontSize: 10, fontWeight: '900', letterSpacing: 1, marginTop: 2 },
+  thlMust: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8, paddingLeft: 32 },
+  thlNice: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 3, paddingLeft: 32 },
+  thlGrow: { color: Colors.accent.softGold, fontSize: 11, lineHeight: 15, marginTop: 3, paddingLeft: 32, fontStyle: 'italic' },
+
+  // --- Phase 3aj: kindness log ---
+  tkCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  tkTopRow: { flexDirection: 'row', alignItems: 'center' },
+  tkEmoji: { fontSize: 22, marginRight: 10 },
+  tkMoment: { color: Colors.text.primary, fontSize: 13, fontWeight: '800' },
+  tkWho: { fontSize: 11, fontWeight: '700', marginTop: 2 },
+  tkWhat: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8, paddingLeft: 32 },
+
+  // --- Phase 3aj: craft brackets ---
+  tcbCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  tcbTopRow: { flexDirection: 'row', alignItems: 'center', marginBottom: 8 },
+  tcbEmoji: { fontSize: 22, marginRight: 10 },
+  tcbDisc: { color: Colors.text.primary, fontSize: 14, fontWeight: '900' },
+  tcbRow: { flexDirection: 'row', alignItems: 'flex-start', marginTop: 6, paddingLeft: 32 },
+  tcbLabel: { fontSize: 10, fontWeight: '900', width: 36, letterSpacing: 0.8 },
+  tcbText: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, flex: 1 },
+
+  // --- Phase 3aj: field notes ---
+  tfnCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 14, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  tfnTopRow: { flexDirection: 'row', alignItems: 'center' },
+  tfnEmoji: { fontSize: 22, marginRight: 10 },
+  tfnOccasion: { color: Colors.text.muted, fontSize: 10, fontWeight: '900', letterSpacing: 1, textTransform: 'uppercase' },
+  tfnNote: { color: Colors.text.primary, fontSize: 13, lineHeight: 18, marginTop: 8, paddingLeft: 32, fontStyle: 'italic' },
+  tfnAuthor: { fontSize: 11, fontWeight: '800', marginTop: 6, paddingLeft: 32 },
 });
 
 export default TeamScreen;
