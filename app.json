@@ -1,0 +1,24 @@
+{
+  "expo": {
+    "name": "TaruGuardians",
+    "slug": "taruguardians-app",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "splash": {
+      "backgroundColor": "#000000",
+      "resizeMode": "contain"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.taruguardians.app"
+    },
+    "android": {
+      "package": "com.taruguardians.app"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    }
+  }
+}
