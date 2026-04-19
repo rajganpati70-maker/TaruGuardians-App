@@ -1246,6 +1246,129 @@ const FEEDBACK_LOOP: FeedbackLoopStage[] = [
 // Component
 // =====================================================
 
+// =====================================================
+// Phase 3s: deeper suggestion structures
+// =====================================================
+
+interface VoterWeight {
+  id: string;
+  role: string;
+  weight: number;
+  examples: string;
+  color: string;
+  emoji: string;
+}
+
+const VOTER_WEIGHTS: VoterWeight[] = [
+  { id: 'vw-1', role: 'First-year guardians',    weight: 1.0, examples: 'Everyone starts here · one vote equals one voice.',       color: '#94A3B8', emoji: '🌱' },
+  { id: 'vw-2', role: 'Contributors · 2+ ships', weight: 1.2, examples: 'Anyone who shipped at least two merged items.',            color: '#22C55E', emoji: '🌿' },
+  { id: 'vw-3', role: 'Wing leads',              weight: 1.5, examples: 'Heads of the six wings · small bias toward domain view.',  color: '#F59E0B', emoji: '🪶' },
+  { id: 'vw-4', role: 'Operating council',       weight: 1.8, examples: 'Four elected seats · one-year terms.',                     color: '#00D4FF', emoji: '⚓' },
+  { id: 'vw-5', role: 'Alumni advisors',         weight: 1.3, examples: 'Past contributors with advisory seats · context matters.', color: '#A78BFA', emoji: '🧭' },
+  { id: 'vw-6', role: 'Campus staff allies',     weight: 1.1, examples: 'Faculty / staff allies who chose to be listed.',           color: '#F472B6', emoji: '🎓' },
+];
+
+interface EscalationPath {
+  id: string;
+  level: number;
+  name: string;
+  whenToUse: string;
+  owner: string;
+  slaDays: number;
+  color: string;
+  emoji: string;
+}
+
+const ESCALATION_PATHS: EscalationPath[] = [
+  { id: 'ep-1', level: 1, name: 'Wing triage',          whenToUse: 'Any suggestion · default route · wing lead acknowledges in 3 days.', owner: 'Wing lead',        slaDays: 3,  color: '#22C55E', emoji: '🟢' },
+  { id: 'ep-2', level: 2, name: 'Cross-wing review',    whenToUse: 'When two or more wings are impacted · council picks an owner.',       owner: 'Council pick',     slaDays: 7,  color: '#F59E0B', emoji: '🟡' },
+  { id: 'ep-3', level: 3, name: 'Council decision',     whenToUse: 'Budget or policy change · needs a council vote to unblock.',          owner: 'Operating council', slaDays: 14, color: '#F97316', emoji: '🟠' },
+  { id: 'ep-4', level: 4, name: 'Trustee sign-off',     whenToUse: 'Safety, legal or funding implications · requires trustee email.',      owner: 'Trustee on-call',  slaDays: 21, color: '#EF4444', emoji: '🔴' },
+  { id: 'ep-5', level: 5, name: 'Open town hall',       whenToUse: 'Cultural / values change · put it to the whole club in person.',       owner: 'All members',      slaDays: 30, color: '#A78BFA', emoji: '🏛️' },
+];
+
+interface ShippedWin {
+  id: string;
+  title: string;
+  category: string;
+  monthsAgo: number;
+  impact: string;
+  owner: string;
+  color: string;
+  emoji: string;
+}
+
+const SHIPPED_WINS: ShippedWin[] = [
+  { id: 'sw-1',  title: 'Reusable mug programme',                  category: 'Sustainability',  monthsAgo: 14, impact: 'Cut ~3,400 paper cups this year alone.',           owner: 'Sustainability wing', color: '#22C55E', emoji: '☕' },
+  { id: 'sw-2',  title: 'Late-night workshops · 7–9 pm slots',     category: 'Scheduling',      monthsAgo: 11, impact: 'Day-scholar attendance up from 23% to 61%.',        owner: 'Ops wing',            color: '#00D4FF', emoji: '🌙' },
+  { id: 'sw-3',  title: 'Bilingual Hindi + English subtitles',     category: 'Accessibility',   monthsAgo: 9,  impact: 'Twelve more villages watched our last five talks.',  owner: 'Content wing',        color: '#F472B6', emoji: '📝' },
+  { id: 'sw-4',  title: 'Quiet hour · one focused hour per day',   category: 'Culture',         monthsAgo: 8,  impact: 'Self-rated deep-work doubled on Wed and Fri.',      owner: 'All wings',           color: '#A78BFA', emoji: '🤫' },
+  { id: 'sw-5',  title: 'Pre-event consent flow · written',        category: 'Safety',          monthsAgo: 7,  impact: 'Zero reported photo-consent issues in three events.', owner: 'PR wing',           color: '#F59E0B', emoji: '🤝' },
+  { id: 'sw-6',  title: 'Alumni fireside every first Saturday',    category: 'Community',       monthsAgo: 5,  impact: 'Six firesides so far · 420 attendees combined.',     owner: 'Alumni wing',         color: '#38BDF8', emoji: '🔥' },
+  { id: 'sw-7',  title: 'Accessibility audit on our own app',      category: 'Accessibility',   monthsAgo: 3,  impact: 'Seventeen issues fixed · contrast + labels + focus.',owner: 'Web/App wing',        color: '#7E57C2', emoji: '♿' },
+  { id: 'sw-8',  title: 'Reading-list · one book a month',         category: 'Learning',        monthsAgo: 2,  impact: 'A rolling two-page summary shared each month.',     owner: 'Content wing',        color: '#F87171', emoji: '📚' },
+  { id: 'sw-9',  title: 'Sapling sponsorship chart · in-app',      category: 'Sustainability',  monthsAgo: 1,  impact: 'Made the ₹100-per-sapling goal visible.',           owner: 'GD wing',             color: '#22C55E', emoji: '🌳' },
+  { id: 'sw-10', title: 'Open gear-desk · sign out anything',      category: 'Operations',      monthsAgo: 1,  impact: 'Zero broken items in four months · trust held.',    owner: 'Ops wing',            color: '#F59E0B', emoji: '🧰' },
+];
+
+interface DiscardedSuggestion {
+  id: string;
+  title: string;
+  reason: string;
+  respectedBy: string;
+  monthsAgo: number;
+  color: string;
+  emoji: string;
+}
+
+const DISCARDED_SUGGESTIONS: DiscardedSuggestion[] = [
+  { id: 'ds-1', title: 'Paid premium tier for members',         reason: 'Breaks our free-forever principle for campus clubs.',         respectedBy: 'Council vote · 6 to 0',  monthsAgo: 10, color: '#EF4444', emoji: '💰' },
+  { id: 'ds-2', title: 'Leaderboard with public rankings',       reason: 'Turns out ranking is the opposite of community in tests.',    respectedBy: 'Wing-leads discussion',  monthsAgo: 8,  color: '#F97316', emoji: '📊' },
+  { id: 'ds-3', title: 'Automatic attendance via face-recog',    reason: 'Privacy risk outweighs the five minutes of time saved.',      respectedBy: 'Trustee note',            monthsAgo: 6,  color: '#A855F7', emoji: '🔒' },
+  { id: 'ds-4', title: 'Paid sponsorships in the app feed',      reason: 'We will not sell attention in a campus club app.',            respectedBy: 'Open town hall',          monthsAgo: 5,  color: '#EF4444', emoji: '📣' },
+  { id: 'ds-5', title: 'Auto-translate comments in-app',         reason: 'Bad translations hurt nuance · we kept manual bilingual.',    respectedBy: 'Content wing review',     monthsAgo: 4,  color: '#F472B6', emoji: '🈯' },
+  { id: 'ds-6', title: 'Offline-only mode with no sync at all',  reason: 'Too easy to lose a week of notes · we picked delayed-sync.',  respectedBy: 'Engineering review',      monthsAgo: 3,  color: '#F59E0B', emoji: '📴' },
+];
+
+interface DecisionJournal {
+  id: string;
+  week: string;
+  decision: string;
+  context: string;
+  revisitIn: string;
+  color: string;
+  emoji: string;
+}
+
+const DECISION_JOURNAL: DecisionJournal[] = [
+  { id: 'dj-1', week: 'Week 46 · 2025', decision: 'Keep suggestions public by default',               context: 'A member asked for fully private suggestions · council kept default public + private toggle.', revisitIn: 'Six months',  color: '#00D4FF', emoji: '🗳️' },
+  { id: 'dj-2', week: 'Week 48 · 2025', decision: 'Cap campus events at 120 people',                  context: 'Safety audit said our room fire-capacity is 135 · we chose a safety margin of 15 seats.',      revisitIn: 'One year',    color: '#F59E0B', emoji: '🛟' },
+  { id: 'dj-3', week: 'Week 02 · 2026', decision: 'No sponsored content in the app feed · ever',      context: 'Clear council decision · revisit only if the club changes governance shape.',                 revisitIn: 'Governance change only', color: '#EF4444', emoji: '🚫' },
+  { id: 'dj-4', week: 'Week 06 · 2026', decision: 'Default to reusable mugs · disposable only on ask',context: 'Saw 3,400 cups saved · kept the default · people can still ask for paper if unwell.',           revisitIn: 'One year',    color: '#22C55E', emoji: '☕' },
+  { id: 'dj-5', week: 'Week 10 · 2026', decision: 'Open-source all our RN code under MIT',            context: 'Two alumni started using snippets · we kept it open with an MIT header and a thank-you file.', revisitIn: 'One year',    color: '#A78BFA', emoji: '🧾' },
+  { id: 'dj-6', week: 'Week 14 · 2026', decision: 'Keep one quiet hour · 2 pm to 3 pm · all wings',   context: 'Helps focus · sticking with it · trying silent-lunch Fridays as an experiment.',                revisitIn: 'Next quarter', color: '#F472B6', emoji: '🤫' },
+  { id: 'dj-7', week: 'Week 17 · 2026', decision: 'Accept anonymous suggestions with a rate-limit',   context: 'One per week per IP · not per user · protects psychological safety without opening a spam fire-hose.', revisitIn: 'Six months', color: '#7E57C2', emoji: '🕵️' },
+];
+
+interface SuggestionStageTip {
+  id: string;
+  stage: string;
+  tip: string;
+  exampleDone: string;
+  exampleNot: string;
+  color: string;
+  emoji: string;
+}
+
+const STAGE_TIPS: SuggestionStageTip[] = [
+  { id: 'st-1', stage: 'Before you write',   tip: 'Write the one-line outcome first · not the fix.',           exampleDone: 'Newcomers get to the Wi-Fi in under 60 seconds.',          exampleNot: 'Print a bigger poster near the router.',                                color: '#22C55E', emoji: '🎯' },
+  { id: 'st-2', stage: 'Picking a category', tip: 'Pick the wing that would ship it · not the one most hurt.', exampleDone: 'Wi-Fi onboarding goes to Ops · not to PR.',                 exampleNot: 'Wi-Fi onboarding goes to PR because guests complained at the expo.', color: '#F59E0B', emoji: '🗂️' },
+  { id: 'st-3', stage: 'Writing it',          tip: 'Short problem · short goal · one rough idea is enough.',    exampleDone: '3 lines problem · 3 lines goal · 2 lines of how it might look.', exampleNot: 'A four-paragraph essay.',                                         color: '#F472B6', emoji: '✍️' },
+  { id: 'st-4', stage: 'Before submitting',   tip: 'Add one realistic concern · what could make this fail.',    exampleDone: '"If the dorm switches routers · this breaks."',            exampleNot: 'No risks listed · looks too perfect to be honest.',                       color: '#A78BFA', emoji: '🪞' },
+  { id: 'st-5', stage: 'Replying to comments',tip: 'Answer the critic first · then the fan.',                   exampleDone: 'First reply addresses the hardest objection with data.',    exampleNot: 'Thanking praise and scrolling past the hard reply.',                       color: '#F87171', emoji: '💬' },
+  { id: 'st-6', stage: 'After it ships',      tip: 'Write two lines in the digest · name the helpers.',         exampleDone: '"Shipped · thanks to Meera, Rohit, Anmol."',               exampleNot: 'No retro line · silent merge.',                                           color: '#00D4FF', emoji: '📣' },
+];
+
 const SuggestionScreen: React.FC = () => {
   // ------------ State ------------
   const [suggestions, setSuggestions] = useState<ExtSuggestion[]>(SAMPLE_SUGGESTIONS);
@@ -2825,6 +2948,146 @@ const SuggestionScreen: React.FC = () => {
     </View>
   );
 
+  const renderVoterWeights = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🗳️ How we weight votes</Text>
+        <Text style={styles.sectionCaption}>transparent on purpose</Text>
+      </View>
+      {VOTER_WEIGHTS.map((v) => (
+        <View key={v.id} style={[styles.vwRow, { borderLeftColor: v.color }]}>
+          <Text style={styles.vwEmoji}>{v.emoji}</Text>
+          <View style={{ flex: 1 }}>
+            <View style={styles.vwTopRow}>
+              <Text style={styles.vwRole} numberOfLines={1}>{v.role}</Text>
+              <Text style={[styles.vwWeight, { color: v.color }]}>×{v.weight.toFixed(1)}</Text>
+            </View>
+            <Text style={styles.vwExamples} numberOfLines={2}>{v.examples}</Text>
+          </View>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderEscalation = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>⛰️ When a suggestion gets stuck</Text>
+        <Text style={styles.sectionCaption}>five clear steps · no dead-ends</Text>
+      </View>
+      {ESCALATION_PATHS.map((e) => (
+        <View key={e.id} style={[styles.epCard, { borderLeftColor: e.color }]}>
+          <View style={styles.epTopRow}>
+            <Text style={styles.epEmoji}>{e.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <View style={styles.epLvlRow}>
+                <Text style={styles.epLvl}>Level {e.level}</Text>
+                <Text style={[styles.epSla, { color: e.color }]}>{e.slaDays}d SLA</Text>
+              </View>
+              <Text style={styles.epName}>{e.name}</Text>
+            </View>
+          </View>
+          <Text style={styles.epWhen} numberOfLines={3}>{e.whenToUse}</Text>
+          <Text style={styles.epOwner}>owner · {e.owner}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderShippedWins = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🏆 Things that actually shipped</Text>
+        <Text style={styles.sectionCaption}>{SHIPPED_WINS.length} recent wins</Text>
+      </View>
+      {SHIPPED_WINS.map((s) => (
+        <View key={s.id} style={[styles.swCard, { borderLeftColor: s.color }]}>
+          <Text style={styles.swEmoji}>{s.emoji}</Text>
+          <View style={{ flex: 1 }}>
+            <View style={styles.swTopRow}>
+              <Text style={styles.swTitle} numberOfLines={2}>{s.title}</Text>
+              <Text style={styles.swMonths}>{s.monthsAgo}mo</Text>
+            </View>
+            <Text style={styles.swCategory}>{s.category} · {s.owner}</Text>
+            <Text style={styles.swImpact} numberOfLines={2}>{s.impact}</Text>
+          </View>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderDiscarded = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🪨 Suggestions we respectfully declined</Text>
+        <Text style={styles.sectionCaption}>{DISCARDED_SUGGESTIONS.length} with reasons</Text>
+      </View>
+      {DISCARDED_SUGGESTIONS.map((d) => (
+        <View key={d.id} style={[styles.dsCard, { borderLeftColor: d.color }]}>
+          <View style={styles.dsTopRow}>
+            <Text style={styles.dsEmoji}>{d.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.dsTitle} numberOfLines={2}>{d.title}</Text>
+              <Text style={styles.dsAgo}>{d.monthsAgo} months ago</Text>
+            </View>
+          </View>
+          <Text style={styles.dsReason} numberOfLines={3}>{d.reason}</Text>
+          <Text style={styles.dsRespectedBy}>decided via · {d.respectedBy}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderDecisionJournal = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>📓 Decision journal</Text>
+        <Text style={styles.sectionCaption}>{DECISION_JOURNAL.length} entries · revisit dates set</Text>
+      </View>
+      {DECISION_JOURNAL.map((j) => (
+        <View key={j.id} style={[styles.djCard, { borderLeftColor: j.color }]}>
+          <View style={styles.djTopRow}>
+            <Text style={styles.djEmoji}>{j.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.djWeek}>{j.week}</Text>
+              <Text style={styles.djDecision} numberOfLines={2}>{j.decision}</Text>
+            </View>
+          </View>
+          <Text style={styles.djContext} numberOfLines={3}>{j.context}</Text>
+          <Text style={styles.djRevisit}>revisit · {j.revisitIn}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderStageTips = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🧭 Tips for each stage</Text>
+        <Text style={styles.sectionCaption}>writing · replying · shipping</Text>
+      </View>
+      {STAGE_TIPS.map((t) => (
+        <View key={t.id} style={[styles.tipCard, { borderLeftColor: t.color }]}>
+          <View style={styles.tipTopRow}>
+            <Text style={styles.tipEmoji}>{t.emoji}</Text>
+            <Text style={styles.tipStage}>{t.stage}</Text>
+          </View>
+          <Text style={styles.tipBody} numberOfLines={3}>{t.tip}</Text>
+          <View style={styles.tipExRow}>
+            <View style={styles.tipExCol}>
+              <Text style={[styles.tipExLabel, { color: '#22C55E' }]}>DO</Text>
+              <Text style={styles.tipExDone} numberOfLines={3}>{t.exampleDone}</Text>
+            </View>
+            <View style={styles.tipExCol}>
+              <Text style={[styles.tipExLabel, { color: '#EF4444' }]}>NOT</Text>
+              <Text style={styles.tipExNot} numberOfLines={3}>{t.exampleNot}</Text>
+            </View>
+          </View>
+        </View>
+      ))}
+    </View>
+  );
+
   const listHeader = (
     <View>
       {renderHeader()}
@@ -2835,8 +3098,14 @@ const SuggestionScreen: React.FC = () => {
       {renderTags()}
       {renderAnalytics()}
       {renderVelocity()}
+      {renderVoterWeights()}
+      {renderEscalation()}
+      {renderStageTips()}
       {renderMonthlyDigest()}
       {renderTracking()}
+      {renderShippedWins()}
+      {renderDiscarded()}
+      {renderDecisionJournal()}
       {renderQuarterlyRetro()}
       {renderOwnershipMap()}
       {renderFeedbackLoop()}
@@ -3773,6 +4042,102 @@ const styles = StyleSheet.create({
     lineHeight: 15,
     marginTop: 4,
   },
+
+  // Voter weights
+  vwRow: {
+    flexDirection: 'row',
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginBottom: 8,
+    borderLeftWidth: 3,
+  },
+  vwEmoji: { fontSize: 22, marginRight: 10, marginTop: 2 },
+  vwTopRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  vwRole: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', flex: 1 },
+  vwWeight: { fontSize: 15, fontWeight: '900', marginLeft: 8 },
+  vwExamples: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4 },
+
+  // Escalation
+  epCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  epTopRow: { flexDirection: 'row', alignItems: 'center' },
+  epEmoji: { fontSize: 22, marginRight: 10 },
+  epLvlRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  epLvl: { color: Colors.text.muted, fontSize: 10, fontWeight: '900', letterSpacing: 1.5, textTransform: 'uppercase' },
+  epSla: { fontSize: 10, fontWeight: '900' },
+  epName: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', marginTop: 2 },
+  epWhen: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8 },
+  epOwner: { color: Colors.text.muted, fontSize: 10, marginTop: 6, fontStyle: 'italic' },
+
+  // Shipped wins
+  swCard: {
+    flexDirection: 'row',
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginBottom: 8,
+    borderLeftWidth: 3,
+  },
+  swEmoji: { fontSize: 22, marginRight: 10, marginTop: 2 },
+  swTopRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  swTitle: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', flex: 1, lineHeight: 17 },
+  swMonths: { color: Colors.text.muted, fontSize: 10, fontWeight: '700', marginLeft: 8 },
+  swCategory: { color: Colors.text.muted, fontSize: 10, marginTop: 2 },
+  swImpact: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 6 },
+
+  // Discarded
+  dsCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  dsTopRow: { flexDirection: 'row', alignItems: 'center' },
+  dsEmoji: { fontSize: 22, marginRight: 10 },
+  dsTitle: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', lineHeight: 17 },
+  dsAgo: { color: Colors.text.muted, fontSize: 10, marginTop: 2 },
+  dsReason: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8 },
+  dsRespectedBy: { color: Colors.text.muted, fontSize: 10, marginTop: 6, fontStyle: 'italic' },
+
+  // Decision journal
+  djCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  djTopRow: { flexDirection: 'row', alignItems: 'flex-start' },
+  djEmoji: { fontSize: 22, marginRight: 10, marginTop: 2 },
+  djWeek: { color: Colors.text.muted, fontSize: 10, fontWeight: '900', letterSpacing: 1, textTransform: 'uppercase' },
+  djDecision: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', marginTop: 2, lineHeight: 17 },
+  djContext: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8 },
+  djRevisit: { color: Colors.tech.neonBlue, fontSize: 10, marginTop: 6, fontWeight: '700' },
+
+  // Stage tips
+  tipCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  tipTopRow: { flexDirection: 'row', alignItems: 'center' },
+  tipEmoji: { fontSize: 22, marginRight: 10 },
+  tipStage: { color: Colors.text.primary, fontSize: 13, fontWeight: '800' },
+  tipBody: { color: Colors.text.secondary, fontSize: 12, lineHeight: 16, marginTop: 8 },
+  tipExRow: { flexDirection: 'row', marginTop: 10, gap: 8 },
+  tipExCol: { flex: 1, backgroundColor: 'rgba(255,255,255,0.04)', borderRadius: 10, padding: 8 },
+  tipExLabel: { fontSize: 9, fontWeight: '900', letterSpacing: 1.5, marginBottom: 4 },
+  tipExDone: { color: Colors.text.primary, fontSize: 10, lineHeight: 13 },
+  tipExNot: { color: Colors.text.muted, fontSize: 10, lineHeight: 13, fontStyle: 'italic' },
 });
 
 export default SuggestionScreen;
