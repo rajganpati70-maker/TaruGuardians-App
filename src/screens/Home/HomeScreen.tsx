@@ -624,6 +624,436 @@ const FAQ_ITEMS: FAQ[] = [
 ];
 
 // -----------------------------------------------------
+// Impact dashboard (sustainability metrics)
+// -----------------------------------------------------
+
+interface ImpactMetric {
+  id: string;
+  emoji: string;
+  label: string;
+  value: string;
+  caption: string;
+  trend: 'up' | 'flat' | 'down';
+  trendPct: number;
+  color: string;
+  accent: readonly [string, string, ...string[]];
+}
+
+const IMPACT_METRICS: ImpactMetric[] = [
+  {
+    id: 'im-1',
+    emoji: '🌳',
+    label: 'Saplings planted',
+    value: '12,842',
+    caption: 'Across 3 campuses and 14 nearby villages, since Aug 2021.',
+    trend: 'up',
+    trendPct: 11.2,
+    color: '#4CAF50',
+    accent: ['#0A3F2A', '#0F5C3A'],
+  },
+  {
+    id: 'im-2',
+    emoji: '🧪',
+    label: 'Survival rate',
+    value: '74%',
+    caption: 'Measured at 9 months. Target 80% by Dec 2026.',
+    trend: 'up',
+    trendPct: 4.5,
+    color: '#8BC34A',
+    accent: ['#103F20', '#195C2E'],
+  },
+  {
+    id: 'im-3',
+    emoji: '💨',
+    label: 'CO₂ offset / year',
+    value: '198 T',
+    caption: 'Estimated carbon capture from mature trees at year 10.',
+    trend: 'up',
+    trendPct: 6.1,
+    color: '#66BB6A',
+    accent: ['#0A3F30', '#10543F'],
+  },
+  {
+    id: 'im-4',
+    emoji: '💧',
+    label: 'Water saved',
+    value: '3.2 ML',
+    caption: 'From rainwater harvesting pits dug alongside plantings.',
+    trend: 'up',
+    trendPct: 3.0,
+    color: '#29B6F6',
+    accent: ['#073049', '#0A4A6E'],
+  },
+  {
+    id: 'im-5',
+    emoji: '♻️',
+    label: 'E-waste diverted',
+    value: '1.4 T',
+    caption: 'Collected via campus drives; handed to certified recyclers.',
+    trend: 'up',
+    trendPct: 18.6,
+    color: '#FFB74D',
+    accent: ['#3E2B0A', '#5A410F'],
+  },
+  {
+    id: 'im-6',
+    emoji: '👥',
+    label: 'Active members',
+    value: '612',
+    caption: '6 wings · 4 campuses · avg 3.2 events/member/semester.',
+    trend: 'up',
+    trendPct: 8.0,
+    color: '#AB47BC',
+    accent: ['#2A0E3C', '#401458'],
+  },
+  {
+    id: 'im-7',
+    emoji: '🏕️',
+    label: 'Workshops run',
+    value: '248',
+    caption: 'Internal + open-campus. Attendance avg 42 per session.',
+    trend: 'up',
+    trendPct: 9.3,
+    color: '#FFD54F',
+    accent: ['#3E3112', '#58461C'],
+  },
+  {
+    id: 'im-8',
+    emoji: '🛠️',
+    label: 'Tools shipped',
+    value: '37',
+    caption: 'Small utilities used by real teams. 12 open-source on GitHub.',
+    trend: 'up',
+    trendPct: 12.4,
+    color: '#00D4FF',
+    accent: ['#053049', '#083E5E'],
+  },
+];
+
+// -----------------------------------------------------
+// Member of the month carousel
+// -----------------------------------------------------
+
+interface MemberHighlight {
+  id: string;
+  name: string;
+  role: string;
+  wing: string;
+  month: string;
+  avatar: string;
+  palette: readonly [string, string, ...string[]];
+  reason: string;
+  tags: string[];
+  bio: string;
+}
+
+const MEMBER_HIGHLIGHTS: MemberHighlight[] = [
+  {
+    id: 'mh-1',
+    name: 'Ananya Pillai',
+    role: 'Wing lead · Content',
+    wing: 'Content Writer',
+    month: 'April 2026',
+    avatar: '🌱',
+    palette: ['#0A3F2A', '#0F5C3A'],
+    reason: 'Shipped the sapling-story long-form; 11k organic reads in 10 days.',
+    tags: ['writing', 'longform', 'SEO'],
+    bio: 'Third-year English honours, runs the Sunday reading room. Ghazal nerd. Plants succulents badly.',
+  },
+  {
+    id: 'mh-2',
+    name: 'Vivaan Shetty',
+    role: 'Full-stack · Web/App',
+    wing: 'Web/App Development',
+    month: 'March 2026',
+    avatar: '🛠️',
+    palette: ['#053049', '#0A4A6E'],
+    reason: 'Rewrote the volunteer portal from scratch; 38% faster, 62% smaller bundle.',
+    tags: ['typescript', 'react-native', 'supabase'],
+    bio: 'CS second-year. Loves the smell of a clean `git log`. Makes terrible pun-based variable names.',
+  },
+  {
+    id: 'mh-3',
+    name: 'Ishita Kalra',
+    role: 'Design lead · GD',
+    wing: 'Graphic Designer',
+    month: 'February 2026',
+    avatar: '🎨',
+    palette: ['#2A0E3C', '#401458'],
+    reason: 'Unified the visual system — logos, templates, event posters, now in a single kit.',
+    tags: ['figma', 'type', 'brand'],
+    bio: 'Design student from Delhi. Keeps a hand-drawn field journal. Won\'t use Comic Sans even ironically.',
+  },
+  {
+    id: 'mh-4',
+    name: 'Aryan Deshmukh',
+    role: 'Video lead',
+    wing: 'Video Editor',
+    month: 'January 2026',
+    avatar: '🎬',
+    palette: ['#3E2B0A', '#5A410F'],
+    reason: 'Edited the 6-min annual recap that anchored the mid-year fundraiser.',
+    tags: ['davinci', 'colour', 'sound'],
+    bio: 'Mech engineering; film club alum. Shoots on his phone as often as the R5.',
+  },
+  {
+    id: 'mh-5',
+    name: 'Mira Joseph',
+    role: 'Photo lead',
+    wing: 'Photographer',
+    month: 'December 2025',
+    avatar: '📷',
+    palette: ['#10304F', '#134B6E'],
+    reason: 'Curated the 200-photo field archive for the sapling-tracker site.',
+    tags: ['documentary', 'native-tree', 'archive'],
+    bio: 'Bio student. Birder. Knows the names of 140 Indian trees and most of their mood swings.',
+  },
+  {
+    id: 'mh-6',
+    name: 'Dhruv Nair',
+    role: 'PR lead',
+    wing: 'Public Relations',
+    month: 'November 2025',
+    avatar: '🤝',
+    palette: ['#0E3540', '#135063'],
+    reason: 'Landed 3 campus-paper features + 2 city-news mentions for Plant-a-Patch.',
+    tags: ['outreach', 'press', 'partnerships'],
+    bio: 'Political-science final-year. Chai-and-conversation person. Calm during chaos.',
+  },
+  {
+    id: 'mh-7',
+    name: 'Kavya Ramanathan',
+    role: 'Events ops',
+    wing: 'Public Relations',
+    month: 'October 2025',
+    avatar: '🗓️',
+    palette: ['#2B0E3C', '#44125A'],
+    reason: 'Ran the 9-city rollout of the open plant-walk, zero budget overrun.',
+    tags: ['logistics', 'travel', 'ops'],
+    bio: 'MBA first-year. Ex-fest president. Eats spreadsheets for breakfast.',
+  },
+  {
+    id: 'mh-8',
+    name: 'Rohit Bansal',
+    role: 'ML · Web/App',
+    wing: 'Web/App Development',
+    month: 'September 2025',
+    avatar: '🧠',
+    palette: ['#053049', '#0A4A6E'],
+    reason: 'Built the sapling-health classifier now used by 14 volunteer teams.',
+    tags: ['pytorch', 'mobile-ml', 'datasets'],
+    bio: 'AI second-year. Runs the Thursday reading group on fairness. Vegetarian cook.',
+  },
+  {
+    id: 'mh-9',
+    name: 'Nivedita Rao',
+    role: 'Editorial',
+    wing: 'Content Writer',
+    month: 'August 2025',
+    avatar: '📖',
+    palette: ['#102F1C', '#1A4A2C'],
+    reason: 'Authored the guardian-handbook — 38-page onboarding PDF, gifted at every orientation.',
+    tags: ['handbook', 'onboarding', 'editorial'],
+    bio: 'Journalism student from Bengaluru. Runs a tiny zine on the side. Tea over coffee.',
+  },
+  {
+    id: 'mh-10',
+    name: 'Kabir Saxena',
+    role: 'Motion · GD',
+    wing: 'Graphic Designer',
+    month: 'July 2025',
+    avatar: '✨',
+    palette: ['#301055', '#4A1472'],
+    reason: 'Designed the motion system — 40+ micro-loops used across social and in-app.',
+    tags: ['after-effects', 'motion', 'system'],
+    bio: 'Animation student. Builds Lego architecture on weekends. Will over-explain kerning if asked.',
+  },
+  {
+    id: 'mh-11',
+    name: 'Shreya Khanna',
+    role: 'Reel director',
+    wing: 'Video Editor',
+    month: 'June 2025',
+    avatar: '🎞️',
+    palette: ['#3E2B0A', '#5A410F'],
+    reason: 'Pitched and ran the \'30 stories in 30 days\' reel series across all wings.',
+    tags: ['reels', 'story', 'cadence'],
+    bio: 'Film studies. Director-in-training. Keeps a notes app full of one-line dialogue.',
+  },
+  {
+    id: 'mh-12',
+    name: 'Advait Kulkarni',
+    role: 'Archive · Photo',
+    wing: 'Photographer',
+    month: 'May 2025',
+    avatar: '🗂️',
+    palette: ['#0C2F3E', '#125062'],
+    reason: 'Rescued 4 years of unlabelled event photos into a searchable tag-based library.',
+    tags: ['metadata', 'taxonomy', 'archive'],
+    bio: 'Library-science student. Thinks of folders the way most people think of poetry.',
+  },
+];
+
+// -----------------------------------------------------
+// Weekly digest
+// -----------------------------------------------------
+
+interface DigestDay {
+  id: string;
+  day: string;
+  date: string;
+  summary: string;
+  highlight?: string;
+  color: string;
+}
+
+const WEEKLY_DIGEST: DigestDay[] = [
+  { id: 'wd-1', day: 'Mon', date: '15', summary: 'Office hours · Content wing · 6 walk-ins', color: '#4CAF50' },
+  { id: 'wd-2', day: 'Tue', date: '16', summary: 'Web/App standup · 2 PRs shipped', highlight: 'Ship', color: '#29B6F6' },
+  { id: 'wd-3', day: 'Wed', date: '17', summary: 'Plant walk · 42 guardians · Cubbon Park', highlight: 'Field', color: '#66BB6A' },
+  { id: 'wd-4', day: 'Thu', date: '18', summary: 'Reading group · Fair ML · 17 attended', color: '#AB47BC' },
+  { id: 'wd-5', day: 'Fri', date: '19', summary: 'No-laptop ritual · Tea + sketchbooks', highlight: 'Ritual', color: '#FFB74D' },
+  { id: 'wd-6', day: 'Sat', date: '20', summary: 'GD jam · 6 poster drafts reviewed', color: '#FFD54F' },
+  { id: 'wd-7', day: 'Sun', date: '21', summary: 'Digest email goes out · plan next week', highlight: 'Email', color: '#00D4FF' },
+];
+
+// -----------------------------------------------------
+// Partners / sponsors
+// -----------------------------------------------------
+
+interface Partner {
+  id: string;
+  name: string;
+  kind: 'sustainability' | 'tech' | 'campus' | 'media';
+  emoji: string;
+  blurb: string;
+  since: string;
+  color: string;
+}
+
+const PARTNERS: Partner[] = [
+  { id: 'p-1', name: 'Saplings Collective', kind: 'sustainability', emoji: '🌿', blurb: 'Native-species nursery · 4 states.', since: '2022', color: '#4CAF50' },
+  { id: 'p-2', name: 'Campus Forests Trust', kind: 'sustainability', emoji: '🌳', blurb: 'Runs the 9-month survivorship audit.', since: '2023', color: '#2E7D32' },
+  { id: 'p-3', name: 'Leafline Labs', kind: 'tech', emoji: '🧪', blurb: 'Soil sensors for long-term monitoring.', since: '2024', color: '#66BB6A' },
+  { id: 'p-4', name: 'OpenMap India', kind: 'tech', emoji: '🗺️', blurb: 'Basemap + OSM training partner.', since: '2023', color: '#29B6F6' },
+  { id: 'p-5', name: 'CodeGarden Co-op', kind: 'tech', emoji: '💻', blurb: 'Workshop partner · open-source mentorship.', since: '2024', color: '#00D4FF' },
+  { id: 'p-6', name: 'Mridula College', kind: 'campus', emoji: '🏫', blurb: 'Primary campus chapter since 2021.', since: '2021', color: '#AB47BC' },
+  { id: 'p-7', name: 'Vidya Polytechnic', kind: 'campus', emoji: '🏫', blurb: 'Second campus chapter — Hyderabad.', since: '2022', color: '#7E57C2' },
+  { id: 'p-8', name: 'The Canopy Press', kind: 'media', emoji: '📰', blurb: 'Student-run city publication; storytelling partner.', since: '2023', color: '#FFD54F' },
+  { id: 'p-9', name: 'Rurban Commons', kind: 'sustainability', emoji: '🪴', blurb: 'Village-level plantings · 14 villages.', since: '2022', color: '#43A047' },
+  { id: 'p-10', name: 'ReCraft Co.', kind: 'sustainability', emoji: '♻️', blurb: 'E-waste pickup + certified recycling.', since: '2023', color: '#FFB74D' },
+  { id: 'p-11', name: 'Open Archive Foundation', kind: 'tech', emoji: '🗄️', blurb: 'Provides our media-archive stack.', since: '2024', color: '#9575CD' },
+  { id: 'p-12', name: 'Story Sundays Podcast', kind: 'media', emoji: '🎙️', blurb: 'Monthly interview slot for alumni.', since: '2023', color: '#EF6C00' },
+];
+
+// -----------------------------------------------------
+// Club values pillars
+// -----------------------------------------------------
+
+interface ValuePillar {
+  id: string;
+  emoji: string;
+  title: string;
+  body: string;
+  color: string;
+}
+
+const VALUES: ValuePillar[] = [
+  {
+    id: 'v-1',
+    emoji: '🌱',
+    title: 'Plant more than you cut.',
+    body: 'Every idea ships with a step that grows something — literal or metaphorical.',
+    color: '#4CAF50',
+  },
+  {
+    id: 'v-2',
+    emoji: '🛠️',
+    title: 'Small tools for real people.',
+    body: 'No dashboards nobody reads. Every utility has one named human user.',
+    color: '#00D4FF',
+  },
+  {
+    id: 'v-3',
+    emoji: '🫶',
+    title: 'Kindness at load.',
+    body: 'We\'re kind when we\'re tired, not only when it\'s easy. Burnout is a bug.',
+    color: '#AB47BC',
+  },
+  {
+    id: 'v-4',
+    emoji: '📣',
+    title: 'Credit loudly.',
+    body: 'First drafts get names. Small wins go on the board. Nobody gets erased.',
+    color: '#FFB74D',
+  },
+  {
+    id: 'v-5',
+    emoji: '🕯️',
+    title: 'Rituals over rules.',
+    body: 'Friday no-laptop. Sunday digest. Monthly campfire. Rituals carry us through.',
+    color: '#EF6C00',
+  },
+  {
+    id: 'v-6',
+    emoji: '📚',
+    title: 'Document like we\'ll forget.',
+    body: 'Because we will. Handbook, decisions log, post-mortems — written before we sleep.',
+    color: '#7E57C2',
+  },
+];
+
+// -----------------------------------------------------
+// Live activity feed (recent actions)
+// -----------------------------------------------------
+
+interface FeedItem {
+  id: string;
+  actor: string;
+  verb: string;
+  object: string;
+  at: string;
+  emoji: string;
+  color: string;
+}
+
+const LIVE_FEED: FeedItem[] = [
+  { id: 'lf-1', actor: 'Ananya', verb: 'published', object: 'Sapling-story · long-form', at: '2 min ago', emoji: '✍️', color: '#4CAF50' },
+  { id: 'lf-2', actor: 'Rohit', verb: 'opened PR', object: 'Sensor batch-reader v2', at: '14 min ago', emoji: '🔀', color: '#29B6F6' },
+  { id: 'lf-3', actor: 'Mira', verb: 'uploaded', object: '37 photos · Cubbon Park walk', at: '38 min ago', emoji: '📷', color: '#AB47BC' },
+  { id: 'lf-4', actor: 'Kavya', verb: 'scheduled', object: 'Hyd chapter mixer · Apr 27', at: '1 hr ago', emoji: '🗓️', color: '#EF6C00' },
+  { id: 'lf-5', actor: 'Aryan', verb: 'exported', object: 'Reel #24 · editing done', at: '2 hr ago', emoji: '🎬', color: '#FFD54F' },
+  { id: 'lf-6', actor: 'Dhruv', verb: 'confirmed', object: 'ReCraft pickup · Friday 10 am', at: '3 hr ago', emoji: '♻️', color: '#FFB74D' },
+  { id: 'lf-7', actor: 'Nivedita', verb: 'updated', object: 'Handbook · onboarding page', at: '4 hr ago', emoji: '📖', color: '#66BB6A' },
+  { id: 'lf-8', actor: 'Ishita', verb: 'posted draft', object: 'Poster kit · Earth Day', at: '5 hr ago', emoji: '🎨', color: '#7E57C2' },
+  { id: 'lf-9', actor: 'Vivaan', verb: 'fixed', object: 'RSVP crash on Android 11', at: '6 hr ago', emoji: '🐛', color: '#00D4FF' },
+  { id: 'lf-10', actor: 'Kabir', verb: 'rendered', object: 'Motion loop #44', at: '8 hr ago', emoji: '✨', color: '#9575CD' },
+];
+
+// -----------------------------------------------------
+// Quick wins
+// -----------------------------------------------------
+
+interface QuickWin {
+  id: string;
+  emoji: string;
+  label: string;
+  value: string;
+  color: string;
+}
+
+const QUICK_WINS: QuickWin[] = [
+  { id: 'qw-1', emoji: '📈', label: 'Reach (7d)', value: '24.8k', color: '#29B6F6' },
+  { id: 'qw-2', emoji: '💌', label: 'Signups', value: '+38', color: '#4CAF50' },
+  { id: 'qw-3', emoji: '🌳', label: 'Trees this week', value: '162', color: '#66BB6A' },
+  { id: 'qw-4', emoji: '🧪', label: 'Experiments live', value: '6', color: '#AB47BC' },
+  { id: 'qw-5', emoji: '🛠️', label: 'PRs merged', value: '11', color: '#00D4FF' },
+  { id: 'qw-6', emoji: '📝', label: 'Articles shipped', value: '4', color: '#FFD54F' },
+  { id: 'qw-7', emoji: '📷', label: 'Photos archived', value: '318', color: '#7E57C2' },
+  { id: 'qw-8', emoji: '🎬', label: 'Reels edited', value: '7', color: '#FFB74D' },
+];
+
+// -----------------------------------------------------
 // Component
 // -----------------------------------------------------
 
@@ -1204,6 +1634,217 @@ const HomeScreen: React.FC = () => {
     </View>
   );
 
+  // ------ Impact dashboard ------
+  const renderImpactDashboard = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🌍 Impact dashboard</Text>
+        <Text style={styles.sectionCaption}>Live · last 12 months</Text>
+      </View>
+      <View style={styles.impactGrid}>
+        {IMPACT_METRICS.map((m) => (
+          <View key={m.id} style={styles.impactCell}>
+            <LinearGradient colors={m.accent} style={styles.impactGradient}>
+              <View style={styles.impactTopRow}>
+                <Text style={styles.impactEmoji}>{m.emoji}</Text>
+                <View
+                  style={[
+                    styles.impactTrendPill,
+                    {
+                      backgroundColor:
+                        m.trend === 'up' ? '#0B3F2A' : m.trend === 'down' ? '#3F0B14' : '#1A1A1A',
+                    },
+                  ]}
+                >
+                  <Text
+                    style={[
+                      styles.impactTrendText,
+                      {
+                        color:
+                          m.trend === 'up' ? '#66BB6A' : m.trend === 'down' ? '#EF5350' : '#BDBDBD',
+                      },
+                    ]}
+                  >
+                    {m.trend === 'up' ? '▲' : m.trend === 'down' ? '▼' : '●'} {m.trendPct.toFixed(1)}%
+                  </Text>
+                </View>
+              </View>
+              <Text style={[styles.impactValue, { color: m.color }]}>{m.value}</Text>
+              <Text style={styles.impactLabel}>{m.label}</Text>
+              <Text style={styles.impactCaption} numberOfLines={3}>
+                {m.caption}
+              </Text>
+            </LinearGradient>
+          </View>
+        ))}
+      </View>
+    </View>
+  );
+
+  // ------ Weekly digest ------
+  const renderWeeklyDigest = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>📆 Weekly digest</Text>
+        <Text style={styles.sectionCaption}>April 15 – 21</Text>
+      </View>
+      <View style={styles.digestCard}>
+        {WEEKLY_DIGEST.map((d) => (
+          <View key={d.id} style={styles.digestRow}>
+            <View style={[styles.digestBadge, { backgroundColor: d.color + '33' }]}>
+              <Text style={[styles.digestBadgeDay, { color: d.color }]}>{d.day}</Text>
+              <Text style={styles.digestBadgeDate}>{d.date}</Text>
+            </View>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.digestSummary}>{d.summary}</Text>
+              {d.highlight ? (
+                <Text style={[styles.digestHighlight, { color: d.color }]}>{d.highlight}</Text>
+              ) : null}
+            </View>
+          </View>
+        ))}
+      </View>
+    </View>
+  );
+
+  // ------ Quick wins ------
+  const renderQuickWins = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>⚡ Quick wins</Text>
+        <Text style={styles.sectionCaption}>Past 7 days</Text>
+      </View>
+      <View style={styles.winsGrid}>
+        {QUICK_WINS.map((w) => (
+          <View key={w.id} style={styles.winCell}>
+            <Text style={styles.winEmoji}>{w.emoji}</Text>
+            <Text style={[styles.winValue, { color: w.color }]}>{w.value}</Text>
+            <Text style={styles.winLabel}>{w.label}</Text>
+          </View>
+        ))}
+      </View>
+    </View>
+  );
+
+  // ------ Member of the month carousel ------
+  const renderMemberHighlights = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>✨ Member of the month</Text>
+        <Text style={styles.sectionCaption}>{MEMBER_HIGHLIGHTS.length} stories</Text>
+      </View>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.memberScroll}
+      >
+        {MEMBER_HIGHLIGHTS.map((m) => (
+          <View key={m.id} style={styles.memberCard}>
+            <LinearGradient colors={m.palette} style={styles.memberGradient}>
+              <View style={styles.memberTopRow}>
+                <Text style={styles.memberMonth}>{m.month}</Text>
+                <Text style={styles.memberAvatar}>{m.avatar}</Text>
+              </View>
+              <Text style={styles.memberName}>{m.name}</Text>
+              <Text style={styles.memberRole}>{m.role}</Text>
+              <Text style={styles.memberWing}>🌿 {m.wing}</Text>
+              <Text style={styles.memberReason} numberOfLines={3}>
+                “{m.reason}”
+              </Text>
+              <View style={styles.memberTagRow}>
+                {m.tags.map((t) => (
+                  <View key={t} style={styles.memberTagPill}>
+                    <Text style={styles.memberTagText}>{t}</Text>
+                  </View>
+                ))}
+              </View>
+              <Text style={styles.memberBio} numberOfLines={3}>
+                {m.bio}
+              </Text>
+            </LinearGradient>
+          </View>
+        ))}
+      </ScrollView>
+    </View>
+  );
+
+  // ------ Values pillars ------
+  const renderValues = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🧭 What we stand for</Text>
+        <Text style={styles.sectionCaption}>6 pillars</Text>
+      </View>
+      <View style={styles.valuesGrid}>
+        {VALUES.map((v) => (
+          <View key={v.id} style={styles.valueCard}>
+            <View style={[styles.valueBadge, { backgroundColor: v.color + '22' }]}>
+              <Text style={styles.valueEmoji}>{v.emoji}</Text>
+            </View>
+            <Text style={[styles.valueTitle, { color: v.color }]}>{v.title}</Text>
+            <Text style={styles.valueBody}>{v.body}</Text>
+          </View>
+        ))}
+      </View>
+    </View>
+  );
+
+  // ------ Partners ------
+  const renderPartners = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🤝 Partners & collectives</Text>
+        <Text style={styles.sectionCaption}>{PARTNERS.length} orgs</Text>
+      </View>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.partnerScroll}
+      >
+        {PARTNERS.map((p) => (
+          <View key={p.id} style={styles.partnerCard}>
+            <View style={[styles.partnerEmojiBox, { backgroundColor: p.color + '22' }]}>
+              <Text style={styles.partnerEmoji}>{p.emoji}</Text>
+            </View>
+            <Text style={styles.partnerName}>{p.name}</Text>
+            <Text style={[styles.partnerKind, { color: p.color }]}>{p.kind}</Text>
+            <Text style={styles.partnerBlurb} numberOfLines={3}>
+              {p.blurb}
+            </Text>
+            <Text style={styles.partnerSince}>Partner since {p.since}</Text>
+          </View>
+        ))}
+      </ScrollView>
+    </View>
+  );
+
+  // ------ Live feed ------
+  const renderLiveFeed = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>📡 Live from the club</Text>
+        <Text style={styles.sectionCaption}>Auto-refresh</Text>
+      </View>
+      <View style={styles.feedCard}>
+        {LIVE_FEED.map((f) => (
+          <View key={f.id} style={styles.feedRow}>
+            <View style={[styles.feedIcon, { backgroundColor: f.color + '33' }]}>
+              <Text style={styles.feedEmoji}>{f.emoji}</Text>
+            </View>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.feedLine}>
+                <Text style={styles.feedActor}>{f.actor} </Text>
+                {f.verb}{' '}
+                <Text style={styles.feedObject}>{f.object}</Text>
+              </Text>
+              <Text style={styles.feedAt}>{f.at}</Text>
+            </View>
+          </View>
+        ))}
+      </View>
+    </View>
+  );
+
   // ------ Event modal ------
   const renderEventModal = () => {
     if (!selectedEvent) return null;
@@ -1390,12 +2031,19 @@ const HomeScreen: React.FC = () => {
       >
         {renderHero()}
         {renderStats()}
+        {renderQuickWins()}
         {renderQuickActions()}
         {renderAnnouncements()}
         {renderFeaturedEvents()}
+        {renderImpactDashboard()}
+        {renderWeeklyDigest()}
+        {renderMemberHighlights()}
         {renderSpotlights()}
+        {renderValues()}
+        {renderLiveFeed()}
         {renderTestimonials()}
         {renderGallery()}
+        {renderPartners()}
         {renderTimeline()}
         {renderPledges()}
         {renderFAQ()}
@@ -1792,6 +2440,199 @@ const styles = StyleSheet.create({
   sheetEmoji: { fontSize: 18 },
   sheetLabel: { color: Colors.text.primary, fontSize: 14, fontWeight: '700' },
   sheetSub: { color: Colors.text.muted, fontSize: 11, marginTop: 2 },
+
+  // Impact dashboard
+  impactGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    paddingHorizontal: HORIZONTAL_PADDING - 4,
+  },
+  impactCell: {
+    width: IS_TABLET ? '33.333%' : '50%',
+    padding: 4,
+  },
+  impactGradient: {
+    borderRadius: 16,
+    padding: 14,
+    borderWidth: 1,
+    borderColor: '#ffffff14',
+    minHeight: 148,
+  },
+  impactTopRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  impactEmoji: { fontSize: 22 },
+  impactTrendPill: {
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 10,
+  },
+  impactTrendText: { fontSize: 10, fontWeight: '800' },
+  impactValue: { fontSize: 22, fontWeight: '900', marginTop: 8 },
+  impactLabel: { color: Colors.text.primary, fontSize: 12, fontWeight: '700', marginTop: 2 },
+  impactCaption: { color: Colors.text.muted, fontSize: 11, marginTop: 6, lineHeight: 15 },
+
+  // Weekly digest
+  digestCard: {
+    marginHorizontal: HORIZONTAL_PADDING,
+    backgroundColor: '#0D141B',
+    borderRadius: CARD_RADIUS,
+    padding: 14,
+    borderWidth: 1,
+    borderColor: '#ffffff10',
+  },
+  digestRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ffffff0E',
+  },
+  digestBadge: {
+    width: 48,
+    height: 48,
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 12,
+  },
+  digestBadgeDay: { fontSize: 10, fontWeight: '800', letterSpacing: 1 },
+  digestBadgeDate: { color: Colors.text.primary, fontSize: 15, fontWeight: '900' },
+  digestSummary: { color: Colors.text.primary, fontSize: 13, fontWeight: '600' },
+  digestHighlight: { fontSize: 10, fontWeight: '800', marginTop: 2, letterSpacing: 0.6 },
+
+  // Quick wins
+  winsGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    paddingHorizontal: HORIZONTAL_PADDING - 4,
+  },
+  winCell: {
+    width: IS_TABLET ? '25%' : '50%',
+    padding: 4,
+  },
+  winEmoji: { fontSize: 22, marginBottom: 6 },
+  winValue: { fontSize: 20, fontWeight: '900' },
+  winLabel: { color: Colors.text.muted, fontSize: 11, marginTop: 2 },
+
+  // Member highlights
+  memberScroll: { paddingLeft: HORIZONTAL_PADDING, paddingRight: 10 },
+  memberCard: {
+    width: IS_SMALL ? 260 : 300,
+    marginRight: 14,
+  },
+  memberGradient: {
+    borderRadius: 20,
+    padding: 16,
+    borderWidth: 1,
+    borderColor: '#ffffff18',
+    minHeight: 260,
+  },
+  memberTopRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  memberMonth: { color: Colors.accent.softGold, fontSize: 11, fontWeight: '800', letterSpacing: 0.8 },
+  memberAvatar: { fontSize: 28 },
+  memberName: { color: Colors.text.primary, fontSize: 18, fontWeight: '900', marginTop: 10 },
+  memberRole: { color: Colors.text.secondary, fontSize: 12, marginTop: 2, fontWeight: '600' },
+  memberWing: { color: Colors.tech.neonBlue, fontSize: 11, marginTop: 6, fontWeight: '700' },
+  memberReason: {
+    color: Colors.text.primary,
+    fontStyle: 'italic',
+    fontSize: 12,
+    marginTop: 10,
+    lineHeight: 18,
+  },
+  memberTagRow: { flexDirection: 'row', flexWrap: 'wrap', marginTop: 8 },
+  memberTagPill: {
+    backgroundColor: '#ffffff14',
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 8,
+    marginRight: 6,
+    marginTop: 4,
+  },
+  memberTagText: { color: Colors.text.secondary, fontSize: 10, fontWeight: '700' },
+  memberBio: { color: Colors.text.muted, fontSize: 11, marginTop: 10, lineHeight: 15 },
+
+  // Values pillars
+  valuesGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    paddingHorizontal: HORIZONTAL_PADDING - 4,
+  },
+  valueCard: {
+    width: IS_TABLET ? '33.333%' : '50%',
+    padding: 4,
+  },
+  valueBadge: {
+    width: 42,
+    height: 42,
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  valueEmoji: { fontSize: 20 },
+  valueTitle: { fontSize: 13, fontWeight: '900', marginTop: 10 },
+  valueBody: { color: Colors.text.secondary, fontSize: 11, marginTop: 4, lineHeight: 15 },
+
+  // Partners
+  partnerScroll: { paddingLeft: HORIZONTAL_PADDING, paddingRight: 10 },
+  partnerCard: {
+    width: 200,
+    marginRight: 12,
+    padding: 14,
+    borderRadius: 16,
+    backgroundColor: '#0D141B',
+    borderWidth: 1,
+    borderColor: '#ffffff10',
+  },
+  partnerEmojiBox: {
+    width: 40,
+    height: 40,
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  partnerEmoji: { fontSize: 20 },
+  partnerName: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', marginTop: 10 },
+  partnerKind: { fontSize: 10, fontWeight: '800', letterSpacing: 0.8, marginTop: 2, textTransform: 'uppercase' },
+  partnerBlurb: { color: Colors.text.secondary, fontSize: 11, marginTop: 6, lineHeight: 15 },
+  partnerSince: { color: Colors.text.muted, fontSize: 10, marginTop: 8 },
+
+  // Live feed
+  feedCard: {
+    marginHorizontal: HORIZONTAL_PADDING,
+    backgroundColor: '#0D141B',
+    borderRadius: CARD_RADIUS,
+    padding: 12,
+    borderWidth: 1,
+    borderColor: '#ffffff10',
+  },
+  feedRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 9,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ffffff0E',
+  },
+  feedIcon: {
+    width: 36,
+    height: 36,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 10,
+  },
+  feedEmoji: { fontSize: 16 },
+  feedLine: { color: Colors.text.secondary, fontSize: 12, lineHeight: 17 },
+  feedActor: { color: Colors.text.primary, fontWeight: '800' },
+  feedObject: { color: Colors.text.primary, fontWeight: '700' },
+  feedAt: { color: Colors.text.muted, fontSize: 10, marginTop: 2 },
 });
 
 export default HomeScreen;
