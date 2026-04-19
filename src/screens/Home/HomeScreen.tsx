@@ -1228,6 +1228,169 @@ const QUICK_WINS: QuickWin[] = [
 ];
 
 // -----------------------------------------------------
+// Phase 3o: deeper data structures
+// -----------------------------------------------------
+
+interface QuarterGoal {
+  id: string;
+  quarter: string;
+  title: string;
+  detail: string;
+  owner: string;
+  status: 'on-track' | 'at-risk' | 'done' | 'planning';
+  progress: number;
+  color: string;
+  emoji: string;
+}
+
+const QUARTER_GOALS: QuarterGoal[] = [
+  { id: 'qg-1', quarter: 'Q1 · Jan–Mar', title: 'Plant 2,500 saplings', detail: 'Six partner farms · GPS-tagged · 85 % survival review after 90 days.', owner: 'Green Wing', status: 'on-track', progress: 0.72, color: '#22C55E', emoji: '🌳' },
+  { id: 'qg-2', quarter: 'Q1 · Jan–Mar', title: 'Ship the new Guardians app', detail: 'Six bottom-tabs live on Play Store closed track · reach internal QA by Feb 28.', owner: 'Web/App Wing', status: 'on-track', progress: 0.88, color: '#00D4FF', emoji: '📱' },
+  { id: 'qg-3', quarter: 'Q1 · Jan–Mar', title: '4 campus climate talks', detail: 'Two talks done · two scheduled · slides archived with CC-BY licence.', owner: 'Content Wing', status: 'on-track', progress: 0.5, color: '#F59E0B', emoji: '🎤' },
+  { id: 'qg-4', quarter: 'Q1 · Jan–Mar', title: 'E-waste drive · 400 kg', detail: 'Three drop-off points · vendor pickup every fortnight · receipts archived.', owner: 'Ops Wing', status: 'at-risk', progress: 0.41, color: '#EF4444', emoji: '♻️' },
+  { id: 'qg-5', quarter: 'Q2 · Apr–Jun', title: 'Launch alumni portal', detail: 'Directory · mentorship matching · 180 alums targeted · respects opt-outs.', owner: 'Alumni Wing', status: 'planning', progress: 0.12, color: '#A855F7', emoji: '🎓' },
+  { id: 'qg-6', quarter: 'Q2 · Apr–Jun', title: 'Wing-swap month', detail: 'Every member tries a sister wing for two weeks · debriefs at month-end town hall.', owner: 'All wings', status: 'planning', progress: 0.06, color: '#F472B6', emoji: '🔀' },
+  { id: 'qg-7', quarter: 'Q2 · Apr–Jun', title: 'Open a Pune chapter', detail: 'Five founders identified · venue scouted · kickoff target May 18.', owner: 'Chapter Ops', status: 'planning', progress: 0.24, color: '#38BDF8', emoji: '🏙️' },
+  { id: 'qg-8', quarter: 'Done · 2024', title: '1,000 saplings in 2024', detail: 'Exceeded · 1,182 recorded across four drives · 88 % survived monsoon.', owner: 'Green Wing', status: 'done', progress: 1, color: '#4ADE80', emoji: '✅' },
+  { id: 'qg-9', quarter: 'Done · 2024', title: 'First hackathon: 40 teams', detail: 'Shipped · 48 submissions · 9 projects got seeded into wings.', owner: 'Events', status: 'done', progress: 1, color: '#4ADE80', emoji: '✅' },
+  { id: 'qg-10', quarter: 'Done · 2024', title: 'Kota chapter', detail: 'Shipped · 18 members · monthly cadence holding since August.', owner: 'Chapter Ops', status: 'done', progress: 1, color: '#4ADE80', emoji: '✅' },
+];
+
+interface ImpactRegion {
+  id: string;
+  region: string;
+  state: string;
+  saplings: number;
+  members: number;
+  partners: number;
+  tonsCO2: number;
+  lastDriveDate: string;
+  nextDriveDate: string;
+  note: string;
+  color: string;
+  emoji: string;
+}
+
+const IMPACT_REGIONS: ImpactRegion[] = [
+  { id: 'ir-1', region: 'Jaipur metro', state: 'Rajasthan', saplings: 842, members: 58, partners: 6, tonsCO2: 11.7, lastDriveDate: '2026-03-12', nextDriveDate: '2026-04-06', note: 'Two school campuses + riverbank belt · drip plan through summer.', color: '#F59E0B', emoji: '🏜️' },
+  { id: 'ir-2', region: 'Kota campus', state: 'Rajasthan', saplings: 512, members: 42, partners: 4, tonsCO2: 7.2, lastDriveDate: '2026-03-01', nextDriveDate: '2026-04-19', note: 'Hostel back-lanes shaded · survival audit scheduled for June.', color: '#22C55E', emoji: '🌳' },
+  { id: 'ir-3', region: 'Delhi NCR', state: 'Delhi', saplings: 318, members: 76, partners: 5, tonsCO2: 4.5, lastDriveDate: '2026-02-25', nextDriveDate: '2026-04-11', note: 'Urban micro-forests · pilot with two RWAs · air-quality sensors staged.', color: '#EF4444', emoji: '🏙️' },
+  { id: 'ir-4', region: 'Pune belt', state: 'Maharashtra', saplings: 154, members: 22, partners: 2, tonsCO2: 2.2, lastDriveDate: '2026-03-18', nextDriveDate: '2026-05-03', note: 'Chapter in setup · first drive was a scouting run.', color: '#38BDF8', emoji: '🌀' },
+  { id: 'ir-5', region: 'Bhopal lake ring', state: 'Madhya Pradesh', saplings: 276, members: 19, partners: 3, tonsCO2: 3.8, lastDriveDate: '2026-03-08', nextDriveDate: '2026-04-26', note: 'Native species list locked · forestry dept signs off on water plan.', color: '#06B6D4', emoji: '💧' },
+  { id: 'ir-6', region: 'Ahmedabad', state: 'Gujarat', saplings: 198, members: 14, partners: 2, tonsCO2: 2.8, lastDriveDate: '2026-02-19', nextDriveDate: '2026-04-23', note: 'New chapter · 14 founding members · monthly cadence starting.', color: '#A855F7', emoji: '🌱' },
+  { id: 'ir-7', region: 'Bengaluru south', state: 'Karnataka', saplings: 128, members: 18, partners: 2, tonsCO2: 1.8, lastDriveDate: '2026-03-22', nextDriveDate: '2026-05-10', note: 'Campus partner confirmed · waiting on BBMP permit for pavement strip.', color: '#4ADE80', emoji: '🌿' },
+];
+
+interface LearningPath {
+  id: string;
+  title: string;
+  level: 'starter' | 'intermediate' | 'advanced';
+  hours: number;
+  owner: string;
+  skills: string[];
+  outcome: string;
+  color: string;
+  emoji: string;
+}
+
+const LEARNING_PATHS: LearningPath[] = [
+  { id: 'lp-1', title: 'Shipping your first article', level: 'starter', hours: 4, owner: 'Content Wing', skills: ['outlining', 'interview notes', 'editor pass'], outcome: '600–900 word explainer published on the wing blog, with one interview quote.', color: '#F59E0B', emoji: '✍️' },
+  { id: 'lp-2', title: 'Mobile UI in React Native', level: 'intermediate', hours: 12, owner: 'Web/App Wing', skills: ['layout + spacing', 'animations', 'ship-ready PR'], outcome: 'Own one full screen on a live repo · code-review before merge.', color: '#00D4FF', emoji: '📱' },
+  { id: 'lp-3', title: 'Brand systems in Figma', level: 'intermediate', hours: 8, owner: 'GD Wing', skills: ['type scale', 'colour tokens', 'component library'], outcome: 'Design a mini brand kit · logo + 3 posters + tokens handed off as json.', color: '#F472B6', emoji: '🎨' },
+  { id: 'lp-4', title: 'From RAW to reel', level: 'starter', hours: 6, owner: 'Photo Wing', skills: ['ingest + cull', 'lightroom grade', 'export ladder'], outcome: 'Publish a 12-frame event set · each with caption + credit · archived.', color: '#7E57C2', emoji: '📷' },
+  { id: 'lp-5', title: 'Cutting a 60-sec recap', level: 'intermediate', hours: 10, owner: 'Video Wing', skills: ['story beats', 'sound design', 'captioning'], outcome: 'Deliver a captioned recap under 60 s · three-track mix · approved by lead.', color: '#FFB74D', emoji: '🎬' },
+  { id: 'lp-6', title: 'Getting quoted in press', level: 'advanced', hours: 14, owner: 'PR Wing', skills: ['pitch crafting', 'journalist outreach', 'story angles'], outcome: 'Land one genuine placement in a local or campus publication · no paid promos.', color: '#38BDF8', emoji: '📣' },
+  { id: 'lp-7', title: 'Planning a 50-tree drive', level: 'intermediate', hours: 16, owner: 'Green Wing', skills: ['site survey', 'native species', 'water plan'], outcome: 'Co-lead one drive · 85 % survival after 90 days · archived report.', color: '#22C55E', emoji: '🌳' },
+  { id: 'lp-8', title: 'Running a crit session', level: 'advanced', hours: 4, owner: 'Any wing lead', skills: ['kind feedback', 'timeboxing', 'decision capture'], outcome: 'Host a 45-min open crit · three artefacts · one clear next-step each.', color: '#A855F7', emoji: '🪞' },
+];
+
+interface CommunityShout {
+  id: string;
+  from: string;
+  to: string;
+  message: string;
+  reason: string;
+  date: string;
+  color: string;
+  emoji: string;
+}
+
+const COMMUNITY_SHOUTS: CommunityShout[] = [
+  { id: 'cs-1', from: 'Ritu · GD', to: 'Anmol · Web', message: 'Stayed up till 1am fixing the banner export for the drive poster — huge.', reason: 'went above', date: 'today', color: '#F472B6', emoji: '💗' },
+  { id: 'cs-2', from: 'Arjun · Events', to: 'Pooja · Volunteer crew', message: 'Held the stage queue together for two hours in the sun. Queen behaviour.', reason: 'anchored ops', date: 'yesterday', color: '#F59E0B', emoji: '👑' },
+  { id: 'cs-3', from: 'Maya · PR', to: 'Nikhil · Content', message: 'Your quote sheet saved me ten follow-ups with the journalist. Thank you.', reason: 'made work easier', date: '2 days ago', color: '#38BDF8', emoji: '🤝' },
+  { id: 'cs-4', from: 'Iqbal · Photo', to: 'Sneha · Video', message: 'You made my blurry b-roll watchable. Sorcery.', reason: 'rescued a cut', date: '3 days ago', color: '#7E57C2', emoji: '🎬' },
+  { id: 'cs-5', from: 'Devika · Green', to: 'Kota chapter', message: 'Eighteen people, monsoon drizzle, zero complaining. You raised the bar.', reason: 'showed up', date: '4 days ago', color: '#22C55E', emoji: '🌳' },
+  { id: 'cs-6', from: 'Faraz · Wing lead', to: 'Everyone at Friday crit', message: 'The feedback was kind and sharp at the same time. Keep doing that.', reason: 'culture win', date: '5 days ago', color: '#A855F7', emoji: '🪞' },
+  { id: 'cs-7', from: 'Prateek · Alumni', to: 'Riya · 2nd year', message: 'You asked one of the best questions in the talk. Keep writing in.', reason: 'great curiosity', date: '6 days ago', color: '#4ADE80', emoji: '💡' },
+  { id: 'cs-8', from: 'Zara · Ops', to: 'Mess + cleaning staff', message: 'Seriously the reason the hackathon survived. Shoutout always.', reason: 'off-screen heroes', date: '1 week ago', color: '#FFB74D', emoji: '🙏' },
+];
+
+interface WorkshopEnrollment {
+  id: string;
+  title: string;
+  date: string;
+  time: string;
+  mode: 'on-campus' | 'hybrid' | 'online';
+  seatsTotal: number;
+  seatsLeft: number;
+  lead: string;
+  level: 'open' | 'members' | 'invite';
+  color: string;
+  emoji: string;
+}
+
+const WORKSHOPS: WorkshopEnrollment[] = [
+  { id: 'wk-1', title: 'Intro to React Native', date: 'Sat · Apr 20', time: '11:00 – 13:30', mode: 'on-campus', seatsTotal: 40, seatsLeft: 11, lead: 'Anmol · Web', level: 'open', color: '#00D4FF', emoji: '📱' },
+  { id: 'wk-2', title: 'Figma tokens end-to-end', date: 'Sun · Apr 21', time: '15:00 – 17:00', mode: 'hybrid', seatsTotal: 35, seatsLeft: 4, lead: 'Ritu · GD', level: 'open', color: '#F472B6', emoji: '🎨' },
+  { id: 'wk-3', title: 'Lightroom: grading a reel', date: 'Wed · Apr 24', time: '19:00 – 20:30', mode: 'online', seatsTotal: 120, seatsLeft: 58, lead: 'Iqbal · Photo', level: 'open', color: '#7E57C2', emoji: '📷' },
+  { id: 'wk-4', title: 'Podcast editing basics', date: 'Fri · Apr 26', time: '17:00 – 19:00', mode: 'on-campus', seatsTotal: 30, seatsLeft: 6, lead: 'Sneha · Video', level: 'members', color: '#FFB74D', emoji: '🎧' },
+  { id: 'wk-5', title: 'Pitching a journalist', date: 'Sat · Apr 27', time: '10:00 – 11:30', mode: 'online', seatsTotal: 80, seatsLeft: 29, lead: 'Maya · PR', level: 'open', color: '#38BDF8', emoji: '📣' },
+  { id: 'wk-6', title: 'Planning a 50-tree drive', date: 'Sun · Apr 28', time: '09:00 – 12:00', mode: 'on-campus', seatsTotal: 24, seatsLeft: 0, lead: 'Devika · Green', level: 'members', color: '#22C55E', emoji: '🌳' },
+  { id: 'wk-7', title: 'Writing like a human', date: 'Tue · Apr 30', time: '18:00 – 19:30', mode: 'hybrid', seatsTotal: 50, seatsLeft: 17, lead: 'Nikhil · Content', level: 'open', color: '#F59E0B', emoji: '✍️' },
+  { id: 'wk-8', title: 'Crit session · open', date: 'Fri · May 03', time: '16:00 – 17:00', mode: 'on-campus', seatsTotal: 20, seatsLeft: 5, lead: 'Faraz · lead', level: 'open', color: '#A855F7', emoji: '🪞' },
+];
+
+interface SavingsRecord {
+  id: string;
+  label: string;
+  unit: string;
+  value: string;
+  change: string;
+  trend: 'up' | 'down' | 'flat';
+  hint: string;
+  color: string;
+  emoji: string;
+}
+
+const SAVINGS_LEDGER: SavingsRecord[] = [
+  { id: 'sv-1', label: 'CO₂ absorbed (est.)', unit: 'tonnes CO₂e', value: '34.1', change: '+2.8 this month', trend: 'up', hint: 'Based on 2,500+ trees averaged by species mix + age.', color: '#22C55E', emoji: '🌿' },
+  { id: 'sv-2', label: 'E-waste diverted', unit: 'kg', value: '412', change: '+38 this month', trend: 'up', hint: 'Vendor receipts archived · nothing goes to landfill.', color: '#06B6D4', emoji: '♻️' },
+  { id: 'sv-3', label: 'Water saved (drip plan)', unit: 'kL', value: '78', change: '+6 this month', trend: 'up', hint: 'Drip vs flood across three sites · conservative estimate.', color: '#38BDF8', emoji: '💧' },
+  { id: 'sv-4', label: 'Paper saved (digital first)', unit: 'reams', value: '62', change: '+4 this quarter', trend: 'up', hint: 'All registrations + tickets digital · receipts emailed.', color: '#F59E0B', emoji: '📄' },
+  { id: 'sv-5', label: 'Reusable cups in rotation', unit: 'cups', value: '380', change: 'flat', trend: 'flat', hint: '2 steel mugs per member + 150 shared at events.', color: '#A855F7', emoji: '☕' },
+  { id: 'sv-6', label: 'Km travelled shared / solo', unit: 'ratio', value: '3.4×', change: '+0.3 this month', trend: 'up', hint: 'Carpools + shuttles vs solo rides to drives.', color: '#EF4444', emoji: '🚗' },
+];
+
+interface DailyRitual {
+  id: string;
+  time: string;
+  title: string;
+  detail: string;
+  lead: string;
+  color: string;
+  emoji: string;
+}
+
+const DAILY_RITUALS: DailyRitual[] = [
+  { id: 'dr-1', time: '09:30', title: 'Inbox zero', detail: 'One pass through shared inbox · assign or archive · no re-reading.', lead: 'Ops on rota', color: '#38BDF8', emoji: '📥' },
+  { id: 'dr-2', time: '12:00', title: 'Standup (15 min)', detail: 'What moved · what is stuck · what I need · no status theatre.', lead: 'All wings on call', color: '#22C55E', emoji: '🧭' },
+  { id: 'dr-3', time: '16:00', title: 'Ship or drop', detail: 'Anything older than 7 days without a next step gets dropped.', lead: 'Wing leads', color: '#F59E0B', emoji: '🚀' },
+  { id: 'dr-4', time: '17:30', title: 'Friday crit (weekly)', detail: '45 min · three artefacts · kind + sharp feedback · one decision each.', lead: 'Faraz', color: '#A855F7', emoji: '🪞' },
+  { id: 'dr-5', time: '20:00', title: 'Wrap + lights off', detail: 'One line per person in channel · what made the day better?', lead: 'Everyone', color: '#F472B6', emoji: '🌙' },
+];
+
+// -----------------------------------------------------
 // Component
 // -----------------------------------------------------
 
@@ -2253,6 +2416,304 @@ const HomeScreen: React.FC = () => {
     </View>
   );
 
+  const renderQuarterGoals = () => {
+    const active = QUARTER_GOALS.filter((g) => g.status !== 'done');
+    const done = QUARTER_GOALS.filter((g) => g.status === 'done');
+    return (
+      <View style={styles.sectionBlock}>
+        <View style={styles.sectionHeaderRow}>
+          <Text style={styles.sectionTitle}>🎯 Goals we are tracking</Text>
+          <Text style={styles.sectionCaption}>
+            {active.length} active · {done.length} shipped
+          </Text>
+        </View>
+        {active.map((g) => (
+          <View key={g.id} style={[styles.goalCard, { borderLeftColor: g.color }]}>
+            <View style={styles.goalTopRow}>
+              <Text style={styles.goalEmoji}>{g.emoji}</Text>
+              <View style={{ flex: 1 }}>
+                <View style={styles.goalTitleRow}>
+                  <Text style={styles.goalTitle} numberOfLines={2}>{g.title}</Text>
+                  <View
+                    style={[
+                      styles.goalStatusPill,
+                      {
+                        backgroundColor:
+                          g.status === 'on-track'
+                            ? 'rgba(34,197,94,0.18)'
+                            : g.status === 'at-risk'
+                            ? 'rgba(239,68,68,0.18)'
+                            : 'rgba(168,85,247,0.18)',
+                      },
+                    ]}
+                  >
+                    <Text
+                      style={[
+                        styles.goalStatusText,
+                        {
+                          color:
+                            g.status === 'on-track'
+                              ? '#22C55E'
+                              : g.status === 'at-risk'
+                              ? '#EF4444'
+                              : '#A855F7',
+                        },
+                      ]}
+                    >
+                      {g.status}
+                    </Text>
+                  </View>
+                </View>
+                <Text style={styles.goalQuarter}>{g.quarter} · {g.owner}</Text>
+              </View>
+            </View>
+            <Text style={styles.goalDetail}>{g.detail}</Text>
+            <View style={styles.goalBarTrack}>
+              <View
+                style={[
+                  styles.goalBarFill,
+                  { width: `${Math.round(g.progress * 100)}%`, backgroundColor: g.color },
+                ]}
+              />
+            </View>
+            <Text style={styles.goalPct}>{Math.round(g.progress * 100)}% complete</Text>
+          </View>
+        ))}
+        <View style={styles.goalDoneRow}>
+          {done.map((g) => (
+            <View key={g.id} style={styles.goalDonePill}>
+              <Text style={styles.goalDoneEmoji}>{g.emoji}</Text>
+              <Text style={styles.goalDoneText} numberOfLines={1}>{g.title}</Text>
+            </View>
+          ))}
+        </View>
+      </View>
+    );
+  };
+
+  const renderImpactRegions = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🗺️ Impact by region</Text>
+        <Text style={styles.sectionCaption}>
+          {IMPACT_REGIONS.reduce((a, r) => a + r.saplings, 0)} saplings · {IMPACT_REGIONS.length} regions
+        </Text>
+      </View>
+      {IMPACT_REGIONS.map((r) => (
+        <View key={r.id} style={[styles.regionCard, { borderLeftColor: r.color }]}>
+          <View style={styles.regionTopRow}>
+            <Text style={styles.regionEmoji}>{r.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.regionTitle} numberOfLines={1}>{r.region}</Text>
+              <Text style={styles.regionState}>{r.state}</Text>
+            </View>
+            <Text style={[styles.regionCount, { color: r.color }]}>{r.saplings}</Text>
+          </View>
+          <View style={styles.regionStatsRow}>
+            <View style={styles.regionStat}>
+              <Text style={styles.regionStatValue}>{r.members}</Text>
+              <Text style={styles.regionStatLabel}>members</Text>
+            </View>
+            <View style={styles.regionStat}>
+              <Text style={styles.regionStatValue}>{r.partners}</Text>
+              <Text style={styles.regionStatLabel}>partners</Text>
+            </View>
+            <View style={styles.regionStat}>
+              <Text style={styles.regionStatValue}>{r.tonsCO2}t</Text>
+              <Text style={styles.regionStatLabel}>CO₂e</Text>
+            </View>
+          </View>
+          <Text style={styles.regionNote} numberOfLines={2}>{r.note}</Text>
+          <View style={styles.regionDateRow}>
+            <Text style={styles.regionDate}>last · {r.lastDriveDate}</Text>
+            <Text style={styles.regionDate}>next · {r.nextDriveDate}</Text>
+          </View>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderLearningPaths = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🧭 Learning paths</Text>
+        <Text style={styles.sectionCaption}>{LEARNING_PATHS.length} structured tracks · self-paced</Text>
+      </View>
+      {LEARNING_PATHS.map((lp) => (
+        <View key={lp.id} style={[styles.lpCard, { borderLeftColor: lp.color }]}>
+          <View style={styles.lpTopRow}>
+            <Text style={styles.lpEmoji}>{lp.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.lpTitle} numberOfLines={2}>{lp.title}</Text>
+              <Text style={styles.lpMeta}>
+                {lp.level} · {lp.hours}h · {lp.owner}
+              </Text>
+            </View>
+          </View>
+          <View style={styles.lpSkillRow}>
+            {lp.skills.map((s) => (
+              <View key={s} style={[styles.lpSkillPill, { borderColor: lp.color + '55' }]}>
+                <Text style={[styles.lpSkillText, { color: lp.color }]}>{s}</Text>
+              </View>
+            ))}
+          </View>
+          <Text style={styles.lpOutcome} numberOfLines={3}>Outcome · {lp.outcome}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderCommunityShouts = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>💗 Community shoutouts</Text>
+        <Text style={styles.sectionCaption}>Kind + specific · posted this week</Text>
+      </View>
+      {COMMUNITY_SHOUTS.map((s) => (
+        <View key={s.id} style={[styles.shoutCard, { borderLeftColor: s.color }]}>
+          <View style={styles.shoutTopRow}>
+            <Text style={styles.shoutEmoji}>{s.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.shoutHeader} numberOfLines={1}>
+                <Text style={styles.shoutFrom}>{s.from}</Text>
+                <Text style={styles.shoutArrow}>  →  </Text>
+                <Text style={styles.shoutTo}>{s.to}</Text>
+              </Text>
+              <Text style={styles.shoutReason}>{s.reason} · {s.date}</Text>
+            </View>
+          </View>
+          <Text style={styles.shoutMessage} numberOfLines={4}>&ldquo;{s.message}&rdquo;</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderWorkshops = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🎓 Open workshops</Text>
+        <Text style={styles.sectionCaption}>
+          {WORKSHOPS.filter((w) => w.seatsLeft > 0).length} seats open · enrollment is free
+        </Text>
+      </View>
+      {WORKSHOPS.map((w) => {
+        const pct = (w.seatsTotal - w.seatsLeft) / w.seatsTotal;
+        const full = w.seatsLeft === 0;
+        return (
+          <View key={w.id} style={[styles.wsCard, { borderLeftColor: w.color }]}>
+            <View style={styles.wsTopRow}>
+              <Text style={styles.wsEmoji}>{w.emoji}</Text>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.wsTitle} numberOfLines={2}>{w.title}</Text>
+                <Text style={styles.wsMeta}>{w.date} · {w.time} · {w.mode}</Text>
+              </View>
+              <View
+                style={[
+                  styles.wsLevelPill,
+                  {
+                    backgroundColor:
+                      w.level === 'open'
+                        ? 'rgba(34,197,94,0.18)'
+                        : w.level === 'members'
+                        ? 'rgba(168,85,247,0.18)'
+                        : 'rgba(239,68,68,0.18)',
+                  },
+                ]}
+              >
+                <Text
+                  style={[
+                    styles.wsLevelText,
+                    {
+                      color:
+                        w.level === 'open'
+                          ? '#22C55E'
+                          : w.level === 'members'
+                          ? '#A855F7'
+                          : '#EF4444',
+                    },
+                  ]}
+                >
+                  {w.level}
+                </Text>
+              </View>
+            </View>
+            <Text style={styles.wsLead}>Led by {w.lead}</Text>
+            <View style={styles.wsBarTrack}>
+              <View
+                style={[
+                  styles.wsBarFill,
+                  { width: `${Math.round(pct * 100)}%`, backgroundColor: w.color },
+                ]}
+              />
+            </View>
+            <Text style={[styles.wsSeat, { color: full ? '#EF4444' : Colors.text.muted }]}>
+              {full ? 'seats full · join waitlist' : `${w.seatsLeft} / ${w.seatsTotal} seats left`}
+            </Text>
+          </View>
+        );
+      })}
+    </View>
+  );
+
+  const renderSavingsLedger = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🌿 Sustainability ledger</Text>
+        <Text style={styles.sectionCaption}>{SAVINGS_LEDGER.length} metrics · numbers we can defend</Text>
+      </View>
+      {SAVINGS_LEDGER.map((s) => (
+        <View key={s.id} style={[styles.ledgerRow, { borderLeftColor: s.color }]}>
+          <Text style={styles.ledgerEmoji}>{s.emoji}</Text>
+          <View style={{ flex: 1 }}>
+            <View style={styles.ledgerTopRow}>
+              <Text style={styles.ledgerLabel} numberOfLines={1}>{s.label}</Text>
+              <Text style={[styles.ledgerValue, { color: s.color }]}>
+                {s.value} {s.unit}
+              </Text>
+            </View>
+            <Text style={styles.ledgerHint} numberOfLines={2}>{s.hint}</Text>
+            <Text
+              style={[
+                styles.ledgerChange,
+                {
+                  color:
+                    s.trend === 'up' ? '#22C55E' : s.trend === 'down' ? '#EF4444' : '#94A3B8',
+                },
+              ]}
+            >
+              {s.trend === 'up' ? '↑ ' : s.trend === 'down' ? '↓ ' : '· '}
+              {s.change}
+            </Text>
+          </View>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderDailyRituals = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🕰️ A day inside the club</Text>
+        <Text style={styles.sectionCaption}>{DAILY_RITUALS.length} rituals · light on process</Text>
+      </View>
+      {DAILY_RITUALS.map((r) => (
+        <View key={r.id} style={[styles.ritualRow, { borderLeftColor: r.color }]}>
+          <View style={styles.ritualTimeCol}>
+            <Text style={[styles.ritualTime, { color: r.color }]}>{r.time}</Text>
+          </View>
+          <View style={{ flex: 1 }}>
+            <View style={styles.ritualTopRow}>
+              <Text style={styles.ritualEmoji}>{r.emoji}</Text>
+              <Text style={styles.ritualTitle} numberOfLines={1}>{r.title}</Text>
+            </View>
+            <Text style={styles.ritualDetail} numberOfLines={2}>{r.detail}</Text>
+            <Text style={styles.ritualLead}>{r.lead}</Text>
+          </View>
+        </View>
+      ))}
+    </View>
+  );
+
   const renderEventModal = () => {
     if (!selectedEvent) return null;
     const e = selectedEvent;
@@ -2443,6 +2904,13 @@ const HomeScreen: React.FC = () => {
         {renderAnnouncements()}
         {renderFeaturedEvents()}
         {renderCampusCal()}
+        {renderQuarterGoals()}
+        {renderImpactRegions()}
+        {renderWorkshops()}
+        {renderLearningPaths()}
+        {renderSavingsLedger()}
+        {renderDailyRituals()}
+        {renderCommunityShouts()}
         {renderImpactDashboard()}
         {renderScoreboard()}
         {renderWeeklyDigest()}
@@ -3311,6 +3779,190 @@ const styles = StyleSheet.create({
   },
   calChipText: { fontSize: 10, fontWeight: '700' },
   calEmpty: { color: Colors.text.muted, fontSize: 11, fontStyle: 'italic' },
+
+  // Goals
+  goalCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 14,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  goalTopRow: { flexDirection: 'row', alignItems: 'flex-start' },
+  goalEmoji: { fontSize: 22, marginRight: 10, marginTop: 2 },
+  goalTitleRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+  goalTitle: { color: Colors.text.primary, fontSize: 14, fontWeight: '800', flex: 1, lineHeight: 18 },
+  goalStatusPill: {
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 999,
+    marginLeft: 8,
+  },
+  goalStatusText: { fontSize: 9, fontWeight: '900', letterSpacing: 1, textTransform: 'uppercase' },
+  goalQuarter: { color: Colors.text.muted, fontSize: 11, marginTop: 3 },
+  goalDetail: { color: Colors.text.secondary, fontSize: 12, lineHeight: 17, marginTop: 8 },
+  goalBarTrack: {
+    height: 6,
+    backgroundColor: 'rgba(255,255,255,0.06)',
+    borderRadius: 3,
+    overflow: 'hidden',
+    marginTop: 10,
+  },
+  goalBarFill: { height: '100%', borderRadius: 3 },
+  goalPct: { color: Colors.text.muted, fontSize: 10, marginTop: 5 },
+  goalDoneRow: { flexDirection: 'row', flexWrap: 'wrap', marginTop: 6 },
+  goalDonePill: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(34,197,94,0.14)',
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 999,
+    marginRight: 6,
+    marginBottom: 6,
+    borderWidth: 1,
+    borderColor: 'rgba(34,197,94,0.28)',
+  },
+  goalDoneEmoji: { fontSize: 12, marginRight: 5 },
+  goalDoneText: { color: '#4ADE80', fontSize: 11, fontWeight: '700' },
+
+  // Impact regions
+  regionCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  regionTopRow: { flexDirection: 'row', alignItems: 'center' },
+  regionEmoji: { fontSize: 24, marginRight: 10 },
+  regionTitle: { color: Colors.text.primary, fontSize: 14, fontWeight: '800' },
+  regionState: { color: Colors.text.muted, fontSize: 11, marginTop: 1 },
+  regionCount: { fontSize: 20, fontWeight: '900', letterSpacing: -0.5 },
+  regionStatsRow: {
+    flexDirection: 'row',
+    marginTop: 10,
+    paddingVertical: 8,
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    borderColor: 'rgba(255,255,255,0.05)',
+  },
+  regionStat: { flex: 1, alignItems: 'center' },
+  regionStatValue: { color: Colors.text.primary, fontSize: 13, fontWeight: '800' },
+  regionStatLabel: { color: Colors.text.muted, fontSize: 10, marginTop: 2 },
+  regionNote: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8 },
+  regionDateRow: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 6 },
+  regionDate: { color: Colors.text.muted, fontSize: 10 },
+
+  // Learning paths
+  lpCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  lpTopRow: { flexDirection: 'row', alignItems: 'flex-start' },
+  lpEmoji: { fontSize: 22, marginRight: 10, marginTop: 2 },
+  lpTitle: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', lineHeight: 17 },
+  lpMeta: { color: Colors.text.muted, fontSize: 11, marginTop: 3 },
+  lpSkillRow: { flexDirection: 'row', flexWrap: 'wrap', marginTop: 8 },
+  lpSkillPill: {
+    borderWidth: 1,
+    borderRadius: 999,
+    paddingHorizontal: 9,
+    paddingVertical: 3,
+    marginRight: 6,
+    marginBottom: 4,
+  },
+  lpSkillText: { fontSize: 10, fontWeight: '700' },
+  lpOutcome: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8 },
+
+  // Shoutouts
+  shoutCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  shoutTopRow: { flexDirection: 'row', alignItems: 'flex-start' },
+  shoutEmoji: { fontSize: 18, marginRight: 10, marginTop: 2 },
+  shoutHeader: { color: Colors.text.primary, fontSize: 12 },
+  shoutFrom: { color: Colors.text.primary, fontSize: 12, fontWeight: '800' },
+  shoutArrow: { color: Colors.text.muted, fontSize: 12 },
+  shoutTo: { color: Colors.tech.neonBlue, fontSize: 12, fontWeight: '700' },
+  shoutReason: { color: Colors.text.muted, fontSize: 10, marginTop: 3 },
+  shoutMessage: {
+    color: Colors.text.secondary,
+    fontSize: 12,
+    lineHeight: 17,
+    marginTop: 8,
+    fontStyle: 'italic',
+  },
+
+  // Workshops
+  wsCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  wsTopRow: { flexDirection: 'row', alignItems: 'flex-start' },
+  wsEmoji: { fontSize: 22, marginRight: 10, marginTop: 2 },
+  wsTitle: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', lineHeight: 17 },
+  wsMeta: { color: Colors.text.muted, fontSize: 11, marginTop: 3 },
+  wsLevelPill: {
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 999,
+    marginLeft: 8,
+  },
+  wsLevelText: { fontSize: 9, fontWeight: '900', letterSpacing: 1, textTransform: 'uppercase' },
+  wsLead: { color: Colors.text.secondary, fontSize: 11, marginTop: 6 },
+  wsBarTrack: {
+    height: 5,
+    backgroundColor: 'rgba(255,255,255,0.06)',
+    borderRadius: 3,
+    overflow: 'hidden',
+    marginTop: 10,
+  },
+  wsBarFill: { height: '100%', borderRadius: 3 },
+  wsSeat: { fontSize: 10, marginTop: 5, fontWeight: '700' },
+
+  // Savings
+  ledgerRow: {
+    flexDirection: 'row',
+    backgroundColor: '#0D141B',
+    borderRadius: 12,
+    padding: 12,
+    marginBottom: 8,
+    borderLeftWidth: 3,
+  },
+  ledgerEmoji: { fontSize: 22, marginRight: 10, marginTop: 2 },
+  ledgerTopRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  ledgerLabel: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', flex: 1 },
+  ledgerValue: { fontSize: 12, fontWeight: '800', marginLeft: 8 },
+  ledgerHint: { color: Colors.text.muted, fontSize: 11, marginTop: 3, lineHeight: 15 },
+  ledgerChange: { fontSize: 11, marginTop: 4, fontWeight: '700' },
+
+  // Rituals
+  ritualRow: {
+    flexDirection: 'row',
+    backgroundColor: '#0D141B',
+    borderRadius: 12,
+    padding: 12,
+    marginBottom: 8,
+    borderLeftWidth: 3,
+  },
+  ritualTimeCol: { width: 50, marginRight: 10 },
+  ritualTime: { fontSize: 13, fontWeight: '900' },
+  ritualTopRow: { flexDirection: 'row', alignItems: 'center' },
+  ritualEmoji: { fontSize: 16, marginRight: 6 },
+  ritualTitle: { color: Colors.text.primary, fontSize: 13, fontWeight: '800' },
+  ritualDetail: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4 },
+  ritualLead: { color: Colors.text.muted, fontSize: 10, marginTop: 4, fontStyle: 'italic' },
 });
 
 export default HomeScreen;
