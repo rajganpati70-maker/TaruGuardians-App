@@ -291,6 +291,461 @@ const SORT_OPTIONS: { key: SortKey; label: string; icon: string }[] = [
 ];
 
 // =====================================================
+// TICKET TIERS
+// =====================================================
+
+interface TicketTier {
+  id: string;
+  name: string;
+  priceLabel: string;
+  includes: string[];
+  color: string;
+  emoji: string;
+  badge?: string;
+}
+
+const TICKET_TIERS: TicketTier[] = [
+  {
+    id: 't-member',
+    name: 'Member',
+    priceLabel: 'Free',
+    includes: [
+      'Entry to all 4 days',
+      'Breakfast + lunch on each day',
+      'Merch pack · tote + sticker set',
+      'Priority seating at main stage',
+    ],
+    color: '#22C55E',
+    emoji: '🌱',
+    badge: 'For club members only',
+  },
+  {
+    id: 't-student',
+    name: 'Student',
+    priceLabel: '₹199',
+    includes: [
+      'Entry to all 4 days',
+      'Lunch on each day',
+      'Merch pack · tote + sticker set',
+    ],
+    color: '#38BDF8',
+    emoji: '🎓',
+  },
+  {
+    id: 't-general',
+    name: 'General',
+    priceLabel: '₹449',
+    includes: [
+      'Entry to all 4 days',
+      'Lunch on each day',
+      'Merch pack · tote only',
+      'Access to workshops (first-come)',
+    ],
+    color: '#FBBF24',
+    emoji: '🎟️',
+  },
+  {
+    id: 't-patron',
+    name: 'Patron',
+    priceLabel: '₹2,499',
+    includes: [
+      'Entry to all 4 days',
+      'All meals + snacks',
+      'Full merch pack · tee + tote + poster',
+      'Priority access to all workshops',
+      '30-min mentor 1-on-1 with any wing lead',
+      'Named credit in the annual report',
+    ],
+    color: '#D4AF37',
+    emoji: '✨',
+    badge: 'Proceeds fund 120 saplings',
+  },
+];
+
+// =====================================================
+// SPEAKERS (Rotating pool for featured events)
+// =====================================================
+
+interface Speaker {
+  id: string;
+  name: string;
+  pronouns: string;
+  role: string;
+  org: string;
+  bio: string;
+  expertise: string[];
+  sessions: string[];
+  color: string;
+  avatarEmoji: string;
+}
+
+const SPEAKERS: Speaker[] = [
+  {
+    id: 'sp-1',
+    name: 'Dr. Meera Iyer',
+    pronouns: 'she/her',
+    role: 'Urban Ecologist',
+    org: 'IISc, Bengaluru',
+    bio: 'Researches urban biodiversity, writes long about slow forests. Believes 60% of city tree programs over-plant, under-maintain.',
+    expertise: ['Urban forestry', 'Native species', 'Biodiversity audits'],
+    sessions: ['Keynote: Why your city tree will die', 'Panel: Mono-culture vs native'],
+    color: '#22C55E',
+    avatarEmoji: '🌳',
+  },
+  {
+    id: 'sp-2',
+    name: 'Rohan Desai',
+    pronouns: 'he/him',
+    role: 'Staff Engineer',
+    org: 'Razorpay',
+    bio: 'Ex-Amazon, ex-Freshworks. Writes on on-call culture. Soft-spoken. Hates dashboards nobody reads.',
+    expertise: ['Distributed systems', 'On-call', 'Team scaling'],
+    sessions: ['Workshop: Small PR culture', 'Fireside: Burnout that nobody admits'],
+    color: '#38BDF8',
+    avatarEmoji: '👨‍💻',
+  },
+  {
+    id: 'sp-3',
+    name: 'Anaya Kapoor',
+    pronouns: 'she/her',
+    role: 'Founder + Designer',
+    org: 'Pine Studio',
+    bio: 'Identity work for 30+ climate-focused orgs. Runs design-with-constraints workshops in 7 cities.',
+    expertise: ['Brand identity', 'Type design', 'Sustainability comms'],
+    sessions: ['Workshop: Logos under constraint', 'Critique: Poster walk'],
+    color: '#F472B6',
+    avatarEmoji: '🎨',
+  },
+  {
+    id: 'sp-4',
+    name: 'Kabir Menon',
+    pronouns: 'he/him',
+    role: 'Documentary Cinematographer',
+    org: 'Independent',
+    bio: 'Shot 4 nature docs across the Western Ghats. No colour grading bravado. Honest light, honest cuts.',
+    expertise: ['Documentary', 'Wildlife', 'Colour'],
+    sessions: ['Workshop: 1-hour doc ethics', 'Screening: Forgotten rivers (9 min)'],
+    color: '#EF4444',
+    avatarEmoji: '🎬',
+  },
+  {
+    id: 'sp-5',
+    name: 'Zoya Khan',
+    pronouns: 'she/her',
+    role: 'Content + Newsletter',
+    org: 'Reading Rainforest',
+    bio: 'Runs a 14k-subscriber newsletter on slow reading. Anti-thread. Pro-footnote.',
+    expertise: ['Longform', 'Newsletters', 'Editorial ethics'],
+    sessions: ['Workshop: Writing for 30 seconds', 'Panel: Why threads are noise'],
+    color: '#F59E0B',
+    avatarEmoji: '✍️',
+  },
+  {
+    id: 'sp-6',
+    name: 'Vikram Rao',
+    pronouns: 'he/him',
+    role: 'Head of Community',
+    org: 'Koo',
+    bio: 'Turns online communities into offline trust. Moderation nerd. Safety-first ethos.',
+    expertise: ['Community', 'Moderation', 'Trust & safety'],
+    sessions: ['Panel: Drama-free Discords', 'Workshop: Moderation playbooks'],
+    color: '#06B6D4',
+    avatarEmoji: '🤝',
+  },
+  {
+    id: 'sp-7',
+    name: 'Ritika Banerjee',
+    pronouns: 'she/her',
+    role: 'Wildlife Photographer',
+    org: 'National Geographic (contributor)',
+    bio: 'Slow photographer. Waits days for one frame. Mentored 40+ young photographers.',
+    expertise: ['Wildlife', 'Long telephoto', 'Patience'],
+    sessions: ['Workshop: Waiting is a skill', 'Portfolio review'],
+    color: '#FBBF24',
+    avatarEmoji: '📸',
+  },
+  {
+    id: 'sp-8',
+    name: 'Aditya Krishnan',
+    pronouns: 'he/him',
+    role: 'Hydrology Researcher',
+    org: 'ATREE',
+    bio: 'Water tables, aquifers, boring numbers that matter. Writes science for 16-year-olds.',
+    expertise: ['Hydrology', 'Groundwater', 'Policy'],
+    sessions: ['Panel: Cities vs aquifers', 'Talk: The long slow well'],
+    color: '#3B82F6',
+    avatarEmoji: '💧',
+  },
+  {
+    id: 'sp-9',
+    name: 'Faiza Siddiqui',
+    pronouns: 'she/her',
+    role: 'Product Manager',
+    org: 'Zerodha',
+    bio: 'Built 3 products. Killed 2. Talks openly about killed products — more useful than shipped ones.',
+    expertise: ['Product', 'Prioritisation', 'Killing features'],
+    sessions: ['Fireside: The ones that didn\'t ship', 'AMA'],
+    color: '#A78BFA',
+    avatarEmoji: '🧭',
+  },
+  {
+    id: 'sp-10',
+    name: 'Sameer Talreja',
+    pronouns: 'he/him',
+    role: 'Policy Fellow',
+    org: 'CPR',
+    bio: 'Writes about urban policy without footnotes for every claim, but checks every footnote you cite.',
+    expertise: ['Policy', 'Urban', 'Research'],
+    sessions: ['Talk: Policy for builders', 'Roundtable: City & code'],
+    color: '#10B981',
+    avatarEmoji: '📜',
+  },
+  {
+    id: 'sp-11',
+    name: 'Tara Gill',
+    pronouns: 'they/them',
+    role: 'Motion Designer',
+    org: 'Independent',
+    bio: 'Animates slow, intentional loops. 12-frame obsessive. Has the best sticker collection in the club network.',
+    expertise: ['Motion', 'Looping', 'Stickers'],
+    sessions: ['Workshop: 12-frame loops', 'Sticker swap'],
+    color: '#EC4899',
+    avatarEmoji: '🔁',
+  },
+  {
+    id: 'sp-12',
+    name: 'Ankit Phadke',
+    pronouns: 'he/him',
+    role: 'Sponsor Relations',
+    org: 'Flipkart',
+    bio: 'Corporate side of partnerships. Has said NO to 80% of requests — shares the framework publicly.',
+    expertise: ['Sponsorship', 'Negotiation', 'NGO partnerships'],
+    sessions: ['Fireside: How sponsors actually think'],
+    color: '#0EA5E9',
+    avatarEmoji: '🧩',
+  },
+];
+
+// =====================================================
+// SPONSORS (3 tiers)
+// =====================================================
+
+interface Sponsor {
+  id: string;
+  name: string;
+  tier: 'platinum' | 'gold' | 'community';
+  tagline: string;
+  contribution: string;
+  since: string;
+  color: string;
+  emoji: string;
+}
+
+const SPONSORS: Sponsor[] = [
+  { id: 's-1', name: 'Leafline Labs', tier: 'platinum', tagline: 'Software for slow forests.', contribution: '₹6L + 60 laptops on loan', since: '2023', color: '#22C55E', emoji: '🌿' },
+  { id: 's-2', name: 'Saplings Co.', tier: 'platinum', tagline: 'Native species nursery.', contribution: '12,000 saplings donated', since: '2023', color: '#4ADE80', emoji: '🌳' },
+  { id: 's-3', name: 'Paper-or-not', tier: 'gold', tagline: 'Honest stationery, compostable pens.', contribution: '₹2L + 4000 notebooks', since: '2024', color: '#F59E0B', emoji: '📒' },
+  { id: 's-4', name: 'BrewCity Coffee', tier: 'gold', tagline: 'Fair-trade roastery.', contribution: '60 kg coffee / semester', since: '2024', color: '#B45309', emoji: '☕' },
+  { id: 's-5', name: 'Northwind Studios', tier: 'gold', tagline: 'Motion for causes.', contribution: '6 videos / year free', since: '2025', color: '#0EA5E9', emoji: '🎞️' },
+  { id: 's-6', name: 'Radha Press', tier: 'community', tagline: 'Campus printer, 40 years.', contribution: 'Free printing for zines', since: '2022', color: '#EF4444', emoji: '📰' },
+  { id: 's-7', name: 'Stillwater Photography', tier: 'community', tagline: 'Slow prints. Archival inks.', contribution: 'Portrait prints at cost', since: '2024', color: '#FBBF24', emoji: '📷' },
+  { id: 's-8', name: 'Sundar Vans', tier: 'community', tagline: 'Campus transport co-op.', contribution: 'Plantation drive transport', since: '2023', color: '#8B5CF6', emoji: '🚐' },
+];
+
+// =====================================================
+// VENUES (3 primary + overflow)
+// =====================================================
+
+interface Venue {
+  id: string;
+  name: string;
+  type: 'indoor' | 'outdoor' | 'hybrid';
+  capacity: number;
+  address: string;
+  amenities: string[];
+  accessibility: string[];
+  nearestTransit: string;
+  color: string;
+  emoji: string;
+}
+
+const VENUES: Venue[] = [
+  {
+    id: 'v-1',
+    name: 'Taru Hall (Auditorium)',
+    type: 'indoor',
+    capacity: 420,
+    address: 'Main Campus, Block C · Building 2',
+    amenities: ['Stage + lighting', 'Mic + PA', 'Projector 4K', 'Livestream rig', 'AC', 'Water refill stations'],
+    accessibility: ['Ramp access', 'Wheelchair seating (8 slots)', 'Sign-language interpreter on request', 'Hearing loop'],
+    nearestTransit: 'Bus stop #48 · 4 min walk',
+    color: '#38BDF8',
+    emoji: '🏛️',
+  },
+  {
+    id: 'v-2',
+    name: 'The Grove (Outdoor)',
+    type: 'outdoor',
+    capacity: 250,
+    address: 'North Lawn · West of Block A',
+    amenities: ['Shade canopies', 'Mobile PA', 'Portable stage', 'Composting toilets (2)', 'Water refill', 'Picnic seating'],
+    accessibility: ['Paved path', 'Wheelchair seating (6 slots)', 'Reserved shaded area'],
+    nearestTransit: 'Campus metro · 6 min walk',
+    color: '#22C55E',
+    emoji: '🌲',
+  },
+  {
+    id: 'v-3',
+    name: 'Studio 6 (Workshop Room)',
+    type: 'indoor',
+    capacity: 48,
+    address: 'Block F · Floor 3',
+    amenities: ['U-shape tables', 'Whiteboards', '24 monitors', 'Projector', 'Quiet corner'],
+    accessibility: ['Elevator access', 'Adjustable-height tables (4)', 'Low-sensory room next door'],
+    nearestTransit: 'Bus stop #12 · 2 min walk',
+    color: '#A78BFA',
+    emoji: '🧑‍🏫',
+  },
+  {
+    id: 'v-4',
+    name: 'Riverside Terrace',
+    type: 'hybrid',
+    capacity: 120,
+    address: 'East Campus · River Walk',
+    amenities: ['Indoor + covered outdoor', 'Mobile PA', 'String lights', 'Food stalls', 'Water station'],
+    accessibility: ['Level walkway from east gate', 'Wheelchair seating (4 slots)', 'Stroller access'],
+    nearestTransit: 'East Gate stop · 3 min walk',
+    color: '#FBBF24',
+    emoji: '🌅',
+  },
+];
+
+// =====================================================
+// FAQ (15 Q&As)
+// =====================================================
+
+interface EventFaq {
+  id: string;
+  q: string;
+  a: string;
+}
+
+const EVENT_FAQS: EventFaq[] = [
+  { id: 'f-1', q: 'Do I need to be a club member to attend?', a: 'No. Most events are open — check each event\'s "Who can attend" line. Member-only events will say so clearly.' },
+  { id: 'f-2', q: 'How do I register?', a: 'Tap the event, then Register. You\'ll get a QR code on email + in-app. Show it at entry.' },
+  { id: 'f-3', q: 'Can I bring a friend?', a: 'Yes — most events allow +1 with a short note in your registration. Some workshops have hard caps.' },
+  { id: 'f-4', q: 'What\'s the refund policy?', a: 'Full refund up to 48 hours before the event. 50% refund between 48 and 24 hours. No refund inside 24 hours, but you can transfer your ticket.' },
+  { id: 'f-5', q: 'Are meals provided?', a: 'For full-day events, yes — vegetarian by default, vegan on request, with a clearly labelled allergen card.' },
+  { id: 'f-6', q: 'Is the venue accessible?', a: 'All 4 venues have paved/ramp access, reserved wheelchair seating and accessible restrooms. Ask us anything — we\'ll also arrange interpreters or low-sensory rooms.' },
+  { id: 'f-7', q: 'Do you record talks?', a: 'Recorded with speaker consent. Published on the club\'s YouTube 7 days after the event. Workshops are usually not recorded.' },
+  { id: 'f-8', q: 'Can I speak at an event?', a: 'Yes — submit via the Suggestion tab → "Propose a session". We reply in 3 working days.' },
+  { id: 'f-9', q: 'Are events free?', a: 'Most are free for members. Larger fests (e.g. Taru Fest) have student / general / patron tiers — all proceeds fund saplings.' },
+  { id: 'f-10', q: 'What if it rains?', a: 'Outdoor events move indoors if there\'s a yellow alert or higher. You\'ll get a push + SMS 4 hours before.' },
+  { id: 'f-11', q: 'Can I volunteer instead of attending?', a: 'Absolutely — volunteering counts as attendance + you get a patron-tier goodie bag. Sign up under the event page.' },
+  { id: 'f-12', q: 'Photography and privacy?', a: 'We photograph all events for the archive. If you don\'t want to be photographed, grab a teal wristband at entry — photographers skip those.' },
+  { id: 'f-13', q: 'Children welcome?', a: 'Under-18 welcome with a guardian. Most workshops have a 12+ age recommendation.' },
+  { id: 'f-14', q: 'I registered but can\'t come — what now?', a: 'Transfer your ticket to a friend (via the event page). If you can\'t, cancel at least 24 hours out so we can open the slot.' },
+  { id: 'f-15', q: 'Who do I contact for special needs?', a: 'Email hello@taruguardians.org at least 72 hours before the event. We read every one.' },
+];
+
+// =====================================================
+// CODE OF CONDUCT (summary)
+// =====================================================
+
+interface ConductPillar {
+  id: string;
+  title: string;
+  body: string;
+  icon: string;
+  color: string;
+}
+
+const CONDUCT_PILLARS: ConductPillar[] = [
+  { id: 'c-1', title: 'Respect everyone', body: 'All ages, all genders, all identities, all career stages. The first-year gets the same airtime as the staff engineer.', icon: '🫶', color: '#F472B6' },
+  { id: 'c-2', title: 'Share the mic', body: 'If you\'ve spoken twice, wait until everyone who wants to has spoken once. This is a rule, not a vibe.', icon: '🎤', color: '#38BDF8' },
+  { id: 'c-3', title: 'No photos without consent', body: 'Teal wristband = no photo. Ask before posting anyone on social.', icon: '📷', color: '#FBBF24' },
+  { id: 'c-4', title: 'No self-promotion spam', body: 'Talks are for ideas, not pitch decks. Sponsors have their own slot.', icon: '🚫', color: '#EF4444' },
+  { id: 'c-5', title: 'Safe-word: "pause"', body: 'Anyone can call "pause" to stop a session for a moment. No explanation needed.', icon: '⏸️', color: '#22C55E' },
+  { id: 'c-6', title: 'Report quietly', body: 'Any concern → DM any wing lead or safety officer. Handled privately, within 24 hours.', icon: '🛡️', color: '#A78BFA' },
+];
+
+// =====================================================
+// WEEK / MONTH CALENDAR DENSITY
+// =====================================================
+
+interface CalendarDay {
+  date: string;
+  label: string;
+  count: number;
+  isToday: boolean;
+  topEvent?: string;
+}
+
+const buildCalendarDays = (count: number, base: Date): CalendarDay[] => {
+  const out: CalendarDay[] = [];
+  for (let i = 0; i < count; i++) {
+    const d = new Date(base.getTime());
+    d.setDate(base.getDate() + i);
+    out.push({
+      date: d.toISOString().slice(0, 10),
+      label: d.toLocaleDateString('en-IN', { weekday: 'short', day: '2-digit' }),
+      count: (i * 7 + 3) % 5,
+      isToday: i === 0,
+      topEvent:
+        ['Plantation drive', 'AI workshop', 'Newsletter doctor', 'Photo walk', 'Fireside'][
+          i % 5
+        ],
+    });
+  }
+  return out;
+};
+
+const CALENDAR_DAYS: CalendarDay[] = buildCalendarDays(14, new Date());
+
+// =====================================================
+// CHAPTERS / CITY HUBS
+// =====================================================
+
+interface CityChapter {
+  id: string;
+  city: string;
+  members: number;
+  lead: string;
+  nextEvent: string;
+  color: string;
+  emoji: string;
+}
+
+const CITY_CHAPTERS: CityChapter[] = [
+  { id: 'ch-1', city: 'Bengaluru', members: 84, lead: 'Aarav S.', nextEvent: 'Plantation drive · 28 Jun', color: '#22C55E', emoji: '🌆' },
+  { id: 'ch-2', city: 'Hyderabad', members: 42, lead: 'Neha G.', nextEvent: 'Design crit · 30 Jun', color: '#38BDF8', emoji: '🏙️' },
+  { id: 'ch-3', city: 'Pune', members: 31, lead: 'Raj M.', nextEvent: 'First-PR Friday · 05 Jul', color: '#FBBF24', emoji: '🌇' },
+  { id: 'ch-4', city: 'Delhi', members: 28, lead: 'Tara J.', nextEvent: 'Photo walk · 08 Jul', color: '#F472B6', emoji: '🏘️' },
+  { id: 'ch-5', city: 'Mumbai', members: 25, lead: 'Ritika B.', nextEvent: 'Portfolio review · 12 Jul', color: '#A78BFA', emoji: '🌃' },
+  { id: 'ch-6', city: 'Chennai', members: 18, lead: 'Aditya K.', nextEvent: 'Community meetup · 15 Jul', color: '#EF4444', emoji: '🏖️' },
+];
+
+// =====================================================
+// ACCESSIBILITY OPTIONS
+// =====================================================
+
+interface AccessibilityOption {
+  id: string;
+  label: string;
+  body: string;
+  icon: string;
+}
+
+const ACCESSIBILITY_OPTIONS: AccessibilityOption[] = [
+  { id: 'a-1', label: 'Wheelchair seating', body: 'Reserved at every venue. Pre-book during registration.', icon: '♿' },
+  { id: 'a-2', label: 'Sign-language interpreter', body: 'Available on 72-hour notice for any session.', icon: '🤟' },
+  { id: 'a-3', label: 'Live captions', body: 'All main-stage talks. English + Hindi.', icon: '🗣️' },
+  { id: 'a-4', label: 'Low-sensory room', body: 'Quiet room next to every venue. No mic, dim lights, optional noise-cancelling headphones.', icon: '🤫' },
+  { id: 'a-5', label: 'Large-print handouts', body: 'On request at the registration desk.', icon: '🔍' },
+  { id: 'a-6', label: 'Gender-neutral restrooms', body: 'Available at all four main venues.', icon: '🚻' },
+];
+
+// =====================================================
 // COMPONENT
 // =====================================================
 
@@ -308,6 +763,26 @@ const EventsScreen: React.FC = () => {
   const [onlyFree, setOnlyFree] = useState(false);
   const [onlyFeatured, setOnlyFeatured] = useState(false);
 
+  // Extras state (footer sections)
+  const [expandedFaq, setExpandedFaq] = useState<string | null>(null);
+  const [selectedTier, setSelectedTier] = useState<string>('t-member');
+  const [selectedVenue, setSelectedVenue] = useState<Venue | null>(null);
+  const [selectedSpeaker, setSelectedSpeaker] = useState<Speaker | null>(null);
+  const [showSpeakerModal, setShowSpeakerModal] = useState(false);
+  const [showVenueModal, setShowVenueModal] = useState(false);
+  const [showConductModal, setShowConductModal] = useState(false);
+  const [showTicketModal, setShowTicketModal] = useState(false);
+  const [selectedChapter, setSelectedChapter] = useState<CityChapter | null>(null);
+  const [showCheckinModal, setShowCheckinModal] = useState(false);
+  const [checkinCode, setCheckinCode] = useState('');
+  const [checkinSuccess, setCheckinSuccess] = useState(false);
+  const [showFeedbackModal, setShowFeedbackModal] = useState(false);
+  const [feedbackRating, setFeedbackRating] = useState(0);
+  const [feedbackText, setFeedbackText] = useState('');
+  const [feedbackSent, setFeedbackSent] = useState(false);
+  const [followedSponsors, setFollowedSponsors] = useState<string[]>([]);
+  const [rsvpedChapters, setRsvpedChapters] = useState<string[]>([]);
+
   // Animations
   const headerAnim = useRef(new Animated.Value(0)).current;
   const categoryAnim = useRef(new Animated.Value(0)).current;
@@ -315,6 +790,8 @@ const EventsScreen: React.FC = () => {
   const listAnim = useRef(new Animated.Value(0)).current;
   const modalScale = useRef(new Animated.Value(0.9)).current;
   const modalOpacity = useRef(new Animated.Value(0)).current;
+  const extrasModalScale = useRef(new Animated.Value(0.9)).current;
+  const extrasModalOpacity = useRef(new Animated.Value(0)).current;
 
   // Source of truth based on activeTab
   const sourceEvents = activeTab === 'upcoming' ? UPCOMING_EVENTS : PAST_EVENTS;
@@ -1146,6 +1623,964 @@ const EventsScreen: React.FC = () => {
   );
 
   // =====================================================
+  // EXTRAS: FOOTER SECTIONS (speakers, sponsors, venues, ticket tiers, FAQ, etc.)
+  // =====================================================
+
+  const openSpeaker = useCallback(
+    (s: Speaker) => {
+      setSelectedSpeaker(s);
+      setShowSpeakerModal(true);
+      extrasModalScale.setValue(0.9);
+      extrasModalOpacity.setValue(0);
+      Animated.parallel([
+        Animated.spring(extrasModalScale, {
+          toValue: 1,
+          friction: 7,
+          useNativeDriver: true,
+        }),
+        Animated.timing(extrasModalOpacity, {
+          toValue: 1,
+          duration: ANIM.duration.normal,
+          easing: ANIM.easing.out,
+          useNativeDriver: true,
+        }),
+      ]).start();
+    },
+    [extrasModalOpacity, extrasModalScale],
+  );
+
+  const closeSpeaker = useCallback(() => {
+    Animated.parallel([
+      Animated.timing(extrasModalScale, {
+        toValue: 0.92,
+        duration: ANIM.duration.fast,
+        useNativeDriver: true,
+      }),
+      Animated.timing(extrasModalOpacity, {
+        toValue: 0,
+        duration: ANIM.duration.fast,
+        useNativeDriver: true,
+      }),
+    ]).start(() => {
+      setShowSpeakerModal(false);
+      setSelectedSpeaker(null);
+    });
+  }, [extrasModalOpacity, extrasModalScale]);
+
+  const openVenue = useCallback(
+    (v: Venue) => {
+      setSelectedVenue(v);
+      setShowVenueModal(true);
+      extrasModalScale.setValue(0.92);
+      extrasModalOpacity.setValue(0);
+      Animated.parallel([
+        Animated.spring(extrasModalScale, {
+          toValue: 1,
+          friction: 7,
+          useNativeDriver: true,
+        }),
+        Animated.timing(extrasModalOpacity, {
+          toValue: 1,
+          duration: ANIM.duration.normal,
+          useNativeDriver: true,
+        }),
+      ]).start();
+    },
+    [extrasModalOpacity, extrasModalScale],
+  );
+
+  const closeVenue = useCallback(() => {
+    Animated.parallel([
+      Animated.timing(extrasModalScale, {
+        toValue: 0.92,
+        duration: ANIM.duration.fast,
+        useNativeDriver: true,
+      }),
+      Animated.timing(extrasModalOpacity, {
+        toValue: 0,
+        duration: ANIM.duration.fast,
+        useNativeDriver: true,
+      }),
+    ]).start(() => {
+      setShowVenueModal(false);
+      setSelectedVenue(null);
+    });
+  }, [extrasModalOpacity, extrasModalScale]);
+
+  const submitCheckin = useCallback(() => {
+    if (checkinCode.trim().length < 4) {
+      Alert.alert('Code too short', 'Enter the 4-6 digit code from your confirmation email.');
+      return;
+    }
+    setCheckinSuccess(true);
+    setTimeout(() => {
+      setShowCheckinModal(false);
+      setCheckinCode('');
+      setCheckinSuccess(false);
+    }, 1600);
+  }, [checkinCode]);
+
+  const submitFeedback = useCallback(() => {
+    if (feedbackRating === 0) {
+      Alert.alert('Pick a rating', 'Tap one of the stars first.');
+      return;
+    }
+    if (feedbackText.trim().length < 10) {
+      Alert.alert('A bit more', 'Tell us at least 10 characters — what worked, what didn\'t.');
+      return;
+    }
+    setFeedbackSent(true);
+    setTimeout(() => {
+      setShowFeedbackModal(false);
+      setFeedbackRating(0);
+      setFeedbackText('');
+      setFeedbackSent(false);
+    }, 1400);
+  }, [feedbackRating, feedbackText]);
+
+  const toggleSponsor = useCallback((id: string) => {
+    setFollowedSponsors((prev) =>
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
+    );
+  }, []);
+
+  const toggleChapterRsvp = useCallback((id: string) => {
+    setRsvpedChapters((prev) =>
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
+    );
+  }, []);
+
+  const renderCalendarSection = () => (
+    <View style={styles.extrasSection}>
+      <View style={styles.extrasHeaderRow}>
+        <Text style={styles.extrasTitle}>📅 14-day calendar</Text>
+        <Text style={styles.extrasSubtitle}>Density heat-map by day</Text>
+      </View>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.calendarRow}
+      >
+        {CALENDAR_DAYS.map((d) => {
+          const intensity = Math.min(1, d.count / 5);
+          const bg =
+            d.count === 0
+              ? Colors.background.darkGreen
+              : `rgba(0,212,255,${0.15 + intensity * 0.6})`;
+          return (
+            <View
+              key={d.date}
+              style={[
+                styles.calendarCell,
+                { backgroundColor: bg },
+                d.isToday && styles.calendarCellToday,
+              ]}
+            >
+              <Text style={styles.calendarLabel}>{d.label}</Text>
+              <Text style={styles.calendarCount}>
+                {d.count} {d.count === 1 ? 'event' : 'events'}
+              </Text>
+              {!!d.topEvent && (
+                <Text style={styles.calendarTop} numberOfLines={1}>
+                  {d.topEvent}
+                </Text>
+              )}
+            </View>
+          );
+        })}
+      </ScrollView>
+    </View>
+  );
+
+  const renderTicketsSection = () => (
+    <View style={styles.extrasSection}>
+      <View style={styles.extrasHeaderRow}>
+        <Text style={styles.extrasTitle}>🎟️ Ticket tiers</Text>
+        <Text style={styles.extrasSubtitle}>Taru Fest 2026 · 4 days</Text>
+      </View>
+      <View style={styles.ticketTabsRow}>
+        {TICKET_TIERS.map((t) => {
+          const active = selectedTier === t.id;
+          return (
+            <TouchableOpacity
+              key={t.id}
+              style={[
+                styles.ticketTab,
+                active && { backgroundColor: t.color + '25', borderColor: t.color },
+              ]}
+              onPress={() => setSelectedTier(t.id)}
+            >
+              <Text style={styles.ticketTabEmoji}>{t.emoji}</Text>
+              <Text
+                style={[
+                  styles.ticketTabLabel,
+                  active && { color: t.color, fontWeight: '800' },
+                ]}
+              >
+                {t.name}
+              </Text>
+              <Text style={styles.ticketTabPrice}>{t.priceLabel}</Text>
+            </TouchableOpacity>
+          );
+        })}
+      </View>
+      {(() => {
+        const tier = TICKET_TIERS.find((t) => t.id === selectedTier) || TICKET_TIERS[0];
+        return (
+          <View
+            style={[
+              styles.ticketBlock,
+              { borderColor: tier.color + '66', backgroundColor: tier.color + '10' },
+            ]}
+          >
+            <View style={styles.ticketBlockHeaderRow}>
+              <Text style={styles.ticketBlockName}>
+                {tier.emoji} {tier.name}
+              </Text>
+              <Text style={[styles.ticketBlockPrice, { color: tier.color }]}>
+                {tier.priceLabel}
+              </Text>
+            </View>
+            {!!tier.badge && (
+              <View style={[styles.ticketBadge, { backgroundColor: tier.color + '33' }]}>
+                <Text style={[styles.ticketBadgeText, { color: tier.color }]}>
+                  {tier.badge}
+                </Text>
+              </View>
+            )}
+            <View style={{ marginTop: 10 }}>
+              {tier.includes.map((line) => (
+                <View key={line} style={styles.ticketIncludeRow}>
+                  <Text style={[styles.ticketIncludeBullet, { color: tier.color }]}>✓</Text>
+                  <Text style={styles.ticketIncludeText}>{line}</Text>
+                </View>
+              ))}
+            </View>
+            <TouchableOpacity
+              style={[styles.ticketCta, { backgroundColor: tier.color }]}
+              onPress={() => setShowTicketModal(true)}
+            >
+              <Text style={styles.ticketCtaText}>Buy {tier.name} ticket</Text>
+            </TouchableOpacity>
+          </View>
+        );
+      })()}
+    </View>
+  );
+
+  const renderSpeakersSection = () => (
+    <View style={styles.extrasSection}>
+      <View style={styles.extrasHeaderRow}>
+        <Text style={styles.extrasTitle}>🎤 Featured speakers</Text>
+        <Text style={styles.extrasSubtitle}>
+          {SPEAKERS.length} voices across 4 days
+        </Text>
+      </View>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={{ paddingRight: HORIZONTAL_PADDING }}
+      >
+        {SPEAKERS.map((sp) => (
+          <TouchableOpacity
+            key={sp.id}
+            activeOpacity={0.9}
+            onPress={() => openSpeaker(sp)}
+            style={[styles.speakerCard, { borderColor: sp.color + '55' }]}
+          >
+            <View
+              style={[
+                styles.speakerAvatar,
+                { backgroundColor: sp.color + '33' },
+              ]}
+            >
+              <Text style={styles.speakerAvatarEmoji}>{sp.avatarEmoji}</Text>
+            </View>
+            <Text style={styles.speakerName} numberOfLines={1}>
+              {sp.name}
+            </Text>
+            <Text style={styles.speakerPronouns}>{sp.pronouns}</Text>
+            <Text style={[styles.speakerRole, { color: sp.color }]} numberOfLines={1}>
+              {sp.role}
+            </Text>
+            <Text style={styles.speakerOrg} numberOfLines={1}>
+              {sp.org}
+            </Text>
+            <View style={styles.speakerExpertiseRow}>
+              {sp.expertise.slice(0, 2).map((ex) => (
+                <View
+                  key={ex}
+                  style={[
+                    styles.speakerExpertisePill,
+                    { borderColor: sp.color + '55' },
+                  ]}
+                >
+                  <Text style={styles.speakerExpertisePillText}>{ex}</Text>
+                </View>
+              ))}
+            </View>
+          </TouchableOpacity>
+        ))}
+      </ScrollView>
+    </View>
+  );
+
+  const renderSponsorsSection = () => {
+    const byTier = (t: Sponsor['tier']) => SPONSORS.filter((s) => s.tier === t);
+    const tierOrder: { key: Sponsor['tier']; label: string; color: string }[] = [
+      { key: 'platinum', label: 'Platinum partners', color: '#E5E7EB' },
+      { key: 'gold', label: 'Gold partners', color: '#FBBF24' },
+      { key: 'community', label: 'Community partners', color: '#22C55E' },
+    ];
+    return (
+      <View style={styles.extrasSection}>
+        <View style={styles.extrasHeaderRow}>
+          <Text style={styles.extrasTitle}>🤝 Partners + sponsors</Text>
+          <Text style={styles.extrasSubtitle}>All proceeds → saplings</Text>
+        </View>
+        {tierOrder.map((group) => (
+          <View key={group.key} style={{ marginBottom: 14 }}>
+            <Text style={[styles.sponsorTierLabel, { color: group.color }]}>
+              {group.label}
+            </Text>
+            <View style={styles.sponsorGrid}>
+              {byTier(group.key).map((sp) => {
+                const followed = followedSponsors.includes(sp.id);
+                return (
+                  <View
+                    key={sp.id}
+                    style={[
+                      styles.sponsorCard,
+                      { borderColor: sp.color + '55' },
+                    ]}
+                  >
+                    <View style={styles.sponsorHeaderRow}>
+                      <Text style={styles.sponsorEmoji}>{sp.emoji}</Text>
+                      <Text style={styles.sponsorName} numberOfLines={1}>
+                        {sp.name}
+                      </Text>
+                    </View>
+                    <Text style={styles.sponsorTagline} numberOfLines={2}>
+                      {sp.tagline}
+                    </Text>
+                    <Text style={styles.sponsorContribution} numberOfLines={2}>
+                      {sp.contribution}
+                    </Text>
+                    <Text style={styles.sponsorSince}>Partnering since {sp.since}</Text>
+                    <TouchableOpacity
+                      onPress={() => toggleSponsor(sp.id)}
+                      style={[
+                        styles.sponsorFollowBtn,
+                        followed && {
+                          backgroundColor: sp.color + '22',
+                          borderColor: sp.color,
+                        },
+                      ]}
+                    >
+                      <Text
+                        style={[
+                          styles.sponsorFollowText,
+                          followed && { color: sp.color },
+                        ]}
+                      >
+                        {followed ? '✓ Following' : '+ Follow'}
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                );
+              })}
+            </View>
+          </View>
+        ))}
+      </View>
+    );
+  };
+
+  const renderVenuesSection = () => (
+    <View style={styles.extrasSection}>
+      <View style={styles.extrasHeaderRow}>
+        <Text style={styles.extrasTitle}>📍 Venues</Text>
+        <Text style={styles.extrasSubtitle}>All accessible · all reachable</Text>
+      </View>
+      {VENUES.map((v) => (
+        <TouchableOpacity
+          key={v.id}
+          activeOpacity={0.9}
+          onPress={() => openVenue(v)}
+          style={[styles.venueCard, { borderColor: v.color + '55' }]}
+        >
+          <View style={styles.venueHeaderRow}>
+            <Text style={styles.venueEmoji}>{v.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.venueName}>{v.name}</Text>
+              <Text style={styles.venueTypeLine}>
+                {v.type.toUpperCase()} · cap {v.capacity}
+              </Text>
+            </View>
+          </View>
+          <Text style={styles.venueAddress} numberOfLines={2}>
+            {v.address}
+          </Text>
+          <Text style={styles.venueTransit}>🚏 {v.nearestTransit}</Text>
+          <View style={styles.venueAmenityRow}>
+            {v.amenities.slice(0, 3).map((a) => (
+              <View key={a} style={styles.venueAmenityPill}>
+                <Text style={styles.venueAmenityText}>{a}</Text>
+              </View>
+            ))}
+            {v.amenities.length > 3 && (
+              <Text style={styles.venueMore}>+{v.amenities.length - 3} more</Text>
+            )}
+          </View>
+        </TouchableOpacity>
+      ))}
+    </View>
+  );
+
+  const renderFaqSection = () => (
+    <View style={styles.extrasSection}>
+      <View style={styles.extrasHeaderRow}>
+        <Text style={styles.extrasTitle}>❓ Frequently asked</Text>
+        <Text style={styles.extrasSubtitle}>{EVENT_FAQS.length} questions</Text>
+      </View>
+      {EVENT_FAQS.map((f) => {
+        const open = expandedFaq === f.id;
+        return (
+          <TouchableOpacity
+            key={f.id}
+            activeOpacity={0.9}
+            onPress={() => setExpandedFaq(open ? null : f.id)}
+            style={[styles.faqRow, open && styles.faqRowOpen]}
+          >
+            <View style={styles.faqHeader}>
+              <Text style={styles.faqQ} numberOfLines={open ? undefined : 2}>
+                {f.q}
+              </Text>
+              <Text
+                style={[styles.faqChevron, open && { transform: [{ rotate: '90deg' }] }]}
+              >
+                ›
+              </Text>
+            </View>
+            {open && <Text style={styles.faqA}>{f.a}</Text>}
+          </TouchableOpacity>
+        );
+      })}
+    </View>
+  );
+
+  const renderConductSection = () => (
+    <View style={styles.extrasSection}>
+      <View style={styles.extrasHeaderRow}>
+        <Text style={styles.extrasTitle}>🛡️ Code of conduct</Text>
+        <TouchableOpacity onPress={() => setShowConductModal(true)}>
+          <Text style={styles.extrasLink}>Read full →</Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.conductGrid}>
+        {CONDUCT_PILLARS.map((c) => (
+          <View
+            key={c.id}
+            style={[styles.conductPill, { borderColor: c.color + '66' }]}
+          >
+            <Text style={styles.conductIcon}>{c.icon}</Text>
+            <Text style={styles.conductTitle} numberOfLines={1}>
+              {c.title}
+            </Text>
+            <Text style={styles.conductBody} numberOfLines={3}>
+              {c.body}
+            </Text>
+          </View>
+        ))}
+      </View>
+    </View>
+  );
+
+  const renderChaptersSection = () => (
+    <View style={styles.extrasSection}>
+      <View style={styles.extrasHeaderRow}>
+        <Text style={styles.extrasTitle}>🏙️ City chapters</Text>
+        <Text style={styles.extrasSubtitle}>6 cities · 228 members</Text>
+      </View>
+      <View style={styles.chapterGrid}>
+        {CITY_CHAPTERS.map((c) => {
+          const rsvped = rsvpedChapters.includes(c.id);
+          return (
+            <View
+              key={c.id}
+              style={[styles.chapterCard, { borderColor: c.color + '55' }]}
+            >
+              <Text style={styles.chapterEmoji}>{c.emoji}</Text>
+              <Text style={styles.chapterCity}>{c.city}</Text>
+              <Text style={styles.chapterMembers}>{c.members} members</Text>
+              <Text style={styles.chapterLead} numberOfLines={1}>
+                Lead · {c.lead}
+              </Text>
+              <Text style={styles.chapterNext} numberOfLines={2}>
+                {c.nextEvent}
+              </Text>
+              <TouchableOpacity
+                onPress={() => toggleChapterRsvp(c.id)}
+                style={[
+                  styles.chapterRsvp,
+                  rsvped && {
+                    backgroundColor: c.color + '22',
+                    borderColor: c.color,
+                  },
+                ]}
+              >
+                <Text
+                  style={[
+                    styles.chapterRsvpText,
+                    rsvped && { color: c.color },
+                  ]}
+                >
+                  {rsvped ? '✓ Going' : 'RSVP'}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          );
+        })}
+      </View>
+    </View>
+  );
+
+  const renderAccessibilitySection = () => (
+    <View style={styles.extrasSection}>
+      <View style={styles.extrasHeaderRow}>
+        <Text style={styles.extrasTitle}>♿ Accessibility</Text>
+        <Text style={styles.extrasSubtitle}>Default at every venue</Text>
+      </View>
+      {ACCESSIBILITY_OPTIONS.map((a) => (
+        <View key={a.id} style={styles.accessRow}>
+          <Text style={styles.accessIcon}>{a.icon}</Text>
+          <View style={{ flex: 1 }}>
+            <Text style={styles.accessLabel}>{a.label}</Text>
+            <Text style={styles.accessBody}>{a.body}</Text>
+          </View>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderCheckinSection = () => (
+    <View style={styles.extrasSection}>
+      <LinearGradient
+        colors={['#0B3A2A', '#0E5A3E']}
+        style={styles.checkinBanner}
+      >
+        <Text style={styles.checkinEmoji}>🎫</Text>
+        <View style={{ flex: 1 }}>
+          <Text style={styles.checkinTitle}>At the gate?</Text>
+          <Text style={styles.checkinSubtitle}>
+            Use the 4–6 digit code from your confirmation email to check in.
+          </Text>
+        </View>
+        <TouchableOpacity
+          style={styles.checkinBtn}
+          onPress={() => setShowCheckinModal(true)}
+        >
+          <Text style={styles.checkinBtnText}>Check in</Text>
+        </TouchableOpacity>
+      </LinearGradient>
+      <TouchableOpacity
+        style={[styles.feedbackRow]}
+        onPress={() => setShowFeedbackModal(true)}
+      >
+        <Text style={styles.feedbackEmoji}>💬</Text>
+        <View style={{ flex: 1 }}>
+          <Text style={styles.feedbackTitle}>Came to an event? Drop feedback.</Text>
+          <Text style={styles.feedbackSubtitle}>
+            We read everything. Takes 30 seconds.
+          </Text>
+        </View>
+        <Text style={styles.feedbackChev}>›</Text>
+      </TouchableOpacity>
+    </View>
+  );
+
+  const renderExtrasFooter = () => (
+    <View>
+      {renderCalendarSection()}
+      {renderTicketsSection()}
+      {renderSpeakersSection()}
+      {renderSponsorsSection()}
+      {renderVenuesSection()}
+      {renderFaqSection()}
+      {renderConductSection()}
+      {renderChaptersSection()}
+      {renderAccessibilitySection()}
+      {renderCheckinSection()}
+      <View style={styles.footerBand}>
+        <Text style={styles.footerLine}>
+          Built with saplings, scripts + slow weekends.
+        </Text>
+        <Text style={styles.footerLineFaint}>Taru Guardians · Events · v1.2</Text>
+      </View>
+    </View>
+  );
+
+  // =====================================================
+  // EXTRAS MODALS
+  // =====================================================
+
+  const renderSpeakerModal = () => {
+    if (!selectedSpeaker) return null;
+    const s = selectedSpeaker;
+    return (
+      <Modal
+        visible={showSpeakerModal}
+        transparent
+        animationType="none"
+        onRequestClose={closeSpeaker}
+      >
+        <Animated.View
+          style={[
+            styles.extrasModalOverlay,
+            { opacity: extrasModalOpacity },
+          ]}
+        >
+          <Animated.View
+            style={[
+              styles.extrasModalCard,
+              { transform: [{ scale: extrasModalScale }], borderColor: s.color + '66' },
+            ]}
+          >
+            <View
+              style={[
+                styles.speakerModalAvatar,
+                { backgroundColor: s.color + '33', borderColor: s.color },
+              ]}
+            >
+              <Text style={styles.speakerModalAvatarEmoji}>{s.avatarEmoji}</Text>
+            </View>
+            <Text style={styles.extrasModalTitle}>{s.name}</Text>
+            <Text style={styles.extrasModalSub}>
+              {s.pronouns} · {s.role}
+            </Text>
+            <Text style={[styles.extrasModalOrg, { color: s.color }]}>{s.org}</Text>
+            <Text style={styles.extrasModalBody}>{s.bio}</Text>
+            <Text style={styles.extrasModalSectionLabel}>Expertise</Text>
+            <View style={styles.speakerModalChipRow}>
+              {s.expertise.map((ex) => (
+                <View
+                  key={ex}
+                  style={[
+                    styles.speakerModalChip,
+                    { backgroundColor: s.color + '22', borderColor: s.color + '55' },
+                  ]}
+                >
+                  <Text style={[styles.speakerModalChipText, { color: s.color }]}>
+                    {ex}
+                  </Text>
+                </View>
+              ))}
+            </View>
+            <Text style={styles.extrasModalSectionLabel}>Sessions</Text>
+            {s.sessions.map((sess) => (
+              <View key={sess} style={styles.speakerSessionRow}>
+                <Text style={styles.speakerSessionBullet}>•</Text>
+                <Text style={styles.speakerSessionText}>{sess}</Text>
+              </View>
+            ))}
+            <TouchableOpacity
+              style={[styles.extrasModalClose, { borderColor: s.color + '77' }]}
+              onPress={closeSpeaker}
+            >
+              <Text style={[styles.extrasModalCloseText, { color: s.color }]}>
+                Close
+              </Text>
+            </TouchableOpacity>
+          </Animated.View>
+        </Animated.View>
+      </Modal>
+    );
+  };
+
+  const renderVenueModal = () => {
+    if (!selectedVenue) return null;
+    const v = selectedVenue;
+    return (
+      <Modal
+        visible={showVenueModal}
+        transparent
+        animationType="none"
+        onRequestClose={closeVenue}
+      >
+        <Animated.View
+          style={[
+            styles.extrasModalOverlay,
+            { opacity: extrasModalOpacity },
+          ]}
+        >
+          <Animated.View
+            style={[
+              styles.extrasModalCard,
+              { transform: [{ scale: extrasModalScale }], borderColor: v.color + '66' },
+            ]}
+          >
+            <Text style={styles.venueModalEmoji}>{v.emoji}</Text>
+            <Text style={styles.extrasModalTitle}>{v.name}</Text>
+            <Text style={styles.extrasModalSub}>
+              {v.type.toUpperCase()} · capacity {v.capacity}
+            </Text>
+            <Text style={[styles.extrasModalOrg, { color: v.color }]}>
+              {v.address}
+            </Text>
+            <Text style={styles.extrasModalSectionLabel}>Amenities</Text>
+            <View style={styles.venueModalList}>
+              {v.amenities.map((a) => (
+                <View key={a} style={styles.venueModalListRow}>
+                  <Text style={[styles.venueModalListBullet, { color: v.color }]}>
+                    •
+                  </Text>
+                  <Text style={styles.venueModalListText}>{a}</Text>
+                </View>
+              ))}
+            </View>
+            <Text style={styles.extrasModalSectionLabel}>Accessibility</Text>
+            <View style={styles.venueModalList}>
+              {v.accessibility.map((a) => (
+                <View key={a} style={styles.venueModalListRow}>
+                  <Text style={styles.venueModalListBullet}>✓</Text>
+                  <Text style={styles.venueModalListText}>{a}</Text>
+                </View>
+              ))}
+            </View>
+            <Text style={styles.extrasModalSectionLabel}>Transit</Text>
+            <Text style={styles.extrasModalBody}>{v.nearestTransit}</Text>
+            <TouchableOpacity
+              style={[styles.extrasModalClose, { borderColor: v.color + '77' }]}
+              onPress={closeVenue}
+            >
+              <Text style={[styles.extrasModalCloseText, { color: v.color }]}>
+                Close
+              </Text>
+            </TouchableOpacity>
+          </Animated.View>
+        </Animated.View>
+      </Modal>
+    );
+  };
+
+  const renderConductModal = () => (
+    <Modal
+      visible={showConductModal}
+      transparent
+      animationType="slide"
+      onRequestClose={() => setShowConductModal(false)}
+    >
+      <View style={styles.conductOverlay}>
+        <View style={styles.conductSheet}>
+          <Text style={styles.conductSheetTitle}>🛡️ Code of conduct</Text>
+          <ScrollView showsVerticalScrollIndicator={false}>
+            {CONDUCT_PILLARS.map((c) => (
+              <View key={c.id} style={styles.conductSheetRow}>
+                <View
+                  style={[
+                    styles.conductSheetIcon,
+                    { backgroundColor: c.color + '33' },
+                  ]}
+                >
+                  <Text style={styles.conductSheetIconText}>{c.icon}</Text>
+                </View>
+                <View style={{ flex: 1 }}>
+                  <Text style={styles.conductSheetRowTitle}>{c.title}</Text>
+                  <Text style={styles.conductSheetRowBody}>{c.body}</Text>
+                </View>
+              </View>
+            ))}
+            <Text style={styles.conductSheetFooter}>
+              This is not decoration. Breaking conduct = a conversation first, and if
+              needed, a quiet exit from the event. No drama.
+            </Text>
+          </ScrollView>
+          <TouchableOpacity
+            style={styles.conductClose}
+            onPress={() => setShowConductModal(false)}
+          >
+            <Text style={styles.conductCloseText}>Got it</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </Modal>
+  );
+
+  const renderTicketModal = () => {
+    const tier = TICKET_TIERS.find((t) => t.id === selectedTier) || TICKET_TIERS[0];
+    return (
+      <Modal
+        visible={showTicketModal}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setShowTicketModal(false)}
+      >
+        <View style={styles.extrasModalOverlay}>
+          <View
+            style={[
+              styles.extrasModalCard,
+              { borderColor: tier.color + '66' },
+            ]}
+          >
+            <Text style={styles.extrasModalTitle}>
+              {tier.emoji} {tier.name} ticket
+            </Text>
+            <Text style={[styles.extrasModalOrg, { color: tier.color }]}>
+              {tier.priceLabel}
+            </Text>
+            <Text style={styles.extrasModalBody}>
+              This is a mock ticket flow. No real payment runs here — in production,
+              tickets would route to the registrar. You\'ll get a QR code by email
+              within 5 minutes of payment and an SMS confirmation.
+            </Text>
+            <View style={{ marginTop: 10 }}>
+              {tier.includes.map((x) => (
+                <View key={x} style={styles.ticketIncludeRow}>
+                  <Text style={[styles.ticketIncludeBullet, { color: tier.color }]}>
+                    ✓
+                  </Text>
+                  <Text style={styles.ticketIncludeText}>{x}</Text>
+                </View>
+              ))}
+            </View>
+            <TouchableOpacity
+              style={[styles.extrasModalClose, { borderColor: tier.color + '77' }]}
+              onPress={() => setShowTicketModal(false)}
+            >
+              <Text style={[styles.extrasModalCloseText, { color: tier.color }]}>
+                Close
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+    );
+  };
+
+  const renderCheckinModal = () => (
+    <Modal
+      visible={showCheckinModal}
+      transparent
+      animationType="slide"
+      onRequestClose={() => setShowCheckinModal(false)}
+    >
+      <View style={styles.conductOverlay}>
+        <View style={styles.conductSheet}>
+          <Text style={styles.conductSheetTitle}>🎫 Event check-in</Text>
+          {checkinSuccess ? (
+            <View style={styles.checkinSuccess}>
+              <Text style={styles.checkinSuccessEmoji}>✅</Text>
+              <Text style={styles.checkinSuccessTitle}>You\'re in.</Text>
+              <Text style={styles.checkinSuccessBody}>
+                A volunteer will hand you a wristband and a program sheet. Have a good
+                one.
+              </Text>
+            </View>
+          ) : (
+            <>
+              <Text style={styles.conductSheetRowBody}>
+                Type the 4–6 digit code from your confirmation email.
+              </Text>
+              <TextInput
+                style={styles.checkinInput}
+                value={checkinCode}
+                onChangeText={(t) => setCheckinCode(t.replace(/[^0-9]/g, '').slice(0, 6))}
+                placeholder="0000"
+                placeholderTextColor={Colors.text.muted}
+                keyboardType="number-pad"
+                maxLength={6}
+              />
+              <TouchableOpacity style={styles.conductClose} onPress={submitCheckin}>
+                <Text style={styles.conductCloseText}>Check in</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.conductClose, styles.conductCloseGhost]}
+                onPress={() => setShowCheckinModal(false)}
+              >
+                <Text style={[styles.conductCloseText, { color: Colors.text.muted }]}>
+                  Cancel
+                </Text>
+              </TouchableOpacity>
+            </>
+          )}
+        </View>
+      </View>
+    </Modal>
+  );
+
+  const renderFeedbackModal = () => (
+    <Modal
+      visible={showFeedbackModal}
+      transparent
+      animationType="slide"
+      onRequestClose={() => setShowFeedbackModal(false)}
+    >
+      <View style={styles.conductOverlay}>
+        <View style={styles.conductSheet}>
+          <Text style={styles.conductSheetTitle}>💬 Event feedback</Text>
+          {feedbackSent ? (
+            <View style={styles.checkinSuccess}>
+              <Text style={styles.checkinSuccessEmoji}>🙏</Text>
+              <Text style={styles.checkinSuccessTitle}>Sent. Read.</Text>
+              <Text style={styles.checkinSuccessBody}>
+                Every note is read by the wing that hosted the event.
+              </Text>
+            </View>
+          ) : (
+            <>
+              <Text style={styles.conductSheetRowBody}>
+                How was it? Tap stars + tell us what worked.
+              </Text>
+              <View style={styles.starRow}>
+                {[1, 2, 3, 4, 5].map((n) => (
+                  <TouchableOpacity
+                    key={n}
+                    onPress={() => setFeedbackRating(n)}
+                    style={styles.starBtn}
+                  >
+                    <Text
+                      style={[
+                        styles.starBtnText,
+                        feedbackRating >= n && { color: '#FBBF24' },
+                      ]}
+                    >
+                      ★
+                    </Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+              <TextInput
+                style={styles.feedbackInput}
+                value={feedbackText}
+                onChangeText={setFeedbackText}
+                placeholder="What worked? What didn't? Be specific."
+                placeholderTextColor={Colors.text.muted}
+                multiline
+                numberOfLines={4}
+                textAlignVertical="top"
+              />
+              <Text style={styles.feedbackCount}>
+                {feedbackText.length} chars · min 10
+              </Text>
+              <TouchableOpacity style={styles.conductClose} onPress={submitFeedback}>
+                <Text style={styles.conductCloseText}>Send feedback</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.conductClose, styles.conductCloseGhost]}
+                onPress={() => setShowFeedbackModal(false)}
+              >
+                <Text style={[styles.conductCloseText, { color: Colors.text.muted }]}>
+                  Cancel
+                </Text>
+              </TouchableOpacity>
+            </>
+          )}
+        </View>
+      </View>
+    </Modal>
+  );
+
+  // =====================================================
   // RENDER
   // =====================================================
 
@@ -1179,6 +2614,7 @@ const EventsScreen: React.FC = () => {
             </>
           }
           ListEmptyComponent={loading ? renderSkeleton() : renderEmptyState()}
+          ListFooterComponent={loading ? null : renderExtrasFooter()}
           refreshControl={
             <RefreshControl
               refreshing={refreshing}
@@ -1198,6 +2634,12 @@ const EventsScreen: React.FC = () => {
 
       {renderEventModal()}
       {renderSortMenu()}
+      {renderSpeakerModal()}
+      {renderVenueModal()}
+      {renderConductModal()}
+      {renderTicketModal()}
+      {renderCheckinModal()}
+      {renderFeedbackModal()}
 
       {loading && (
         <View style={styles.loaderOverlay} pointerEvents="none">
@@ -1778,6 +3220,847 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'rgba(0,0,0,0.2)',
+  },
+
+  // Extras sections — calendar, tickets, speakers, sponsors, venues, FAQ, etc.
+  extrasSection: {
+    paddingHorizontal: HORIZONTAL_PADDING,
+    paddingVertical: 18,
+    borderTopWidth: StyleSheet.hairlineWidth,
+    borderTopColor: Colors.text.muted + '22',
+  },
+  extrasHeaderRow: {
+    flexDirection: 'row',
+    alignItems: 'baseline',
+    justifyContent: 'space-between',
+    marginBottom: 10,
+  },
+  extrasTitle: {
+    color: Colors.text.primary,
+    fontSize: 17,
+    fontWeight: '800',
+  },
+  extrasSubtitle: {
+    color: Colors.text.muted,
+    fontSize: 12,
+    fontWeight: '600',
+  },
+  extrasLink: {
+    color: Colors.tech.neonBlue,
+    fontSize: 12,
+    fontWeight: '700',
+  },
+
+  // Calendar
+  calendarRow: {
+    paddingRight: HORIZONTAL_PADDING,
+  },
+  calendarCell: {
+    width: 110,
+    padding: 10,
+    marginRight: 10,
+    borderRadius: CARD_RADIUS,
+    borderWidth: 1,
+    borderColor: Colors.text.muted + '22',
+  },
+  calendarCellToday: {
+    borderColor: Colors.tech.neonBlue,
+    borderWidth: 1.5,
+  },
+  calendarLabel: {
+    color: Colors.text.primary,
+    fontSize: 12,
+    fontWeight: '800',
+    letterSpacing: 0.3,
+  },
+  calendarCount: {
+    color: Colors.text.primary,
+    fontSize: 15,
+    fontWeight: '800',
+    marginTop: 4,
+  },
+  calendarTop: {
+    color: Colors.text.muted,
+    fontSize: 11,
+    marginTop: 6,
+  },
+
+  // Ticket tiers
+  ticketTabsRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    marginBottom: 12,
+  },
+  ticketTab: {
+    flexBasis: '48%',
+    paddingVertical: 12,
+    paddingHorizontal: 10,
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: Colors.text.muted + '33',
+    backgroundColor: Colors.background.darkGreen,
+    marginBottom: 8,
+    alignItems: 'flex-start',
+  },
+  ticketTabEmoji: {
+    fontSize: 18,
+  },
+  ticketTabLabel: {
+    color: Colors.text.primary,
+    fontSize: 13,
+    fontWeight: '700',
+    marginTop: 4,
+  },
+  ticketTabPrice: {
+    color: Colors.text.muted,
+    fontSize: 12,
+    fontWeight: '600',
+    marginTop: 2,
+  },
+  ticketBlock: {
+    borderRadius: CARD_RADIUS,
+    borderWidth: 1,
+    padding: 14,
+  },
+  ticketBlockHeaderRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  ticketBlockName: {
+    color: Colors.text.primary,
+    fontSize: 16,
+    fontWeight: '800',
+  },
+  ticketBlockPrice: {
+    fontSize: 18,
+    fontWeight: '800',
+  },
+  ticketBadge: {
+    alignSelf: 'flex-start',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 8,
+    marginTop: 6,
+  },
+  ticketBadgeText: {
+    fontSize: 11,
+    fontWeight: '800',
+  },
+  ticketIncludeRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    marginTop: 4,
+  },
+  ticketIncludeBullet: {
+    fontSize: 14,
+    fontWeight: '800',
+    marginRight: 8,
+    marginTop: 1,
+  },
+  ticketIncludeText: {
+    color: Colors.text.primary,
+    fontSize: 13,
+    flex: 1,
+    lineHeight: 19,
+  },
+  ticketCta: {
+    marginTop: 12,
+    paddingVertical: 12,
+    borderRadius: 14,
+    alignItems: 'center',
+  },
+  ticketCtaText: {
+    color: Colors.background.deepBlack,
+    fontSize: 14,
+    fontWeight: '800',
+  },
+
+  // Speakers
+  speakerCard: {
+    width: 180,
+    padding: 12,
+    marginRight: 10,
+    borderRadius: CARD_RADIUS,
+    borderWidth: 1,
+    backgroundColor: Colors.background.darkGreen,
+  },
+  speakerAvatar: {
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 8,
+  },
+  speakerAvatarEmoji: {
+    fontSize: 26,
+  },
+  speakerName: {
+    color: Colors.text.primary,
+    fontSize: 14,
+    fontWeight: '800',
+  },
+  speakerPronouns: {
+    color: Colors.text.muted,
+    fontSize: 11,
+    marginTop: 1,
+  },
+  speakerRole: {
+    fontSize: 12,
+    fontWeight: '700',
+    marginTop: 4,
+  },
+  speakerOrg: {
+    color: Colors.text.muted,
+    fontSize: 11,
+    marginTop: 1,
+  },
+  speakerExpertiseRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginTop: 8,
+  },
+  speakerExpertisePill: {
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 8,
+    borderWidth: 1,
+    marginRight: 4,
+    marginBottom: 4,
+  },
+  speakerExpertisePillText: {
+    color: Colors.text.muted,
+    fontSize: 10,
+    fontWeight: '600',
+  },
+
+  // Sponsors
+  sponsorTierLabel: {
+    fontSize: 12,
+    fontWeight: '800',
+    letterSpacing: 0.6,
+    marginBottom: 8,
+  },
+  sponsorGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  },
+  sponsorCard: {
+    flexBasis: IS_TABLET ? '32%' : '48%',
+    marginBottom: 10,
+    padding: 12,
+    borderRadius: CARD_RADIUS,
+    borderWidth: 1,
+    backgroundColor: Colors.background.darkGreen,
+  },
+  sponsorHeaderRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 6,
+  },
+  sponsorEmoji: {
+    fontSize: 20,
+    marginRight: 8,
+  },
+  sponsorName: {
+    color: Colors.text.primary,
+    fontSize: 14,
+    fontWeight: '800',
+    flex: 1,
+  },
+  sponsorTagline: {
+    color: Colors.text.primary,
+    fontSize: 12,
+    lineHeight: 17,
+  },
+  sponsorContribution: {
+    color: Colors.tech.neonBlue,
+    fontSize: 11,
+    fontWeight: '700',
+    marginTop: 4,
+  },
+  sponsorSince: {
+    color: Colors.text.muted,
+    fontSize: 10,
+    marginTop: 2,
+    marginBottom: 8,
+  },
+  sponsorFollowBtn: {
+    borderWidth: 1,
+    borderColor: Colors.text.muted + '33',
+    paddingVertical: 6,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  sponsorFollowText: {
+    color: Colors.text.muted,
+    fontSize: 12,
+    fontWeight: '700',
+  },
+
+  // Venues
+  venueCard: {
+    borderRadius: CARD_RADIUS,
+    borderWidth: 1,
+    padding: 14,
+    marginBottom: 10,
+    backgroundColor: Colors.background.darkGreen,
+  },
+  venueHeaderRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 6,
+  },
+  venueEmoji: {
+    fontSize: 22,
+    marginRight: 10,
+  },
+  venueName: {
+    color: Colors.text.primary,
+    fontSize: 15,
+    fontWeight: '800',
+  },
+  venueTypeLine: {
+    color: Colors.text.muted,
+    fontSize: 11,
+    fontWeight: '700',
+    marginTop: 2,
+    letterSpacing: 0.6,
+  },
+  venueAddress: {
+    color: Colors.text.primary,
+    fontSize: 12,
+    marginTop: 4,
+  },
+  venueTransit: {
+    color: Colors.tech.neonBlue,
+    fontSize: 12,
+    fontWeight: '700',
+    marginTop: 4,
+  },
+  venueAmenityRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginTop: 8,
+    alignItems: 'center',
+  },
+  venueAmenityPill: {
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 8,
+    backgroundColor: Colors.background.deepBlack,
+    borderWidth: 1,
+    borderColor: Colors.text.muted + '33',
+    marginRight: 6,
+    marginBottom: 4,
+  },
+  venueAmenityText: {
+    color: Colors.text.primary,
+    fontSize: 11,
+    fontWeight: '600',
+  },
+  venueMore: {
+    color: Colors.text.muted,
+    fontSize: 11,
+    fontWeight: '700',
+  },
+
+  // FAQ
+  faqRow: {
+    paddingVertical: 12,
+    paddingHorizontal: 14,
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: Colors.text.muted + '22',
+    backgroundColor: Colors.background.darkGreen,
+    marginBottom: 8,
+  },
+  faqRowOpen: {
+    borderColor: Colors.tech.neonBlue + '66',
+  },
+  faqHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  faqQ: {
+    color: Colors.text.primary,
+    fontSize: 13,
+    fontWeight: '700',
+    flex: 1,
+    paddingRight: 8,
+  },
+  faqChevron: {
+    color: Colors.tech.neonBlue,
+    fontSize: 18,
+    fontWeight: '800',
+  },
+  faqA: {
+    color: Colors.text.muted,
+    fontSize: 12,
+    marginTop: 8,
+    lineHeight: 18,
+  },
+
+  // Code of conduct
+  conductGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  },
+  conductPill: {
+    flexBasis: '48%',
+    borderRadius: 14,
+    borderWidth: 1,
+    backgroundColor: Colors.background.darkGreen,
+    padding: 12,
+    marginBottom: 10,
+  },
+  conductIcon: {
+    fontSize: 20,
+  },
+  conductTitle: {
+    color: Colors.text.primary,
+    fontSize: 13,
+    fontWeight: '800',
+    marginTop: 4,
+  },
+  conductBody: {
+    color: Colors.text.muted,
+    fontSize: 11,
+    lineHeight: 16,
+    marginTop: 4,
+  },
+
+  // Chapters
+  chapterGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  },
+  chapterCard: {
+    flexBasis: IS_TABLET ? '32%' : '48%',
+    borderRadius: 14,
+    borderWidth: 1,
+    backgroundColor: Colors.background.darkGreen,
+    padding: 12,
+    marginBottom: 10,
+  },
+  chapterEmoji: {
+    fontSize: 22,
+  },
+  chapterCity: {
+    color: Colors.text.primary,
+    fontSize: 14,
+    fontWeight: '800',
+    marginTop: 4,
+  },
+  chapterMembers: {
+    color: Colors.tech.neonBlue,
+    fontSize: 11,
+    fontWeight: '700',
+    marginTop: 2,
+  },
+  chapterLead: {
+    color: Colors.text.muted,
+    fontSize: 11,
+    marginTop: 2,
+  },
+  chapterNext: {
+    color: Colors.text.primary,
+    fontSize: 11,
+    marginTop: 6,
+    lineHeight: 15,
+  },
+  chapterRsvp: {
+    marginTop: 8,
+    borderWidth: 1,
+    borderColor: Colors.text.muted + '33',
+    paddingVertical: 6,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  chapterRsvpText: {
+    color: Colors.text.muted,
+    fontSize: 12,
+    fontWeight: '700',
+  },
+
+  // Accessibility
+  accessRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    paddingVertical: 10,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: Colors.text.muted + '22',
+  },
+  accessIcon: {
+    fontSize: 18,
+    width: 30,
+  },
+  accessLabel: {
+    color: Colors.text.primary,
+    fontSize: 13,
+    fontWeight: '800',
+  },
+  accessBody: {
+    color: Colors.text.muted,
+    fontSize: 12,
+    marginTop: 2,
+    lineHeight: 17,
+  },
+
+  // Checkin + Feedback banners
+  checkinBanner: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 14,
+    borderRadius: CARD_RADIUS,
+    marginBottom: 10,
+  },
+  checkinEmoji: {
+    fontSize: 26,
+    marginRight: 10,
+  },
+  checkinTitle: {
+    color: Colors.text.primary,
+    fontSize: 15,
+    fontWeight: '800',
+  },
+  checkinSubtitle: {
+    color: Colors.text.primary,
+    fontSize: 12,
+    marginTop: 2,
+    lineHeight: 16,
+  },
+  checkinBtn: {
+    backgroundColor: Colors.tech.neonBlue,
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+    borderRadius: 12,
+  },
+  checkinBtnText: {
+    color: Colors.background.deepBlack,
+    fontSize: 12,
+    fontWeight: '800',
+  },
+  feedbackRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 12,
+    borderRadius: CARD_RADIUS,
+    backgroundColor: Colors.background.darkGreen,
+    borderWidth: 1,
+    borderColor: Colors.text.muted + '22',
+  },
+  feedbackEmoji: {
+    fontSize: 22,
+    marginRight: 10,
+  },
+  feedbackTitle: {
+    color: Colors.text.primary,
+    fontSize: 13,
+    fontWeight: '800',
+  },
+  feedbackSubtitle: {
+    color: Colors.text.muted,
+    fontSize: 11,
+    marginTop: 2,
+  },
+  feedbackChev: {
+    color: Colors.tech.neonBlue,
+    fontSize: 18,
+    fontWeight: '800',
+  },
+
+  // Footer band
+  footerBand: {
+    paddingHorizontal: HORIZONTAL_PADDING,
+    paddingVertical: 24,
+    alignItems: 'center',
+  },
+  footerLine: {
+    color: Colors.text.primary,
+    fontSize: 12,
+    fontWeight: '700',
+  },
+  footerLineFaint: {
+    color: Colors.text.muted,
+    fontSize: 10,
+    marginTop: 4,
+    letterSpacing: 1,
+  },
+
+  // Extras modals (speaker / venue / tickets)
+  extrasModalOverlay: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(0,0,0,0.6)',
+    paddingHorizontal: 18,
+  },
+  extrasModalCard: {
+    backgroundColor: Colors.background.darkGreen,
+    borderRadius: 22,
+    padding: 18,
+    borderWidth: 1,
+    width: '100%',
+    maxHeight: '88%',
+  },
+  extrasModalTitle: {
+    color: Colors.text.primary,
+    fontSize: 18,
+    fontWeight: '800',
+    marginTop: 6,
+  },
+  extrasModalSub: {
+    color: Colors.text.muted,
+    fontSize: 12,
+    marginTop: 2,
+  },
+  extrasModalOrg: {
+    fontSize: 12,
+    fontWeight: '800',
+    marginTop: 4,
+  },
+  extrasModalBody: {
+    color: Colors.text.primary,
+    fontSize: 13,
+    marginTop: 10,
+    lineHeight: 19,
+  },
+  extrasModalSectionLabel: {
+    color: Colors.text.muted,
+    fontSize: 11,
+    fontWeight: '800',
+    letterSpacing: 0.6,
+    marginTop: 12,
+    marginBottom: 6,
+  },
+  extrasModalClose: {
+    marginTop: 14,
+    borderWidth: 1,
+    paddingVertical: 10,
+    borderRadius: 12,
+    alignItems: 'center',
+  },
+  extrasModalCloseText: {
+    fontSize: 13,
+    fontWeight: '800',
+  },
+
+  // Speaker modal
+  speakerModalAvatar: {
+    width: 72,
+    height: 72,
+    borderRadius: 36,
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'center',
+    borderWidth: 2,
+  },
+  speakerModalAvatarEmoji: {
+    fontSize: 32,
+  },
+  speakerModalChipRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  speakerModalChip: {
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 10,
+    borderWidth: 1,
+    marginRight: 6,
+    marginBottom: 6,
+  },
+  speakerModalChipText: {
+    fontSize: 11,
+    fontWeight: '700',
+  },
+  speakerSessionRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    marginBottom: 4,
+  },
+  speakerSessionBullet: {
+    color: Colors.tech.neonBlue,
+    fontSize: 14,
+    marginRight: 8,
+    marginTop: 1,
+  },
+  speakerSessionText: {
+    color: Colors.text.primary,
+    fontSize: 13,
+    flex: 1,
+    lineHeight: 18,
+  },
+
+  // Venue modal
+  venueModalEmoji: {
+    fontSize: 34,
+    textAlign: 'center',
+  },
+  venueModalList: {
+    marginTop: 4,
+  },
+  venueModalListRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    marginBottom: 4,
+  },
+  venueModalListBullet: {
+    color: Colors.tech.neonBlue,
+    fontSize: 14,
+    marginRight: 8,
+    marginTop: 1,
+  },
+  venueModalListText: {
+    color: Colors.text.primary,
+    fontSize: 13,
+    flex: 1,
+    lineHeight: 18,
+  },
+
+  // Conduct + checkin + feedback modals (sheet-style)
+  conductOverlay: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    backgroundColor: 'rgba(0,0,0,0.6)',
+  },
+  conductSheet: {
+    backgroundColor: Colors.background.darkGreen,
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
+    paddingHorizontal: 22,
+    paddingTop: 18,
+    paddingBottom: 24,
+    maxHeight: '88%',
+  },
+  conductSheetTitle: {
+    color: Colors.text.primary,
+    fontSize: 17,
+    fontWeight: '800',
+    marginBottom: 12,
+  },
+  conductSheetRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    marginBottom: 12,
+  },
+  conductSheetIcon: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 10,
+  },
+  conductSheetIconText: {
+    fontSize: 18,
+  },
+  conductSheetRowTitle: {
+    color: Colors.text.primary,
+    fontSize: 14,
+    fontWeight: '800',
+  },
+  conductSheetRowBody: {
+    color: Colors.text.muted,
+    fontSize: 12,
+    lineHeight: 17,
+    marginTop: 2,
+  },
+  conductSheetFooter: {
+    color: Colors.text.muted,
+    fontSize: 11,
+    marginTop: 8,
+    lineHeight: 16,
+    fontStyle: 'italic',
+  },
+  conductClose: {
+    marginTop: 14,
+    backgroundColor: Colors.tech.neonBlue,
+    paddingVertical: 12,
+    borderRadius: 14,
+    alignItems: 'center',
+  },
+  conductCloseGhost: {
+    backgroundColor: 'transparent',
+    borderWidth: 1,
+    borderColor: Colors.text.muted + '33',
+    marginTop: 8,
+  },
+  conductCloseText: {
+    color: Colors.background.deepBlack,
+    fontSize: 13,
+    fontWeight: '800',
+  },
+
+  // Checkin modal
+  checkinInput: {
+    borderWidth: 1,
+    borderColor: Colors.text.muted + '55',
+    borderRadius: 12,
+    padding: 12,
+    color: Colors.text.primary,
+    fontSize: 20,
+    fontWeight: '800',
+    letterSpacing: 4,
+    textAlign: 'center',
+    marginTop: 10,
+  },
+  checkinSuccess: {
+    paddingVertical: 18,
+    alignItems: 'center',
+  },
+  checkinSuccessEmoji: {
+    fontSize: 36,
+  },
+  checkinSuccessTitle: {
+    color: Colors.text.primary,
+    fontSize: 18,
+    fontWeight: '800',
+    marginTop: 6,
+  },
+  checkinSuccessBody: {
+    color: Colors.text.muted,
+    fontSize: 12,
+    textAlign: 'center',
+    marginTop: 6,
+    lineHeight: 17,
+  },
+
+  // Feedback modal
+  starRow: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: 6,
+  },
+  starBtn: {
+    padding: 6,
+  },
+  starBtnText: {
+    fontSize: 32,
+    color: Colors.text.muted + '77',
+  },
+  feedbackInput: {
+    borderWidth: 1,
+    borderColor: Colors.text.muted + '33',
+    borderRadius: 12,
+    padding: 12,
+    color: Colors.text.primary,
+    fontSize: 13,
+    marginTop: 10,
+    minHeight: 90,
+  },
+  feedbackCount: {
+    color: Colors.text.muted,
+    fontSize: 11,
+    textAlign: 'right',
+    marginTop: 4,
   },
 });
 
