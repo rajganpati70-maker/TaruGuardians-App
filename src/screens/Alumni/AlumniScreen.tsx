@@ -2319,6 +2319,70 @@ const ALUMNI_REMEMBERED: AlumniRememberedAtPark[] = [
   { id: 'arp-7', name: 'Iman F. · 2019',                                    marker: 'Amphitheatre · left side · row 3 · seat 4',                                        visitedBy: 'Every event · chair kept empty',                                          note: 'Hated being centre-stage · loved being in the audience · we keep her seat open · always.',                        color: '#FFD166', emoji: '🎭' },
 ];
 
+// =====================================================
+// Phase 3aw: deeper alumni structures — round 5
+// =====================================================
+
+interface AlumniHomecoming {
+  id: string;
+  year: string;
+  theme: string;
+  attended: string;
+  moment: string;
+  color: string;
+  emoji: string;
+}
+
+const ALUMNI_HOMECOMINGS: AlumniHomecoming[] = [
+  { id: 'ahc-1', year: '2014 · first homecoming',                    theme: 'Ten years · the founders return',                    attended: '8 founding members · 24 early cohort',                   moment: 'Planted the original grove\'s 100th sapling together · everyone carried one.',                       color: '#22C55E', emoji: '🌱' },
+  { id: 'ahc-2', year: '2016 · second homecoming',                         theme: 'Letters we never sent',                                     attended: '60 alumni across 8 cohorts',                                 moment: 'Each wrote one letter to a mentor · read aloud · sealed · shipped in the morning.',                                 color: '#F59E0B', emoji: '✉️' },
+  { id: 'ahc-3', year: '2018 · third homecoming',                                  theme: 'Hands that built it',                                                attended: '80 alumni + 30 current',                                            moment: 'Led workshops on their craft · juniors chose what to attend · everyone taught.',                                            color: '#F472B6', emoji: '🛠️' },
+  { id: 'ahc-4', year: '2020 · fourth · virtual',                                            theme: 'Still here · across distance',                                                      attended: '140 alumni · 12 countries',                                                       moment: 'Bake-along · same recipe across time zones · one kind letter to each current member.',                                               color: '#A78BFA', emoji: '💻' },
+  { id: 'ahc-5', year: '2022 · fifth homecoming',                                                      theme: 'Retrospective · 25 years',                                                                    attended: '200 alumni + full council',                                                                     moment: 'A walk through the archives · four photo books launched · one founder cried · she meant to.',                                                   color: '#00D4FF', emoji: '📚' },
+  { id: 'ahc-6', year: '2024 · sixth homecoming',                                                                   theme: 'Hands we pass it to',                                                                                  attended: '240 alumni + 60 current',                                                                                        moment: 'Mentor pairings announced · 40 new lines formed · the grove kept growing.',                                                                     color: '#FFD166', emoji: '🔗' },
+  { id: 'ahc-7', year: '2026 · seventh · upcoming',                                                                             theme: 'Thirty years of grove',                                                                                                 attended: 'Expected 300+ alumni',                                                                                                          moment: 'Planned · a new public library wing funded by alumni · opening to the whole campus.',                                                                  color: '#EF4444', emoji: '🏛️' },
+];
+
+interface AlumniTradition {
+  id: string;
+  name: string;
+  originYear: string;
+  practice: string;
+  keptBy: string;
+  color: string;
+  emoji: string;
+}
+
+const ALUMNI_TRADITIONS: AlumniTradition[] = [
+  { id: 'atr-1', name: 'The steel mug',                                       originYear: '1999',                         practice: 'Every member gets a numbered steel mug · stays with them for life · refilled at every visit.',                           keptBy: 'First cohort · still active',                            color: '#00D4FF', emoji: '☕' },
+  { id: 'atr-2', name: 'Signing the club book',                                      originYear: '2001',                                 practice: 'On joining · a signature · on leaving · a note · 24 years of handwriting preserved.',                                         keptBy: 'Archive keeper · rotating role',                                    color: '#F59E0B', emoji: '📖' },
+  { id: 'atr-3', name: 'Planting on joining',                                                 originYear: '2003',                                           practice: 'Each member plants one sapling on joining · returns on leaving · photograph both years.',                                               keptBy: 'Grove keeper · on staff',                                                 color: '#22C55E', emoji: '🌿' },
+  { id: 'atr-4', name: 'Friday read-aloud',                                                            originYear: '2006',                                                       practice: 'Last meeting of the week · someone reads a chosen text · no discussion required.',                                                              keptBy: 'Content wing · rotating',                                                           color: '#A78BFA', emoji: '📜' },
+  { id: 'atr-5', name: 'Chair always kept · Iman\'s seat',                                                                     originYear: '2019',                                                                  practice: 'At every event · one chair in row 3 is kept empty · in honour of Iman F.',                                                                                      keptBy: 'Council · every event',                                                                       color: '#FFD166', emoji: '💺' },
+  { id: 'atr-6', name: 'Mile-2 silence',                                                                                               originYear: '2020',                                                                            practice: 'Every run-club · 30 seconds of silence at mile 2 · Aryan\'s pace · nothing more.',                                                                                                  keptBy: 'Run club · daily',                                                                                   color: '#F472B6', emoji: '🏃' },
+  { id: 'atr-7', name: 'The margin-bookmark',                                                                                                        originYear: '2013',                                                                                      practice: 'Karan\'s bookmark stays clipped to the reading room window · never moved.',                                                                                                                keptBy: 'Library · daily rotation',                                                                                                color: '#EF4444', emoji: '🔖' },
+];
+
+interface AlumniGrovePlot {
+  id: string;
+  plot: string;
+  founded: string;
+  saplings: string;
+  steward: string;
+  color: string;
+  emoji: string;
+}
+
+const ALUMNI_GROVE_PLOTS: AlumniGrovePlot[] = [
+  { id: 'agp-1', plot: 'Founders\' grove · east campus',                             founded: '1998 · year one',                                     saplings: '100 · neem · peepal · jamun',                                      steward: 'Grove keeper + founding members',                                  color: '#22C55E', emoji: '🌳' },
+  { id: 'agp-2', plot: 'Second cohort · north slope',                                          founded: '2000',                                                            saplings: '80 · gulmohar · kachnar',                                                       steward: 'Second cohort · annual visit',                                                    color: '#F472B6', emoji: '🌸' },
+  { id: 'agp-3', plot: 'Millennium grove · lake-side',                                                     founded: '2005',                                                                         saplings: '120 · banyan · mango',                                                                       steward: 'Rotating keepers · alumni+students',                                                                 color: '#F59E0B', emoji: '🥭' },
+  { id: 'agp-4', plot: 'Memorial grove · far path',                                                                     founded: '2013',                                                                                          saplings: '30 trees · one per alumnus remembered',                                                                                  steward: 'Archive keeper · founders council',                                                                                    color: '#EF4444', emoji: '🕯️' },
+  { id: 'agp-5', plot: 'Birthday grove · recent',                                                                                   founded: '2018',                                                                                                        saplings: '50 · every new member plants on joining',                                                                                                   steward: 'Wellness lead + grove keeper',                                                                                                  color: '#00D4FF', emoji: '🎂' },
+  { id: 'agp-6', plot: 'Farewell grove · west slope',                                                                                            founded: '2020',                                                                                                                    saplings: '40 · every departing senior · third year',                                                                                                                  steward: 'Outgoing seniors + mentors',                                                                                                                  color: '#A78BFA', emoji: '🍂' },
+  { id: 'agp-7', plot: 'Global grove · corners of world',                                                                                                      founded: '2022',                                                                                                                                           saplings: '200+ · planted by alumni wherever they went · shared photos',                                                                                                                             steward: 'Global alumni chapter · leads',                                                                                                                     color: '#FFD166', emoji: '🌍' },
+];
+
 const AlumniScreen: React.FC = () => {
   // -------------- State ------------------
   const [selectedBatch, setSelectedBatch] = useState<'all' | string>('all');
@@ -4410,6 +4474,73 @@ const AlumniScreen: React.FC = () => {
     </View>
   );
 
+  // ------ Phase 3aw: round 5 alumni blocks ------
+  const renderAlumniHomecomings = () => (
+    <View style={[styles.sectionBlock, { paddingHorizontal: HORIZONTAL_PADDING }]}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🎊 Homecomings · every two years · without fail</Text>
+        <Text style={styles.sectionCaption}>{ALUMNI_HOMECOMINGS.length} editions</Text>
+      </View>
+      {ALUMNI_HOMECOMINGS.map((h) => (
+        <View key={h.id} style={[styles.ahcCard, { borderLeftColor: h.color }]}>
+          <View style={styles.ahcTopRow}>
+            <Text style={styles.ahcEmoji}>{h.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.ahcYear} numberOfLines={1}>{h.year}</Text>
+              <Text style={[styles.ahcTheme, { color: h.color }]} numberOfLines={1}>{h.theme}</Text>
+            </View>
+          </View>
+          <Text style={styles.ahcAttended} numberOfLines={1}>attended · {h.attended}</Text>
+          <Text style={styles.ahcMoment} numberOfLines={3}>moment · {h.moment}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderAlumniTraditions = () => (
+    <View style={[styles.sectionBlock, { paddingHorizontal: HORIZONTAL_PADDING }]}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🪔 Traditions · small practices that refuse to fade</Text>
+        <Text style={styles.sectionCaption}>{ALUMNI_TRADITIONS.length} traditions</Text>
+      </View>
+      {ALUMNI_TRADITIONS.map((t) => (
+        <View key={t.id} style={[styles.atrCard, { borderLeftColor: t.color }]}>
+          <View style={styles.atrTopRow}>
+            <Text style={styles.atrEmoji}>{t.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.atrName} numberOfLines={1}>{t.name}</Text>
+              <Text style={[styles.atrOrigin, { color: t.color }]}>since {t.originYear}</Text>
+            </View>
+          </View>
+          <Text style={styles.atrPractice} numberOfLines={3}>{t.practice}</Text>
+          <Text style={styles.atrKeptBy} numberOfLines={1}>kept by · {t.keptBy}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderAlumniGrovePlots = () => (
+    <View style={[styles.sectionBlock, { paddingHorizontal: HORIZONTAL_PADDING }]}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🌳 Grove plots · the trees we planted together</Text>
+        <Text style={styles.sectionCaption}>{ALUMNI_GROVE_PLOTS.length} plots</Text>
+      </View>
+      {ALUMNI_GROVE_PLOTS.map((g) => (
+        <View key={g.id} style={[styles.agpCard, { borderLeftColor: g.color }]}>
+          <View style={styles.agpTopRow}>
+            <Text style={styles.agpEmoji}>{g.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.agpPlot} numberOfLines={1}>{g.plot}</Text>
+              <Text style={[styles.agpFounded, { color: g.color }]}>founded {g.founded}</Text>
+            </View>
+          </View>
+          <Text style={styles.agpSaplings} numberOfLines={2}>saplings · {g.saplings}</Text>
+          <Text style={styles.agpSteward} numberOfLines={1}>steward · {g.steward}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
   const renderAlumniRemembered = () => (
     <View style={[styles.sectionBlock, { paddingHorizontal: HORIZONTAL_PADDING }]}>
       <View style={styles.sectionHeaderRow}>
@@ -4478,6 +4609,9 @@ const AlumniScreen: React.FC = () => {
       {renderAlumniLineages()}
       {renderAlumniAdvisoryTracks()}
       {renderAlumniRemembered()}
+      {renderAlumniHomecomings()}
+      {renderAlumniTraditions()}
+      {renderAlumniGrovePlots()}
       {renderAlumniListHeader()}
     </View>
   );
@@ -5892,6 +6026,33 @@ const styles = StyleSheet.create({
   arp2Marker: { fontSize: 11, fontWeight: '700', marginTop: 8, paddingLeft: 32 },
   arp2Visited: { color: Colors.text.muted, fontSize: 11, marginTop: 3, paddingLeft: 32 },
   arp2Note: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 6, paddingLeft: 32, fontStyle: 'italic' },
+
+  // --- Phase 3aw: homecomings ---
+  ahcCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginBottom: 10, borderLeftWidth: 3 },
+  ahcTopRow: { flexDirection: 'row', alignItems: 'center' },
+  ahcEmoji: { fontSize: 22, marginRight: 10 },
+  ahcYear: { color: Colors.text.primary, fontSize: 13, fontWeight: '900' },
+  ahcTheme: { fontSize: 11, fontWeight: '700', marginTop: 2 },
+  ahcAttended: { color: Colors.text.muted, fontSize: 11, marginTop: 8, paddingLeft: 32 },
+  ahcMoment: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32, fontStyle: 'italic' },
+
+  // --- Phase 3aw: traditions ---
+  atrCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginBottom: 10, borderLeftWidth: 3 },
+  atrTopRow: { flexDirection: 'row', alignItems: 'center' },
+  atrEmoji: { fontSize: 22, marginRight: 10 },
+  atrName: { color: Colors.text.primary, fontSize: 13, fontWeight: '900' },
+  atrOrigin: { fontSize: 11, fontWeight: '700', marginTop: 2 },
+  atrPractice: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8, paddingLeft: 32 },
+  atrKeptBy: { color: Colors.text.muted, fontSize: 11, marginTop: 4, paddingLeft: 32 },
+
+  // --- Phase 3aw: grove plots ---
+  agpCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginBottom: 10, borderLeftWidth: 3 },
+  agpTopRow: { flexDirection: 'row', alignItems: 'center' },
+  agpEmoji: { fontSize: 22, marginRight: 10 },
+  agpPlot: { color: Colors.text.primary, fontSize: 13, fontWeight: '900' },
+  agpFounded: { fontSize: 11, fontWeight: '700', marginTop: 2 },
+  agpSaplings: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8, paddingLeft: 32 },
+  agpSteward: { color: Colors.text.muted, fontSize: 11, marginTop: 4, paddingLeft: 32 },
 });
 
 export default AlumniScreen;
