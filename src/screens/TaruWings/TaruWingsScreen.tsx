@@ -1064,6 +1064,120 @@ const FEEDBACK_NORMS: WingFeedbackNorm[] = [
   { id: 'fn-pr-1', wingId: 'pr',      principle: 'Feedback in person · not in comments',            detail: 'We say the hard thing face-to-face · never only in a doc comment.',                 example: 'A five-minute call · not a three-comment thread.',                        color: '#FFD166', emoji: '🗣️' },
 ];
 
+// =====================================================
+// Phase 3aa: deeper wing structures — round 2
+// =====================================================
+
+interface WingToolStack {
+  id: string;
+  wingId: string;
+  tool: string;
+  role: string;
+  license: 'free' | 'student' | 'paid';
+  note: string;
+  color: string;
+  emoji: string;
+}
+
+const WING_TOOLS: WingToolStack[] = [
+  { id: 'wt-c-1',  wingId: 'content', tool: 'Google Docs',                     role: 'Drafting + tracked edits',             license: 'free',    note: 'One doc per piece · history kept for 90 days.',          color: '#F59E0B', emoji: '📝' },
+  { id: 'wt-c-2',  wingId: 'content', tool: 'Hemingway Editor',                role: 'Readability check',                     license: 'free',    note: 'Every long piece run through before publish.',          color: '#F59E0B', emoji: '📏' },
+  { id: 'wt-w-1',  wingId: 'web',     tool: 'VS Code + GitHub',                role: 'Code + reviews',                        license: 'free',    note: 'One main branch per repo · PRs under 300 lines.',       color: '#00D4FF', emoji: '💻' },
+  { id: 'wt-w-2',  wingId: 'web',     tool: 'Expo Go · EAS Build',             role: 'Mobile iteration',                      license: 'free',    note: 'Dev builds on-device within 10 min.',                   color: '#00D4FF', emoji: '📲' },
+  { id: 'wt-w-3',  wingId: 'web',     tool: 'Sentry',                           role: 'Crash + error tracking',                license: 'student', note: 'First 5k events/month covered by student plan.',       color: '#00D4FF', emoji: '🛰️' },
+  { id: 'wt-gd-1', wingId: 'gd',      tool: 'Figma · community plan',            role: 'Design + handoff',                       license: 'free',    note: 'One team · every wing has read access to the library.',  color: '#F472B6', emoji: '🎨' },
+  { id: 'wt-gd-2', wingId: 'gd',      tool: 'Affinity Designer',                role: 'Print + poster work',                    license: 'paid',    note: 'One-time license · shared iPad · booked via calendar.',   color: '#F472B6', emoji: '🖼️' },
+  { id: 'wt-v-1',  wingId: 'video',   tool: 'DaVinci Resolve',                  role: 'Edit + colour',                          license: 'free',    note: 'Free tier covers everything we ship short of 8K.',       color: '#A78BFA', emoji: '🎞️' },
+  { id: 'wt-v-2',  wingId: 'video',   tool: 'Audacity',                         role: 'Audio clean + mix',                      license: 'free',    note: 'Denoise · normalise · exported at −14 LUFS.',            color: '#A78BFA', emoji: '🔊' },
+  { id: 'wt-p-1',  wingId: 'photo',   tool: 'Lightroom · student',              role: 'Catalogue + RAW edit',                    license: 'student', note: '1 TB cloud · backed up within 24 h of shoot.',          color: '#22C55E', emoji: '🖼️' },
+  { id: 'wt-p-2',  wingId: 'photo',   tool: 'Capture One · rented',              role: 'Tethered shoots',                         license: 'paid',    note: 'Rented only during product shoots · shared login.',      color: '#22C55E', emoji: '📷' },
+  { id: 'wt-pr-1', wingId: 'pr',      tool: 'Notion',                           role: 'Press kit + partner tracker',            license: 'free',    note: 'Public read-only link per partner · renewed yearly.',   color: '#FFD166', emoji: '🗂️' },
+];
+
+interface WingRetroSignal {
+  id: string;
+  wingId: string;
+  signal: string;
+  tone: 'keep' | 'tune' | 'stop';
+  note: string;
+  color: string;
+  emoji: string;
+}
+
+const WING_RETRO_SIGNALS: WingRetroSignal[] = [
+  { id: 'wrs-c-1',  wingId: 'content', signal: 'First drafts land within 3 days of brief',        tone: 'keep', note: 'Nobody waits more than a weekend to start editing.',                   color: '#22C55E', emoji: '🌱' },
+  { id: 'wrs-c-2',  wingId: 'content', signal: 'Readability scores creeping higher · fewer 7th-grade pieces', tone: 'tune', note: 'Aim for grade-7 on campus-wide posts.',                    color: '#F59E0B', emoji: '📏' },
+  { id: 'wrs-w-1',  wingId: 'web',     signal: 'Median PR review under 24 h',                      tone: 'keep', note: 'Two reviewers on every PR · fast but careful.',                       color: '#22C55E', emoji: '🛰️' },
+  { id: 'wrs-w-2',  wingId: 'web',     signal: 'Sentry events quiet · below 50/week',              tone: 'keep', note: 'Crashes triaged within 48 h.',                                          color: '#22C55E', emoji: '🧯' },
+  { id: 'wrs-gd-1', wingId: 'gd',      signal: 'Poster approvals needing > 3 rounds',              tone: 'tune', note: 'Add a pre-crit · 15 min · before first export.',                      color: '#F59E0B', emoji: '🪞' },
+  { id: 'wrs-v-1',  wingId: 'video',   signal: 'Weekly reel views plateauing',                      tone: 'tune', note: 'Try 3-min cut + 30-sec cut · not just one.',                           color: '#F59E0B', emoji: '📈' },
+  { id: 'wrs-p-1',  wingId: 'photo',   signal: 'Keeper ratio dropped under 10%',                     tone: 'stop', note: 'Pause self-led shoots · pair with a senior for two weeks.',            color: '#EF4444', emoji: '📉' },
+  { id: 'wrs-pr-1', wingId: 'pr',      signal: 'Two new partners reached out unsolicited',           tone: 'keep', note: 'Press kit is doing its work · share broadly.',                          color: '#22C55E', emoji: '🤝' },
+];
+
+interface WingExitPath {
+  id: string;
+  wingId: string;
+  situation: string;
+  step: string;
+  handoff: string;
+  color: string;
+  emoji: string;
+}
+
+const WING_EXIT_PATHS: WingExitPath[] = [
+  { id: 'we-c-1',  wingId: 'content', situation: 'Writing no longer fits · want to try design',   step: 'Talk to content lead + GD lead · 1 week trial on GD tasks.',              handoff: 'Any open drafts go to the editor of the month.',              color: '#F472B6', emoji: '🔄' },
+  { id: 'we-w-1',  wingId: 'web',     situation: 'Exams pressing · need to pause',                 step: 'Pause · not leave · write one-pager on what you were building.',          handoff: 'Open PRs closed with a pickup-note · reviewer takes over.',  color: '#F59E0B', emoji: '⏸️' },
+  { id: 'we-w-2',  wingId: 'web',     situation: 'Graduating · keeping ties loose',                 step: 'Two-week shadow · a junior pairs with you on the repos you own.',         handoff: 'Credentials rotated · you become advisor-on-call.',          color: '#A78BFA', emoji: '🎓' },
+  { id: 'we-gd-1', wingId: 'gd',      situation: 'Time-squeeze · can still mentor',                 step: 'Move to mentor rota · one crit a week · no weekly deliverables.',         handoff: 'Active projects handed to pair + brief one-pager.',          color: '#F472B6', emoji: '🧭' },
+  { id: 'we-v-1',  wingId: 'video',   situation: 'Internship landed · leaving for 3 months',         step: 'Document your edit template · hand off to a junior.',                      handoff: 'Raw footage stays on shared drive · label folder "ping-on-return".', color: '#A78BFA', emoji: '🎒' },
+  { id: 'we-p-1',  wingId: 'photo',   situation: 'Not photographing anymore · want to archive',     step: 'Tag your work · move to archive folder · keep watermark.',                 handoff: 'Someone else cares for the contact sheet + future reprints.', color: '#22C55E', emoji: '📂' },
+  { id: 'we-pr-1', wingId: 'pr',      situation: 'Partner-facing role burning you out',              step: 'Move to internal PR (alumni · digest) · 1 month cooldown.',              handoff: 'Active partners handed over with a warm introduction.',        color: '#FFD166', emoji: '🫶' },
+];
+
+interface WingReference {
+  id: string;
+  wingId: string;
+  title: string;
+  author: string;
+  why: string;
+  color: string;
+  emoji: string;
+}
+
+const WING_REFERENCES: WingReference[] = [
+  { id: 'wrf-c-1',  wingId: 'content', title: 'On Writing Well',                    author: 'William Zinsser',             why: 'Trims ornament · keeps the sentence honest.',               color: '#F59E0B', emoji: '📚' },
+  { id: 'wrf-c-2',  wingId: 'content', title: 'Bird by Bird',                         author: 'Anne Lamott',                 why: 'Teaches us to ship rough first drafts.',                   color: '#F59E0B', emoji: '📖' },
+  { id: 'wrf-w-1',  wingId: 'web',     title: 'A Philosophy of Software Design',    author: 'John Ousterhout',              why: 'Short · on module depth · changes how we write functions.', color: '#00D4FF', emoji: '🏛️' },
+  { id: 'wrf-w-2',  wingId: 'web',     title: 'Refactoring · 2nd edition',           author: 'Martin Fowler',                why: 'Names to safe small changes we were already doing.',      color: '#00D4FF', emoji: '🔧' },
+  { id: 'wrf-gd-1', wingId: 'gd',      title: 'Grid Systems in Graphic Design',      author: 'Josef Müller-Brockmann',       why: 'Calms every chaotic poster we make.',                      color: '#F472B6', emoji: '🖼️' },
+  { id: 'wrf-gd-2', wingId: 'gd',      title: 'Thinking with Type',                  author: 'Ellen Lupton',                 why: 'Typography you will use in every single poster.',         color: '#F472B6', emoji: '🔤' },
+  { id: 'wrf-v-1',  wingId: 'video',   title: 'In the Blink of an Eye',                author: 'Walter Murch',                 why: 'Cut on feeling · not just on beat.',                        color: '#A78BFA', emoji: '🎬' },
+  { id: 'wrf-p-1',  wingId: 'photo',   title: 'Understanding Exposure',                author: 'Bryan Peterson',                why: 'A working language for light.',                             color: '#22C55E', emoji: '📸' },
+  { id: 'wrf-pr-1', wingId: 'pr',      title: 'Made to Stick',                         author: 'Chip + Dan Heath',             why: 'Why some stories survive the inbox.',                       color: '#FFD166', emoji: '📮' },
+];
+
+interface WingCollabRitual {
+  id: string;
+  wingId: string;
+  ritual: string;
+  cadence: string;
+  who: string;
+  output: string;
+  color: string;
+  emoji: string;
+}
+
+const WING_COLLAB_RITUALS: WingCollabRitual[] = [
+  { id: 'wcr-c-1',  wingId: 'content', ritual: 'Writer\'s desk · rough-cut Mondays',    cadence: 'Weekly · 45 min',   who: 'All content + one GD',                 output: 'Every rough draft gets a first reaction + a rewrite note.',       color: '#F59E0B', emoji: '✍️' },
+  { id: 'wcr-w-1',  wingId: 'web',      ritual: 'Pair-up Wednesdays',                   cadence: 'Weekly · 60 min',   who: 'Two devs · one from another wing',      output: 'One tiny PR paired + shipped · other wing gets a peek.',            color: '#00D4FF', emoji: '🧑\u200d💻' },
+  { id: 'wcr-w-2',  wingId: 'web',      ritual: 'Release day · quiet',                   cadence: 'Fortnight · 20 min', who: 'Release buddy + on-call',              output: 'Release notes + next-two-weeks plan · signed off by lead.',          color: '#00D4FF', emoji: '🚢' },
+  { id: 'wcr-gd-1', wingId: 'gd',        ritual: 'Open crit Fridays',                    cadence: 'Weekly · 50 min',   who: 'GD + photo + one content',             output: '3 pieces · 2 take-aways each · no silent dismissals.',              color: '#F472B6', emoji: '🖼️' },
+  { id: 'wcr-v-1',  wingId: 'video',    ritual: 'Playback Tuesdays',                      cadence: 'Weekly · 40 min',   who: 'Video + photo + content',               output: 'Rough cuts watched in silence · notes in a doc · 24 h follow-up.',   color: '#A78BFA', emoji: '📽️' },
+  { id: 'wcr-p-1',  wingId: 'photo',    ritual: 'Contact-sheet Saturdays',                cadence: 'Weekly · 30 min',   who: 'Photo + GD',                           output: 'Three keepers / ten · agreed in the same room.',                     color: '#22C55E', emoji: '📇' },
+  { id: 'wcr-pr-1', wingId: 'pr',       ritual: 'Press-kit refresh',                     cadence: 'Monthly · 30 min',  who: 'PR + content',                         output: 'Two lines updated · dates refreshed · new sapling count in.',       color: '#FFD166', emoji: '📰' },
+];
+
 const TaruWingsScreen: React.FC = () => {
   const [selectedWingId, setSelectedWingId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -2574,6 +2688,159 @@ const TaruWingsScreen: React.FC = () => {
     );
   };
 
+  // ------ Phase 3aa: deeper wing blocks ------
+  const renderWingToolsBlock = () => {
+    if (!selectedWing) return null;
+    const tools = WING_TOOLS.filter((t) => t.wingId === selectedWing.id);
+    if (tools.length === 0) return null;
+    return (
+      <View style={styles.sectionBlock}>
+        <View style={styles.sectionHeaderRow}>
+          <Text style={styles.sectionTitle}>🧰 Tool stack · what we actually use</Text>
+          <Text style={styles.sectionCaption}>{tools.length} tools</Text>
+        </View>
+        {tools.map((t) => {
+          const lColor =
+            t.license === 'free' ? '#22C55E' :
+            t.license === 'student' ? '#00D4FF' : '#F59E0B';
+          return (
+            <View key={t.id} style={[styles.wtCard, { borderLeftColor: t.color }]}>
+              <View style={styles.wtTopRow}>
+                <Text style={styles.wtEmoji}>{t.emoji}</Text>
+                <View style={{ flex: 1 }}>
+                  <Text style={styles.wtTool} numberOfLines={1}>{t.tool}</Text>
+                  <Text style={styles.wtRole} numberOfLines={1}>{t.role}</Text>
+                </View>
+                <View
+                  style={[
+                    styles.wtLicensePill,
+                    { backgroundColor: lColor + '22', borderColor: lColor + '66' },
+                  ]}
+                >
+                  <Text style={[styles.wtLicenseText, { color: lColor }]}>{t.license}</Text>
+                </View>
+              </View>
+              <Text style={styles.wtNote} numberOfLines={2}>{t.note}</Text>
+            </View>
+          );
+        })}
+      </View>
+    );
+  };
+
+  const renderWingRetroSignalsBlock = () => {
+    if (!selectedWing) return null;
+    const sigs = WING_RETRO_SIGNALS.filter((s) => s.wingId === selectedWing.id);
+    if (sigs.length === 0) return null;
+    return (
+      <View style={styles.sectionBlock}>
+        <View style={styles.sectionHeaderRow}>
+          <Text style={styles.sectionTitle}>📡 Retro signals · what we watch</Text>
+          <Text style={styles.sectionCaption}>{sigs.length} signals</Text>
+        </View>
+        {sigs.map((s) => {
+          const tColor =
+            s.tone === 'keep' ? '#22C55E' :
+            s.tone === 'tune' ? '#F59E0B' : '#EF4444';
+          return (
+            <View key={s.id} style={[styles.wrsCard, { borderLeftColor: tColor }]}>
+              <View style={styles.wrsTopRow}>
+                <Text style={styles.wrsEmoji}>{s.emoji}</Text>
+                <Text style={styles.wrsSignal} numberOfLines={2}>{s.signal}</Text>
+                <View
+                  style={[
+                    styles.wrsTonePill,
+                    { backgroundColor: tColor + '22', borderColor: tColor + '66' },
+                  ]}
+                >
+                  <Text style={[styles.wrsToneText, { color: tColor }]}>{s.tone}</Text>
+                </View>
+              </View>
+              <Text style={styles.wrsNote} numberOfLines={2}>{s.note}</Text>
+            </View>
+          );
+        })}
+      </View>
+    );
+  };
+
+  const renderWingExitPathsBlock = () => {
+    if (!selectedWing) return null;
+    const paths = WING_EXIT_PATHS.filter((e) => e.wingId === selectedWing.id);
+    if (paths.length === 0) return null;
+    return (
+      <View style={styles.sectionBlock}>
+        <View style={styles.sectionHeaderRow}>
+          <Text style={styles.sectionTitle}>🕊️ Graceful exits · when to pause / leave</Text>
+          <Text style={styles.sectionCaption}>{paths.length} paths</Text>
+        </View>
+        {paths.map((p) => (
+          <View key={p.id} style={[styles.weCard, { borderLeftColor: p.color }]}>
+            <View style={styles.weTopRow}>
+              <Text style={styles.weEmoji}>{p.emoji}</Text>
+              <Text style={styles.weSituation} numberOfLines={2}>{p.situation}</Text>
+            </View>
+            <Text style={styles.weStep} numberOfLines={3}>→ {p.step}</Text>
+            <Text style={styles.weHandoff} numberOfLines={2}>handoff · {p.handoff}</Text>
+          </View>
+        ))}
+      </View>
+    );
+  };
+
+  const renderWingReferencesBlock = () => {
+    if (!selectedWing) return null;
+    const refs = WING_REFERENCES.filter((r) => r.wingId === selectedWing.id);
+    if (refs.length === 0) return null;
+    return (
+      <View style={styles.sectionBlock}>
+        <View style={styles.sectionHeaderRow}>
+          <Text style={styles.sectionTitle}>📚 References · we keep close</Text>
+          <Text style={styles.sectionCaption}>{refs.length} reads</Text>
+        </View>
+        {refs.map((r) => (
+          <View key={r.id} style={[styles.wrfCard, { borderLeftColor: r.color }]}>
+            <View style={styles.wrfTopRow}>
+              <Text style={styles.wrfEmoji}>{r.emoji}</Text>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.wrfTitle} numberOfLines={1}>{r.title}</Text>
+                <Text style={styles.wrfAuthor} numberOfLines={1}>{r.author}</Text>
+              </View>
+            </View>
+            <Text style={styles.wrfWhy} numberOfLines={2}>{r.why}</Text>
+          </View>
+        ))}
+      </View>
+    );
+  };
+
+  const renderWingCollabRitualsBlock = () => {
+    if (!selectedWing) return null;
+    const rituals = WING_COLLAB_RITUALS.filter((c) => c.wingId === selectedWing.id);
+    if (rituals.length === 0) return null;
+    return (
+      <View style={styles.sectionBlock}>
+        <View style={styles.sectionHeaderRow}>
+          <Text style={styles.sectionTitle}>🎼 Collab rituals · how we gather</Text>
+          <Text style={styles.sectionCaption}>{rituals.length} rituals</Text>
+        </View>
+        {rituals.map((r) => (
+          <View key={r.id} style={[styles.wcrCard, { borderLeftColor: r.color }]}>
+            <View style={styles.wcrTopRow}>
+              <Text style={styles.wcrEmoji}>{r.emoji}</Text>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.wcrRitual} numberOfLines={2}>{r.ritual}</Text>
+                <Text style={[styles.wcrCadence, { color: r.color }]}>{r.cadence}</Text>
+              </View>
+            </View>
+            <Text style={styles.wcrWho} numberOfLines={1}>who · {r.who}</Text>
+            <Text style={styles.wcrOutput} numberOfLines={3}>→ {r.output}</Text>
+          </View>
+        ))}
+      </View>
+    );
+  };
+
   const renderDetail = () => (
     <ScrollView
       contentContainerStyle={styles.scrollContent}
@@ -2589,6 +2856,7 @@ const TaruWingsScreen: React.FC = () => {
     >
       {renderWingDetailHeader()}
       {renderToolsBlock()}
+      {renderWingToolsBlock()}
       {renderOKRsBlock()}
       {renderGrowthPathBlock()}
       {renderOnrampBlock()}
@@ -2599,16 +2867,20 @@ const TaruWingsScreen: React.FC = () => {
       {renderShipLogBlock()}
       {renderGearBlock()}
       {renderFeedbackNormsBlock()}
+      {renderWingRetroSignalsBlock()}
       {renderRetroBlock()}
       {renderCollabBlock()}
+      {renderWingCollabRitualsBlock()}
       {renderAwardsBlock()}
       {renderShowcaseBlock()}
       {renderEventsBlock()}
       {renderRitualsBlock()}
       {renderCirclesBlock()}
       {renderLearningBlock()}
+      {renderWingReferencesBlock()}
       {renderDirectoryBlock()}
       {renderJournalBlock()}
+      {renderWingExitPathsBlock()}
       {renderMembersBlock()}
     </ScrollView>
   );
@@ -3478,6 +3750,92 @@ const styles = StyleSheet.create({
   fnPrinciple: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', flex: 1, lineHeight: 17 },
   fnDetail: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8 },
   fnExample: { color: Colors.text.muted, fontSize: 11, lineHeight: 15, marginTop: 6, fontStyle: 'italic' },
+
+  // --- Phase 3aa: wing tool stack ---
+  wtCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  wtTopRow: { flexDirection: 'row', alignItems: 'center' },
+  wtEmoji: { fontSize: 22, marginRight: 10 },
+  wtTool: { color: Colors.text.primary, fontSize: 13, fontWeight: '800' },
+  wtRole: { color: Colors.text.muted, fontSize: 11, marginTop: 2 },
+  wtLicensePill: {
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: 999,
+    borderWidth: 1,
+    marginLeft: 8,
+  },
+  wtLicenseText: { fontSize: 9, fontWeight: '900', letterSpacing: 1, textTransform: 'uppercase' },
+  wtNote: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8, paddingLeft: 32 },
+
+  // --- Phase 3aa: wing retro signals ---
+  wrsCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  wrsTopRow: { flexDirection: 'row', alignItems: 'center' },
+  wrsEmoji: { fontSize: 20, marginRight: 10 },
+  wrsSignal: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', flex: 1, lineHeight: 17 },
+  wrsTonePill: {
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: 999,
+    borderWidth: 1,
+    marginLeft: 8,
+  },
+  wrsToneText: { fontSize: 9, fontWeight: '900', letterSpacing: 1, textTransform: 'uppercase' },
+  wrsNote: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8, paddingLeft: 30 },
+
+  // --- Phase 3aa: wing exits ---
+  weCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  weTopRow: { flexDirection: 'row', alignItems: 'center' },
+  weEmoji: { fontSize: 22, marginRight: 10 },
+  weSituation: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', flex: 1, lineHeight: 17 },
+  weStep: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 6, paddingLeft: 32 },
+  weHandoff: { color: Colors.text.muted, fontSize: 11, marginTop: 4, paddingLeft: 32, fontStyle: 'italic' },
+
+  // --- Phase 3aa: wing references ---
+  wrfCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  wrfTopRow: { flexDirection: 'row', alignItems: 'center' },
+  wrfEmoji: { fontSize: 22, marginRight: 10 },
+  wrfTitle: { color: Colors.text.primary, fontSize: 13, fontWeight: '800' },
+  wrfAuthor: { color: Colors.tech.neonBlue, fontSize: 11, fontWeight: '700', marginTop: 2 },
+  wrfWhy: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 6, paddingLeft: 32 },
+
+  // --- Phase 3aa: wing collab rituals ---
+  wcrCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  wcrTopRow: { flexDirection: 'row', alignItems: 'flex-start' },
+  wcrEmoji: { fontSize: 22, marginRight: 10, marginTop: 2 },
+  wcrRitual: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', lineHeight: 17 },
+  wcrCadence: { fontSize: 10, fontWeight: '900', letterSpacing: 1, textTransform: 'uppercase', marginTop: 2 },
+  wcrWho: { color: Colors.text.muted, fontSize: 11, marginTop: 6, paddingLeft: 32 },
+  wcrOutput: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32 },
 });
 
 export default TaruWingsScreen;
