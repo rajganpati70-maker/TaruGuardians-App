@@ -1668,6 +1668,147 @@ const PUBLICATIONS: Publication[] = [
 ];
 
 // =====================================================
+// Phase 3q-alumni: deeper alumni structures
+// =====================================================
+
+interface AlumniScholarship {
+  id: string;
+  name: string;
+  fundedBy: string;
+  amountInr: number;
+  batch: string;
+  discipline: string;
+  recipients: number;
+  note: string;
+  color: string;
+  emoji: string;
+}
+
+const ALUMNI_SCHOLARSHIPS: AlumniScholarship[] = [
+  { id: 'sch-1', name: 'Meera Iyer · field-engineering grant', fundedBy: 'Meera Iyer · 2018 batch', amountInr: 120000, batch: '2026 entry', discipline: 'Engineering + climate', recipients: 4, note: 'Two semesters · covers tuition gap + travel to one field site.', color: '#38BDF8', emoji: '🧪' },
+  { id: 'sch-2', name: 'Tanvi · design-for-good fund', fundedBy: 'Tanvi Shah · 2019 batch', amountInr: 80000, batch: '2026 entry', discipline: 'Design · UX or brand', recipients: 3, note: 'Buys a first Wacom or a monitor · no paperwork beyond a thank-you note.', color: '#F472B6', emoji: '🎨' },
+  { id: 'sch-3', name: 'Kanishka · writing-residency fund', fundedBy: 'Kanishka Arora · 2020 batch', amountInr: 60000, batch: '2026 entry', discipline: 'Writing / journalism', recipients: 2, note: 'Two-week residency + one editor mentor + one byline guarantee.', color: '#F59E0B', emoji: '✍️' },
+  { id: 'sch-4', name: 'Aditi · field-research grant', fundedBy: 'Aditi Pawar · 2021 batch', amountInr: 100000, batch: '2026 entry', discipline: 'Social sciences · rural', recipients: 3, note: 'Three months · travel · one published paper at the end.', color: '#A78BFA', emoji: '🌾' },
+  { id: 'sch-5', name: 'Farhan · teacher-training bursary', fundedBy: 'Farhan Siddiqui · 2019 batch', amountInr: 70000, batch: '2026 entry', discipline: 'Education', recipients: 5, note: 'One year · covers training plus one school visit per quarter.', color: '#22C55E', emoji: '📚' },
+  { id: 'sch-6', name: 'Ishaan · open-journalism fund', fundedBy: 'Ishaan Kulkarni · 2021 batch', amountInr: 50000, batch: '2026 entry', discipline: 'Data journalism', recipients: 2, note: 'Pays for one story · editor + lawyer + publication support.', color: '#F87171', emoji: '📰' },
+  { id: 'sch-7', name: 'Rohit · RN engineer bootstrap', fundedBy: 'Rohit Sen · 2022 batch', amountInr: 35000, batch: '2026 entry', discipline: 'Mobile engineering', recipients: 3, note: 'Buys a test device + a one-year course · short check-in calls.', color: '#00D4FF', emoji: '📱' },
+  { id: 'sch-8', name: 'Nabhya · accessibility fund', fundedBy: 'Nabhya Gupta · 2022 batch', amountInr: 45000, batch: '2026 entry', discipline: 'A11y-focused work', recipients: 2, note: 'Gear + course + one deliverable (a11y audit) to a real org.', color: '#7E57C2', emoji: '♿' },
+];
+
+interface AdvisorySpecialism {
+  id: string;
+  alumniId: string;
+  name: string;
+  specialism: string;
+  hoursPerMonth: number;
+  slotsFilled: number;
+  slotsOpen: number;
+  note: string;
+  color: string;
+  emoji: string;
+}
+
+const ADVISORY_SPECIALISMS: AdvisorySpecialism[] = [
+  { id: 'av-1', alumniId: 'al-1', name: 'Meera Iyer', specialism: 'Climate-data engineering', hoursPerMonth: 4, slotsFilled: 3, slotsOpen: 1, note: 'Prefers short field-logs + one focused call per fortnight.', color: '#38BDF8', emoji: '🧪' },
+  { id: 'av-2', alumniId: 'al-3', name: 'Tanvi Shah', specialism: 'Brand + product-design crit', hoursPerMonth: 3, slotsFilled: 3, slotsOpen: 0, note: 'Opens a new slot every six months · join the waitlist.', color: '#F472B6', emoji: '🎨' },
+  { id: 'av-3', alumniId: 'al-5', name: 'Kanishka Arora', specialism: 'Grants + long-form writing', hoursPerMonth: 2, slotsFilled: 2, slotsOpen: 1, note: 'One 90-min workshop on writing a grant draft without lying.', color: '#F59E0B', emoji: '✍️' },
+  { id: 'av-4', alumniId: 'al-7', name: 'Aditi Pawar', specialism: 'Field-research consent', hoursPerMonth: 2, slotsFilled: 1, slotsOpen: 1, note: 'Reviews protocols · rarely on calls · prefers async notes.', color: '#A78BFA', emoji: '🌾' },
+  { id: 'av-5', alumniId: 'al-9', name: 'Farhan Siddiqui', specialism: 'Teacher-training curriculum', hoursPerMonth: 4, slotsFilled: 2, slotsOpen: 2, note: 'Runs one in-person sit-in per term in Bengaluru.', color: '#22C55E', emoji: '📚' },
+  { id: 'av-6', alumniId: 'al-11', name: 'Ishaan Kulkarni', specialism: 'Data-journalism + public records', hoursPerMonth: 3, slotsFilled: 2, slotsOpen: 1, note: 'Shares the quiet rules of requesting public documents.', color: '#F87171', emoji: '📰' },
+  { id: 'av-7', alumniId: 'al-2', name: 'Rohit Sen', specialism: 'RN · Android · CI', hoursPerMonth: 4, slotsFilled: 3, slotsOpen: 1, note: 'Paired-debug session on anyone\'s real bug · bring logs.', color: '#00D4FF', emoji: '📱' },
+  { id: 'av-8', alumniId: 'al-4', name: 'Nabhya Gupta', specialism: 'Accessibility audits', hoursPerMonth: 3, slotsFilled: 1, slotsOpen: 2, note: 'Teaches by auditing one of your real pages with you.', color: '#7E57C2', emoji: '♿' },
+];
+
+interface DiasporaCluster {
+  id: string;
+  city: string;
+  country: string;
+  alumniCount: number;
+  meetsEvery: string;
+  lead: string;
+  flag: string;
+  color: string;
+}
+
+const DIASPORA_CLUSTERS: DiasporaCluster[] = [
+  { id: 'dc-1', city: 'Bengaluru', country: 'India', alumniCount: 42, meetsEvery: 'Last Sun · monthly', lead: 'Meera', flag: '🇮🇳', color: '#00D4FF' },
+  { id: 'dc-2', city: 'Pune', country: 'India', alumniCount: 21, meetsEvery: 'Fortnightly Fri · evening', lead: 'Rohit', flag: '🇮🇳', color: '#22C55E' },
+  { id: 'dc-3', city: 'Mumbai', country: 'India', alumniCount: 33, meetsEvery: 'First Sat · monthly', lead: 'Tanvi', flag: '🇮🇳', color: '#F472B6' },
+  { id: 'dc-4', city: 'Delhi NCR', country: 'India', alumniCount: 29, meetsEvery: 'Monthly · rotating café', lead: 'Kanishka', flag: '🇮🇳', color: '#F59E0B' },
+  { id: 'dc-5', city: 'London', country: 'UK', alumniCount: 14, meetsEvery: 'Quarterly · Saturday brunch', lead: 'Aditi', flag: '🇬🇧', color: '#A78BFA' },
+  { id: 'dc-6', city: 'Berlin', country: 'Germany', alumniCount: 9, meetsEvery: 'Quarterly · park walk', lead: 'Farhan', flag: '🇩🇪', color: '#22C55E' },
+  { id: 'dc-7', city: 'San Francisco Bay', country: 'USA', alumniCount: 12, meetsEvery: 'Quarterly · Sunday coffee', lead: 'Ishaan', flag: '🇺🇸', color: '#F87171' },
+  { id: 'dc-8', city: 'Singapore', country: 'Singapore', alumniCount: 7, meetsEvery: 'Quarterly · Marina walk', lead: 'Nabhya', flag: '🇸🇬', color: '#7E57C2' },
+  { id: 'dc-9', city: 'Dubai', country: 'UAE', alumniCount: 6, meetsEvery: 'Quarterly · desert drive', lead: 'Rohit', flag: '🇦🇪', color: '#FFB74D' },
+];
+
+interface AskMeAnything {
+  id: string;
+  alumniId: string;
+  alumniName: string;
+  date: string;
+  topic: string;
+  questionsCollected: number;
+  mode: 'text' | 'audio' | 'video';
+  color: string;
+  emoji: string;
+}
+
+const AMA_SESSIONS: AskMeAnything[] = [
+  { id: 'ama-1', alumniId: 'al-1', alumniName: 'Meera Iyer', date: 'Apr 27 · Sat', topic: 'First 90 days as a tech lead in a climate org', questionsCollected: 34, mode: 'audio', color: '#38BDF8', emoji: '🎙️' },
+  { id: 'ama-2', alumniId: 'al-3', alumniName: 'Tanvi Shah', date: 'May 04 · Sat', topic: 'Breaking into design without a portfolio site', questionsCollected: 52, mode: 'video', color: '#F472B6', emoji: '🎥' },
+  { id: 'ama-3', alumniId: 'al-5', alumniName: 'Kanishka Arora', date: 'May 11 · Sat', topic: 'Writing a grant · the parts nobody tells you', questionsCollected: 21, mode: 'text', color: '#F59E0B', emoji: '✍️' },
+  { id: 'ama-4', alumniId: 'al-7', alumniName: 'Aditi Pawar', date: 'May 18 · Sat', topic: 'Consent-first field research in rural India', questionsCollected: 18, mode: 'audio', color: '#A78BFA', emoji: '🎙️' },
+  { id: 'ama-5', alumniId: 'al-9', alumniName: 'Farhan Siddiqui', date: 'May 25 · Sat', topic: 'Training teachers who did not ask for training', questionsCollected: 29, mode: 'video', color: '#22C55E', emoji: '🎥' },
+  { id: 'ama-6', alumniId: 'al-11', alumniName: 'Ishaan Kulkarni', date: 'Jun 01 · Sat', topic: 'Requesting public records · without anger', questionsCollected: 15, mode: 'text', color: '#F87171', emoji: '📝' },
+];
+
+interface GivingLedger {
+  id: string;
+  source: string;
+  amountInr: number;
+  used: string;
+  dateReceived: string;
+  visibility: 'named' | 'anonymous';
+  color: string;
+  emoji: string;
+}
+
+const GIVING_LEDGER: GivingLedger[] = [
+  { id: 'gl-1', source: 'Meera Iyer · 2018', amountInr: 120000, used: 'Scholarship fund + field-engineering grant.', dateReceived: '2026-01-18', visibility: 'named', color: '#38BDF8', emoji: '🌱' },
+  { id: 'gl-2', source: 'Tanvi Shah · 2019', amountInr: 80000, used: 'Design bursary · Wacom / monitor grants.', dateReceived: '2026-02-02', visibility: 'named', color: '#F472B6', emoji: '🎨' },
+  { id: 'gl-3', source: 'Anonymous · batch 2018', amountInr: 60000, used: 'Covered hostel deposit for two first-years.', dateReceived: '2026-02-20', visibility: 'anonymous', color: '#94A3B8', emoji: '🤲' },
+  { id: 'gl-4', source: 'Kanishka Arora · 2020', amountInr: 60000, used: 'Writing residency · two fellows.', dateReceived: '2026-03-11', visibility: 'named', color: '#F59E0B', emoji: '✍️' },
+  { id: 'gl-5', source: 'Aditi Pawar · 2021', amountInr: 100000, used: 'Field-research grant · three fellows.', dateReceived: '2026-03-22', visibility: 'named', color: '#A78BFA', emoji: '🌾' },
+  { id: 'gl-6', source: 'Anonymous · batch 2022', amountInr: 30000, used: 'Replaced broken studio strobe.', dateReceived: '2026-04-01', visibility: 'anonymous', color: '#94A3B8', emoji: '💡' },
+  { id: 'gl-7', source: 'Farhan Siddiqui · 2019', amountInr: 70000, used: 'Teacher-training bursary · five teachers.', dateReceived: '2026-04-08', visibility: 'named', color: '#22C55E', emoji: '📚' },
+  { id: 'gl-8', source: 'Ishaan Kulkarni · 2021', amountInr: 50000, used: 'Open-journalism fund · two investigations.', dateReceived: '2026-04-12', visibility: 'named', color: '#F87171', emoji: '📰' },
+];
+
+interface CompanyReferral {
+  id: string;
+  company: string;
+  alumniLead: string;
+  openRoles: number;
+  type: 'full-time' | 'internship' | 'contract';
+  lastUpdated: string;
+  note: string;
+  color: string;
+  emoji: string;
+}
+
+const COMPANY_REFERRALS: CompanyReferral[] = [
+  { id: 'cr-1', company: 'Atlassian', alumniLead: 'Rohit Sen · 2022', openRoles: 3, type: 'full-time', lastUpdated: '2 days ago', note: 'Android + release-engineering · remote within APAC only.', color: '#0052CC', emoji: '🧱' },
+  { id: 'cr-2', company: 'Figma', alumniLead: 'Tanvi Shah · 2019', openRoles: 2, type: 'internship', lastUpdated: '5 days ago', note: 'Brand + product-design interns · portfolio review by Tanvi.', color: '#F24E1E', emoji: '🎨' },
+  { id: 'cr-3', company: 'Scroll.in', alumniLead: 'Kanishka Arora · 2020', openRoles: 1, type: 'full-time', lastUpdated: '1 week ago', note: 'Climate correspondent · bilingual preferred.', color: '#EF4444', emoji: '📰' },
+  { id: 'cr-4', company: 'Pratham', alumniLead: 'Farhan Siddiqui · 2019', openRoles: 4, type: 'full-time', lastUpdated: '3 days ago', note: 'Teacher training + curriculum · Bengaluru + Delhi.', color: '#22C55E', emoji: '📚' },
+  { id: 'cr-5', company: 'WaterAid India', alumniLead: 'Aditi Pawar · 2021', openRoles: 2, type: 'contract', lastUpdated: '2 weeks ago', note: 'Field research · Assam + Karnataka · 3-month contracts.', color: '#38BDF8', emoji: '💧' },
+  { id: 'cr-6', company: 'The Ken', alumniLead: 'Ishaan Kulkarni · 2021', openRoles: 1, type: 'internship', lastUpdated: '4 days ago', note: 'Data-journalism intern · remote · 3-month duration.', color: '#F59E0B', emoji: '📊' },
+  { id: 'cr-7', company: 'Microsoft', alumniLead: 'Meera Iyer · 2018', openRoles: 2, type: 'full-time', lastUpdated: '1 day ago', note: 'Climate-data engineering · Hyderabad + Bengaluru.', color: '#0078D4', emoji: '🧪' },
+  { id: 'cr-8', company: 'Mozilla Foundation', alumniLead: 'Nabhya Gupta · 2022', openRoles: 1, type: 'contract', lastUpdated: '6 days ago', note: 'A11y audit contractor · 6-month engagement.', color: '#A855F7', emoji: '♿' },
+];
+
+// =====================================================
 // Component
 // =====================================================
 
@@ -2503,6 +2644,191 @@ const AlumniScreen: React.FC = () => {
     );
   };
 
+  const renderScholarships = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🎓 Alumni-funded scholarships</Text>
+        <Text style={styles.sectionCaption}>
+          ₹{(ALUMNI_SCHOLARSHIPS.reduce((a, s) => a + s.amountInr, 0) / 1000).toFixed(0)}K · {ALUMNI_SCHOLARSHIPS.length} active
+        </Text>
+      </View>
+      {ALUMNI_SCHOLARSHIPS.map((s) => (
+        <View key={s.id} style={[styles.schCard, { borderLeftColor: s.color }]}>
+          <View style={styles.schTopRow}>
+            <Text style={styles.schEmoji}>{s.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.schName} numberOfLines={2}>{s.name}</Text>
+              <Text style={styles.schFunded}>by {s.fundedBy}</Text>
+            </View>
+            <Text style={[styles.schAmount, { color: s.color }]}>
+              ₹{(s.amountInr / 1000).toFixed(0)}K
+            </Text>
+          </View>
+          <View style={styles.schMetaRow}>
+            <Text style={styles.schMetaText}>{s.discipline}</Text>
+            <Text style={styles.schMetaText}>{s.recipients} recipients</Text>
+          </View>
+          <Text style={styles.schNote} numberOfLines={3}>{s.note}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderAdvisors = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🧭 Alumni advisors · by specialism</Text>
+        <Text style={styles.sectionCaption}>
+          {ADVISORY_SPECIALISMS.reduce((a, s) => a + s.slotsOpen, 0)} slots open
+        </Text>
+      </View>
+      {ADVISORY_SPECIALISMS.map((s) => (
+        <View key={s.id} style={[styles.advCard, { borderLeftColor: s.color }]}>
+          <View style={styles.advTopRow}>
+            <Text style={styles.advEmoji}>{s.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.advName} numberOfLines={1}>{s.name}</Text>
+              <Text style={styles.advSpec} numberOfLines={1}>{s.specialism}</Text>
+            </View>
+            <View
+              style={[
+                styles.advPill,
+                {
+                  backgroundColor:
+                    s.slotsOpen > 0 ? 'rgba(34,197,94,0.18)' : 'rgba(239,68,68,0.18)',
+                },
+              ]}
+            >
+              <Text
+                style={[
+                  styles.advPillText,
+                  { color: s.slotsOpen > 0 ? '#22C55E' : '#EF4444' },
+                ]}
+              >
+                {s.slotsOpen > 0 ? `${s.slotsOpen} open` : 'waitlist'}
+              </Text>
+            </View>
+          </View>
+          <View style={styles.advStatRow}>
+            <Text style={styles.advStatText}>{s.hoursPerMonth}h / month</Text>
+            <Text style={styles.advStatText}>
+              {s.slotsFilled} / {s.slotsFilled + s.slotsOpen} booked
+            </Text>
+          </View>
+          <Text style={styles.advNote} numberOfLines={2}>{s.note}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderDiaspora = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🌍 Diaspora clusters</Text>
+        <Text style={styles.sectionCaption}>
+          {DIASPORA_CLUSTERS.reduce((a, c) => a + c.alumniCount, 0)} alumni · {DIASPORA_CLUSTERS.length} cities
+        </Text>
+      </View>
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.diasporaScroll}>
+        {DIASPORA_CLUSTERS.map((c) => (
+          <View key={c.id} style={[styles.diasporaCard, { borderColor: c.color + '55' }]}>
+            <View style={styles.diasporaFlagRow}>
+              <Text style={styles.diasporaFlag}>{c.flag}</Text>
+              <Text style={[styles.diasporaCount, { color: c.color }]}>{c.alumniCount}</Text>
+            </View>
+            <Text style={styles.diasporaCity} numberOfLines={1}>{c.city}</Text>
+            <Text style={styles.diasporaCountry} numberOfLines={1}>{c.country}</Text>
+            <Text style={styles.diasporaMeet} numberOfLines={2}>{c.meetsEvery}</Text>
+            <Text style={styles.diasporaLead} numberOfLines={1}>lead · {c.lead}</Text>
+          </View>
+        ))}
+      </ScrollView>
+    </View>
+  );
+
+  const renderAMA = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>💬 Ask-me-anything · upcoming</Text>
+        <Text style={styles.sectionCaption}>{AMA_SESSIONS.length} sessions · one Saturday each</Text>
+      </View>
+      {AMA_SESSIONS.map((a) => (
+        <View key={a.id} style={[styles.amaCard, { borderLeftColor: a.color }]}>
+          <Text style={styles.amaEmoji}>{a.emoji}</Text>
+          <View style={{ flex: 1 }}>
+            <View style={styles.amaTopRow}>
+              <Text style={styles.amaName}>{a.alumniName}</Text>
+              <Text style={[styles.amaMode, { color: a.color }]}>{a.mode}</Text>
+            </View>
+            <Text style={styles.amaTopic} numberOfLines={2}>{a.topic}</Text>
+            <View style={styles.amaFootRow}>
+              <Text style={styles.amaDate}>{a.date}</Text>
+              <Text style={styles.amaQCount}>{a.questionsCollected} questions in</Text>
+            </View>
+          </View>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderGivingLedger = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🤝 Giving ledger · this year</Text>
+        <Text style={styles.sectionCaption}>
+          ₹{(GIVING_LEDGER.reduce((a, g) => a + g.amountInr, 0) / 1000).toFixed(0)}K received
+        </Text>
+      </View>
+      {GIVING_LEDGER.map((g) => (
+        <View key={g.id} style={[styles.gvRow, { borderLeftColor: g.color }]}>
+          <Text style={styles.gvEmoji}>{g.emoji}</Text>
+          <View style={{ flex: 1 }}>
+            <View style={styles.gvTopRow}>
+              <Text style={styles.gvSource} numberOfLines={1}>{g.source}</Text>
+              <Text style={[styles.gvAmount, { color: g.color }]}>
+                ₹{(g.amountInr / 1000).toFixed(0)}K
+              </Text>
+            </View>
+            <Text style={styles.gvUsed} numberOfLines={2}>{g.used}</Text>
+            <Text style={styles.gvMeta}>
+              {g.dateReceived} · {g.visibility === 'named' ? 'named gift' : 'anonymous'}
+            </Text>
+          </View>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderCompanyReferrals = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🔗 Alumni-led referrals</Text>
+        <Text style={styles.sectionCaption}>
+          {COMPANY_REFERRALS.reduce((a, c) => a + c.openRoles, 0)} open · {COMPANY_REFERRALS.length} companies
+        </Text>
+      </View>
+      {COMPANY_REFERRALS.map((c) => (
+        <View key={c.id} style={[styles.crCard, { borderLeftColor: c.color }]}>
+          <View style={styles.crTopRow}>
+            <Text style={styles.crEmoji}>{c.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <View style={styles.crCoRow}>
+                <Text style={styles.crCo} numberOfLines={1}>{c.company}</Text>
+                <Text style={[styles.crRoles, { color: c.color }]}>{c.openRoles}</Text>
+              </View>
+              <Text style={styles.crLead} numberOfLines={1}>{c.alumniLead}</Text>
+            </View>
+          </View>
+          <View style={styles.crMetaRow}>
+            <Text style={styles.crType}>{c.type}</Text>
+            <Text style={styles.crUpdated}>upd. {c.lastUpdated}</Text>
+          </View>
+          <Text style={styles.crNote} numberOfLines={2}>{c.note}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
   const renderAlumniListHeader = () => (
     <View style={styles.listHeaderRow}>
       <Text style={styles.listHeaderTitle}>
@@ -3034,10 +3360,16 @@ const AlumniScreen: React.FC = () => {
       {renderMeetups()}
       {renderFiresides()}
       {renderMentorBoard()}
+      {renderAdvisors()}
+      {renderAMA()}
       {renderMentorshipSlots()}
       {renderCareerPivots()}
+      {renderCompanyReferrals()}
       {renderRelocationGrants()}
+      {renderScholarships()}
+      {renderGivingLedger()}
       {renderAlumniPolls()}
+      {renderDiaspora()}
       {renderPublications()}
       {renderPledges()}
       {renderAlumniListHeader()}
@@ -3990,6 +4322,133 @@ const styles = StyleSheet.create({
   },
   pubAuthor: { color: Colors.text.primary, fontSize: 10, fontWeight: '800' },
   pubYear: { color: Colors.text.muted, fontSize: 10 },
+
+  // Scholarships
+  schCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 14,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  schTopRow: { flexDirection: 'row', alignItems: 'flex-start' },
+  schEmoji: { fontSize: 24, marginRight: 10, marginTop: 2 },
+  schName: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', lineHeight: 17 },
+  schFunded: { color: Colors.text.muted, fontSize: 11, marginTop: 3 },
+  schAmount: { fontSize: 16, fontWeight: '900', marginLeft: 8 },
+  schMetaRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 10,
+    paddingTop: 8,
+    borderTopWidth: 1,
+    borderColor: 'rgba(255,255,255,0.05)',
+  },
+  schMetaText: { color: Colors.text.secondary, fontSize: 11, fontWeight: '600' },
+  schNote: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8 },
+
+  // Advisors
+  advCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  advTopRow: { flexDirection: 'row', alignItems: 'center' },
+  advEmoji: { fontSize: 22, marginRight: 10 },
+  advName: { color: Colors.text.primary, fontSize: 13, fontWeight: '800' },
+  advSpec: { color: Colors.text.secondary, fontSize: 11, marginTop: 2 },
+  advPill: { paddingHorizontal: 8, paddingVertical: 3, borderRadius: 999, marginLeft: 8 },
+  advPillText: { fontSize: 9, fontWeight: '900', letterSpacing: 1, textTransform: 'uppercase' },
+  advStatRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 8,
+    paddingTop: 6,
+    borderTopWidth: 1,
+    borderColor: 'rgba(255,255,255,0.05)',
+  },
+  advStatText: { color: Colors.text.muted, fontSize: 10 },
+  advNote: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 6 },
+
+  // Diaspora
+  diasporaScroll: { paddingRight: HORIZONTAL_PADDING },
+  diasporaCard: {
+    width: 140,
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginRight: 10,
+    borderWidth: 1,
+  },
+  diasporaFlagRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  diasporaFlag: { fontSize: 26 },
+  diasporaCount: { fontSize: 18, fontWeight: '900' },
+  diasporaCity: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', marginTop: 8 },
+  diasporaCountry: { color: Colors.text.muted, fontSize: 10, marginTop: 2 },
+  diasporaMeet: { color: Colors.text.secondary, fontSize: 10, lineHeight: 13, marginTop: 6 },
+  diasporaLead: { color: Colors.text.muted, fontSize: 10, marginTop: 6, fontStyle: 'italic' },
+
+  // AMA
+  amaCard: {
+    flexDirection: 'row',
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginBottom: 8,
+    borderLeftWidth: 3,
+  },
+  amaEmoji: { fontSize: 22, marginRight: 10, marginTop: 2 },
+  amaTopRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  amaName: { color: Colors.text.primary, fontSize: 13, fontWeight: '800' },
+  amaMode: { fontSize: 10, fontWeight: '900', letterSpacing: 1, textTransform: 'uppercase' },
+  amaTopic: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4 },
+  amaFootRow: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 6 },
+  amaDate: { color: Colors.tech.neonBlue, fontSize: 10, fontWeight: '700' },
+  amaQCount: { color: Colors.text.muted, fontSize: 10 },
+
+  // Giving ledger
+  gvRow: {
+    flexDirection: 'row',
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginBottom: 8,
+    borderLeftWidth: 3,
+  },
+  gvEmoji: { fontSize: 22, marginRight: 10, marginTop: 2 },
+  gvTopRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  gvSource: { color: Colors.text.primary, fontSize: 12, fontWeight: '800', flex: 1 },
+  gvAmount: { fontSize: 14, fontWeight: '900', marginLeft: 8 },
+  gvUsed: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4 },
+  gvMeta: { color: Colors.text.muted, fontSize: 10, marginTop: 4, fontStyle: 'italic' },
+
+  // Company referrals
+  crCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  crTopRow: { flexDirection: 'row', alignItems: 'flex-start' },
+  crEmoji: { fontSize: 22, marginRight: 10, marginTop: 2 },
+  crCoRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  crCo: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', flex: 1 },
+  crRoles: { fontSize: 16, fontWeight: '900', marginLeft: 8 },
+  crLead: { color: Colors.text.muted, fontSize: 11, marginTop: 2 },
+  crMetaRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 8,
+    paddingTop: 6,
+    borderTopWidth: 1,
+    borderColor: 'rgba(255,255,255,0.05)',
+  },
+  crType: { color: Colors.text.secondary, fontSize: 10, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 1 },
+  crUpdated: { color: Colors.text.muted, fontSize: 10 },
+  crNote: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 6 },
 });
 
 export default AlumniScreen;
