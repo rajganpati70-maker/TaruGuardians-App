@@ -9,8 +9,8 @@ import {
   Animated, 
   StyleSheet, 
   Dimensions,
-  LinearGradient,
 } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 import { Colors } from '../../constants';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');

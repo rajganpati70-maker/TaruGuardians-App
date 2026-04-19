@@ -69,7 +69,7 @@ const AlumniScreen: React.FC = () => {
   const renderHeader = () => (
     <Animated.View style={[styles.headerContainer, { opacity: animationValues[0].opacity, transform: [{ translateY: animationValues[0].translateY }] }]}>
       <LinearGradient colors={[Colors.background.deepBlack, Colors.accent.softGold]} style={styles.headerGradient}>
-        <View style={styles.headerContent}>
+        <View style={styles.headerInner}>
           <Text style={styles.mainTitle}>🎓 Alumni Network</Text>
           <Text style={styles.subTitle}>Our Successful Graduates</Text>
           <View style={styles.statsContainer}>
@@ -179,6 +179,7 @@ const styles = StyleSheet.create({
   scrollContent: { paddingBottom: 100, paddingHorizontal: 20 },
   headerContainer: { marginBottom: 15 },
   headerGradient: { paddingTop: Platform.OS === 'ios' ? 60 : 40, paddingBottom: 20, paddingHorizontal: 20 },
+  headerInner: { alignItems: 'flex-start' },
   mainTitle: { fontSize: isSmallScreen ? 26 : 30, fontWeight: '700', color: Colors.text.primary },
   subTitle: { fontSize: 14, color: Colors.text.secondary, marginTop: 4, marginBottom: 20 },
   statsContainer: { flexDirection: 'row', justifyContent: 'space-around', backgroundColor: 'rgba(255,255,255,0.05)', borderRadius: 12, paddingVertical: 15, marginBottom: 20 },

@@ -106,7 +106,7 @@ const SuggestionScreen: React.FC = () => {
   const renderHeader = () => (
     <Animated.View style={[styles.headerContainer, { opacity: animationValues[0].opacity, transform: [{ translateY: animationValues[0].translateY }] }]}>
       <LinearGradient colors={[Colors.background.deepBlack, '#1A237E']} style={styles.headerGradient}>
-        <View style={styles.headerContent}>
+        <View style={styles.headerInner}>
           <Text style={styles.mainTitle}>💭 Suggestions</Text>
           <Text style={styles.subTitle}>Share Your Ideas With Us</Text>
           <View style={styles.introCard}>
@@ -232,6 +232,7 @@ const styles = StyleSheet.create({
   scrollContent: { paddingBottom: 100 },
   headerContainer: { marginBottom: 20 },
   headerGradient: { paddingTop: Platform.OS === 'ios' ? 60 : 40, paddingBottom: 30, paddingHorizontal: 20 },
+  headerInner: { alignItems: 'flex-start' },
   mainTitle: { fontSize: isSmallScreen ? 26 : 30, fontWeight: '700', color: Colors.text.primary },
   subTitle: { fontSize: 14, color: Colors.text.secondary, marginTop: 4, marginBottom: 20 },
   introCard: { backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: 12, padding: 15 },

@@ -173,7 +173,8 @@ const IntegratedCircle: React.FC<IntegratedCircleProps> = ({ centerX, centerY, r
       Animated.timing(opacity, { toValue: 0.6, duration: 1200, useNativeDriver: true }),
     ])]);
 
-    let anim1, anim2;
+    let anim1: Animated.CompositeAnimation | undefined;
+    let anim2: Animated.CompositeAnimation | undefined;
     if (type === 'ripple') {
       anim1 = Animated.loop(Animated.timing(scale, { toValue: 2.5, duration: 3000, useNativeDriver: true }));
       anim2 = Animated.loop(Animated.timing(opacity, { toValue: 0, duration: 3000, useNativeDriver: true }));

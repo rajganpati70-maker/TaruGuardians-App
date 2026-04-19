@@ -52,7 +52,7 @@ const ANIMATION_CONFIG = {
   easing: {
     easeInOut: Easing.inOut(Easing.ease),
     easeOut: Easing.out(Easing.ease),
-    spring: Easing.spring(1, 80, 10),
+    spring: Easing.bezier(0.175, 0.885, 0.32, 1.275),
   },
 };
 

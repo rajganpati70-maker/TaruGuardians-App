@@ -31,7 +31,4 @@ export { default as EnergyOrbsEffect } from './EnergyOrbsEffect';
 export { default as NebulaCloudsEffect } from './NebulaCloudsEffect';
 export { default as VortexEffect } from './VortexEffect';
 export { default as ChromaWaveEffect } from './ChromaWaveEffect';
-export { default as PulseGridEffect } from './PulseGridEffect';
-export { default as FluidShapesEffect } from './FluidShapesEffect';
-export { default as SyncPulseEffect } from './SyncPulseEffect';
 export { default as UltimateFusionEffect } from './UltimateFusionEffect';

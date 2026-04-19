@@ -3,8 +3,8 @@
 // Nature + Technology Fusion Splash Screen
 // =====================================================
 
-export { Colors, default as ColorSystem } from './colors';
-export { AnimationConfig, default as AnimationSettings } from './animation';
+export { Colors } from './colors';
+export { AnimationConfig } from './animation';
 
 // =====================================================
 // EXPORT GUIDELINES
