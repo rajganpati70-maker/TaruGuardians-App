@@ -856,6 +856,129 @@ const APPLY_STEPS: ApplyStep[] = [
 ];
 
 // -----------------------------------------------------
+// On-call rota (this week)
+// -----------------------------------------------------
+
+interface OnCallEntry {
+  id: string;
+  day: string;
+  date: string;
+  name: string;
+  wing: string;
+  color: string;
+  backup: string;
+  hours: string;
+}
+
+const ON_CALL: OnCallEntry[] = [
+  { id: 'oc-1', day: 'Mon', date: 'Apr 21', name: 'Rohit B.',    wing: 'Web/App',  color: '#00D4FF', backup: 'Meera I.',    hours: '09:00 – 18:00' },
+  { id: 'oc-2', day: 'Tue', date: 'Apr 22', name: 'Ishita D.',   wing: 'GD',       color: '#F472B6', backup: 'Kabir M.',    hours: '10:00 – 17:00' },
+  { id: 'oc-3', day: 'Wed', date: 'Apr 23', name: 'Ananya P.',   wing: 'Content',  color: '#4CAF50', backup: 'Nivedita S.', hours: '09:30 – 17:30' },
+  { id: 'oc-4', day: 'Thu', date: 'Apr 24', name: 'Aryan V.',    wing: 'Video',    color: '#FFD54F', backup: 'Alia N.',     hours: '10:00 – 18:00' },
+  { id: 'oc-5', day: 'Fri', date: 'Apr 25', name: 'Vivaan S.',   wing: 'Web/App',  color: '#00D4FF', backup: 'Meera I.',    hours: '09:00 – 18:00 (release)' },
+  { id: 'oc-6', day: 'Sat', date: 'Apr 26', name: 'Mira J.',     wing: 'Photo',    color: '#AB47BC', backup: 'Dhruv G.',    hours: '07:00 – 12:00' },
+  { id: 'oc-7', day: 'Sun', date: 'Apr 27', name: 'Kavya R.',    wing: 'PR',       color: '#EF6C00', backup: 'Dhruv G.',    hours: '11:00 – 16:00' },
+];
+
+// -----------------------------------------------------
+// Standup log
+// -----------------------------------------------------
+
+interface StandupEntry {
+  id: string;
+  date: string;
+  author: string;
+  wing: string;
+  yesterday: string;
+  today: string;
+  block: string;
+  color: string;
+}
+
+const STANDUPS: StandupEntry[] = [
+  { id: 'su-1', date: 'Apr 19', author: 'Ananya P.',  wing: 'Content', color: '#4CAF50', yesterday: 'Closed first draft of sapling-survival long-form · 2k words.',                        today: 'Edit pass 2 · read-aloud with Nivedita at 17:30.', block: 'Need 3 more quotes from the field team.' },
+  { id: 'su-2', date: 'Apr 19', author: 'Rohit B.',   wing: 'Web/App', color: '#00D4FF', yesterday: 'Triaged 14 RN issues · merged 4 small PRs · cut v1.3.1 candidate build.',                today: 'Candidate soak test · open Friday release PR.',     block: 'Android 11 crash still on Moto G30 · need one more repro.' },
+  { id: 'su-3', date: 'Apr 19', author: 'Ishita D.',  wing: 'GD',      color: '#F472B6', yesterday: 'Repair café flyer v2 · Kannada + English locked.',                                        today: 'Earth Day poster kit export · 12 templates.',       block: 'None.' },
+  { id: 'su-4', date: 'Apr 19', author: 'Aryan V.',   wing: 'Video',   color: '#FFD54F', yesterday: 'Reel #44 second cut · alumni fireside recording loaded.',                                today: 'Sound pass · deliver to press@ by 20:00.',           block: 'Waiting on thumbnails from GD.' },
+  { id: 'su-5', date: 'Apr 19', author: 'Mira J.',    wing: 'Photo',   color: '#AB47BC', yesterday: 'Cubbon Park walk · 37 frames, 12 picks, 6 shortlisted.',                                today: 'Write photo-story captions · share draft with Ananya.', block: 'None.' },
+  { id: 'su-6', date: 'Apr 19', author: 'Kavya R.',   wing: 'PR',      color: '#EF6C00', yesterday: 'Sponsor outreach batch · 12 calls · 2 warm leads.',                                     today: 'Follow up with Canopy Partners · finalize sponsor pitch.', block: 'Awaiting sponsor pitch template sign-off from council.' },
+  { id: 'su-7', date: 'Apr 19', author: 'Meera I.',   wing: 'Web/App', color: '#00D4FF', yesterday: 'Architecture Tea · 8 members · decided on tanstack query for v1.4.',                     today: 'Spike on cache layer · write 1-pager for review.',  block: 'None.' },
+  { id: 'su-8', date: 'Apr 19', author: 'Nivedita S.', wing: 'Content', color: '#66BB6A', yesterday: 'Monsoon issue editorial planning · 6 writers assigned.',                                today: 'Review drafts · open Voice Lab session.',            block: 'Still waiting on one alumni interview slot.' },
+];
+
+// -----------------------------------------------------
+// Club traditions
+// -----------------------------------------------------
+
+interface Tradition {
+  id: string;
+  title: string;
+  body: string;
+  cadence: string;
+  emoji: string;
+  color: string;
+}
+
+const TRADITIONS: Tradition[] = [
+  { id: 'td-1', title: 'First-Friday show-and-tell',      cadence: 'Monthly',   body: 'Every first Friday · three-minute show-and-tell per wing. Drafts welcome.',                    emoji: '🎤', color: '#4CAF50' },
+  { id: 'td-2', title: 'Handbook Day',                    cadence: 'Quarterly', body: 'One full afternoon to edit the handbook together. Snacks. No outcomes required.',            emoji: '📖', color: '#22C55E' },
+  { id: 'td-3', title: 'Sapling-season kick-off',         cadence: 'Yearly',    body: 'First planting drive of the season · whole club shows up · alumni join virtually.',          emoji: '🌱', color: '#16A34A' },
+  { id: 'td-4', title: 'Crit Kindly week',                cadence: 'Yearly',    body: 'A full week of warm critique across wings. You bring a draft · leave with 3 reader notes.', emoji: '🤲', color: '#F472B6' },
+  { id: 'td-5', title: 'Annual alumni fireside',          cadence: 'Yearly',    body: 'Five alumni · five stories · one long evening · open to the whole campus.',                  emoji: '🔥', color: '#EF4444' },
+  { id: 'td-6', title: 'Quiet hour',                       cadence: 'Weekly',    body: 'One hour on Thursday where nobody pings anyone · deep work or a walk · either is fine.',   emoji: '🌙', color: '#A78BFA' },
+  { id: 'td-7', title: 'Weekly ship-and-thank',            cadence: 'Weekly',    body: 'Friday closeout · name what shipped · name who made it possible · end on a thank-you.',     emoji: '🙏', color: '#F59E0B' },
+  { id: 'td-8', title: 'New-wing taster',                  cadence: 'Seasonal',  body: 'Every season you can shadow a wing you don\'t belong to · no commitment · just curiosity.', emoji: '👀', color: '#38BDF8' },
+];
+
+// -----------------------------------------------------
+// Wall of thanks
+// -----------------------------------------------------
+
+interface ThankEntry {
+  id: string;
+  date: string;
+  from: string;
+  to: string;
+  note: string;
+  wing: string;
+  color: string;
+}
+
+const THANKS: ThankEntry[] = [
+  { id: 'th-1', date: 'Apr 19', from: 'Rohit B.',    to: 'Meera I.',     wing: 'Web/App', color: '#00D4FF', note: 'Thanks for staying late to untangle the RSVP permissions race. That was not a small thing.' },
+  { id: 'th-2', date: 'Apr 18', from: 'Ananya P.',   to: 'Nivedita S.',  wing: 'Content', color: '#4CAF50', note: 'Your edit pass saved the sapling piece. Kept the honesty, cut the fluff.' },
+  { id: 'th-3', date: 'Apr 18', from: 'Ishita D.',   to: 'Kabir M.',     wing: 'GD',      color: '#F472B6', note: 'Typography crit this Wednesday was the gentlest I\'ve seen. Thank you for holding the room.' },
+  { id: 'th-4', date: 'Apr 17', from: 'Kavya R.',    to: 'Dhruv G.',     wing: 'PR',      color: '#EF6C00', note: 'You took over the cold call when I lost my voice. You sounded more me than me.' },
+  { id: 'th-5', date: 'Apr 16', from: 'Aryan V.',    to: 'Alia N.',      wing: 'Video',   color: '#FFD54F', note: 'Your sound pass made the reel land. It felt like breathing.' },
+  { id: 'th-6', date: 'Apr 15', from: 'Mira J.',     to: 'Riya G.',      wing: 'Photo',   color: '#AB47BC', note: 'First-year carrying the backup body all morning. You stuck with us till the light went bad.' },
+  { id: 'th-7', date: 'Apr 15', from: 'Vivaan S.',   to: 'Rohit B.',     wing: 'Web/App', color: '#00D4FF', note: 'You could have fixed this yourself in ten minutes. You taught me instead. Thank you.' },
+  { id: 'th-8', date: 'Apr 14', from: 'Alia N.',     to: 'Mira J.',      wing: 'Photo',   color: '#AB47BC', note: 'Sunday walk · your print-and-pin ritual is the thing that actually kept me coming.' },
+  { id: 'th-9', date: 'Apr 14', from: 'Nivedita S.', to: 'Ananya P.',    wing: 'Content', color: '#4CAF50', note: 'You read my draft twice without me asking. That\'s how you learn someone\'s voice.' },
+  { id: 'th-10', date: 'Apr 13', from: 'Kabir M.',    to: 'Ishita D.',    wing: 'GD',      color: '#F472B6', note: 'Thanks for telling me the kerning was fine. It wasn\'t. I fixed it anyway. But I appreciated the kindness.' },
+];
+
+// -----------------------------------------------------
+// Team values (tiny, steady-state)
+// -----------------------------------------------------
+
+interface TeamValue {
+  id: string;
+  value: string;
+  body: string;
+  emoji: string;
+  color: string;
+}
+
+const TEAM_VALUES: TeamValue[] = [
+  { id: 'tv-1', value: 'Ship humane software',       body: 'Fast enough to learn from · slow enough to not break people.',     emoji: '💚', color: '#22C55E' },
+  { id: 'tv-2', value: 'Mentor by default',           body: 'If you know it · teach it. If you don\'t · ask without shame.',      emoji: '🧭', color: '#38BDF8' },
+  { id: 'tv-3', value: 'Explain the why',             body: 'Write the doc. Link the decision. Future-you will thank you.',      emoji: '📎', color: '#A78BFA' },
+  { id: 'tv-4', value: 'Credit loudly',                body: 'Name who helped. In the commit · in the caption · in the crowd.',    emoji: '🏷️', color: '#F59E0B' },
+  { id: 'tv-5', value: 'Repair over blame',            body: 'Broken things get fixed. Postmortems teach. Shame does not.',         emoji: '🧰', color: '#EF4444' },
+  { id: 'tv-6', value: 'Rest is part of work',         body: 'Burnout is not a badge. Sleep · walks · friends · food.',             emoji: '🛌', color: '#6366F1' },
+];
+
+// -----------------------------------------------------
 // Component
 // -----------------------------------------------------
 
@@ -1511,6 +1634,134 @@ const TeamScreen: React.FC = () => {
     );
   };
 
+  const renderOnCall = () => {
+    if (hasFilters) return null;
+    return (
+      <View style={styles.sectionBlock}>
+        <View style={styles.sectionHeaderRow}>
+          <Text style={styles.sectionTitle}>📟 On-call · this week</Text>
+          <Text style={styles.sectionCaption}>Care rotation</Text>
+        </View>
+        {ON_CALL.map((o) => (
+          <View key={o.id} style={[styles.onCallRow, { borderLeftColor: o.color }]}>
+            <View style={styles.onCallDayCol}>
+              <Text style={styles.onCallDay}>{o.day}</Text>
+              <Text style={styles.onCallDate}>{o.date}</Text>
+            </View>
+            <View style={{ flex: 1 }}>
+              <View style={styles.onCallNameRow}>
+                <Text style={styles.onCallName}>{o.name}</Text>
+                <Text style={[styles.onCallWing, { color: o.color }]}>{o.wing}</Text>
+              </View>
+              <Text style={styles.onCallHours}>{o.hours}</Text>
+              <Text style={styles.onCallBackup}>Backup · {o.backup}</Text>
+            </View>
+          </View>
+        ))}
+      </View>
+    );
+  };
+
+  const renderStandupLog = () => {
+    if (hasFilters) return null;
+    return (
+      <View style={styles.sectionBlock}>
+        <View style={styles.sectionHeaderRow}>
+          <Text style={styles.sectionTitle}>🗣️ Standup log</Text>
+          <Text style={styles.sectionCaption}>Today · {STANDUPS.length} updates</Text>
+        </View>
+        {STANDUPS.map((s) => (
+          <View key={s.id} style={[styles.standupCard, { borderLeftColor: s.color }]}>
+            <View style={styles.standupHeaderRow}>
+              <Text style={styles.standupAuthor}>{s.author}</Text>
+              <Text style={[styles.standupWing, { color: s.color }]}>{s.wing}</Text>
+            </View>
+            <View style={styles.standupBlockRow}>
+              <Text style={styles.standupLabel}>YESTERDAY</Text>
+              <Text style={styles.standupBody}>{s.yesterday}</Text>
+            </View>
+            <View style={styles.standupBlockRow}>
+              <Text style={styles.standupLabel}>TODAY</Text>
+              <Text style={styles.standupBody}>{s.today}</Text>
+            </View>
+            <View style={styles.standupBlockRow}>
+              <Text style={[styles.standupLabel, { color: '#EF4444' }]}>BLOCKERS</Text>
+              <Text style={styles.standupBody}>{s.block}</Text>
+            </View>
+          </View>
+        ))}
+      </View>
+    );
+  };
+
+  const renderTraditions = () => {
+    if (hasFilters) return null;
+    return (
+      <View style={styles.sectionBlock}>
+        <View style={styles.sectionHeaderRow}>
+          <Text style={styles.sectionTitle}>🪔 Club traditions</Text>
+          <Text style={styles.sectionCaption}>What we repeat on purpose</Text>
+        </View>
+        <View style={styles.tradGrid}>
+          {TRADITIONS.map((t) => (
+            <View key={t.id} style={styles.tradCard}>
+              <Text style={styles.tradEmoji}>{t.emoji}</Text>
+              <Text style={[styles.tradCadence, { color: t.color }]}>{t.cadence}</Text>
+              <Text style={styles.tradTitle} numberOfLines={2}>{t.title}</Text>
+              <Text style={styles.tradBody} numberOfLines={4}>{t.body}</Text>
+            </View>
+          ))}
+        </View>
+      </View>
+    );
+  };
+
+  const renderThanks = () => {
+    if (hasFilters) return null;
+    return (
+      <View style={styles.sectionBlock}>
+        <View style={styles.sectionHeaderRow}>
+          <Text style={styles.sectionTitle}>🙏 Wall of thanks</Text>
+          <Text style={styles.sectionCaption}>Credit out loud</Text>
+        </View>
+        {THANKS.map((t) => (
+          <View key={t.id} style={[styles.thankCard, { borderLeftColor: t.color }]}>
+            <View style={styles.thankHeaderRow}>
+              <Text style={styles.thankDate}>{t.date}</Text>
+              <Text style={[styles.thankWing, { color: t.color }]}>{t.wing}</Text>
+            </View>
+            <Text style={styles.thankLine}>
+              <Text style={styles.thankFrom}>{t.from}</Text>
+              <Text style={styles.thankTo}>{' → ' + t.to}</Text>
+            </Text>
+            <Text style={styles.thankNote}>“{t.note}”</Text>
+          </View>
+        ))}
+      </View>
+    );
+  };
+
+  const renderTeamValues = () => {
+    if (hasFilters) return null;
+    return (
+      <View style={styles.sectionBlock}>
+        <View style={styles.sectionHeaderRow}>
+          <Text style={styles.sectionTitle}>💠 Our values</Text>
+          <Text style={styles.sectionCaption}>Six rules we keep</Text>
+        </View>
+        <View style={styles.valueGrid}>
+          {TEAM_VALUES.map((v) => (
+            <View key={v.id} style={[styles.valueCard, { borderLeftColor: v.color }]}>
+              <Text style={styles.valueEmoji}>{v.emoji}</Text>
+              <Text style={styles.valueTitle} numberOfLines={2}>{v.value}</Text>
+              <Text style={styles.valueBody} numberOfLines={4}>{v.body}</Text>
+            </View>
+          ))}
+        </View>
+      </View>
+    );
+  };
+
   const renderListHeader = () => (
     <View style={styles.listHeaderRow}>
       <Text style={styles.listHeaderTitle}>
@@ -1991,9 +2242,14 @@ const TeamScreen: React.FC = () => {
       {renderHighlights()}
       {renderLeadershipBoard()}
       {renderDeptAnalytics()}
+      {renderOnCall()}
+      {renderStandupLog()}
       {renderTopContributors()}
       {renderMentorshipTree()}
+      {renderTraditions()}
+      {renderTeamValues()}
       {renderTeamTestimonials()}
+      {renderThanks()}
       {renderApplyToJoin()}
       {renderListHeader()}
     </View>
@@ -2755,6 +3011,120 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   applyCTAText: { color: '#001018', fontSize: 13, fontWeight: '900', letterSpacing: 0.5 },
+
+  // On-call
+  onCallRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#0D141B',
+    padding: 12,
+    borderRadius: 12,
+    marginBottom: 8,
+    borderLeftWidth: 3,
+  },
+  onCallDayCol: { width: 54, alignItems: 'flex-start' },
+  onCallDay: { color: Colors.text.primary, fontSize: 13, fontWeight: '800' },
+  onCallDate: { color: Colors.text.muted, fontSize: 10, marginTop: 2 },
+  onCallNameRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  onCallName: { color: Colors.text.primary, fontSize: 13, fontWeight: '800' },
+  onCallWing: { fontSize: 11, fontWeight: '800' },
+  onCallHours: { color: Colors.text.secondary, fontSize: 11, marginTop: 3 },
+  onCallBackup: { color: Colors.text.muted, fontSize: 10, marginTop: 2 },
+
+  // Standup
+  standupCard: {
+    backgroundColor: '#0D141B',
+    padding: 12,
+    borderRadius: 12,
+    marginBottom: 8,
+    borderLeftWidth: 3,
+  },
+  standupHeaderRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  standupAuthor: { color: Colors.text.primary, fontSize: 13, fontWeight: '800' },
+  standupWing: { fontSize: 11, fontWeight: '800' },
+  standupBlockRow: { marginTop: 6 },
+  standupLabel: {
+    color: Colors.tech.neonBlue,
+    fontSize: 9,
+    fontWeight: '800',
+    letterSpacing: 1,
+  },
+  standupBody: {
+    color: Colors.text.secondary,
+    fontSize: 11,
+    lineHeight: 15,
+    marginTop: 2,
+  },
+
+  // Traditions
+  tradGrid: { flexDirection: 'row', flexWrap: 'wrap', marginHorizontal: -4 },
+  tradCard: {
+    width: '50%',
+    padding: 4,
+  },
+  tradEmoji: { fontSize: 20 },
+  tradCadence: {
+    fontSize: 9,
+    fontWeight: '800',
+    letterSpacing: 1,
+    marginTop: 4,
+  },
+  tradTitle: {
+    color: Colors.text.primary,
+    fontSize: 12,
+    fontWeight: '800',
+    marginTop: 2,
+  },
+  tradBody: {
+    color: Colors.text.secondary,
+    fontSize: 11,
+    lineHeight: 14,
+    marginTop: 4,
+  },
+
+  // Thanks
+  thankCard: {
+    backgroundColor: '#0D141B',
+    padding: 12,
+    borderRadius: 12,
+    marginBottom: 8,
+    borderLeftWidth: 3,
+  },
+  thankHeaderRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  thankDate: { color: Colors.text.muted, fontSize: 10, fontWeight: '800', letterSpacing: 0.5 },
+  thankWing: { fontSize: 11, fontWeight: '800' },
+  thankLine: { marginTop: 4, fontSize: 12 },
+  thankFrom: { color: Colors.text.primary, fontWeight: '800' },
+  thankTo: { color: Colors.text.secondary, fontWeight: '700' },
+  thankNote: {
+    color: Colors.text.secondary,
+    fontSize: 12,
+    lineHeight: 16,
+    marginTop: 6,
+    fontStyle: 'italic',
+  },
+
+  // Values
+  valueGrid: { flexDirection: 'row', flexWrap: 'wrap', marginHorizontal: -4 },
+  valueCard: {
+    width: '50%',
+    padding: 4,
+    borderLeftWidth: 3,
+    marginBottom: 8,
+  },
+  valueEmoji: { fontSize: 18 },
+  valueTitle: {
+    color: Colors.text.primary,
+    fontSize: 12,
+    fontWeight: '800',
+    marginTop: 4,
+  },
+  valueBody: {
+    color: Colors.text.secondary,
+    fontSize: 11,
+    lineHeight: 14,
+    marginTop: 4,
+  },
 });
 
 export default TeamScreen;
