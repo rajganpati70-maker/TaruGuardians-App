@@ -691,6 +691,171 @@ const departmentCounts: Record<string, number> = DEPARTMENTS.reduce((acc, d) => 
 }, {} as Record<string, number>);
 
 // -----------------------------------------------------
+// Department analytics
+// -----------------------------------------------------
+
+interface DeptAnalytic {
+  id: string;
+  name: string;
+  color: string;
+  headcount: number;
+  hours: number;
+  events: number;
+  projects: number;
+  avgHoursPerMember: number;
+  projectsPerMember: number;
+  retention: number;
+}
+
+const DEPT_ANALYTICS: DeptAnalytic[] = DEPARTMENTS.map((d) => {
+  const members = TEAM_MEMBERS.filter((m) => m.department === d.id);
+  const hc = members.length || 1;
+  const hours = members.reduce((acc, m) => acc + m.hoursContributed, 0);
+  const events = members.reduce((acc, m) => acc + m.eventsOrganized, 0);
+  const projects = members.reduce((acc, m) => acc + m.projectsShipped, 0);
+  return {
+    id: d.id,
+    name: d.name,
+    color: d.color,
+    headcount: members.length,
+    hours,
+    events,
+    projects,
+    avgHoursPerMember: Math.round(hours / hc),
+    projectsPerMember: Number((projects / hc).toFixed(2)),
+    retention:
+      d.id === 'leadership' ? 98 :
+      d.id === 'events' ? 86 :
+      d.id === 'technology' ? 91 :
+      d.id === 'design' ? 88 :
+      d.id === 'marketing' ? 82 :
+      d.id === 'operations' ? 84 :
+      d.id === 'finance' ? 90 :
+      d.id === 'research' ? 85 :
+      d.id === 'sustainability' ? 93 : 87,
+  };
+});
+
+// -----------------------------------------------------
+// Mentorship tree — who mentors whom
+// -----------------------------------------------------
+
+interface MentorshipNode {
+  mentorId: string;
+  menteeIds: string[];
+  cadence: string;
+  focus: string;
+}
+
+const MENTORSHIP_TREE: MentorshipNode[] = [
+  { mentorId: 'tm-1', menteeIds: ['tm-11', 'tm-12', 'tm-21'], cadence: 'Weekly 1:1 · Wed 6pm', focus: 'Leadership rotation · delegation · feedback craft.' },
+  { mentorId: 'tm-2', menteeIds: ['tm-13', 'tm-22'], cadence: 'Bi-weekly · Fri', focus: 'Event ops playbook · on-the-day command.' },
+  { mentorId: 'tm-3', menteeIds: ['tm-14', 'tm-23', 'tm-24'], cadence: 'Weekly pair-programming · Tue', focus: 'RN performance · release discipline · triage.' },
+  { mentorId: 'tm-4', menteeIds: ['tm-15', 'tm-25'], cadence: 'Fortnightly crits', focus: 'Design systems · motion fluency.' },
+  { mentorId: 'tm-5', menteeIds: ['tm-16', 'tm-26'], cadence: 'Weekly story-lab', focus: 'Long-form editorial · newsletter cadence.' },
+  { mentorId: 'tm-6', menteeIds: ['tm-17', 'tm-27'], cadence: 'Weekly stand-up', focus: 'Budget discipline · vendor trust.' },
+  { mentorId: 'tm-7', menteeIds: ['tm-18', 'tm-28'], cadence: 'Monthly portfolio review', focus: 'Grant writing · research briefs.' },
+  { mentorId: 'tm-8', menteeIds: ['tm-19', 'tm-20', 'tm-29'], cadence: 'Tue & Sat field pairing', focus: 'Plantation drives · campus ops safety.' },
+];
+
+// -----------------------------------------------------
+// Member testimonials
+// -----------------------------------------------------
+
+interface TeamTestimonial {
+  id: string;
+  authorId: string;
+  author: string;
+  role: string;
+  dept: string;
+  color: string;
+  body: string;
+  joined: string;
+}
+
+const TEAM_TESTIMONIALS: TeamTestimonial[] = [
+  {
+    id: 'tt-1',
+    authorId: 'tm-11',
+    author: 'Kavya Iyer',
+    role: 'Event ops',
+    dept: 'Events',
+    color: '#F97316',
+    body: 'Joined with 0 event experience. 8 months later I was running a 400-person hackathon — with a proper run-of-show and a team I trusted. Nobody here lets you hide. Kindly.',
+    joined: 'Aug 2024',
+  },
+  {
+    id: 'tt-2',
+    authorId: 'tm-13',
+    author: 'Rohit Bansal',
+    role: 'RN contributor',
+    dept: 'Technology',
+    color: '#38BDF8',
+    body: 'My first merged PR was 3 lines. The maintainer spent 40 minutes reviewing it. A year later I ran release rotations. The mentorship is real.',
+    joined: 'Oct 2023',
+  },
+  {
+    id: 'tt-3',
+    authorId: 'tm-14',
+    author: 'Ishita Kalra',
+    role: 'Visual designer',
+    dept: 'Design',
+    color: '#F472B6',
+    body: 'I came in from fine-arts, not tech. The club didn\'t treat me like a decoration. My posters got critiqued like code — kindly, honestly, and with a trail.',
+    joined: 'Jan 2024',
+  },
+  {
+    id: 'tt-4',
+    authorId: 'tm-16',
+    author: 'Ananya Pillai',
+    role: 'Content lead',
+    dept: 'Content',
+    color: '#F59E0B',
+    body: 'I wrote three drafts of my first article. The editor didn\'t rewrite it; she made me sit with it. I still use that practice every time I write.',
+    joined: 'Feb 2023',
+  },
+  {
+    id: 'tt-5',
+    authorId: 'tm-18',
+    author: 'Nivedita Rao',
+    role: 'Researcher',
+    dept: 'Research',
+    color: '#A78BFA',
+    body: 'The research wing taught me that a good brief is more honest than a good deck. Our sustainability benchmarks now feed three campus policies.',
+    joined: 'Sep 2023',
+  },
+  {
+    id: 'tt-6',
+    authorId: 'tm-19',
+    author: 'Aarav Menon',
+    role: 'Sustainability lead',
+    dept: 'Sustainability',
+    color: '#22C55E',
+    body: 'First plantation drive: 12 people. Second: 28. Twelfth: 180. Real impact compounds. So does trust.',
+    joined: 'Jun 2022',
+  },
+];
+
+// -----------------------------------------------------
+// Apply-to-join form data
+// -----------------------------------------------------
+
+interface ApplyStep {
+  id: string;
+  emoji: string;
+  title: string;
+  body: string;
+}
+
+const APPLY_STEPS: ApplyStep[] = [
+  { id: 'as-1', emoji: '📝', title: 'Fill the form', body: 'Name, wing of interest, one short paragraph on why Taru.' },
+  { id: 'as-2', emoji: '☕', title: 'Coffee chat', body: 'A 20-minute chat with a wing member. No stakes. We actually listen.' },
+  { id: 'as-3', emoji: '🔧', title: 'Tiny onboarding task', body: 'A real — but small — task in your wing of choice. Paired with a senior.' },
+  { id: 'as-4', emoji: '🌱', title: 'Orientation week', body: 'Meet the council, the rituals, the handbook, the tools. No rush.' },
+  { id: 'as-5', emoji: '🤝', title: 'Welcome email', body: 'You get a personal note, a pair, and a first project in under 2 weeks.' },
+];
+
+// -----------------------------------------------------
 // Component
 // -----------------------------------------------------
 
@@ -1129,6 +1294,218 @@ const TeamScreen: React.FC = () => {
               </TouchableOpacity>
             );
           })}
+        </View>
+      </View>
+    );
+  };
+
+  const renderDeptAnalytics = () => {
+    if (hasFilters) return null;
+    const maxHours = Math.max(...DEPT_ANALYTICS.map((d) => d.hours));
+    return (
+      <View style={styles.sectionBlock}>
+        <View style={styles.sectionHeaderRow}>
+          <Text style={styles.sectionTitle}>📊 Department analytics</Text>
+          <Text style={styles.sectionCaption}>Hours · retention</Text>
+        </View>
+        <View style={styles.analyticsCard}>
+          {DEPT_ANALYTICS.map((d) => {
+            const pct = Math.max(0.06, d.hours / maxHours);
+            return (
+              <View key={d.id} style={styles.analyticsRow}>
+                <View style={styles.analyticsLabelCol}>
+                  <Text style={styles.analyticsName}>{d.name}</Text>
+                  <Text style={styles.analyticsSub}>
+                    {d.headcount} ppl · {d.avgHoursPerMember} hrs/avg · {d.retention}% retained
+                  </Text>
+                </View>
+                <View style={styles.analyticsBarCol}>
+                  <View style={styles.analyticsBarBg}>
+                    <View
+                      style={[
+                        styles.analyticsBarFill,
+                        { width: `${Math.round(pct * 100)}%`, backgroundColor: d.color },
+                      ]}
+                    />
+                  </View>
+                  <Text style={[styles.analyticsValue, { color: d.color }]}>
+                    {d.hours}
+                  </Text>
+                </View>
+              </View>
+            );
+          })}
+        </View>
+      </View>
+    );
+  };
+
+  const renderMentorshipTree = () => {
+    if (hasFilters) return null;
+    return (
+      <View style={styles.sectionBlock}>
+        <View style={styles.sectionHeaderRow}>
+          <Text style={styles.sectionTitle}>🌳 Mentorship tree</Text>
+          <Text style={styles.sectionCaption}>{MENTORSHIP_TREE.length} mentors</Text>
+        </View>
+        {MENTORSHIP_TREE.map((n) => {
+          const mentor = TEAM_MEMBERS.find((m) => m.id === n.mentorId);
+          if (!mentor) return null;
+          const dept = DEPARTMENTS.find((d) => d.id === mentor.department);
+          const mentees = n.menteeIds
+            .map((id) => TEAM_MEMBERS.find((m) => m.id === id))
+            .filter(Boolean) as ExtTeamMember[];
+          return (
+            <View
+              key={n.mentorId}
+              style={[
+                styles.mentorCard,
+                { borderLeftColor: dept?.color ?? Colors.tech.neonBlue },
+              ]}
+            >
+              <TouchableOpacity
+                onPress={() => openMember(mentor)}
+                activeOpacity={0.85}
+                style={styles.mentorHeader}
+              >
+                <View
+                  style={[
+                    styles.mentorAvatar,
+                    { backgroundColor: (dept?.color ?? Colors.tech.neonBlue) + '33' },
+                  ]}
+                >
+                  <Text style={styles.mentorAvatarText}>
+                    {mentor.name
+                      .split(' ')
+                      .map((p) => p[0])
+                      .slice(0, 2)
+                      .join('')
+                      .toUpperCase()}
+                  </Text>
+                </View>
+                <View style={{ flex: 1 }}>
+                  <Text style={styles.mentorName}>{mentor.name}</Text>
+                  <Text style={styles.mentorRole} numberOfLines={1}>
+                    {mentor.role} · {dept?.name}
+                  </Text>
+                </View>
+                <View style={styles.mentorCountPill}>
+                  <Text style={styles.mentorCountText}>{mentees.length} mentees</Text>
+                </View>
+              </TouchableOpacity>
+              <Text style={styles.mentorFocus}>{n.focus}</Text>
+              <Text style={styles.mentorCadence}>⏱ {n.cadence}</Text>
+              <View style={styles.menteeRow}>
+                {mentees.map((m) => {
+                  const mdept = DEPARTMENTS.find((d) => d.id === m.department);
+                  return (
+                    <TouchableOpacity
+                      key={m.id}
+                      onPress={() => openMember(m)}
+                      activeOpacity={0.85}
+                      style={styles.menteeChip}
+                    >
+                      <View
+                        style={[
+                          styles.menteeAvatar,
+                          { backgroundColor: (mdept?.color ?? '#555') + '33' },
+                        ]}
+                      >
+                        <Text style={styles.menteeAvatarText}>
+                          {m.name
+                            .split(' ')
+                            .map((p) => p[0])
+                            .slice(0, 2)
+                            .join('')
+                            .toUpperCase()}
+                        </Text>
+                      </View>
+                      <Text style={styles.menteeName} numberOfLines={1}>
+                        {m.name.split(' ')[0]}
+                      </Text>
+                    </TouchableOpacity>
+                  );
+                })}
+              </View>
+            </View>
+          );
+        })}
+      </View>
+    );
+  };
+
+  const renderTeamTestimonials = () => {
+    if (hasFilters) return null;
+    return (
+      <View style={styles.sectionBlock}>
+        <View style={styles.sectionHeaderRow}>
+          <Text style={styles.sectionTitle}>💬 Voices from the team</Text>
+          <Text style={styles.sectionCaption}>Unedited</Text>
+        </View>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.teamTestimonialScroll}
+        >
+          {TEAM_TESTIMONIALS.map((t) => (
+            <View key={t.id} style={styles.teamTestimonialCard}>
+              <LinearGradient
+                colors={[t.color + '33', '#0A0F14']}
+                style={styles.teamTestimonialGradient}
+              >
+                <Text style={styles.teamTestimonialQuote}>“{t.body}”</Text>
+                <View style={styles.teamTestimonialFooter}>
+                  <View
+                    style={[
+                      styles.teamTestimonialDot,
+                      { backgroundColor: t.color },
+                    ]}
+                  />
+                  <View style={{ flex: 1 }}>
+                    <Text style={styles.teamTestimonialName}>{t.author}</Text>
+                    <Text style={styles.teamTestimonialRole}>
+                      {t.role} · {t.dept} · {t.joined}
+                    </Text>
+                  </View>
+                </View>
+              </LinearGradient>
+            </View>
+          ))}
+        </ScrollView>
+      </View>
+    );
+  };
+
+  const renderApplyToJoin = () => {
+    if (hasFilters) return null;
+    return (
+      <View style={styles.sectionBlock}>
+        <View style={styles.sectionHeaderRow}>
+          <Text style={styles.sectionTitle}>🚪 How to join</Text>
+          <Text style={styles.sectionCaption}>5 steps · ~2 weeks</Text>
+        </View>
+        <View style={styles.applyCard}>
+          {APPLY_STEPS.map((s, idx) => (
+            <View key={s.id} style={styles.applyStep}>
+              <View style={styles.applyStepBadge}>
+                <Text style={styles.applyStepEmoji}>{s.emoji}</Text>
+                <Text style={styles.applyStepIndex}>{idx + 1}</Text>
+              </View>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.applyStepTitle}>{s.title}</Text>
+                <Text style={styles.applyStepBody}>{s.body}</Text>
+              </View>
+            </View>
+          ))}
+          <TouchableOpacity
+            activeOpacity={0.85}
+            style={styles.applyCTA}
+            onPress={() =>
+              Linking.openURL('mailto:hello@taruguardians.org?subject=I%20want%20to%20join%20Taru')
+            }
+          >
+            <Text style={styles.applyCTAText}>✉ Start application</Text>
+          </TouchableOpacity>
         </View>
       </View>
     );
@@ -1613,7 +1990,11 @@ const TeamScreen: React.FC = () => {
       {renderDepartments()}
       {renderHighlights()}
       {renderLeadershipBoard()}
+      {renderDeptAnalytics()}
       {renderTopContributors()}
+      {renderMentorshipTree()}
+      {renderTeamTestimonials()}
+      {renderApplyToJoin()}
       {renderListHeader()}
     </View>
   );
@@ -2214,6 +2595,166 @@ const styles = StyleSheet.create({
   sheetLabel: { flex: 1, color: Colors.text.secondary, fontSize: 13 },
   sheetLabelActive: { color: Colors.tech.neonBlue, fontWeight: '800' },
   sheetCheck: { color: Colors.tech.neonBlue, fontSize: 16, fontWeight: '800' },
+
+  // Department analytics
+  analyticsCard: {
+    marginHorizontal: HORIZONTAL_PADDING,
+    backgroundColor: '#0D141B',
+    borderRadius: CARD_RADIUS,
+    padding: 14,
+    borderWidth: 1,
+    borderColor: '#ffffff10',
+  },
+  analyticsRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ffffff0E',
+  },
+  analyticsLabelCol: {
+    width: IS_SMALL ? 110 : 130,
+    marginRight: 10,
+  },
+  analyticsName: { color: Colors.text.primary, fontSize: 12, fontWeight: '800' },
+  analyticsSub: { color: Colors.text.muted, fontSize: 10, marginTop: 2 },
+  analyticsBarCol: { flex: 1, flexDirection: 'row', alignItems: 'center' },
+  analyticsBarBg: {
+    flex: 1,
+    height: 8,
+    backgroundColor: '#ffffff12',
+    borderRadius: 6,
+    overflow: 'hidden',
+  },
+  analyticsBarFill: { height: 8, borderRadius: 6 },
+  analyticsValue: {
+    fontSize: 11,
+    fontWeight: '800',
+    marginLeft: 10,
+    minWidth: 36,
+    textAlign: 'right',
+  },
+
+  // Mentorship tree
+  mentorCard: {
+    marginHorizontal: HORIZONTAL_PADDING,
+    marginBottom: 10,
+    padding: 14,
+    borderRadius: 16,
+    backgroundColor: '#0D141B',
+    borderLeftWidth: 3,
+  },
+  mentorHeader: { flexDirection: 'row', alignItems: 'center' },
+  mentorAvatar: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 12,
+  },
+  mentorAvatarText: { color: Colors.text.primary, fontSize: 13, fontWeight: '900' },
+  mentorName: { color: Colors.text.primary, fontSize: 14, fontWeight: '800' },
+  mentorRole: { color: Colors.text.muted, fontSize: 11, marginTop: 2 },
+  mentorCountPill: {
+    backgroundColor: '#ffffff14',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 8,
+  },
+  mentorCountText: { color: Colors.text.secondary, fontSize: 10, fontWeight: '800' },
+  mentorFocus: { color: Colors.text.secondary, fontSize: 12, marginTop: 8, lineHeight: 17 },
+  mentorCadence: { color: Colors.accent.softGold, fontSize: 11, marginTop: 4, fontWeight: '700' },
+  menteeRow: { flexDirection: 'row', flexWrap: 'wrap', marginTop: 10 },
+  menteeChip: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#ffffff0E',
+    paddingVertical: 4,
+    paddingHorizontal: 8,
+    borderRadius: 10,
+    marginRight: 8,
+    marginBottom: 6,
+  },
+  menteeAvatar: {
+    width: 22,
+    height: 22,
+    borderRadius: 11,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 6,
+  },
+  menteeAvatarText: { color: Colors.text.primary, fontSize: 9, fontWeight: '900' },
+  menteeName: { color: Colors.text.secondary, fontSize: 11, fontWeight: '700' },
+
+  // Team testimonials
+  teamTestimonialScroll: { paddingLeft: HORIZONTAL_PADDING, paddingRight: 10 },
+  teamTestimonialCard: {
+    width: IS_SMALL ? 260 : 300,
+    marginRight: 12,
+  },
+  teamTestimonialGradient: {
+    borderRadius: 18,
+    padding: 16,
+    borderWidth: 1,
+    borderColor: '#ffffff18',
+    minHeight: 220,
+  },
+  teamTestimonialQuote: {
+    color: Colors.text.primary,
+    fontStyle: 'italic',
+    fontSize: 13,
+    lineHeight: 20,
+  },
+  teamTestimonialFooter: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 16,
+  },
+  teamTestimonialDot: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    marginRight: 10,
+  },
+  teamTestimonialName: { color: Colors.text.primary, fontSize: 12, fontWeight: '800' },
+  teamTestimonialRole: { color: Colors.text.muted, fontSize: 11, marginTop: 2 },
+
+  // Apply to join
+  applyCard: {
+    marginHorizontal: HORIZONTAL_PADDING,
+    backgroundColor: '#0D141B',
+    borderRadius: CARD_RADIUS,
+    padding: 16,
+    borderWidth: 1,
+    borderColor: '#ffffff10',
+  },
+  applyStep: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    paddingVertical: 10,
+  },
+  applyStepBadge: {
+    width: 44,
+    height: 44,
+    borderRadius: 12,
+    backgroundColor: '#ffffff14',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 12,
+  },
+  applyStepEmoji: { fontSize: 18 },
+  applyStepIndex: { color: Colors.text.muted, fontSize: 9, fontWeight: '800', marginTop: 2 },
+  applyStepTitle: { color: Colors.text.primary, fontSize: 13, fontWeight: '800' },
+  applyStepBody: { color: Colors.text.secondary, fontSize: 11, marginTop: 3, lineHeight: 15 },
+  applyCTA: {
+    backgroundColor: Colors.tech.neonBlue,
+    borderRadius: 14,
+    paddingVertical: 12,
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  applyCTAText: { color: '#001018', fontSize: 13, fontWeight: '900', letterSpacing: 0.5 },
 });
 
 export default TeamScreen;
