@@ -1937,6 +1937,105 @@ const HOME_FOUNDER_NOTES: HomeFounderNote[] = [
   { id: 'hfn-7', year: '2025', excerpt: 'Watched a first-year teach a fresher how to mount a poster · the way I had taught her · the way someone had taught me. Three generations in one gesture. The grove grows by passing a thing on · gently.', writer: 'Nidhi P. · incumbent lead',   color: '#EF4444', emoji: '🪔' },
 ];
 
+// =====================================================
+// Phase 3at: deeper home structures — round 5
+// =====================================================
+
+interface HomeDawnRitual {
+  id: string;
+  name: string;
+  window: string;
+  practice: string;
+  color: string;
+  emoji: string;
+}
+
+const HOME_DAWN_RITUALS: HomeDawnRitual[] = [
+  { id: 'hdr-1', name: 'Sapling check · first hour',            window: '6:30–7:30 AM · Mon–Fri',       practice: 'Two members walk the grove · water new saplings · write one line in the log.',                color: '#22C55E', emoji: '🌿' },
+  { id: 'hdr-2', name: 'Quiet desk · before the rush',             window: '7:00–8:00 AM · daily',           practice: 'Anyone can sit · no talking · no laptops · just notebooks · tea in the corner.',                    color: '#00D4FF', emoji: '📓' },
+  { id: 'hdr-3', name: 'Bird log · birdsong count',                  window: '6:45–7:15 AM · weekends',           practice: 'Count species heard in 30 min · photo if possible · post to community board.',                         color: '#A78BFA', emoji: '🐦' },
+  { id: 'hdr-4', name: 'Fresh-water refill run',                         window: '7:15 AM · daily',                     practice: 'Refill the two water coolers · clean the filters · replace paper cups with the steel rack.',              color: '#F472B6', emoji: '🚰' },
+  { id: 'hdr-5', name: 'Reading hour · before class',                        window: '7:30–8:30 AM · Mon/Wed/Fri',            practice: 'One member reads aloud from a shared book · 20 min · followed by 20 min silent reading.',                      color: '#FFD166', emoji: '📖' },
+  { id: 'hdr-6', name: 'Mentor office hour · walk-in',                             window: '8:00–9:00 AM · Tue/Thu',                       practice: 'Open-door · any member · any question · 15-min slots · coffee provided.',                                          color: '#F59E0B', emoji: '🪑' },
+  { id: 'hdr-7', name: 'Morning roll-call · light check-in',                              window: '9:00 AM · daily',                                   practice: 'One-word check-in · weather report · one thing you are looking forward to today.',                                     color: '#EF4444', emoji: '🌅' },
+];
+
+interface HomeDuskRitual {
+  id: string;
+  name: string;
+  window: string;
+  practice: string;
+  color: string;
+  emoji: string;
+}
+
+const HOME_DUSK_RITUALS: HomeDuskRitual[] = [
+  { id: 'hdk-1', name: 'Sunset pause · all screens off',              window: '6:00 PM · daily',                  practice: 'Five minutes · anyone walking out can pause · watch the sky · not required · open to all.',                  color: '#F59E0B', emoji: '🌅' },
+  { id: 'hdk-2', name: 'Close-up of the grove',                          window: '6:30 PM · Sun–Thu',                 practice: 'Walk the grove · check for pest damage · water if soil dry · lock the back gate.',                             color: '#22C55E', emoji: '🌳' },
+  { id: 'hdk-3', name: 'Newspaper of the day · read aloud',                    window: '7:00–7:30 PM · Tue/Thu',              practice: 'One headline · one editorial · one positive story · discussion 10 min · tea after.',                                  color: '#00D4FF', emoji: '📰' },
+  { id: 'hdk-4', name: 'Thank-you writing',                                         window: '7:30 PM · Fri',                         practice: 'Write a 3-line thank-you to someone from the week · post card · or hand-delivered next day.',                                color: '#F472B6', emoji: '💌' },
+  { id: 'hdk-5', name: 'Silence before sleep · campus wide',                              window: '9:00 PM · daily',                        practice: 'Ten minutes · lights low · music off · a shared silence that settles the club.',                                                color: '#A78BFA', emoji: '🌙' },
+  { id: 'hdk-6', name: 'Night-walk home · buddy rule',                                          window: '9:30–10:00 PM · daily',                       practice: 'No one walks back alone · buddies assigned by rotating list · routes checked for light + safety.',                          color: '#FFD166', emoji: '🫱' },
+  { id: 'hdk-7', name: 'Log of the day · one line',                                                  window: '10:00 PM · daily',                                  practice: 'Council member writes one line in the day-log · what happened · what mattered · what to remember.',                              color: '#EF4444', emoji: '📔' },
+];
+
+interface HomeMicroMoment {
+  id: string;
+  moment: string;
+  where: string;
+  whenYouNotice: string;
+  color: string;
+  emoji: string;
+}
+
+const HOME_MICRO_MOMENTS: HomeMicroMoment[] = [
+  { id: 'hmm-1', moment: 'The jasmine flowers at the side gate',                   where: 'Side gate · near the workshop shed',                         whenYouNotice: 'Late Feb to April · strongest after 4 PM · a short walk past them changes the hour.',                    color: '#F472B6', emoji: '🌸' },
+  { id: 'hmm-2', moment: 'The old fan creak in room 204',                                 where: 'Room 204 · third fan from the door',                                whenYouNotice: 'June heat · between 2 and 3 PM · it keeps time better than the clock.',                                            color: '#F59E0B', emoji: '🌀' },
+  { id: 'hmm-3', moment: 'The cricket chirp at the lawn edge',                                      where: 'Back lawn · under the gulmohar tree',                                     whenYouNotice: 'Early monsoon · 7 PM onward · it returns every year · one of our oldest residents.',                                  color: '#22C55E', emoji: '🦗' },
+  { id: 'hmm-4', moment: 'The bell from the nearby temple',                                                  where: 'From the east boundary wall',                                                    whenYouNotice: 'Every morning at 7 AM · carries through if the wind is from the east · marks the start of the grove walk.',                 color: '#00D4FF', emoji: '🔔' },
+  { id: 'hmm-5', moment: 'The paper-plane shadow on the library wall',                                                 where: 'South-facing window · library annex',                                                        whenYouNotice: 'Between 11 AM and 1 PM · on clear days · from the window grille · it looks like a bird flying',                      color: '#A78BFA', emoji: '📐' },
+  { id: 'hmm-6', moment: 'The rain-smell from the east fields',                                                              where: 'Beyond the green gate · open playground',                                                                 whenYouNotice: 'First rain of the season · 15 min before clouds arrive · it travels in on the wind like a warning.',                     color: '#FFD166', emoji: '🌧️' },
+  { id: 'hmm-7', moment: 'The pencil-on-wood sound from the carpenter\'s stall',                                                            where: 'Shop outside the back gate',                                                                                whenYouNotice: 'Saturday mornings · between 9 and 11 · it is the sound of things being mended · worth a visit',                            color: '#EF4444', emoji: '🪚' },
+];
+
+interface HomeSimplePractice {
+  id: string;
+  name: string;
+  daily: string;
+  monthly: string;
+  color: string;
+  emoji: string;
+}
+
+const HOME_SIMPLE_PRACTICES: HomeSimplePractice[] = [
+  { id: 'hsp-1', name: 'Carry a reusable cup',              daily: 'One cup · washed · carried everywhere · refill from campus water points.',                          monthly: 'Track number of disposable cups avoided · share total on the guardian board.',                            color: '#22C55E', emoji: '🥤' },
+  { id: 'hsp-2', name: 'Write one note a week',                  daily: 'Not to-dos · to someone · short · a thank-you · or a "I thought of you" ·.',                              monthly: 'Aim for 4 · keep carbon copy in the note-keeper · read at reunions.',                                          color: '#F472B6', emoji: '💌' },
+  { id: 'hsp-3', name: 'Walk without a phone · 15 min',                   daily: 'After lunch · 15 min · phone in locker · ground under feet · pay attention to things.',                               monthly: 'Report back one thing you noticed · share on the micro-moments board.',                                              color: '#F59E0B', emoji: '🚶' },
+  { id: 'hsp-4', name: 'Read a paper newspaper',                                daily: 'Library has 4 · turn the pages · fold it · pass it on · don\'t scroll past.',                                           monthly: 'Pin one story that mattered · write 3 lines about it · share in weekly digest.',                                         color: '#00D4FF', emoji: '📰' },
+  { id: 'hsp-5', name: 'Say hello to 3 people',                                       daily: 'Three new-ish folks · not your circle · eye-contact · a real hello · no phones.',                                                monthly: 'Count · share highest reach · set next-month goal · kindness scales.',                                                        color: '#A78BFA', emoji: '👋' },
+  { id: 'hsp-6', name: 'Put one thing back you didn\'t use',                                    daily: 'Book · cup · chair · cable · anything · before you leave · restore the space.',                                                     monthly: 'Volunteer 1 hr in the restore corner · help others un-do the day.',                                                          color: '#FFD166', emoji: '↩️' },
+  { id: 'hsp-7', name: 'Water something alive',                                                      daily: 'One plant · one bird bowl · one tree · sometimes nothing needs water · go anyway · notice.',                                                    monthly: 'Log on the grove board · keep the grove schedule honest · rotate the task.',                                                                color: '#EF4444', emoji: '💧' },
+];
+
+interface HomeKindnessLedger {
+  id: string;
+  deed: string;
+  doer: string;
+  witnessed: string;
+  color: string;
+  emoji: string;
+}
+
+const HOME_KINDNESS_LEDGER: HomeKindnessLedger[] = [
+  { id: 'hkl-1', deed: 'Carried 7 chairs up four flights · alone · because the volunteer team was short',                      doer: 'Aarav · 2nd year · web wing',                           witnessed: 'By two councillors who tried to help · he said "I started · I\'ll finish" · and did.',                    color: '#00D4FF', emoji: '🪑' },
+  { id: 'hkl-2', deed: 'Stayed back after a workshop to clean · when nobody had asked',                                           doer: 'Meera · 1st year · content wing',                            witnessed: 'By the security uncle at 10 PM · who brought her tea · she refused · he insisted · they sat together · he talked about his grandkids.',  color: '#F59E0B', emoji: '🧹' },
+  { id: 'hkl-3', deed: 'Wrote 30 handwritten thank-you notes after the bonfire · took four evenings',                                   doer: 'Rehan · council chair',                                              witnessed: 'By the postman who realized what was happening · gave a small discount on stamps · asked to see one note · cried a little.',                   color: '#A78BFA', emoji: '💌' },
+  { id: 'hkl-4', deed: 'Gave up his seat on the stage panel to a first-year speaker · without being asked',                                   doer: 'Kabir · senior · PR wing',                                                   witnessed: 'By the audience · who clapped for the swap more than for any talk that day · it became the moment of the event.',                                     color: '#F472B6', emoji: '🎤' },
+  { id: 'hkl-5', deed: 'Bought groceries for a classmate going through a hard week · didn\'t tell anyone',                                              doer: 'Tanvi · graphic design wing',                                                          witnessed: 'By the classmate · 6 months later · who mentioned it once · and Tanvi denied it · smiled · and deflected · which is how we do it.',                  color: '#FFD166', emoji: '🛒' },
+  { id: 'hkl-6', deed: 'Stayed up till 3 AM on exam week helping a junior debug · went to her own exam on 2 hrs sleep · didn\'t complain',                             doer: 'Priya · 4th year · app wing',                                                                     witnessed: 'By the junior who passed · who topped the class · who wrote Priya a long letter that now hangs in the mentor corner.',                                    color: '#22C55E', emoji: '💻' },
+  { id: 'hkl-7', deed: 'Walked a stranger home from campus late at night · 2 km out of way · because it was safer',                                                            doer: 'Nidhi · alumni · visiting for event',                                                                            witnessed: 'By the stranger who sent a thank-you card a week later · enclosed ₹500 · we forwarded to the safe-walk fund · never told Nidhi who lives in another city.', color: '#EF4444', emoji: '🫱' },
+];
+
 const HomeScreen: React.FC = () => {
   // ------ State ------
   const [refreshing, setRefreshing] = useState(false);
@@ -3905,6 +4004,106 @@ const HomeScreen: React.FC = () => {
     </View>
   );
 
+  // ------ Phase 3at: round 5 home blocks ------
+  const renderDawnRituals = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🌅 Dawn rituals · how the club wakes up</Text>
+        <Text style={styles.sectionCaption}>{HOME_DAWN_RITUALS.length} rituals</Text>
+      </View>
+      {HOME_DAWN_RITUALS.map((r) => (
+        <View key={r.id} style={[styles.hdrCard, { borderLeftColor: r.color }]}>
+          <View style={styles.hdrTopRow}>
+            <Text style={styles.hdrEmoji}>{r.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.hdrName} numberOfLines={1}>{r.name}</Text>
+              <Text style={[styles.hdrWindow, { color: r.color }]}>{r.window}</Text>
+            </View>
+          </View>
+          <Text style={styles.hdrPractice} numberOfLines={3}>{r.practice}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderDuskRituals = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🌙 Dusk rituals · how the club settles</Text>
+        <Text style={styles.sectionCaption}>{HOME_DUSK_RITUALS.length} rituals</Text>
+      </View>
+      {HOME_DUSK_RITUALS.map((r) => (
+        <View key={r.id} style={[styles.hdkCard, { borderLeftColor: r.color }]}>
+          <View style={styles.hdkTopRow}>
+            <Text style={styles.hdkEmoji}>{r.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.hdkName} numberOfLines={1}>{r.name}</Text>
+              <Text style={[styles.hdkWindow, { color: r.color }]}>{r.window}</Text>
+            </View>
+          </View>
+          <Text style={styles.hdkPractice} numberOfLines={3}>{r.practice}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderMicroMoments = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🌸 Micro-moments · small things we keep noticing</Text>
+        <Text style={styles.sectionCaption}>{HOME_MICRO_MOMENTS.length} moments</Text>
+      </View>
+      {HOME_MICRO_MOMENTS.map((m) => (
+        <View key={m.id} style={[styles.hmmCard, { borderLeftColor: m.color }]}>
+          <View style={styles.hmmTopRow}>
+            <Text style={styles.hmmEmoji}>{m.emoji}</Text>
+            <Text style={styles.hmmMoment} numberOfLines={2}>{m.moment}</Text>
+          </View>
+          <Text style={[styles.hmmWhere, { color: m.color }]} numberOfLines={1}>{m.where}</Text>
+          <Text style={styles.hmmWhen} numberOfLines={3}>{m.whenYouNotice}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderSimplePractices = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>✨ Simple practices · seven habits we quietly hold</Text>
+        <Text style={styles.sectionCaption}>{HOME_SIMPLE_PRACTICES.length} practices</Text>
+      </View>
+      {HOME_SIMPLE_PRACTICES.map((p) => (
+        <View key={p.id} style={[styles.hspCard, { borderLeftColor: p.color }]}>
+          <View style={styles.hspTopRow}>
+            <Text style={styles.hspEmoji}>{p.emoji}</Text>
+            <Text style={styles.hspName} numberOfLines={1}>{p.name}</Text>
+          </View>
+          <Text style={styles.hspDaily} numberOfLines={3}>daily · {p.daily}</Text>
+          <Text style={[styles.hspMonthly, { color: p.color }]} numberOfLines={2}>monthly · {p.monthly}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderKindnessLedger = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🫱 Kindness ledger · small acts we don&apos;t forget</Text>
+        <Text style={styles.sectionCaption}>{HOME_KINDNESS_LEDGER.length} entries</Text>
+      </View>
+      {HOME_KINDNESS_LEDGER.map((k) => (
+        <View key={k.id} style={[styles.hklCard, { borderLeftColor: k.color }]}>
+          <View style={styles.hklTopRow}>
+            <Text style={styles.hklEmoji}>{k.emoji}</Text>
+            <Text style={styles.hklDeed} numberOfLines={3}>{k.deed}</Text>
+          </View>
+          <Text style={[styles.hklDoer, { color: k.color }]} numberOfLines={1}>— {k.doer}</Text>
+          <Text style={styles.hklWitnessed} numberOfLines={4}>{k.witnessed}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
   const renderDailyBeacons = () => (
     <View style={styles.sectionBlock}>
       <View style={styles.sectionHeaderRow}>
@@ -4129,6 +4328,11 @@ const HomeScreen: React.FC = () => {
         {renderKindlingKits()}
         {renderQuietWins()}
         {renderFounderNotes()}
+        {renderDawnRituals()}
+        {renderDuskRituals()}
+        {renderMicroMoments()}
+        {renderSimplePractices()}
+        {renderKindnessLedger()}
         {renderSpotlights()}
         {renderCollab()}
         {renderClubValues()}
@@ -5530,6 +5734,46 @@ const styles = StyleSheet.create({
   hfnEmoji: { fontSize: 24 },
   hfnExcerpt: { color: Colors.text.primary, fontSize: 13, lineHeight: 19, marginTop: 10, fontStyle: 'italic' },
   hfnWriter: { color: Colors.accent.softGold, fontSize: 11, marginTop: 8, fontWeight: '700' },
+
+  // --- Phase 3at: dawn rituals ---
+  hdrCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  hdrTopRow: { flexDirection: 'row', alignItems: 'center' },
+  hdrEmoji: { fontSize: 22, marginRight: 10 },
+  hdrName: { color: Colors.text.primary, fontSize: 13, fontWeight: '900' },
+  hdrWindow: { fontSize: 11, fontWeight: '700', marginTop: 2 },
+  hdrPractice: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8, paddingLeft: 32 },
+
+  // --- Phase 3at: dusk rituals ---
+  hdkCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  hdkTopRow: { flexDirection: 'row', alignItems: 'center' },
+  hdkEmoji: { fontSize: 22, marginRight: 10 },
+  hdkName: { color: Colors.text.primary, fontSize: 13, fontWeight: '900' },
+  hdkWindow: { fontSize: 11, fontWeight: '700', marginTop: 2 },
+  hdkPractice: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8, paddingLeft: 32 },
+
+  // --- Phase 3at: micro-moments ---
+  hmmCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  hmmTopRow: { flexDirection: 'row', alignItems: 'center' },
+  hmmEmoji: { fontSize: 22, marginRight: 10 },
+  hmmMoment: { color: Colors.text.primary, fontSize: 13, fontWeight: '900', flex: 1, lineHeight: 17 },
+  hmmWhere: { fontSize: 11, fontWeight: '700', marginTop: 8, paddingLeft: 32 },
+  hmmWhen: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32, fontStyle: 'italic' },
+
+  // --- Phase 3at: simple practices ---
+  hspCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  hspTopRow: { flexDirection: 'row', alignItems: 'center' },
+  hspEmoji: { fontSize: 22, marginRight: 10 },
+  hspName: { color: Colors.text.primary, fontSize: 13, fontWeight: '900', flex: 1 },
+  hspDaily: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8, paddingLeft: 32 },
+  hspMonthly: { fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32, fontWeight: '700' },
+
+  // --- Phase 3at: kindness ledger ---
+  hklCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 14, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  hklTopRow: { flexDirection: 'row', alignItems: 'flex-start' },
+  hklEmoji: { fontSize: 22, marginRight: 10, marginTop: 2 },
+  hklDeed: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', flex: 1, lineHeight: 17 },
+  hklDoer: { fontSize: 11, marginTop: 8, fontWeight: '800', paddingLeft: 32 },
+  hklWitnessed: { color: Colors.text.muted, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32, fontStyle: 'italic' },
 });
 
 export default HomeScreen;
