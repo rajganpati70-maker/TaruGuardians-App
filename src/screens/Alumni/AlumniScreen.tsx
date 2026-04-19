@@ -1255,6 +1255,267 @@ const MENTORSHIP_SLOTS: MentorshipSlot[] = ALUMNI_DATA
 
 const ALUMNI_PLEDGES = ALUMNI_DATA.filter((a) => !!a.sustainabilityPledge).slice(0, 10);
 
+// -----------------------------------------------------
+// City chapters / regional hubs
+// -----------------------------------------------------
+
+interface ChapterHub {
+  id: string;
+  city: string;
+  country: string;
+  emoji: string;
+  color: string;
+  founded: string;
+  anchors: string[];
+  members: number;
+  cadence: string;
+  meetup: string;
+  vibe: string;
+}
+
+const CHAPTERS: ChapterHub[] = [
+  {
+    id: 'ch-blr',
+    city: 'Bengaluru',
+    country: 'India',
+    emoji: '🌆',
+    color: '#4CAF50',
+    founded: '2022',
+    anchors: ['Meera Iyer · 2019', 'Rahul Das · 2020'],
+    members: 92,
+    cadence: 'Every 1st Saturday · 10:00–12:30',
+    meetup: 'Cubbon Park · Bandstand corner',
+    vibe: 'Sunday photo walks, alumni brunches, sapling drives at Turahalli.',
+  },
+  {
+    id: 'ch-hyd',
+    city: 'Hyderabad',
+    country: 'India',
+    emoji: '🏛️',
+    color: '#38BDF8',
+    founded: '2023',
+    anchors: ['Aditi Pawar · 2020'],
+    members: 47,
+    cadence: 'Every 2nd Sunday · 16:00–18:30',
+    meetup: 'KBR Park · Main gate',
+    vibe: 'Slow walks. Biriyani afterwards. A running book club since 2023.',
+  },
+  {
+    id: 'ch-pune',
+    city: 'Pune',
+    country: 'India',
+    emoji: '🏞️',
+    color: '#F59E0B',
+    founded: '2023',
+    anchors: ['Ishaan Kulkarni · 2021'],
+    members: 38,
+    cadence: 'Fortnightly Sundays',
+    meetup: 'ARAI Hill (monsoon) · FC Road cafes (rest of year)',
+    vibe: 'Monsoon treks, ghazal nights, FC Road cafes the rest of the year.',
+  },
+  {
+    id: 'ch-mum',
+    city: 'Mumbai',
+    country: 'India',
+    emoji: '🌊',
+    color: '#A78BFA',
+    founded: '2024',
+    anchors: ['Zara Qureshi · 2022', 'Raghav Sethi · 2019'],
+    members: 64,
+    cadence: 'Monthly · last Sunday',
+    meetup: 'Worli Sea Face (sunsets) · Bandra cafes',
+    vibe: 'Sunsets by the sea-face, and a rotating cohort of sector-specific hangs.',
+  },
+  {
+    id: 'ch-del',
+    city: 'Delhi NCR',
+    country: 'India',
+    emoji: '🌳',
+    color: '#F472B6',
+    founded: '2022',
+    anchors: ['Kanishka Arora · 2018', 'Farhan Siddiqui · 2023'],
+    members: 71,
+    cadence: 'Monthly · 1st Sunday',
+    meetup: 'Lodhi Garden · Tomb cluster',
+    vibe: 'Lodhi walks, climate-talks and winter bookbinding meets.',
+  },
+  {
+    id: 'ch-chn',
+    city: 'Chennai',
+    country: 'India',
+    emoji: '🏖️',
+    color: '#22C55E',
+    founded: '2024',
+    anchors: ['Divya Rajagopal · 2021'],
+    members: 29,
+    cadence: 'Monthly · 2nd Saturday',
+    meetup: 'Besant Nagar · Elliot\'s Beach',
+    vibe: 'Beach cleanups, filter coffee, very slow Tamil literature readings.',
+  },
+  {
+    id: 'ch-sfo',
+    city: 'SF Bay Area',
+    country: 'USA',
+    emoji: '🌉',
+    color: '#6366F1',
+    founded: '2024',
+    anchors: ['Tanvi Shah · 2019', 'Rohan Menon · 2020'],
+    members: 31,
+    cadence: 'Monthly · rotating hosts',
+    meetup: 'Dolores Park · Mission St. cafés',
+    vibe: 'Friendly weekend meet-ups. Quarterly hiring AMAs for new grads.',
+  },
+  {
+    id: 'ch-ldn',
+    city: 'London',
+    country: 'UK',
+    emoji: '☂️',
+    color: '#F87171',
+    founded: '2025',
+    anchors: ['Harsh Bhargava · 2020'],
+    members: 18,
+    cadence: 'Monthly · 3rd Saturday',
+    meetup: 'Regent\'s Park · Primrose Hill slope',
+    vibe: 'Slow park lunches, climate policy chats, and actual British weather.',
+  },
+  {
+    id: 'ch-sgp',
+    city: 'Singapore',
+    country: 'Singapore',
+    emoji: '🌴',
+    color: '#FBBF24',
+    founded: '2024',
+    anchors: ['Nandini Pillai · 2021'],
+    members: 22,
+    cadence: 'Fortnightly · Sunday mornings',
+    meetup: 'Botanic Gardens · Swan Lake',
+    vibe: 'Sunday mornings at the Botanic Gardens, and a sprawling WhatsApp group.',
+  },
+  {
+    id: 'ch-blr-west',
+    city: 'Bengaluru · West',
+    country: 'India',
+    emoji: '🌿',
+    color: '#EC4899',
+    founded: '2025',
+    anchors: ['Varun Nambiar · 2022'],
+    members: 26,
+    cadence: 'Monthly · 3rd Sunday',
+    meetup: 'Kaikondrahalli Lake',
+    vibe: 'Lake cleanups, bird counts, post-walk iced filter coffee.',
+  },
+];
+
+// -----------------------------------------------------
+// Career pivots — stories of non-obvious moves
+// -----------------------------------------------------
+
+interface CareerPivot {
+  id: string;
+  from: string;
+  to: string;
+  alumniId: string;
+  year: string;
+  story: string;
+  takeaway: string;
+  icon: string;
+  color: string;
+}
+
+const CAREER_PIVOTS: CareerPivot[] = [
+  {
+    id: 'cp-1',
+    alumniId: 'al-1',
+    from: 'Backend at fintech',
+    to: 'Climate-data platform lead',
+    year: '2024',
+    story: 'Shipped the club sustainability dashboard in senior year. Two years later, he rebuilt it for a real emissions-data startup.',
+    takeaway: 'The club\'s dashboards were the portfolio that mattered.',
+    icon: '🌡️',
+    color: '#22C55E',
+  },
+  {
+    id: 'cp-2',
+    alumniId: 'al-5',
+    from: 'Consulting',
+    to: 'Co-founded climate fund',
+    year: '2025',
+    story: 'Spent 18 months reading every impact-VC deck. Raised a modest early-stage climate fund out of Bengaluru. Still writes monthly LP letters longhand.',
+    takeaway: 'Patience compounds faster than a Series A.',
+    icon: '💼',
+    color: '#F59E0B',
+  },
+  {
+    id: 'cp-3',
+    alumniId: 'al-3',
+    from: 'Frontend dev',
+    to: 'Design systems engineer',
+    year: '2023',
+    story: 'Co-authored the club\'s design tokens. Got pulled into a full design-systems role at her company. Still ships the quarterly club kit.',
+    takeaway: 'Ownership in open source creates the career you want.',
+    icon: '🎨',
+    color: '#F472B6',
+  },
+  {
+    id: 'cp-4',
+    alumniId: 'al-7',
+    from: 'ML research intern',
+    to: 'Field sustainability researcher',
+    year: '2024',
+    story: 'Decided the lab wasn\'t where the problems lived. Works out of 4 villages in North Karnataka now. Publishes quarterly field briefs.',
+    takeaway: 'The shortest loop between problem and fix is sometimes the field.',
+    icon: '🌾',
+    color: '#84CC16',
+  },
+  {
+    id: 'cp-5',
+    alumniId: 'al-9',
+    from: 'Product at social app',
+    to: 'Public-school tech lead',
+    year: '2023',
+    story: 'Left a fast-growing product job to rebuild a state-school computer lab. 4 teachers trained, 180 students onboarded.',
+    takeaway: 'Impact × proximity > salary.',
+    icon: '🏫',
+    color: '#38BDF8',
+  },
+  {
+    id: 'cp-6',
+    alumniId: 'al-11',
+    from: 'Data science at retailer',
+    to: 'Open-data journalist',
+    year: '2025',
+    story: 'Wrote 8 posts on campus energy data for the club. A national paper picked it up. Now full-time data journalist.',
+    takeaway: 'The first 8 posts were the audition.',
+    icon: '📰',
+    color: '#A78BFA',
+  },
+];
+
+// -----------------------------------------------------
+// Mentor board (council of returning alumni)
+// -----------------------------------------------------
+
+interface MentorBoardSeat {
+  id: string;
+  alumniId: string;
+  name: string;
+  role: string;
+  domain: string;
+  office: string;
+  color: string;
+  focus: string;
+  hoursLeft: number;
+}
+
+const MENTOR_BOARD: MentorBoardSeat[] = [
+  { id: 'mb-1', alumniId: 'al-1', name: 'Meera Iyer', role: 'Platform eng · climate SaaS', domain: 'Technology', office: 'Bengaluru · in-person Wednesdays', color: '#38BDF8', focus: 'Backend architecture, field data pipelines, junior mentorship.', hoursLeft: 4 },
+  { id: 'mb-2', alumniId: 'al-3', name: 'Tanvi Shah', role: 'Design systems eng', domain: 'Design', office: 'SF Bay · remote + async review', color: '#F472B6', focus: 'Design tokens, accessibility, portfolio review.', hoursLeft: 3 },
+  { id: 'mb-3', alumniId: 'al-5', name: 'Kanishka Arora', role: 'Climate fund partner', domain: 'Finance', office: 'Delhi · Friday afternoons', color: '#F59E0B', focus: 'Grant writing, pitch prep, budgeting early-stage.', hoursLeft: 2 },
+  { id: 'mb-4', alumniId: 'al-7', name: 'Aditi Pawar', role: 'Field researcher', domain: 'Research', office: 'Hyderabad + 4 villages', color: '#A78BFA', focus: 'Field research ethics, stakeholder interviews, publication.', hoursLeft: 5 },
+  { id: 'mb-5', alumniId: 'al-9', name: 'Farhan Siddiqui', role: 'Ed-tech · public schools', domain: 'Impact', office: 'Delhi NCR · monthly Zoom', color: '#22C55E', focus: 'Classroom tech, curricula co-design, teacher trust.', hoursLeft: 6 },
+  { id: 'mb-6', alumniId: 'al-11', name: 'Ishaan Kulkarni', role: 'Data journalist', domain: 'Content', office: 'Pune · alternate Saturdays', color: '#F87171', focus: 'Investigative pitching, data vis, long-form editing.', hoursLeft: 3 },
+];
+
 // =====================================================
 // Component
 // =====================================================
@@ -1969,6 +2230,128 @@ const AlumniScreen: React.FC = () => {
     );
   };
 
+  const renderChapters = () => {
+    if (hasFilters) return null;
+    return (
+      <View style={styles.sectionBlock}>
+        <View style={styles.sectionHeaderRow}>
+          <Text style={styles.sectionTitle}>🌍 Chapters · city hubs</Text>
+          <Text style={styles.sectionCaption}>{CHAPTERS.length} cities</Text>
+        </View>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.chaptersScroll}
+        >
+          {CHAPTERS.map((c) => (
+            <View key={c.id} style={styles.chapterCard}>
+              <LinearGradient
+                colors={[c.color + '40', '#0A0F14']}
+                style={styles.chapterGradient}
+              >
+                <View style={styles.chapterTopRow}>
+                  <Text style={styles.chapterEmoji}>{c.emoji}</Text>
+                  <View style={styles.chapterPill}>
+                    <Text style={styles.chapterPillText}>est. {c.founded}</Text>
+                  </View>
+                </View>
+                <Text style={styles.chapterCity}>{c.city}</Text>
+                <Text style={styles.chapterCountry}>{c.country}</Text>
+                <View style={styles.chapterDivider} />
+                <Text style={styles.chapterMetaLabel}>Cadence</Text>
+                <Text style={styles.chapterMetaValue}>{c.cadence}</Text>
+                <Text style={styles.chapterMetaLabel}>Meetup spot</Text>
+                <Text style={styles.chapterMetaValue}>{c.meetup}</Text>
+                <Text style={styles.chapterMetaLabel}>Anchors</Text>
+                {c.anchors.map((a) => (
+                  <Text key={a} style={styles.chapterAnchor}>• {a}</Text>
+                ))}
+                <View style={styles.chapterFootRow}>
+                  <Text style={[styles.chapterMembers, { color: c.color }]}>
+                    {c.members} members
+                  </Text>
+                  <Text style={styles.chapterVibe} numberOfLines={3}>{c.vibe}</Text>
+                </View>
+              </LinearGradient>
+            </View>
+          ))}
+        </ScrollView>
+      </View>
+    );
+  };
+
+  const renderCareerPivots = () => {
+    if (hasFilters) return null;
+    return (
+      <View style={styles.sectionBlock}>
+        <View style={styles.sectionHeaderRow}>
+          <Text style={styles.sectionTitle}>🔀 Career pivots</Text>
+          <Text style={styles.sectionCaption}>Non-obvious moves</Text>
+        </View>
+        {CAREER_PIVOTS.map((p) => (
+          <View key={p.id} style={[styles.pivotCard, { borderLeftColor: p.color }]}>
+            <View style={styles.pivotTopRow}>
+              <View style={[styles.pivotIconWrap, { backgroundColor: p.color + '2A' }]}>
+                <Text style={styles.pivotIcon}>{p.icon}</Text>
+              </View>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.pivotArrowRow}>
+                  <Text style={styles.pivotFrom}>{p.from}</Text>
+                  <Text style={styles.pivotArrow}>  →  </Text>
+                  <Text style={[styles.pivotTo, { color: p.color }]}>{p.to}</Text>
+                </Text>
+                <Text style={styles.pivotYear}>{p.year}</Text>
+              </View>
+            </View>
+            <Text style={styles.pivotStory}>{p.story}</Text>
+            <View style={[styles.pivotTakeawayRow, { backgroundColor: p.color + '14' }]}>
+              <Text style={styles.pivotTakeawayLabel}>Takeaway</Text>
+              <Text style={styles.pivotTakeaway}>{p.takeaway}</Text>
+            </View>
+          </View>
+        ))}
+      </View>
+    );
+  };
+
+  const renderMentorBoard = () => {
+    if (hasFilters) return null;
+    return (
+      <View style={styles.sectionBlock}>
+        <View style={styles.sectionHeaderRow}>
+          <Text style={styles.sectionTitle}>🧭 Mentor board</Text>
+          <Text style={styles.sectionCaption}>{MENTOR_BOARD.length} seats</Text>
+        </View>
+        <View style={styles.boardGrid}>
+          {MENTOR_BOARD.map((s) => (
+            <View key={s.id} style={styles.boardCard}>
+              <LinearGradient
+                colors={[s.color + '33', '#0A0F14']}
+                style={styles.boardGradient}
+              >
+                <View style={styles.boardHeaderRow}>
+                  <View style={[styles.boardDot, { backgroundColor: s.color }]} />
+                  <Text style={styles.boardDomain}>{s.domain}</Text>
+                </View>
+                <Text style={styles.boardName}>{s.name}</Text>
+                <Text style={styles.boardRole} numberOfLines={2}>{s.role}</Text>
+                <Text style={styles.boardOffice}>📍 {s.office}</Text>
+                <Text style={styles.boardFocus} numberOfLines={3}>{s.focus}</Text>
+                <View style={styles.boardHoursRow}>
+                  <View style={[styles.boardHoursPill, { backgroundColor: s.color + '22' }]}>
+                    <Text style={[styles.boardHoursText, { color: s.color }]}>
+                      {s.hoursLeft} hrs left this month
+                    </Text>
+                  </View>
+                </View>
+              </LinearGradient>
+            </View>
+          ))}
+        </View>
+      </View>
+    );
+  };
+
   const renderAlumniListHeader = () => (
     <View style={styles.listHeaderRow}>
       <Text style={styles.listHeaderTitle}>
@@ -2376,8 +2759,11 @@ const AlumniScreen: React.FC = () => {
       {renderHallOfFame()}
       {renderTestimonials()}
       {renderTopCompanies()}
+      {renderChapters()}
       {renderMeetups()}
+      {renderMentorBoard()}
       {renderMentorshipSlots()}
+      {renderCareerPivots()}
       {renderPledges()}
       {renderAlumniListHeader()}
     </View>
@@ -3064,6 +3450,131 @@ const styles = StyleSheet.create({
   sheetLabel: { flex: 1, color: Colors.text.secondary, fontSize: 13 },
   sheetLabelActive: { color: Colors.tech.neonBlue, fontWeight: '800' },
   sheetCheck: { color: Colors.tech.neonBlue, fontSize: 16, fontWeight: '800' },
+
+  // Chapters / city hubs
+  chaptersScroll: { paddingLeft: HORIZONTAL_PADDING, paddingRight: 10, paddingBottom: 6 },
+  chapterCard: {
+    width: IS_SMALL ? 240 : 270,
+    marginRight: 12,
+  },
+  chapterGradient: {
+    borderRadius: 18,
+    padding: 14,
+    borderWidth: 1,
+    borderColor: '#ffffff18',
+    minHeight: 340,
+  },
+  chapterTopRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  chapterEmoji: { fontSize: 26 },
+  chapterPill: {
+    backgroundColor: '#ffffff14',
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 10,
+  },
+  chapterPillText: { color: Colors.text.primary, fontSize: 10, fontWeight: '800' },
+  chapterCity: { color: Colors.text.primary, fontSize: 18, fontWeight: '900', marginTop: 10 },
+  chapterCountry: { color: Colors.text.muted, fontSize: 11, marginTop: 2 },
+  chapterDivider: {
+    height: 1,
+    backgroundColor: '#ffffff12',
+    marginVertical: 10,
+  },
+  chapterMetaLabel: {
+    color: Colors.text.muted,
+    fontSize: 9,
+    fontWeight: '800',
+    textTransform: 'uppercase',
+    letterSpacing: 1,
+    marginTop: 4,
+  },
+  chapterMetaValue: { color: Colors.text.secondary, fontSize: 11, marginTop: 2, lineHeight: 15 },
+  chapterAnchor: { color: Colors.text.secondary, fontSize: 11, marginTop: 2 },
+  chapterFootRow: { marginTop: 10 },
+  chapterMembers: { fontSize: 12, fontWeight: '800' },
+  chapterVibe: { color: Colors.text.secondary, fontSize: 10.5, marginTop: 6, lineHeight: 14, fontStyle: 'italic' },
+
+  // Career pivots
+  pivotCard: {
+    marginHorizontal: HORIZONTAL_PADDING,
+    marginBottom: 10,
+    padding: 14,
+    borderRadius: 16,
+    backgroundColor: '#0D141B',
+    borderLeftWidth: 3,
+  },
+  pivotTopRow: { flexDirection: 'row', alignItems: 'center' },
+  pivotIconWrap: {
+    width: 40,
+    height: 40,
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 10,
+  },
+  pivotIcon: { fontSize: 20 },
+  pivotArrowRow: { color: Colors.text.primary, fontSize: 13, fontWeight: '800' },
+  pivotFrom: { color: Colors.text.muted, fontSize: 12 },
+  pivotArrow: { color: Colors.text.muted, fontSize: 12 },
+  pivotTo: { fontSize: 13, fontWeight: '900' },
+  pivotYear: { color: Colors.accent.softGold, fontSize: 10, fontWeight: '700', marginTop: 2 },
+  pivotStory: { color: Colors.text.secondary, fontSize: 12, marginTop: 10, lineHeight: 17 },
+  pivotTakeawayRow: {
+    marginTop: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    borderRadius: 10,
+  },
+  pivotTakeawayLabel: {
+    color: Colors.text.muted,
+    fontSize: 9,
+    fontWeight: '800',
+    textTransform: 'uppercase',
+    letterSpacing: 1,
+  },
+  pivotTakeaway: { color: Colors.text.primary, fontSize: 12, marginTop: 3, fontStyle: 'italic' },
+
+  // Mentor board
+  boardGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    paddingHorizontal: HORIZONTAL_PADDING - 4,
+  },
+  boardCard: {
+    width: IS_TABLET ? '33.333%' : '50%',
+    padding: 4,
+  },
+  boardGradient: {
+    borderRadius: 16,
+    padding: 12,
+    borderWidth: 1,
+    borderColor: '#ffffff14',
+    minHeight: 220,
+  },
+  boardHeaderRow: { flexDirection: 'row', alignItems: 'center' },
+  boardDot: { width: 8, height: 8, borderRadius: 4, marginRight: 8 },
+  boardDomain: {
+    color: Colors.text.muted,
+    fontSize: 10,
+    fontWeight: '800',
+    textTransform: 'uppercase',
+    letterSpacing: 1,
+  },
+  boardName: { color: Colors.text.primary, fontSize: 14, fontWeight: '900', marginTop: 8 },
+  boardRole: { color: Colors.text.secondary, fontSize: 11, marginTop: 2 },
+  boardOffice: { color: Colors.text.muted, fontSize: 10, marginTop: 8 },
+  boardFocus: { color: Colors.text.secondary, fontSize: 11, marginTop: 6, lineHeight: 15 },
+  boardHoursRow: { marginTop: 10, alignItems: 'flex-start' },
+  boardHoursPill: {
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 10,
+  },
+  boardHoursText: { fontSize: 10, fontWeight: '800' },
 });
 
 export default AlumniScreen;
