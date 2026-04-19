@@ -979,6 +979,142 @@ const TEAM_VALUES: TeamValue[] = [
 ];
 
 // -----------------------------------------------------
+// Phase 3q: Team deepen
+// -----------------------------------------------------
+
+interface HiringPipeline {
+  id: string;
+  role: string;
+  dept: string;
+  applicants: number;
+  interviewing: number;
+  offersOut: number;
+  stage: 'sourcing' | 'interviewing' | 'offer-stage' | 'paused';
+  lead: string;
+  color: string;
+  emoji: string;
+}
+
+const HIRING_PIPELINE: HiringPipeline[] = [
+  { id: 'hp-1', role: 'Content writer · long-form', dept: 'Content Wing', applicants: 48, interviewing: 6, offersOut: 0, stage: 'interviewing', lead: 'Nikhil', color: '#F59E0B', emoji: '✍️' },
+  { id: 'hp-2', role: 'RN engineer · mobile', dept: 'Web/App Wing', applicants: 71, interviewing: 4, offersOut: 1, stage: 'offer-stage', lead: 'Anmol', color: '#00D4FF', emoji: '📱' },
+  { id: 'hp-3', role: 'Brand designer', dept: 'GD Wing', applicants: 54, interviewing: 8, offersOut: 0, stage: 'interviewing', lead: 'Ritu', color: '#F472B6', emoji: '🎨' },
+  { id: 'hp-4', role: 'Video editor · recap lead', dept: 'Video Wing', applicants: 39, interviewing: 3, offersOut: 0, stage: 'sourcing', lead: 'Sneha', color: '#FFB74D', emoji: '🎬' },
+  { id: 'hp-5', role: 'Photographer · events', dept: 'Photo Wing', applicants: 26, interviewing: 2, offersOut: 0, stage: 'sourcing', lead: 'Iqbal', color: '#7E57C2', emoji: '📷' },
+  { id: 'hp-6', role: 'PR outreach · part-time', dept: 'PR Wing', applicants: 18, interviewing: 0, offersOut: 0, stage: 'paused', lead: 'Maya', color: '#38BDF8', emoji: '📣' },
+  { id: 'hp-7', role: 'Drive lead · Pune chapter', dept: 'Green Wing', applicants: 22, interviewing: 5, offersOut: 0, stage: 'interviewing', lead: 'Devika', color: '#22C55E', emoji: '🌳' },
+  { id: 'hp-8', role: 'Community ops · full-time', dept: 'Ops Wing', applicants: 34, interviewing: 4, offersOut: 1, stage: 'offer-stage', lead: 'Zara', color: '#A855F7', emoji: '🧭' },
+];
+
+interface InterviewSlot {
+  id: string;
+  date: string;
+  time: string;
+  role: string;
+  candidate: string;
+  interviewer: string;
+  mode: 'in-person' | 'video' | 'take-home review';
+  color: string;
+  emoji: string;
+}
+
+const INTERVIEW_SLOTS: InterviewSlot[] = [
+  { id: 'is-1', date: 'Mon · Apr 21', time: '10:00 – 10:45', role: 'RN engineer', candidate: 'candidate A', interviewer: 'Anmol + Faraz', mode: 'video', color: '#00D4FF', emoji: '📹' },
+  { id: 'is-2', date: 'Mon · Apr 21', time: '12:00 – 12:30', role: 'Content writer', candidate: 'candidate B', interviewer: 'Nikhil + Maya', mode: 'video', color: '#F59E0B', emoji: '📹' },
+  { id: 'is-3', date: 'Tue · Apr 22', time: '14:00 – 14:45', role: 'Brand designer', candidate: 'candidate C', interviewer: 'Ritu + Faraz', mode: 'in-person', color: '#F472B6', emoji: '🧑‍🤝‍🧑' },
+  { id: 'is-4', date: 'Tue · Apr 22', time: '16:30 – 17:30', role: 'Community ops', candidate: 'candidate D', interviewer: 'Zara + one ext.', mode: 'in-person', color: '#A855F7', emoji: '🧑‍🤝‍🧑' },
+  { id: 'is-5', date: 'Wed · Apr 23', time: '11:00 – 11:40', role: 'Drive lead · Pune', candidate: 'candidate E', interviewer: 'Devika', mode: 'take-home review', color: '#22C55E', emoji: '📝' },
+  { id: 'is-6', date: 'Wed · Apr 23', time: '18:00 – 18:45', role: 'Video editor', candidate: 'candidate F', interviewer: 'Sneha + Iqbal', mode: 'video', color: '#FFB74D', emoji: '📹' },
+  { id: 'is-7', date: 'Thu · Apr 24', time: '13:00 – 13:45', role: 'Photographer', candidate: 'candidate G', interviewer: 'Iqbal', mode: 'in-person', color: '#7E57C2', emoji: '🧑‍🤝‍🧑' },
+  { id: 'is-8', date: 'Fri · Apr 25', time: '09:30 – 10:15', role: 'Content writer', candidate: 'candidate H', interviewer: 'Nikhil', mode: 'take-home review', color: '#F59E0B', emoji: '📝' },
+  { id: 'is-9', date: 'Fri · Apr 25', time: '15:00 – 15:45', role: 'RN engineer', candidate: 'candidate I', interviewer: 'Anmol', mode: 'video', color: '#00D4FF', emoji: '📹' },
+];
+
+interface TeamAgreement {
+  id: string;
+  title: string;
+  detail: string;
+  signedBy: number;
+  totalMembers: number;
+  emoji: string;
+  color: string;
+}
+
+const TEAM_AGREEMENTS: TeamAgreement[] = [
+  { id: 'ta-1', title: 'Code of conduct · v3', detail: 'Safer spaces · zero-tolerance for harassment · reports handled in 48 h by the lead rota.', signedBy: 142, totalMembers: 148, emoji: '🛡️', color: '#EF4444' },
+  { id: 'ta-2', title: 'Photo + consent policy', detail: 'Anyone can ask to be removed · we respond in 24 h · no resale of any image.', signedBy: 140, totalMembers: 148, emoji: '🤝', color: '#38BDF8' },
+  { id: 'ta-3', title: 'Data + privacy', detail: 'What we collect · why · where it lives · how to ask for deletion.', signedBy: 138, totalMembers: 148, emoji: '🔐', color: '#A855F7' },
+  { id: 'ta-4', title: 'Content ownership', detail: 'You keep your work · we get a non-exclusive licence to publish within the club.', signedBy: 129, totalMembers: 148, emoji: '📜', color: '#F59E0B' },
+  { id: 'ta-5', title: 'Wellness + rest', detail: 'No expectation of late-night replies · two off-days every two weeks.', signedBy: 146, totalMembers: 148, emoji: '🛌', color: '#22C55E' },
+  { id: 'ta-6', title: 'Off-boarding · kindly', detail: 'Leave with dignity · we archive your work · a short exit chat is optional.', signedBy: 135, totalMembers: 148, emoji: '👋', color: '#94A3B8' },
+];
+
+interface BuddyPair {
+  id: string;
+  seniorName: string;
+  seniorRole: string;
+  menteeName: string;
+  menteeRole: string;
+  wing: string;
+  meetsEvery: string;
+  currentFocus: string;
+  color: string;
+  emoji: string;
+}
+
+const BUDDY_PAIRS: BuddyPair[] = [
+  { id: 'bp-1', seniorName: 'Anmol', seniorRole: 'Web lead', menteeName: 'Rohan', menteeRole: '1st-year · Web', wing: 'Web/App', meetsEvery: 'Tue · 17:30', currentFocus: 'Shipping their first PR to the app repo.', color: '#00D4FF', emoji: '📱' },
+  { id: 'bp-2', seniorName: 'Ritu', seniorRole: 'GD lead', menteeName: 'Kavya', menteeRole: '1st-year · GD', wing: 'GD', meetsEvery: 'Wed · 18:00', currentFocus: 'Token library walkthrough · first poster.', color: '#F472B6', emoji: '🎨' },
+  { id: 'bp-3', seniorName: 'Nikhil', seniorRole: 'Content lead', menteeName: 'Aarav', menteeRole: '2nd-year · Content', wing: 'Content', meetsEvery: 'Thu · 16:30', currentFocus: 'First 800-word long-form on the blog.', color: '#F59E0B', emoji: '✍️' },
+  { id: 'bp-4', seniorName: 'Sneha', seniorRole: 'Video lead', menteeName: 'Manya', menteeRole: '1st-year · Video', wing: 'Video', meetsEvery: 'Fri · 14:00', currentFocus: '30-sec event recap · colour grade exercise.', color: '#FFB74D', emoji: '🎬' },
+  { id: 'bp-5', seniorName: 'Iqbal', seniorRole: 'Photo lead', menteeName: 'Priya', menteeRole: '1st-year · Photo', wing: 'Photo', meetsEvery: 'Sat · 11:00', currentFocus: 'Lightroom basics + caption + credit flow.', color: '#7E57C2', emoji: '📷' },
+  { id: 'bp-6', seniorName: 'Maya', seniorRole: 'PR lead', menteeName: 'Vir', menteeRole: '2nd-year · PR', wing: 'PR', meetsEvery: 'Mon · 18:30', currentFocus: 'Writing a 120-word pitch from scratch.', color: '#38BDF8', emoji: '📣' },
+  { id: 'bp-7', seniorName: 'Devika', seniorRole: 'Green lead', menteeName: 'Tanvi', menteeRole: '1st-year · Green', wing: 'Green', meetsEvery: 'Sun · 09:00', currentFocus: 'Planning a 50-tree drive · site survey.', color: '#22C55E', emoji: '🌳' },
+  { id: 'bp-8', seniorName: 'Faraz', seniorRole: 'Coordinator', menteeName: 'Ishaan', menteeRole: 'Ops · events', wing: 'Ops', meetsEvery: 'Wed · 16:00', currentFocus: 'Running a 45-min crit session for the first time.', color: '#A855F7', emoji: '🪞' },
+  { id: 'bp-9', seniorName: 'Zara', seniorRole: 'Ops lead', menteeName: 'Sameer', menteeRole: 'Ops · community', wing: 'Ops', meetsEvery: 'Thu · 11:00', currentFocus: 'Handling a difficult feedback thread kindly.', color: '#F59E0B', emoji: '🧭' },
+];
+
+interface TownHallNote {
+  id: string;
+  date: string;
+  topic: string;
+  decisions: string[];
+  openThreads: string[];
+  presentCount: number;
+  color: string;
+  emoji: string;
+}
+
+const TOWN_HALLS: TownHallNote[] = [
+  { id: 'th-1', date: '2026-03-28', topic: 'Q1 wrap + Q2 intentions', presentCount: 108, decisions: ['Two-lane release rhythm stays (weekly + monthly).', 'Wing-swap month moves to May to respect exam season.', 'We retire the Tuesday long-form stand-up.'], openThreads: ['Should we cap wing size at 24?', 'How do we bring alumni closer without adding pressure?'], color: '#00D4FF', emoji: '🧭' },
+  { id: 'th-2', date: '2026-02-28', topic: 'Sustainability scoreboard · next version', presentCount: 96, decisions: ['Add a water-savings tile next cycle.', 'All metrics need a source + owner or they get cut.'], openThreads: ['Who audits the numbers each month?', 'Do we publish a public page or keep it internal?'], color: '#22C55E', emoji: '🌿' },
+  { id: 'th-3', date: '2026-01-31', topic: 'New-year intentions', presentCount: 118, decisions: ['Fewer, better events. Four flagship + monthly small meets.', 'Open crit stays weekly. First-timers first.'], openThreads: ['One long-form essay per month — who drafts it?', 'Do we invite parents to the December show?'], color: '#F59E0B', emoji: '🎇' },
+  { id: 'th-4', date: '2026-04-18', topic: 'Upcoming launch · app', presentCount: 124, decisions: ['Launch plan is steady · no last-night push.', 'Comms ready · three social variants · one blog post.', 'On-call rota drawn up for launch week.'], openThreads: ['How do we respond to first negative feedback (when it comes)?', 'Who owns the rollback toggle?'], color: '#A855F7', emoji: '🚀' },
+];
+
+interface BudgetLine {
+  id: string;
+  category: string;
+  allocated: number;
+  spent: number;
+  unit: 'INR' | 'hours';
+  note: string;
+  color: string;
+  emoji: string;
+}
+
+const BUDGET_LINES: BudgetLine[] = [
+  { id: 'bl-1', category: 'Sapling drives + plants', allocated: 48000, spent: 34120, unit: 'INR', note: 'Six drives through Jun · native species only · vendor receipts archived.', color: '#22C55E', emoji: '🌳' },
+  { id: 'bl-2', category: 'Venue + AV', allocated: 62000, spent: 28400, unit: 'INR', note: 'Weekly meets + two monthly talks · reusable gear preferred.', color: '#00D4FF', emoji: '🏛️' },
+  { id: 'bl-3', category: 'Studio consumables', allocated: 22000, spent: 8600, unit: 'INR', note: 'Paper · ink · batteries · memory cards · shared.', color: '#F472B6', emoji: '🖼️' },
+  { id: 'bl-4', category: 'Travel + transit passes', allocated: 35000, spent: 12400, unit: 'INR', note: 'Travel grants · shared rides only · receipt-or-no-reimbursement.', color: '#F59E0B', emoji: '🚌' },
+  { id: 'bl-5', category: 'Food at events', allocated: 54000, spent: 22100, unit: 'INR', note: 'Local · veg + non-veg · no bottled water, we carry dispensers.', color: '#EF4444', emoji: '🍽️' },
+  { id: 'bl-6', category: 'Volunteer honoraria', allocated: 18000, spent: 4200, unit: 'INR', note: 'Non-member speakers + cleaning crew · never invisible.', color: '#A855F7', emoji: '🤝' },
+  { id: 'bl-7', category: 'Accessibility gear', allocated: 9000, spent: 5200, unit: 'INR', note: 'Captioning kit · ramp · sensory kits · ongoing.', color: '#38BDF8', emoji: '♿' },
+  { id: 'bl-8', category: 'Core volunteer time', allocated: 2400, spent: 1460, unit: 'hours', note: 'Self-reported · only for capacity planning · never KPIs.', color: '#94A3B8', emoji: '⏱️' },
+];
+
+// -----------------------------------------------------
 // Component
 // -----------------------------------------------------
 
@@ -1762,6 +1898,224 @@ const TeamScreen: React.FC = () => {
     );
   };
 
+  const renderHiringPipeline = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🧑‍💼 Open roles we are hiring for</Text>
+        <Text style={styles.sectionCaption}>
+          {HIRING_PIPELINE.filter((h) => h.stage !== 'paused').length} active · {HIRING_PIPELINE.reduce((a, h) => a + h.applicants, 0)} applicants
+        </Text>
+      </View>
+      {HIRING_PIPELINE.map((h) => (
+        <View key={h.id} style={[styles.hpCard, { borderLeftColor: h.color }]}>
+          <View style={styles.hpTopRow}>
+            <Text style={styles.hpEmoji}>{h.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <View style={styles.hpRoleRow}>
+                <Text style={styles.hpRole} numberOfLines={1}>{h.role}</Text>
+                <View
+                  style={[
+                    styles.hpStagePill,
+                    {
+                      backgroundColor:
+                        h.stage === 'interviewing'
+                          ? 'rgba(0,212,255,0.18)'
+                          : h.stage === 'offer-stage'
+                          ? 'rgba(34,197,94,0.18)'
+                          : h.stage === 'sourcing'
+                          ? 'rgba(245,158,11,0.18)'
+                          : 'rgba(239,68,68,0.18)',
+                    },
+                  ]}
+                >
+                  <Text
+                    style={[
+                      styles.hpStageText,
+                      {
+                        color:
+                          h.stage === 'interviewing'
+                            ? '#00D4FF'
+                            : h.stage === 'offer-stage'
+                            ? '#22C55E'
+                            : h.stage === 'sourcing'
+                            ? '#F59E0B'
+                            : '#EF4444',
+                      },
+                    ]}
+                  >
+                    {h.stage}
+                  </Text>
+                </View>
+              </View>
+              <Text style={styles.hpDept}>{h.dept} · led by {h.lead}</Text>
+            </View>
+          </View>
+          <View style={styles.hpStatRow}>
+            <View style={styles.hpStat}>
+              <Text style={styles.hpStatValue}>{h.applicants}</Text>
+              <Text style={styles.hpStatLabel}>applicants</Text>
+            </View>
+            <View style={styles.hpStat}>
+              <Text style={styles.hpStatValue}>{h.interviewing}</Text>
+              <Text style={styles.hpStatLabel}>interviewing</Text>
+            </View>
+            <View style={styles.hpStat}>
+              <Text style={styles.hpStatValue}>{h.offersOut}</Text>
+              <Text style={styles.hpStatLabel}>offers out</Text>
+            </View>
+          </View>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderInterviewSlots = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🗓️ This week · interviews</Text>
+        <Text style={styles.sectionCaption}>{INTERVIEW_SLOTS.length} booked</Text>
+      </View>
+      {INTERVIEW_SLOTS.map((s) => (
+        <View key={s.id} style={[styles.isCard, { borderLeftColor: s.color }]}>
+          <Text style={styles.isEmoji}>{s.emoji}</Text>
+          <View style={{ flex: 1 }}>
+            <View style={styles.isTopRow}>
+              <Text style={styles.isDate}>{s.date}</Text>
+              <Text style={styles.isTime}>{s.time}</Text>
+            </View>
+            <Text style={styles.isRole} numberOfLines={1}>{s.role} · {s.candidate}</Text>
+            <Text style={styles.isMeta}>{s.interviewer} · {s.mode}</Text>
+          </View>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderAgreements = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>📜 Agreements we all sign</Text>
+        <Text style={styles.sectionCaption}>{TEAM_AGREEMENTS.length} · active versions</Text>
+      </View>
+      {TEAM_AGREEMENTS.map((a) => {
+        const pct = a.signedBy / a.totalMembers;
+        return (
+          <View key={a.id} style={[styles.agreementCard, { borderLeftColor: a.color }]}>
+            <View style={styles.agreementTopRow}>
+              <Text style={styles.agreementEmoji}>{a.emoji}</Text>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.agreementTitle} numberOfLines={1}>{a.title}</Text>
+                <Text style={styles.agreementMeta}>
+                  {a.signedBy}/{a.totalMembers} signed · {Math.round(pct * 100)}%
+                </Text>
+              </View>
+            </View>
+            <Text style={styles.agreementDetail} numberOfLines={3}>{a.detail}</Text>
+            <View style={styles.agreementBarTrack}>
+              <View
+                style={[
+                  styles.agreementBarFill,
+                  { width: `${Math.round(pct * 100)}%`, backgroundColor: a.color },
+                ]}
+              />
+            </View>
+          </View>
+        );
+      })}
+    </View>
+  );
+
+  const renderBuddyPairs = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🪴 Buddy pairings</Text>
+        <Text style={styles.sectionCaption}>{BUDDY_PAIRS.length} · gentle 1:1 mentoring</Text>
+      </View>
+      {BUDDY_PAIRS.map((b) => (
+        <View key={b.id} style={[styles.buddyCard, { borderLeftColor: b.color }]}>
+          <Text style={styles.buddyEmoji}>{b.emoji}</Text>
+          <View style={{ flex: 1 }}>
+            <View style={styles.buddyTopRow}>
+              <Text style={styles.buddySenior} numberOfLines={1}>{b.seniorName}</Text>
+              <Text style={styles.buddyArrow}>  →  </Text>
+              <Text style={styles.buddyMentee} numberOfLines={1}>{b.menteeName}</Text>
+            </View>
+            <Text style={styles.buddyRoles}>
+              {b.seniorRole} · {b.menteeRole}
+            </Text>
+            <Text style={styles.buddyFocus} numberOfLines={2}>{b.currentFocus}</Text>
+            <Text style={styles.buddyMeta}>{b.wing} · {b.meetsEvery}</Text>
+          </View>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderTownHalls = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🏛️ Recent town-halls</Text>
+        <Text style={styles.sectionCaption}>notes · decisions · open threads</Text>
+      </View>
+      {TOWN_HALLS.map((t) => (
+        <View key={t.id} style={[styles.thCard, { borderLeftColor: t.color }]}>
+          <View style={styles.thTopRow}>
+            <Text style={styles.thEmoji}>{t.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.thTopic} numberOfLines={1}>{t.topic}</Text>
+              <Text style={styles.thMeta}>{t.date} · {t.presentCount} present</Text>
+            </View>
+          </View>
+          <Text style={styles.thSectionLabel}>decisions</Text>
+          {t.decisions.map((d, i) => (
+            <Text key={`d-${i}`} style={styles.thLine}>· {d}</Text>
+          ))}
+          <Text style={styles.thSectionLabel}>open threads</Text>
+          {t.openThreads.map((o, i) => (
+            <Text key={`o-${i}`} style={styles.thLine}>· {o}</Text>
+          ))}
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderBudget = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>💰 Budget · this quarter</Text>
+        <Text style={styles.sectionCaption}>{BUDGET_LINES.length} lines · reviewed monthly</Text>
+      </View>
+      {BUDGET_LINES.map((b) => {
+        const pct = b.spent / b.allocated;
+        return (
+          <View key={b.id} style={[styles.budgetCard, { borderLeftColor: b.color }]}>
+            <View style={styles.budgetTopRow}>
+              <Text style={styles.budgetEmoji}>{b.emoji}</Text>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.budgetCategory} numberOfLines={1}>{b.category}</Text>
+                <Text style={styles.budgetAmount}>
+                  {b.spent} / {b.allocated} {b.unit}
+                </Text>
+              </View>
+            </View>
+            <View style={styles.budgetBarTrack}>
+              <View
+                style={[
+                  styles.budgetBarFill,
+                  {
+                    width: `${Math.min(100, Math.round(pct * 100))}%`,
+                    backgroundColor: b.color,
+                  },
+                ]}
+              />
+            </View>
+            <Text style={styles.budgetNote} numberOfLines={2}>{b.note}</Text>
+          </View>
+        );
+      })}
+    </View>
+  );
+
   const renderListHeader = () => (
     <View style={styles.listHeaderRow}>
       <Text style={styles.listHeaderTitle}>
@@ -2246,6 +2600,12 @@ const TeamScreen: React.FC = () => {
       {renderStandupLog()}
       {renderTopContributors()}
       {renderMentorshipTree()}
+      {renderBuddyPairs()}
+      {renderHiringPipeline()}
+      {renderInterviewSlots()}
+      {renderTownHalls()}
+      {renderBudget()}
+      {renderAgreements()}
       {renderTraditions()}
       {renderTeamValues()}
       {renderTeamTestimonials()}
@@ -3125,6 +3485,138 @@ const styles = StyleSheet.create({
     lineHeight: 14,
     marginTop: 4,
   },
+
+  // Hiring pipeline
+  hpCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  hpTopRow: { flexDirection: 'row', alignItems: 'flex-start' },
+  hpEmoji: { fontSize: 22, marginRight: 10, marginTop: 2 },
+  hpRoleRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+  hpRole: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', flex: 1 },
+  hpStagePill: {
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: 999,
+    marginLeft: 8,
+  },
+  hpStageText: { fontSize: 9, fontWeight: '900', letterSpacing: 1, textTransform: 'uppercase' },
+  hpDept: { color: Colors.text.muted, fontSize: 11, marginTop: 3 },
+  hpStatRow: {
+    flexDirection: 'row',
+    marginTop: 10,
+    paddingVertical: 8,
+    borderTopWidth: 1,
+    borderColor: 'rgba(255,255,255,0.05)',
+  },
+  hpStat: { flex: 1, alignItems: 'center' },
+  hpStatValue: { color: Colors.text.primary, fontSize: 14, fontWeight: '800' },
+  hpStatLabel: { color: Colors.text.muted, fontSize: 10, marginTop: 2 },
+
+  // Interviews
+  isCard: {
+    flexDirection: 'row',
+    backgroundColor: '#0D141B',
+    borderRadius: 12,
+    padding: 12,
+    marginBottom: 8,
+    borderLeftWidth: 3,
+  },
+  isEmoji: { fontSize: 20, marginRight: 10, marginTop: 2 },
+  isTopRow: { flexDirection: 'row', justifyContent: 'space-between' },
+  isDate: { color: Colors.text.primary, fontSize: 12, fontWeight: '800' },
+  isTime: { color: Colors.tech.neonBlue, fontSize: 11, fontWeight: '700' },
+  isRole: { color: Colors.text.secondary, fontSize: 12, marginTop: 4 },
+  isMeta: { color: Colors.text.muted, fontSize: 10, marginTop: 3 },
+
+  // Agreements
+  agreementCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  agreementTopRow: { flexDirection: 'row', alignItems: 'center' },
+  agreementEmoji: { fontSize: 22, marginRight: 10 },
+  agreementTitle: { color: Colors.text.primary, fontSize: 13, fontWeight: '800' },
+  agreementMeta: { color: Colors.text.muted, fontSize: 11, marginTop: 2 },
+  agreementDetail: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8 },
+  agreementBarTrack: {
+    height: 5,
+    backgroundColor: 'rgba(255,255,255,0.06)',
+    borderRadius: 3,
+    marginTop: 8,
+    overflow: 'hidden',
+  },
+  agreementBarFill: { height: '100%', borderRadius: 3 },
+
+  // Buddy
+  buddyCard: {
+    flexDirection: 'row',
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginBottom: 8,
+    borderLeftWidth: 3,
+  },
+  buddyEmoji: { fontSize: 22, marginRight: 10, marginTop: 2 },
+  buddyTopRow: { flexDirection: 'row', alignItems: 'center' },
+  buddySenior: { color: Colors.text.primary, fontSize: 13, fontWeight: '800' },
+  buddyArrow: { color: Colors.text.muted, fontSize: 12 },
+  buddyMentee: { color: Colors.tech.neonBlue, fontSize: 13, fontWeight: '700' },
+  buddyRoles: { color: Colors.text.muted, fontSize: 11, marginTop: 3 },
+  buddyFocus: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 6 },
+  buddyMeta: { color: Colors.text.muted, fontSize: 10, marginTop: 4, fontStyle: 'italic' },
+
+  // Town halls
+  thCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  thTopRow: { flexDirection: 'row', alignItems: 'center' },
+  thEmoji: { fontSize: 22, marginRight: 10 },
+  thTopic: { color: Colors.text.primary, fontSize: 13, fontWeight: '800' },
+  thMeta: { color: Colors.text.muted, fontSize: 11, marginTop: 2 },
+  thSectionLabel: {
+    color: Colors.text.muted,
+    fontSize: 9,
+    fontWeight: '900',
+    letterSpacing: 1.5,
+    textTransform: 'uppercase',
+    marginTop: 10,
+    marginBottom: 4,
+  },
+  thLine: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginBottom: 3 },
+
+  // Budget
+  budgetCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  budgetTopRow: { flexDirection: 'row', alignItems: 'center' },
+  budgetEmoji: { fontSize: 22, marginRight: 10 },
+  budgetCategory: { color: Colors.text.primary, fontSize: 13, fontWeight: '800' },
+  budgetAmount: { color: Colors.text.secondary, fontSize: 11, marginTop: 2 },
+  budgetBarTrack: {
+    height: 6,
+    backgroundColor: 'rgba(255,255,255,0.06)',
+    borderRadius: 3,
+    marginTop: 10,
+    overflow: 'hidden',
+  },
+  budgetBarFill: { height: '100%', borderRadius: 3 },
+  budgetNote: { color: Colors.text.muted, fontSize: 10, lineHeight: 14, marginTop: 6 },
 });
 
 export default TeamScreen;
