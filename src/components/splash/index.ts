@@ -41,3 +41,6 @@ export { default as GentleRainEffect } from './GentleRainEffect';
 export { default as MistLayerEffect } from './MistLayerEffect';
 export { default as BirdsFlightEffect } from './BirdsFlightEffect';
 export { default as BloomBurstEffect } from './BloomBurstEffect';
+export { default as FernFrondEffect } from './FernFrondEffect';
+export { default as ConstellationEffect } from './ConstellationEffect';
+export { default as DewDropEffect } from './DewDropEffect';

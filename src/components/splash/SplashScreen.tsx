@@ -61,6 +61,9 @@ import GentleRainEffect from './GentleRainEffect';
 import MistLayerEffect from './MistLayerEffect';
 import BirdsFlightEffect from './BirdsFlightEffect';
 import BloomBurstEffect from './BloomBurstEffect';
+import FernFrondEffect from './FernFrondEffect';
+import ConstellationEffect from './ConstellationEffect';
+import DewDropEffect from './DewDropEffect';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 const IS_SMALL = SCREEN_WIDTH < 375;
@@ -340,6 +343,9 @@ interface EffectVisibility {
   mistLayer: boolean;
   birdsFlight: boolean;
   bloomBurst: boolean;
+  fernFrond: boolean;
+  constellation: boolean;
+  dewDrop: boolean;
 }
 
 const visibilityForStage = (key: StageKey): EffectVisibility => {
@@ -383,10 +389,13 @@ const visibilityForStage = (key: StageKey): EffectVisibility => {
     mistLayer: false,
     birdsFlight: false,
     bloomBurst: false,
+    fernFrond: false,
+    constellation: false,
+    dewDrop: false,
   };
   switch (key) {
     case 'boot':
-      return { ...base, particleSystem: true, fireflies: true };
+      return { ...base, particleSystem: true, fireflies: true, constellation: true };
     case 'cosmos':
       return {
         ...base,
@@ -395,6 +404,7 @@ const visibilityForStage = (key: StageKey): EffectVisibility => {
         cosmicDust: true,
         nebulaClouds: true,
         fireflies: true,
+        constellation: true,
       };
     case 'nature':
       return {
@@ -412,6 +422,8 @@ const visibilityForStage = (key: StageKey): EffectVisibility => {
         mistLayer: true,
         birdsFlight: true,
         bloomBurst: true,
+        fernFrond: true,
+        dewDrop: true,
       };
     case 'tech':
       return {
@@ -1047,6 +1059,15 @@ const SplashScreen: React.FC<SplashScreenProps> = ({
       ) : null}
       {v.fireflies ? (
         <FirefliesEffect reduceMotion={reduceMotion} density="soft" />
+      ) : null}
+      {v.fernFrond ? (
+        <FernFrondEffect reduceMotion={reduceMotion} />
+      ) : null}
+      {v.constellation ? (
+        <ConstellationEffect reduceMotion={reduceMotion} />
+      ) : null}
+      {v.dewDrop ? (
+        <DewDropEffect reduceMotion={reduceMotion} />
       ) : null}
 
       {/* Tech stage */}
