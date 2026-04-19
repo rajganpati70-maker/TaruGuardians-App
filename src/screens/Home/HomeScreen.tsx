@@ -2036,6 +2036,93 @@ const HOME_KINDNESS_LEDGER: HomeKindnessLedger[] = [
   { id: 'hkl-7', deed: 'Walked a stranger home from campus late at night · 2 km out of way · because it was safer',                                                            doer: 'Nidhi · alumni · visiting for event',                                                                            witnessed: 'By the stranger who sent a thank-you card a week later · enclosed ₹500 · we forwarded to the safe-walk fund · never told Nidhi who lives in another city.', color: '#EF4444', emoji: '🫱' },
 ];
 
+// =====================================================
+// Phase 3az: deeper home structures — round 6
+// =====================================================
+
+interface HomeClubAnthem {
+  id: string;
+  line: string;
+  year: string;
+  author: string;
+  color: string;
+  emoji: string;
+}
+
+const HOME_CLUB_ANTHEM: HomeClubAnthem[] = [
+  { id: 'hca-1', line: 'We are the grove that grew from one sapling · kept alive by hands that pass · not hold',        year: '1999 · founders',                                           author: 'First council · collectively',            color: '#22C55E', emoji: '🌱' },
+  { id: 'hca-2', line: 'We write quietly · we ship slowly · we carry each other home when the lights go out',                        year: '2004',                                                                             author: 'Priya N. · content wing',                                      color: '#F59E0B', emoji: '📜' },
+  { id: 'hca-3', line: 'Our code is kind · our pixels are patient · our frames hold the light steady',                                year: '2009',                                                                                                       author: 'Rohan · web wing · retired',                                             color: '#00D4FF', emoji: '💻' },
+  { id: 'hca-4', line: 'When we build · we build for the person two rows behind · for the voice we almost missed',                                     year: '2013',                                                                                                                                  author: 'Council · at 15th anniversary',                                                       color: '#A78BFA', emoji: '🎙️' },
+  { id: 'hca-5', line: 'We keep small promises · we water small plants · we send small letters that land like rain',                                             year: '2018',                                                                                                                                                   author: 'Meera · alumni · wrote from afar',                                                                color: '#F472B6', emoji: '💌' },
+  { id: 'hca-6', line: 'There is a chair for the absent · a steel mug for the stranger · a quiet room for the tired',                                                   year: '2021',                                                                                                                                                                              author: 'Wellness wing · collective',                                                                                    color: '#FFD166', emoji: '🪑' },
+  { id: 'hca-7', line: 'We do not shout our work · we hand it forward · we plant it · we let it root · we walk on',                                                               year: '2024 · 25th anniversary',                                                                                                                                                                                       author: 'Everyone · at the bonfire · read in turns',                                                                                    color: '#EF4444', emoji: '🌳' },
+  { id: 'hca-8', line: 'If you are here · you are kept · if you left · you are carried · if you return · there is light',                                                                         year: '2026 · newly written',                                                                                                                                                                                                             author: 'Present council · inked in the archive',                                                                                                          color: '#16A34A', emoji: '🕯️' },
+];
+
+interface HomeDailyHabit {
+  id: string;
+  hour: string;
+  habit: string;
+  for_: string;
+  note: string;
+  color: string;
+  emoji: string;
+}
+
+const HOME_DAILY_HABITS: HomeDailyHabit[] = [
+  { id: 'hdh-1', hour: '6:15 AM',     habit: 'Grove walk · 20 minutes · no talking after minute 5',                            for_: 'Anyone awake · always · regardless of weather',                   note: 'Plants get watered · hearts get quiet · the club unlocks at 7.',                              color: '#22C55E', emoji: '🌿' },
+  { id: 'hdh-2', hour: '7:30 AM',              habit: 'Open desk · free breakfast · read one short essay aloud',                                      for_: 'Early members · alumni · anyone really',                                           note: 'The essay rotates · we don\'t discuss it · we just sit with it for 10 minutes.',                                         color: '#F59E0B', emoji: '📖' },
+  { id: 'hdh-3', hour: '10:00 AM',                          habit: 'Desk-check · two-minute stand-up at each wing',                                                                       for_: 'Active wing members that day',                                                                     note: 'No laptops open · just human voice · one question each · one commitment each.',                                                         color: '#00D4FF', emoji: '🫶' },
+  { id: 'hdh-4', hour: '1:00 PM',                                       habit: 'Shared lunch · no phones on the table · one dish brought from home',                                                                                        for_: 'Whoever\'s around · all are welcome',                                                                                 note: 'Over the years people have brought 300+ recipes · we have a cookbook draft waiting.',                                                                         color: '#A78BFA', emoji: '🥘' },
+  { id: 'hdh-5', hour: '4:00 PM',                                                    habit: 'Tea + biscuits · 15 minutes · in the courtyard',                                                                                                              for_: 'All wings · all years',                                                                                                              note: 'Rain doesn\'t cancel · we move under the shed · biscuits stay · tea stays.',                                                                                       color: '#F472B6', emoji: '🫖' },
+  { id: 'hdh-6', hour: '7:00 PM',                                                                habit: 'Quiet hour · no laptops · no phones · journal or read',                                                                                                                          for_: 'Anyone in the club at that hour',                                                                                                                         note: 'Started in 2020 · has been kept 2000+ days · it\'s the spine of our week now.',                                                                                                     color: '#FFD166', emoji: '🤫' },
+  { id: 'hdh-7', hour: '9:00 PM',                                                                            habit: 'Lock-up circle · five people · three-minute gratitude round',                                                                                                                                      for_: 'Whoever is closing that night',                                                                                                                                           note: 'Names one thing kind · one thing hard · one thing tomorrow · keys clinked · we leave.',                                                                                                         color: '#EF4444', emoji: '🗝️' },
+  { id: 'hdh-8', hour: '11:00 PM · weekends',                                                                                        habit: 'Stargazing on rooftop · no playlist · no announcements',                                                                                                                                                              for_: 'Self-organised · usually 4–8 people',                                                                                                                                                           note: 'Council keeps a telescope borrowed from a physics alum · comet nights get announced quietly.',                                                                                                                       color: '#16A34A', emoji: '✨' },
+];
+
+interface HomeWeeklyRitual {
+  id: string;
+  day: string;
+  ritual: string;
+  keeper: string;
+  sign: string;
+  color: string;
+  emoji: string;
+}
+
+const HOME_WEEKLY_RITUALS: HomeWeeklyRitual[] = [
+  { id: 'hwr-1', day: 'Monday · afternoon',             ritual: 'Slow start · no ambitious goals · coffee + one small ship each wing',                       keeper: 'Council chair',                                 sign: 'We begin gently · the week will ask enough.',                       color: '#00D4FF', emoji: '☕' },
+  { id: 'hwr-2', day: 'Tuesday · evening',                         ritual: 'Buddy 1:1s · 45 min · any topic · outside the building · walk or tea',                                      keeper: 'Wellness lead',                                              sign: 'Two voices · one pair · one week at a time.',                                           color: '#F59E0B', emoji: '🚶' },
+  { id: 'hwr-3', day: 'Wednesday · mid-day',                                     ritual: 'Mid-week retro · 30 min · per wing · what\'s sticky · what\'s free',                                                           keeper: 'Wing leads · rotating',                                                               sign: 'Half-way pulse · course-correct · don\'t wait till Friday.',                                              color: '#F472B6', emoji: '🧭' },
+  { id: 'hwr-4', day: 'Thursday · afternoon',                                               ritual: 'Cross-wing lunch · two wings pair up · bring a dish · no agenda',                                                                               keeper: 'Wing leads · rotating',                                                                                sign: 'Wings stop being silos · they start being neighbours.',                                                            color: '#A78BFA', emoji: '🍲' },
+  { id: 'hwr-5', day: 'Friday · 5 PM',                                                                ritual: 'Read-aloud · one short text chosen by rota · then silence · no discussion',                                                                                               keeper: 'Content wing · rotating reader',                                                                                                 sign: 'We close the week together · books before conversations.',                                                                      color: '#22C55E', emoji: '📚' },
+  { id: 'hwr-6', day: 'Saturday · morning',                                                                            ritual: 'Grove work · 2 hours · watering · planting · pruning · no phones',                                                                                                                keeper: 'Grove keeper',                                                                                                                                   sign: 'Hands in earth · minds rinsed · the club\'s physical memory tended.',                                                                                         color: '#FFD166', emoji: '🪴' },
+  { id: 'hwr-7', day: 'Sunday · noon',                                                                                       ritual: 'Slow brunch · rotating host · no club-work talk',                                                                                                                                                  keeper: 'Rotating host',                                                                                                                                                sign: 'We are people first · members second · the day insists on it.',                                                                                                          color: '#EF4444', emoji: '🥞' },
+  { id: 'hwr-8', day: 'Sunday · evening',                                                                                                      ritual: 'Letters-home hour · write one letter · to a parent · a mentor · an old friend',                                                                                                                                                                                                         keeper: 'Wellness lead',                                                                                                                                                                sign: 'The week ends outward · our attention goes home.',                                                                                                                                    color: '#16A34A', emoji: '✉️' },
+];
+
+interface HomeMonthlyMoment {
+  id: string;
+  month: string;
+  moment: string;
+  keeper: string;
+  legacy: string;
+  color: string;
+  emoji: string;
+}
+
+const HOME_MONTHLY_MOMENTS: HomeMonthlyMoment[] = [
+  { id: 'hmm-1', month: 'January · start of year',            moment: 'Hand-written intentions · each member writes 3 · sealed · opened in December',                    keeper: 'Council chair',                                                 legacy: 'We have 25 years of sealed envelopes · some opened late · all opened eventually.',                          color: '#00D4FF', emoji: '🗓️' },
+  { id: 'hmm-2', month: 'February · quiet month',                       moment: 'No big events · only small gatherings · we protect this month from ambition',                                         keeper: 'Wellness lead',                                                              legacy: 'The quiet months are why we last · the club learned this in year 3 · we keep it.',                                        color: '#F59E0B', emoji: '🤫' },
+  { id: 'hmm-3', month: 'March · archive day',                                          moment: 'One full Saturday · everyone digitises · scans · tags · labels',                                                                              keeper: 'Archive keeper',                                                                             legacy: '2500+ documents are findable because of this day · volunteers wrote metadata for each.',                                            color: '#F472B6', emoji: '📂' },
+  { id: 'hmm-4', month: 'April · grove planting',                                                    moment: 'Club plants 30 saplings · one per new member · photographed · named · returned to in 2 years',                                                                                            keeper: 'Grove keeper',                                                                                                     legacy: 'First grove plot is now 25 years old · trees know more members than we do.',                                                            color: '#A78BFA', emoji: '🌱' },
+  { id: 'hmm-5', month: 'July · mid-year retro',                                                                  moment: 'Day-long retro · outside the building · no slides · only voices · ends with a meal',                                                                                                               keeper: 'Council rotating',                                                                                                                    legacy: 'Mid-year retros have reshaped 8 major rhythms · our playbook grew from these days.',                                                                      color: '#22C55E', emoji: '🌞' },
+  { id: 'hmm-6', month: 'October · festival of small things',                                                                             moment: 'Three days of tiny showcases · every member shows one craft · only 5 minutes each',                                                                                                                                                keeper: 'Content wing · cross-wing help',                                                                                                                                              legacy: 'Festival of Small has become the most-loved event · journalism students film it every year.',                                                                                                color: '#FFD166', emoji: '🎋' },
+  { id: 'hmm-7', month: 'December · bonfire + letters',                                                                                            moment: 'Final gathering · bonfire · open letters read aloud · envelopes burned · gratitude circle',                                                                                                                                                                                     keeper: 'Council chair + alumni',                                                                                                                                                                      legacy: 'The bonfire image is on our homepage · alumni fly back for it · some have never missed one.',                                                                                                                                    color: '#EF4444', emoji: '🔥' },
+  { id: 'hmm-8', month: 'Leap-day · every 4 years',                                                                                                                    moment: 'Day given fully to rest · no club work · optional shared meal · then early sleep',                                                                                                                                                                                                                                                  keeper: 'Wellness lead',                                                                                                                                                                                                            legacy: 'Leap-day rest has become our way of saying · time is not a productivity unit · it\'s kin.',                                                                                                                                                                                      color: '#16A34A', emoji: '🛌' },
+];
+
 const HomeScreen: React.FC = () => {
   // ------ State ------
   const [refreshing, setRefreshing] = useState(false);
@@ -4047,6 +4134,92 @@ const HomeScreen: React.FC = () => {
     </View>
   );
 
+  // ------ Phase 3az: round 6 home blocks ------
+  const renderHomeClubAnthem = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>📜 Club anthem · lines we say out loud</Text>
+        <Text style={styles.sectionCaption}>{HOME_CLUB_ANTHEM.length} lines</Text>
+      </View>
+      {HOME_CLUB_ANTHEM.map((a) => (
+        <View key={a.id} style={[styles.hcaCard, { borderLeftColor: a.color }]}>
+          <View style={styles.hcaTopRow}>
+            <Text style={styles.hcaEmoji}>{a.emoji}</Text>
+            <Text style={styles.hcaLine} numberOfLines={3}>{a.line}</Text>
+          </View>
+          <Text style={[styles.hcaYear, { color: a.color }]} numberOfLines={1}>{a.year}</Text>
+          <Text style={styles.hcaAuthor} numberOfLines={1}>— {a.author}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderHomeDailyHabits = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>⏰ Daily habits · the hours that hold us</Text>
+        <Text style={styles.sectionCaption}>{HOME_DAILY_HABITS.length} habits</Text>
+      </View>
+      {HOME_DAILY_HABITS.map((h) => (
+        <View key={h.id} style={[styles.hdhCard, { borderLeftColor: h.color }]}>
+          <View style={styles.hdhTopRow}>
+            <Text style={styles.hdhEmoji}>{h.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.hdhHour} numberOfLines={1}>{h.hour}</Text>
+              <Text style={[styles.hdhHabit, { color: h.color }]} numberOfLines={2}>{h.habit}</Text>
+            </View>
+          </View>
+          <Text style={styles.hdhFor} numberOfLines={1}>for · {h.for_}</Text>
+          <Text style={styles.hdhNote} numberOfLines={3}>{h.note}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderHomeWeeklyRituals = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>📆 Weekly rituals · the shape of a week</Text>
+        <Text style={styles.sectionCaption}>{HOME_WEEKLY_RITUALS.length} rituals</Text>
+      </View>
+      {HOME_WEEKLY_RITUALS.map((w) => (
+        <View key={w.id} style={[styles.hwrCard, { borderLeftColor: w.color }]}>
+          <View style={styles.hwrTopRow}>
+            <Text style={styles.hwrEmoji}>{w.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.hwrDay} numberOfLines={1}>{w.day}</Text>
+              <Text style={[styles.hwrRitual, { color: w.color }]} numberOfLines={2}>{w.ritual}</Text>
+            </View>
+          </View>
+          <Text style={styles.hwrKeeper} numberOfLines={1}>keeper · {w.keeper}</Text>
+          <Text style={styles.hwrSign} numberOfLines={2}>{w.sign}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderHomeMonthlyMoments = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🗓️ Monthly moments · bigger gestures · slower pulses</Text>
+        <Text style={styles.sectionCaption}>{HOME_MONTHLY_MOMENTS.length} moments</Text>
+      </View>
+      {HOME_MONTHLY_MOMENTS.map((m) => (
+        <View key={m.id} style={[styles.hmoCard, { borderLeftColor: m.color }]}>
+          <View style={styles.hmoTopRow}>
+            <Text style={styles.hmoEmoji}>{m.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.hmoMonth} numberOfLines={1}>{m.month}</Text>
+              <Text style={[styles.hmoMoment, { color: m.color }]} numberOfLines={2}>{m.moment}</Text>
+            </View>
+          </View>
+          <Text style={styles.hmoKeeper} numberOfLines={1}>keeper · {m.keeper}</Text>
+          <Text style={styles.hmoLegacy} numberOfLines={3}>{m.legacy}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
   const renderMicroMoments = () => (
     <View style={styles.sectionBlock}>
       <View style={styles.sectionHeaderRow}>
@@ -4330,6 +4503,10 @@ const HomeScreen: React.FC = () => {
         {renderFounderNotes()}
         {renderDawnRituals()}
         {renderDuskRituals()}
+        {renderHomeClubAnthem()}
+        {renderHomeDailyHabits()}
+        {renderHomeWeeklyRituals()}
+        {renderHomeMonthlyMoments()}
         {renderMicroMoments()}
         {renderSimplePractices()}
         {renderKindnessLedger()}
@@ -5774,6 +5951,41 @@ const styles = StyleSheet.create({
   hklDeed: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', flex: 1, lineHeight: 17 },
   hklDoer: { fontSize: 11, marginTop: 8, fontWeight: '800', paddingLeft: 32 },
   hklWitnessed: { color: Colors.text.muted, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32, fontStyle: 'italic' },
+
+  // --- Phase 3az: club anthem ---
+  hcaCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 14, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  hcaTopRow: { flexDirection: 'row', alignItems: 'flex-start' },
+  hcaEmoji: { fontSize: 22, marginRight: 10, marginTop: 2 },
+  hcaLine: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', flex: 1, lineHeight: 18 },
+  hcaYear: { fontSize: 11, fontWeight: '700', marginTop: 8, paddingLeft: 32 },
+  hcaAuthor: { color: Colors.text.muted, fontSize: 11, marginTop: 3, paddingLeft: 32, fontStyle: 'italic' },
+
+  // --- Phase 3az: daily habits ---
+  hdhCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  hdhTopRow: { flexDirection: 'row', alignItems: 'center' },
+  hdhEmoji: { fontSize: 22, marginRight: 10 },
+  hdhHour: { color: Colors.text.primary, fontSize: 13, fontWeight: '900' },
+  hdhHabit: { fontSize: 12, fontWeight: '700', marginTop: 2, lineHeight: 16 },
+  hdhFor: { color: Colors.text.muted, fontSize: 11, marginTop: 8, paddingLeft: 32 },
+  hdhNote: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32, fontStyle: 'italic' },
+
+  // --- Phase 3az: weekly rituals ---
+  hwrCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  hwrTopRow: { flexDirection: 'row', alignItems: 'center' },
+  hwrEmoji: { fontSize: 22, marginRight: 10 },
+  hwrDay: { color: Colors.text.primary, fontSize: 13, fontWeight: '900' },
+  hwrRitual: { fontSize: 12, fontWeight: '700', marginTop: 2, lineHeight: 16 },
+  hwrKeeper: { color: Colors.text.muted, fontSize: 11, marginTop: 8, paddingLeft: 32 },
+  hwrSign: { color: Colors.accent.softGold, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32, fontStyle: 'italic' },
+
+  // --- Phase 3az: monthly moments ---
+  hmoCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  hmoTopRow: { flexDirection: 'row', alignItems: 'center' },
+  hmoEmoji: { fontSize: 22, marginRight: 10 },
+  hmoMonth: { color: Colors.text.primary, fontSize: 13, fontWeight: '900' },
+  hmoMoment: { fontSize: 12, fontWeight: '700', marginTop: 2, lineHeight: 16 },
+  hmoKeeper: { color: Colors.text.muted, fontSize: 11, marginTop: 8, paddingLeft: 32 },
+  hmoLegacy: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32 },
 });
 
 export default HomeScreen;
