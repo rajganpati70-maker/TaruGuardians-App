@@ -1809,6 +1809,139 @@ const COMPANY_REFERRALS: CompanyReferral[] = [
 ];
 
 // =====================================================
+// Phase 3x: deeper alumni structures
+// =====================================================
+
+interface LegacyProject {
+  id: string;
+  title: string;
+  alumnus: string;
+  batch: string;
+  stillAlive: boolean;
+  useNote: string;
+  color: string;
+  emoji: string;
+}
+
+const LEGACY_PROJECTS: LegacyProject[] = [
+  { id: 'lp-1',  title: 'Sapling tracker v1 · Excel',        alumnus: 'Meera Iyer · 2014',   batch: '2014', stillAlive: false, useNote: 'Retired when the app took over · blueprint preserved.',          color: '#94A3B8', emoji: '📊' },
+  { id: 'lp-2',  title: 'Club handbook · first draft',        alumnus: 'Rohit Kapoor · 2015', batch: '2015', stillAlive: true,  useNote: 'Still the backbone of our on-boarding · updated twice.',            color: '#F59E0B', emoji: '📘' },
+  { id: 'lp-3',  title: 'Campus tree-walk audio guide',       alumnus: 'Tanvi Shah · 2016',   batch: '2016', stillAlive: true,  useNote: 'Plays on a rented speaker on every founding day.',                  color: '#22C55E', emoji: '🎧' },
+  { id: 'lp-4',  title: 'Annual report · print template',     alumnus: 'Priya Ghosh · 2017',  batch: '2017', stillAlive: true,  useNote: 'Used for the last six annual reports · same typography.',          color: '#F472B6', emoji: '📰' },
+  { id: 'lp-5',  title: 'Open-mic stage design',              alumnus: 'Anmol Sethi · 2018',  batch: '2018', stillAlive: true,  useNote: 'Five-year run · the stage you see on every showcase night.',        color: '#7E57C2', emoji: '🎤' },
+  { id: 'lp-6',  title: 'Field-shoot consent-form template',  alumnus: 'Maya Sinha · 2019',   batch: '2019', stillAlive: true,  useNote: 'Translated to Hindi by a junior · now a club standard.',              color: '#FFD166', emoji: '📄' },
+  { id: 'lp-7',  title: 'Code of conduct · v1',                alumnus: 'Ananya Rao · 2020',   batch: '2020', stillAlive: true,  useNote: 'Refined yearly · the spirit still hers.',                             color: '#EF4444', emoji: '🛡️' },
+  { id: 'lp-8',  title: 'Bus-factor handover guide',          alumnus: 'Ishita Verma · 2021', batch: '2021', stillAlive: true,  useNote: 'Now pinned in every wing chat · saved a core lead-change once.',     color: '#00D4FF', emoji: '🔁' },
+  { id: 'lp-9',  title: 'Taru Wings · first documentary',     alumnus: 'Vikram Joshi · 2019', batch: '2019', stillAlive: true,  useNote: 'Still shown to first-years · ten minutes of heart.',                  color: '#EF4444', emoji: '🎞️' },
+];
+
+interface AlumniAward {
+  id: string;
+  award: string;
+  alumnus: string;
+  year: string;
+  body: string;
+  note: string;
+  color: string;
+  emoji: string;
+}
+
+const ALUMNI_AWARDS: AlumniAward[] = [
+  { id: 'aa-1', award: 'Green Campus Ambassador',        alumnus: 'Meera Iyer · 2014',   year: '2019', body: 'Ministry of Environment',                 note: 'For village sapling programs that crossed 40k trees.',           color: '#22C55E', emoji: '🌳' },
+  { id: 'aa-2', award: 'Young Engineer of the Year',     alumnus: 'Anmol Sethi · 2018',  year: '2021', body: 'Institution of Engineers',                note: 'For solar-water-pump prototype built in final year.',             color: '#00D4FF', emoji: '🔌' },
+  { id: 'aa-3', award: 'Forty Under Forty',              alumnus: 'Tanvi Shah · 2016',   year: '2023', body: 'Design Today · India',                    note: 'Long piece on poster systems · honest about mistakes.',           color: '#F472B6', emoji: '🎨' },
+  { id: 'aa-4', award: 'Climate Journalism Grant',       alumnus: 'Rohit Kapoor · 2015', year: '2022', body: 'Pulitzer Climate Centre',                 note: 'For reporting from Sundarbans · grant took a full year.',         color: '#F59E0B', emoji: '📰' },
+  { id: 'aa-5', award: 'NIT Distinguished Alumna',        alumnus: 'Priya Ghosh · 2017',  year: '2024', body: 'Alumni Council · NIT Surat',              note: 'First ecology-focused awardee · citation hand-written.',          color: '#A78BFA', emoji: '🎓' },
+  { id: 'aa-6', award: 'Wildlife Photographer · Shortlist', alumnus: 'Maya Sinha · 2019', year: '2023', body: 'Royal Photography Society',               note: 'For a long exposure of a melting glacier · printed at the Met.',  color: '#FFD166', emoji: '📷' },
+  { id: 'aa-7', award: 'Independent Films · Best Short',   alumnus: 'Vikram Joshi · 2019', year: '2024', body: 'Mumbai Film Festival',                    note: 'An 11-minute piece on a river waking up after monsoon.',           color: '#EF4444', emoji: '🎬' },
+];
+
+interface AlumniVenture {
+  id: string;
+  company: string;
+  founder: string;
+  year: string;
+  stage: 'idea' | 'seed' | 'series A' | 'series B+' | 'non-profit';
+  missionLine: string;
+  hiringNote: string;
+  color: string;
+  emoji: string;
+}
+
+const ALUMNI_VENTURES: AlumniVenture[] = [
+  { id: 'av-1',  company: 'Sorrel Cold-Chain',       founder: 'Meera Iyer · 2014',   year: '2019', stage: 'series A',  missionLine: 'Solar cold-chains for rural dairy · 31 villages.',                hiringNote: 'Hiring field engineers · base in Pune.',              color: '#00D4FF', emoji: '🧊' },
+  { id: 'av-2',  company: 'Moss Studio',              founder: 'Tanvi Shah · 2016',   year: '2022', stage: 'seed',       missionLine: 'Design studio · climate and care briefs only.',                     hiringNote: 'Open to two motion designers · remote ok.',             color: '#F472B6', emoji: '🌿' },
+  { id: 'av-3',  company: 'Jaldhaara',                founder: 'Rohit Kapoor · 2015', year: '2021', stage: 'non-profit', missionLine: 'Pond-restoration non-profit · 68 ponds so far.',                    hiringNote: 'Volunteer weekends · Karnataka + Tamil Nadu.',         color: '#38BDF8', emoji: '💧' },
+  { id: 'av-4',  company: 'PaperTrails · school kits', founder: 'Anmol Sethi · 2018', year: '2023', stage: 'seed',       missionLine: 'Paper-light school kits for low-ink government schools.',          hiringNote: 'Not hiring yet · looking for school partners.',        color: '#F59E0B', emoji: '📚' },
+  { id: 'av-5',  company: 'SongOfBirds · camera trap', founder: 'Maya Sinha · 2019',  year: '2024', stage: 'idea',       missionLine: 'Low-cost camera traps for small-town forest offices.',              hiringNote: 'Looking for one embedded engineer · early co-founder.', color: '#FFD166', emoji: '🐦' },
+  { id: 'av-6',  company: 'Long Lens Films',          founder: 'Vikram Joshi · 2019', year: '2022', stage: 'seed',       missionLine: 'Documentary studio · quiet, long-form, patient.',                   hiringNote: 'Needs an editor · part-time, per-film.',               color: '#EF4444', emoji: '🎞️' },
+  { id: 'av-7',  company: 'Okta Mentor Collective',    founder: 'Ananya Rao · 2020',  year: '2023', stage: 'non-profit', missionLine: 'Mentor matchmaking for first-gen engineers · free.',                hiringNote: 'Need mentors more than hires · please raise your hand.', color: '#7E57C2', emoji: '🫶' },
+  { id: 'av-8',  company: 'Mangrove · climate pods',   founder: 'Ishita Verma · 2021', year: '2024', stage: 'idea',       missionLine: 'Offline-first climate learning pods for schools.',                  hiringNote: 'Pilot teachers in Kerala + Assam · join as builder.',   color: '#22C55E', emoji: '🌱' },
+];
+
+interface ReunionPlan {
+  id: string;
+  title: string;
+  date: string;
+  location: string;
+  seats: number;
+  rsvped: number;
+  color: string;
+  emoji: string;
+}
+
+const REUNION_PLANS: ReunionPlan[] = [
+  { id: 'rp-1', title: 'Founding-day gather · all batches',  date: '20 May · Sat',     location: 'Campus lawn · main block',        seats: 200, rsvped: 132, color: '#FFD166', emoji: '🎉' },
+  { id: 'rp-2', title: '10-year reunion · 2014 batch',        date: '07 Jun · Fri',     location: 'The old library · auditorium',    seats: 60,  rsvped: 41,  color: '#F59E0B', emoji: '🎓' },
+  { id: 'rp-3', title: '5-year reunion · 2019 batch',         date: '14 Jun · Fri',     location: 'Black-box theatre',                seats: 80,  rsvped: 64,  color: '#A78BFA', emoji: '🪞' },
+  { id: 'rp-4', title: 'Alumni + student open-mic',           date: '22 Jun · Sat',     location: 'Open-air amphitheatre',            seats: 150, rsvped: 84,  color: '#F472B6', emoji: '🎤' },
+  { id: 'rp-5', title: 'Forest walk · alumni + juniors',      date: '30 Jun · Sun',     location: 'Campus ridge + hill trail',        seats: 40,  rsvped: 28,  color: '#22C55E', emoji: '🥾' },
+  { id: 'rp-6', title: 'Quiet tea · only 2015–2018 batches',  date: '14 Jul · Sun',     location: 'Rooftop · dorm A',                 seats: 30,  rsvped: 20,  color: '#38BDF8', emoji: '🍵' },
+];
+
+interface FamilyHeritage {
+  id: string;
+  alumniName: string;
+  relation: string;
+  relatedTo: string;
+  kind: 'parent' | 'sibling' | 'partner' | 'mentor';
+  note: string;
+  color: string;
+  emoji: string;
+}
+
+const FAMILY_HERITAGE: FamilyHeritage[] = [
+  { id: 'fh-1', alumniName: 'Meera Iyer · 2014',     relation: 'daughter of',   relatedTo: 'Prof. V. Iyer · botany dept',      kind: 'parent',  note: 'She wrote the first tree-walk script with him.',           color: '#22C55E', emoji: '🌳' },
+  { id: 'fh-2', alumniName: 'Rahul Khanna · 2023',   relation: 'brother of',    relatedTo: 'Ira Khanna · 2020 batch',            kind: 'sibling', note: 'Both edited for the club magazine.',                       color: '#F59E0B', emoji: '📰' },
+  { id: 'fh-3', alumniName: 'Anmol Sethi · 2018',    relation: 'mentee of',     relatedTo: 'Priya Ghosh · 2017 batch',           kind: 'mentor',  note: 'First-year mentor match · still meet every month.',         color: '#A78BFA', emoji: '🧭' },
+  { id: 'fh-4', alumniName: 'Tanvi Shah · 2016',     relation: 'partner of',    relatedTo: 'Vikram Joshi · 2019 batch',          kind: 'partner', note: 'Met at the documentary night · three years in.',           color: '#F472B6', emoji: '🪷' },
+  { id: 'fh-5', alumniName: 'Maya Sinha · 2019',     relation: 'daughter of',   relatedTo: 'Mrs. R. Sinha · campus librarian',   kind: 'parent',  note: 'Books + film · the library is on every thank-you card.',  color: '#FFD166', emoji: '📚' },
+  { id: 'fh-6', alumniName: 'Ananya Rao · 2020',     relation: 'mentee of',     relatedTo: 'Rohit Kapoor · 2015 batch',          kind: 'mentor',  note: 'Reporting + policy · hands off a baton slowly.',           color: '#7E57C2', emoji: '📜' },
+  { id: 'fh-7', alumniName: 'Ishita Verma · 2021',   relation: 'sister of',     relatedTo: 'Ira Verma · 2024 batch',             kind: 'sibling', note: 'Both in the core council · quiet joke about the surname.', color: '#00D4FF', emoji: '👭' },
+];
+
+interface AlumniStoryBeat {
+  id: string;
+  alumnusLine: string;
+  year: string;
+  beat: string;
+  detail: string;
+  color: string;
+  emoji: string;
+}
+
+const STORY_BEATS: AlumniStoryBeat[] = [
+  { id: 'sb-1', alumnusLine: 'Meera · 2014',     year: '2014', beat: 'Planted the first sapling row on the west slope',            detail: 'Twelve trees · forty-one still standing after a decade.',          color: '#22C55E', emoji: '🌱' },
+  { id: 'sb-2', alumnusLine: 'Rohit · 2015',     year: '2016', beat: 'Wrote the handbook on a long train ride',                    detail: 'From Bengaluru to Delhi · 36 hours · the draft still has soot marks.', color: '#F59E0B', emoji: '📘' },
+  { id: 'sb-3', alumnusLine: 'Priya · 2017',     year: '2017', beat: 'Sent 21 hand-written cards on founding day',                 detail: 'Every junior got one · kept in a drawer, most of them.',              color: '#A78BFA', emoji: '💌' },
+  { id: 'sb-4', alumnusLine: 'Anmol · 2018',      year: '2019', beat: 'Solar-pump prototype ran for 44 hours straight',             detail: 'A tiny party when it hit 40 hours · then 44 was the real win.',        color: '#00D4FF', emoji: '🔋' },
+  { id: 'sb-5', alumnusLine: 'Tanvi · 2016',     year: '2020', beat: 'Gave the first real retrospective talk',                     detail: 'Named the mistakes before the wins · the room clapped twice for the honesty.', color: '#F472B6', emoji: '🪞' },
+  { id: 'sb-6', alumnusLine: 'Vikram · 2019',    year: '2022', beat: 'Shipped a documentary that was five months late',             detail: 'The wait was the film · everyone said so afterwards.',                 color: '#EF4444', emoji: '🎬' },
+  { id: 'sb-7', alumnusLine: 'Ananya · 2020',    year: '2023', beat: 'Matched 140 juniors to mentors in a month',                  detail: 'Spreadsheet grew to 12 tabs · then she simplified it back to 3.',      color: '#7E57C2', emoji: '🫶' },
+  { id: 'sb-8', alumnusLine: 'Ishita · 2021',    year: '2024', beat: 'Quietly refused an award so a junior could take it',         detail: 'Said nothing about it · the junior didn\'t know for a year.',           color: '#FFD166', emoji: '🕊️' },
+];
+
+// =====================================================
 // Component
 // =====================================================
 
@@ -3348,25 +3481,216 @@ const AlumniScreen: React.FC = () => {
     </View>
   );
 
+  // ------ Phase 3x deeper blocks ------
+  const renderLegacyProjects = () => (
+    <View style={[styles.sectionBlock, { paddingHorizontal: HORIZONTAL_PADDING }]}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🏛️ Legacy projects · still alive</Text>
+        <Text style={styles.sectionCaption}>{LEGACY_PROJECTS.length} threads</Text>
+      </View>
+      {LEGACY_PROJECTS.map((l) => (
+        <View key={l.id} style={[styles.lpRow, { borderLeftColor: l.color }]}>
+          <Text style={styles.lpEmoji}>{l.emoji}</Text>
+          <View style={{ flex: 1 }}>
+            <View style={styles.lpTopRow}>
+              <Text style={styles.lpTitle} numberOfLines={2}>{l.title}</Text>
+              <View
+                style={[
+                  styles.lpAlive,
+                  {
+                    backgroundColor: (l.stillAlive ? '#22C55E' : '#94A3B8') + '22',
+                    borderColor: (l.stillAlive ? '#22C55E' : '#94A3B8') + '66',
+                  },
+                ]}
+              >
+                <Text
+                  style={[
+                    styles.lpAliveText,
+                    { color: l.stillAlive ? '#22C55E' : '#94A3B8' },
+                  ]}
+                >
+                  {l.stillAlive ? 'in-use' : 'retired'}
+                </Text>
+              </View>
+            </View>
+            <Text style={styles.lpAlumnus} numberOfLines={1}>{l.alumnus}</Text>
+            <Text style={styles.lpNote} numberOfLines={2}>{l.useNote}</Text>
+          </View>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderAlumniAwards = () => (
+    <View style={[styles.sectionBlock, { paddingHorizontal: HORIZONTAL_PADDING }]}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🏆 Awards + honours</Text>
+        <Text style={styles.sectionCaption}>{ALUMNI_AWARDS.length} in the cabinet</Text>
+      </View>
+      {ALUMNI_AWARDS.map((a) => (
+        <View key={a.id} style={[styles.awCard, { borderLeftColor: a.color }]}>
+          <View style={styles.awTopRow}>
+            <Text style={styles.awEmoji}>{a.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.awAward} numberOfLines={2}>{a.award}</Text>
+              <Text style={styles.awBody} numberOfLines={1}>
+                {a.body} · {a.year}
+              </Text>
+            </View>
+          </View>
+          <Text style={[styles.awAlumnus, { color: a.color }]} numberOfLines={1}>{a.alumnus}</Text>
+          <Text style={styles.awNote} numberOfLines={3}>{a.note}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderAlumniVentures = () => (
+    <View style={styles.sectionBlock}>
+      <View style={[styles.sectionHeaderRow, { paddingHorizontal: HORIZONTAL_PADDING }]}>
+        <Text style={styles.sectionTitle}>🚀 Alumni ventures</Text>
+        <Text style={styles.sectionCaption}>{ALUMNI_VENTURES.length} active</Text>
+      </View>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={{ paddingHorizontal: HORIZONTAL_PADDING, gap: 10 }}
+      >
+        {ALUMNI_VENTURES.map((v) => (
+          <View
+            key={v.id}
+            style={[
+              styles.avnCard,
+              { borderColor: v.color + '55' },
+            ]}
+          >
+            <Text style={styles.avnEmoji}>{v.emoji}</Text>
+            <Text style={styles.avnCompany} numberOfLines={1}>{v.company}</Text>
+            <Text style={styles.avnFounder} numberOfLines={1}>{v.founder}</Text>
+            <View style={styles.avnMetaRow}>
+              <View
+                style={[
+                  styles.avnStagePill,
+                  { backgroundColor: v.color + '22', borderColor: v.color + '66' },
+                ]}
+              >
+                <Text style={[styles.avnStageText, { color: v.color }]}>{v.stage}</Text>
+              </View>
+              <Text style={styles.avnYear}>{v.year}</Text>
+            </View>
+            <Text style={styles.avnMission} numberOfLines={3}>{v.missionLine}</Text>
+            <Text style={styles.avnHiring} numberOfLines={2}>{v.hiringNote}</Text>
+          </View>
+        ))}
+      </ScrollView>
+    </View>
+  );
+
+  const renderReunions = () => (
+    <View style={[styles.sectionBlock, { paddingHorizontal: HORIZONTAL_PADDING }]}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🎊 Reunions · on the calendar</Text>
+        <Text style={styles.sectionCaption}>{REUNION_PLANS.length} gathers</Text>
+      </View>
+      {REUNION_PLANS.map((r) => {
+        const pct = r.seats > 0 ? Math.min(1, r.rsvped / r.seats) : 0;
+        return (
+          <View key={r.id} style={[styles.rpCard, { borderLeftColor: r.color }]}>
+            <View style={styles.rpTopRow}>
+              <Text style={styles.rpEmoji}>{r.emoji}</Text>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.rpTitle} numberOfLines={2}>{r.title}</Text>
+                <Text style={styles.rpDate} numberOfLines={1}>{r.date}</Text>
+              </View>
+            </View>
+            <Text style={styles.rpLocation} numberOfLines={1}>{r.location}</Text>
+            <View style={styles.rpBarBg}>
+              <View
+                style={[
+                  styles.rpBarFill,
+                  { width: `${Math.round(pct * 100)}%`, backgroundColor: r.color },
+                ]}
+              />
+            </View>
+            <Text style={styles.rpSeats}>
+              {r.rsvped} / {r.seats} rsvp'd · {Math.round((1 - pct) * 100)}% open
+            </Text>
+          </View>
+        );
+      })}
+    </View>
+  );
+
+  const renderFamilyHeritage = () => (
+    <View style={[styles.sectionBlock, { paddingHorizontal: HORIZONTAL_PADDING }]}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🫧 Family + mentor lineages</Text>
+        <Text style={styles.sectionCaption}>quiet ties</Text>
+      </View>
+      {FAMILY_HERITAGE.map((f) => (
+        <View key={f.id} style={[styles.fhRow, { borderLeftColor: f.color }]}>
+          <Text style={styles.fhEmoji}>{f.emoji}</Text>
+          <View style={{ flex: 1 }}>
+            <Text style={styles.fhAlumnus} numberOfLines={1}>{f.alumniName}</Text>
+            <Text style={styles.fhRelation} numberOfLines={1}>
+              {f.relation} · {f.relatedTo}
+            </Text>
+            <Text style={styles.fhNote} numberOfLines={2}>{f.note}</Text>
+          </View>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderStoryBeats = () => (
+    <View style={[styles.sectionBlock, { paddingHorizontal: HORIZONTAL_PADDING }]}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>📜 Story beats · a decade at a glance</Text>
+        <Text style={styles.sectionCaption}>{STORY_BEATS.length} moments</Text>
+      </View>
+      {STORY_BEATS.map((b) => (
+        <View key={b.id} style={[styles.sbRow, { borderLeftColor: b.color }]}>
+          <View style={styles.sbYearCol}>
+            <Text style={[styles.sbYear, { color: b.color }]}>{b.year}</Text>
+          </View>
+          <View style={{ flex: 1 }}>
+            <View style={styles.sbTopRow}>
+              <Text style={styles.sbEmoji}>{b.emoji}</Text>
+              <Text style={styles.sbAlumnus} numberOfLines={1}>{b.alumnusLine}</Text>
+            </View>
+            <Text style={styles.sbBeat} numberOfLines={2}>{b.beat}</Text>
+            <Text style={styles.sbDetail} numberOfLines={3}>{b.detail}</Text>
+          </View>
+        </View>
+      ))}
+    </View>
+  );
+
   const headerComponent = (
     <View>
       {renderHeader()}
       {renderSectorRail()}
       {renderBatchRail()}
       {renderHallOfFame()}
+      {renderStoryBeats()}
       {renderTestimonials()}
       {renderTopCompanies()}
+      {renderAlumniVentures()}
       {renderChapters()}
       {renderMeetups()}
+      {renderReunions()}
       {renderFiresides()}
       {renderMentorBoard()}
       {renderAdvisors()}
+      {renderFamilyHeritage()}
       {renderAMA()}
       {renderMentorshipSlots()}
       {renderCareerPivots()}
       {renderCompanyReferrals()}
       {renderRelocationGrants()}
       {renderScholarships()}
+      {renderAlumniAwards()}
+      {renderLegacyProjects()}
       {renderGivingLedger()}
       {renderAlumniPolls()}
       {renderDiaspora()}
@@ -4449,6 +4773,121 @@ const styles = StyleSheet.create({
   crType: { color: Colors.text.secondary, fontSize: 10, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 1 },
   crUpdated: { color: Colors.text.muted, fontSize: 10 },
   crNote: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 6 },
+
+  // --- Phase 3x: legacy projects ---
+  lpRow: {
+    flexDirection: 'row',
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginBottom: 8,
+    borderLeftWidth: 3,
+  },
+  lpEmoji: { fontSize: 22, marginRight: 10, marginTop: 2 },
+  lpTopRow: { flexDirection: 'row', alignItems: 'center' },
+  lpTitle: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', flex: 1, lineHeight: 17 },
+  lpAlive: {
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: 999,
+    borderWidth: 1,
+    marginLeft: 8,
+  },
+  lpAliveText: { fontSize: 9, fontWeight: '900', letterSpacing: 1, textTransform: 'uppercase' },
+  lpAlumnus: { color: Colors.tech.neonBlue, fontSize: 11, fontWeight: '700', marginTop: 4 },
+  lpNote: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4 },
+
+  // --- Phase 3x: alumni awards ---
+  awCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  awTopRow: { flexDirection: 'row', alignItems: 'flex-start' },
+  awEmoji: { fontSize: 24, marginRight: 10, marginTop: 2 },
+  awAward: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', lineHeight: 17 },
+  awBody: { color: Colors.text.muted, fontSize: 11, marginTop: 3, fontStyle: 'italic' },
+  awAlumnus: { fontSize: 12, fontWeight: '800', marginTop: 6, paddingLeft: 34 },
+  awNote: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 34 },
+
+  // --- Phase 3x: alumni ventures ---
+  avnCard: {
+    width: 220,
+    backgroundColor: '#0D141B',
+    borderRadius: 16,
+    padding: 14,
+    borderWidth: 1,
+  },
+  avnEmoji: { fontSize: 28 },
+  avnCompany: { color: Colors.text.primary, fontSize: 14, fontWeight: '800', marginTop: 6 },
+  avnFounder: { color: Colors.text.muted, fontSize: 11, marginTop: 2, fontStyle: 'italic' },
+  avnMetaRow: { flexDirection: 'row', alignItems: 'center', marginTop: 8, gap: 8 },
+  avnStagePill: {
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: 999,
+    borderWidth: 1,
+  },
+  avnStageText: { fontSize: 9, fontWeight: '900', letterSpacing: 1, textTransform: 'uppercase' },
+  avnYear: { color: Colors.text.muted, fontSize: 10 },
+  avnMission: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8 },
+  avnHiring: { color: Colors.accent.softGold, fontSize: 11, marginTop: 6, fontStyle: 'italic' },
+
+  // --- Phase 3x: reunions ---
+  rpCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  rpTopRow: { flexDirection: 'row', alignItems: 'center' },
+  rpEmoji: { fontSize: 24, marginRight: 10 },
+  rpTitle: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', lineHeight: 17 },
+  rpDate: { color: Colors.text.muted, fontSize: 11, marginTop: 2 },
+  rpLocation: { color: Colors.text.secondary, fontSize: 11, marginTop: 6, paddingLeft: 34 },
+  rpBarBg: {
+    height: 4,
+    borderRadius: 2,
+    backgroundColor: 'rgba(255,255,255,0.06)',
+    marginTop: 10,
+    overflow: 'hidden',
+  },
+  rpBarFill: { height: 4, borderRadius: 2 },
+  rpSeats: { color: Colors.text.muted, fontSize: 10, marginTop: 6 },
+
+  // --- Phase 3x: family heritage ---
+  fhRow: {
+    flexDirection: 'row',
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginBottom: 8,
+    borderLeftWidth: 3,
+  },
+  fhEmoji: { fontSize: 22, marginRight: 10, marginTop: 2 },
+  fhAlumnus: { color: Colors.text.primary, fontSize: 13, fontWeight: '800' },
+  fhRelation: { color: Colors.tech.neonBlue, fontSize: 11, fontWeight: '700', marginTop: 2 },
+  fhNote: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4 },
+
+  // --- Phase 3x: story beats ---
+  sbRow: {
+    flexDirection: 'row',
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginBottom: 8,
+    borderLeftWidth: 3,
+  },
+  sbYearCol: { width: 52, marginRight: 10 },
+  sbYear: { fontSize: 13, fontWeight: '900', letterSpacing: 0.5 },
+  sbTopRow: { flexDirection: 'row', alignItems: 'center' },
+  sbEmoji: { fontSize: 18, marginRight: 6 },
+  sbAlumnus: { color: Colors.text.muted, fontSize: 11, fontWeight: '700', flex: 1 },
+  sbBeat: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', lineHeight: 17, marginTop: 4 },
+  sbDetail: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4 },
 });
 
 export default AlumniScreen;
