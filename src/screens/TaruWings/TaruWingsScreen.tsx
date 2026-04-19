@@ -874,6 +874,196 @@ const WING_DIRECTORY: WingDirectoryLink[] = [
 // Component
 // -----------------------------------------------------
 
+// =====================================================
+// Phase 3u: deeper wing structures
+// =====================================================
+
+interface WingOKR {
+  id: string;
+  wingId: string;
+  objective: string;
+  kr1: string;
+  kr2: string;
+  kr3: string;
+  progress: number;
+  color: string;
+  emoji: string;
+}
+
+const WING_OKRS: WingOKR[] = [
+  { id: 'okr-content-1',  wingId: 'content',  objective: 'Publish a steady, bilingual library',              kr1: 'Ship 12 long-form pieces this term',     kr2: 'Hindi subtitles on every video',        kr3: 'Cut avg piece time from 18d to 12d',   progress: 0.64, color: '#F59E0B', emoji: '📝' },
+  { id: 'okr-content-2',  wingId: 'content',  objective: 'Make reading a weekly habit inside the wing',      kr1: 'Run a reading club · 16 weeks',          kr2: 'Two book summaries on the app',          kr3: 'Guest authors · four hosted',           progress: 0.52, color: '#F59E0B', emoji: '📚' },
+  { id: 'okr-web-1',      wingId: 'web',      objective: 'Ship the v1.3 app to the Play Store',              kr1: 'Close all P1 bugs',                      kr2: 'Android 9+ supported cleanly',           kr3: 'Crash-free sessions > 99.2%',           progress: 0.74, color: '#00D4FF', emoji: '📱' },
+  { id: 'okr-web-2',      wingId: 'web',      objective: 'Make the site measurably accessible',              kr1: 'Lighthouse a11y ≥ 95 on all pages',      kr2: 'Zero contrast issues on the home tab',   kr3: 'Focus-trap fixes on all modals',        progress: 0.58, color: '#00D4FF', emoji: '♿' },
+  { id: 'okr-gd-1',       wingId: 'gd',       objective: 'Tighten the visual system',                        kr1: 'Color tokens shipped · 18 tokens',       kr2: 'Type scale agreed · 7 sizes',            kr3: 'Component library in Figma · 40+',      progress: 0.68, color: '#F472B6', emoji: '🎨' },
+  { id: 'okr-gd-2',       wingId: 'gd',       objective: 'Faster turnaround · without burnout',              kr1: 'Avg ticket close < 4 days',              kr2: 'No overnight work · tracked weekly',     kr3: 'Two office-hours per week',             progress: 0.44, color: '#F472B6', emoji: '🧘' },
+  { id: 'okr-video-1',    wingId: 'video',    objective: 'Build a reel-first short pipeline',                kr1: 'Ship 24 reels this term',                kr2: 'Avg edit time < 90 min',                 kr3: 'Three reels per event · minimum',       progress: 0.71, color: '#A78BFA', emoji: '🎬' },
+  { id: 'okr-photo-1',    wingId: 'photo',    objective: 'Tell the year in 100 photographs',                 kr1: 'Shoot 1000 frames · keep 100',           kr2: 'Caption every keeper',                   kr3: 'Gallery night · once a term',           progress: 0.62, color: '#22C55E', emoji: '📸' },
+  { id: 'okr-pr-1',       wingId: 'pr',       objective: 'Make new members feel at home in two weeks',       kr1: 'Buddy assigned in < 48h',                kr2: 'Four newcomer dinners this term',        kr3: 'First-month NPS ≥ 60',                  progress: 0.55, color: '#FFD166', emoji: '🤝' },
+];
+
+interface DeliverableTemplate {
+  id: string;
+  wingId: string;
+  name: string;
+  purpose: string;
+  steps: string[];
+  ownerRole: string;
+  color: string;
+  emoji: string;
+}
+
+const DELIVERABLE_TEMPLATES: DeliverableTemplate[] = [
+  {
+    id: 'tpl-c-1',
+    wingId: 'content',
+    name: 'Long-form article · 1200-1800 words',
+    purpose: 'A piece that can also live outside the app · fair on its own.',
+    steps: ['One-paragraph brief', 'Outline review with an editor', 'Draft · single pass', 'Edit pass · 24h later', 'Publish + thank the reviewer'],
+    ownerRole: 'Any content writer',
+    color: '#F59E0B',
+    emoji: '📝',
+  },
+  {
+    id: 'tpl-c-2',
+    wingId: 'content',
+    name: 'Explainer thread · 8 tweets',
+    purpose: 'A public explainer that stands alone on a timeline.',
+    steps: ['Thesis in one tweet', 'Three facts · one per tweet', 'One image tweet', 'Two \"so what\" tweets', 'Call-to-action tweet'],
+    ownerRole: 'Any content writer',
+    color: '#F59E0B',
+    emoji: '🧵',
+  },
+  {
+    id: 'tpl-w-1',
+    wingId: 'web',
+    name: 'Feature PR · 1-2 screens',
+    purpose: 'A focused change that ships end-to-end in one PR.',
+    steps: ['Design link in the PR body', 'Types + hook first', 'UI second', 'Lint + tsc clean', 'Self-review · 24h cooldown'],
+    ownerRole: 'Web/App engineer',
+    color: '#00D4FF',
+    emoji: '🧱',
+  },
+  {
+    id: 'tpl-gd-1',
+    wingId: 'gd',
+    name: 'Event key-visual · 1 frame',
+    purpose: 'A single hero image for a single event.',
+    steps: ['Mood-board · 5 refs', 'Rough · grey-scale', 'Color pass', 'Two variations', 'Export + specs'],
+    ownerRole: 'Graphic designer',
+    color: '#F472B6',
+    emoji: '🎨',
+  },
+  {
+    id: 'tpl-v-1',
+    wingId: 'video',
+    name: 'Event recap · 90 seconds',
+    purpose: 'A reel-first recap that works without audio.',
+    steps: ['Selects · 40 clips max', 'Audio-first edit', 'Captions on everything', 'Export 4k + 1080', 'Post + tag speakers'],
+    ownerRole: 'Video editor',
+    color: '#A78BFA',
+    emoji: '🎬',
+  },
+  {
+    id: 'tpl-p-1',
+    wingId: 'photo',
+    name: 'Event photo-set · 30 keepers',
+    purpose: 'A tight edit that tells the event honestly.',
+    steps: ['Shoot · 800-1200 frames', 'Cull to 80', 'Edit to 30', 'Caption each keeper', 'Deliver in 48h'],
+    ownerRole: 'Photographer',
+    color: '#22C55E',
+    emoji: '📸',
+  },
+  {
+    id: 'tpl-pr-1',
+    wingId: 'pr',
+    name: 'Weekly newsletter · 600 words',
+    purpose: 'A short weekly note that the club actually wants to read.',
+    steps: ['Three headlines', 'One spotlight', 'Two events ahead', 'One thank-you line', 'Send Sunday 7 pm'],
+    ownerRole: 'PR wing writer',
+    color: '#FFD166',
+    emoji: '📣',
+  },
+];
+
+interface OnrampStep {
+  id: string;
+  wingId: string;
+  day: string;
+  action: string;
+  owner: string;
+  color: string;
+  emoji: string;
+}
+
+const ONRAMP_STEPS: OnrampStep[] = [
+  { id: 'or-c-1',  wingId: 'content', day: 'Day 1',  action: 'Read three published pieces · pick one you admire.',                  owner: 'Newcomer',   color: '#F59E0B', emoji: '📖' },
+  { id: 'or-c-2',  wingId: 'content', day: 'Day 2',  action: 'Draft a 200-word note · why you picked that piece.',                   owner: 'Newcomer',   color: '#F59E0B', emoji: '✏️' },
+  { id: 'or-c-3',  wingId: 'content', day: 'Day 5',  action: 'Shadow an editor for one full edit pass.',                              owner: 'Wing lead',   color: '#F59E0B', emoji: '👀' },
+  { id: 'or-c-4',  wingId: 'content', day: 'Day 10', action: 'Co-write a small piece · 600 words · with a buddy.',                    owner: 'Buddy',       color: '#F59E0B', emoji: '🤝' },
+  { id: 'or-c-5',  wingId: 'content', day: 'Day 21', action: 'Solo ship your first 800-word piece · with editor backup.',             owner: 'Newcomer',   color: '#F59E0B', emoji: '🚀' },
+  { id: 'or-w-1',  wingId: 'web',     day: 'Day 1',  action: 'Clone the repo · install deps · run it on your phone.',                owner: 'Newcomer',   color: '#00D4FF', emoji: '📱' },
+  { id: 'or-w-2',  wingId: 'web',     day: 'Day 3',  action: 'Pair-debug an open good-first-issue with a mentor.',                    owner: 'Mentor',      color: '#00D4FF', emoji: '🛠️' },
+  { id: 'or-w-3',  wingId: 'web',     day: 'Day 7',  action: 'Open your first PR · tiny · something you actually care about.',        owner: 'Newcomer',   color: '#00D4FF', emoji: '🧱' },
+  { id: 'or-w-4',  wingId: 'web',     day: 'Day 14', action: 'Review one teammate\'s PR · ask at least one good question.',           owner: 'Newcomer',   color: '#00D4FF', emoji: '🔍' },
+  { id: 'or-gd-1', wingId: 'gd',      day: 'Day 1',  action: 'Browse the tokens doc · mark three you don\'t understand.',             owner: 'Newcomer',   color: '#F472B6', emoji: '🎨' },
+  { id: 'or-gd-2', wingId: 'gd',      day: 'Day 4',  action: 'Redo an old poster using the token system.',                             owner: 'Newcomer',   color: '#F472B6', emoji: '🖼️' },
+  { id: 'or-gd-3', wingId: 'gd',      day: 'Day 10', action: 'Present the redo in crit · take two notes.',                             owner: 'Newcomer',   color: '#F472B6', emoji: '💬' },
+  { id: 'or-v-1',  wingId: 'video',   day: 'Day 1',  action: 'Cut a 30-sec teaser using rushes a senior hands you.',                  owner: 'Newcomer',   color: '#A78BFA', emoji: '✂️' },
+  { id: 'or-v-2',  wingId: 'video',   day: 'Day 5',  action: 'Sit in on one shoot · take notes on rigging + lighting.',               owner: 'Newcomer',   color: '#A78BFA', emoji: '🎥' },
+  { id: 'or-p-1',  wingId: 'photo',   day: 'Day 1',  action: 'Shoot 100 frames · no mission · just look.',                             owner: 'Newcomer',   color: '#22C55E', emoji: '📷' },
+  { id: 'or-p-2',  wingId: 'photo',   day: 'Day 5',  action: 'Cull to 10 · get a crit · accept the harder feedback first.',           owner: 'Newcomer',   color: '#22C55E', emoji: '🔎' },
+  { id: 'or-pr-1', wingId: 'pr',      day: 'Day 1',  action: 'Read the last three newsletters end-to-end.',                           owner: 'Newcomer',   color: '#FFD166', emoji: '📰' },
+  { id: 'or-pr-2', wingId: 'pr',      day: 'Day 4',  action: 'Co-draft one newsletter section with a senior.',                        owner: 'Senior',      color: '#FFD166', emoji: '✍️' },
+];
+
+interface ShowcaseLink {
+  id: string;
+  wingId: string;
+  title: string;
+  venue: string;
+  year: number;
+  medium: 'article' | 'talk' | 'app' | 'film' | 'photoset' | 'series';
+  kind: 'internal' | 'external';
+  color: string;
+  emoji: string;
+}
+
+const SHOWCASE_LINKS: ShowcaseLink[] = [
+  { id: 'sl-c-1',  wingId: 'content', title: 'What rain means when the terrace roof is tin',           venue: 'Scroll.in',                       year: 2025, medium: 'article',  kind: 'external', color: '#F59E0B', emoji: '📰' },
+  { id: 'sl-c-2',  wingId: 'content', title: 'A quiet guide · how to write a grant without lying',     venue: 'Stanford SSIR',                   year: 2025, medium: 'article',  kind: 'external', color: '#F59E0B', emoji: '📰' },
+  { id: 'sl-w-1',  wingId: 'web',     title: 'Taru Guardians · v1.3 · Android',                         venue: 'Play Store · internal track',     year: 2026, medium: 'app',      kind: 'internal', color: '#00D4FF', emoji: '📱' },
+  { id: 'sl-w-2',  wingId: 'web',     title: 'What release rotations taught our tiny team',             venue: 'GitHub Universe · lightning',     year: 2024, medium: 'talk',     kind: 'external', color: '#00D4FF', emoji: '🎤' },
+  { id: 'sl-gd-1', wingId: 'gd',      title: 'Field-guide · 12 posters · one year',                     venue: 'Campus main hall · gallery',      year: 2025, medium: 'series',   kind: 'internal', color: '#F472B6', emoji: '🖼️' },
+  { id: 'sl-gd-2', wingId: 'gd',      title: 'Designing for the last user · a talk',                    venue: 'Config · Figma',                  year: 2026, medium: 'talk',     kind: 'external', color: '#F472B6', emoji: '🎤' },
+  { id: 'sl-v-1',  wingId: 'video',   title: 'Year-in-review reel · 90 seconds',                        venue: 'Club Instagram',                  year: 2025, medium: 'film',     kind: 'external', color: '#A78BFA', emoji: '🎬' },
+  { id: 'sl-v-2',  wingId: 'video',   title: 'Sapling · a short film',                                  venue: 'Short-film fest · Dharamshala',   year: 2024, medium: 'film',     kind: 'external', color: '#A78BFA', emoji: '🎥' },
+  { id: 'sl-p-1',  wingId: 'photo',   title: 'Terrace light · 40 frames',                                venue: 'Club gallery night',              year: 2025, medium: 'photoset', kind: 'internal', color: '#22C55E', emoji: '📸' },
+  { id: 'sl-p-2',  wingId: 'photo',   title: 'Rain on the landslide · five-village photo essay',        venue: 'Environment & Urbanization',      year: 2025, medium: 'photoset', kind: 'external', color: '#22C55E', emoji: '🏞️' },
+  { id: 'sl-pr-1', wingId: 'pr',      title: 'Weekly letters · 52 issues · one year',                    venue: 'Email list · 2,200 readers',      year: 2025, medium: 'series',   kind: 'external', color: '#FFD166', emoji: '📧' },
+];
+
+interface WingFeedbackNorm {
+  id: string;
+  wingId: string;
+  principle: string;
+  detail: string;
+  example: string;
+  color: string;
+  emoji: string;
+}
+
+const FEEDBACK_NORMS: WingFeedbackNorm[] = [
+  { id: 'fn-c-1',  wingId: 'content', principle: 'Edit the sentence · not the writer',              detail: 'Talk about the line on the page · not the person who wrote it.',                  example: '"This sentence hides the verb" · not · "you always hide verbs".',      color: '#F59E0B', emoji: '✏️' },
+  { id: 'fn-c-2',  wingId: 'content', principle: 'Question first · then suggest',                   detail: 'Ask what the writer wanted before handing them your fix.',                          example: '"What did you want the reader to feel here?" · then suggest.',           color: '#F59E0B', emoji: '❓' },
+  { id: 'fn-w-1',  wingId: 'web',     principle: 'Small PRs · small feedback',                      detail: 'Ship small · so the feedback can stay specific + fast.',                            example: '"Rename this hook" · on a 30-line PR · not on a 600-line one.',         color: '#00D4FF', emoji: '🧱' },
+  { id: 'fn-w-2',  wingId: 'web',     principle: 'Code review is a conversation · not a judgement', detail: 'A comment is a question unless the author + reviewer both agree it is a must.',    example: '"Could we extract this?" · then listen before insisting.',              color: '#00D4FF', emoji: '💬' },
+  { id: 'fn-gd-1', wingId: 'gd',      principle: 'Crit with the brief in hand',                     detail: 'Every critique starts by reading the brief again · out loud.',                     example: '"The brief asked for calm · this is loud · is that on purpose?"',      color: '#F472B6', emoji: '🪞' },
+  { id: 'fn-v-1',  wingId: 'video',   principle: 'Rough cuts are for reactions · not sentences',    detail: 'At rough-cut stage we only note feelings · not frame-by-frame.',                    example: '"I felt lost at 0:45" · not · "trim that to 4 frames".',                color: '#A78BFA', emoji: '🎬' },
+  { id: 'fn-p-1',  wingId: 'photo',   principle: 'One keeper · two cuts',                           detail: 'When you crit · pick one photo to praise before cutting two.',                      example: '"This one · yes · the others · no · here\'s why".',                      color: '#22C55E', emoji: '📸' },
+  { id: 'fn-pr-1', wingId: 'pr',      principle: 'Feedback in person · not in comments',            detail: 'We say the hard thing face-to-face · never only in a doc comment.',                 example: 'A five-minute call · not a three-comment thread.',                        color: '#FFD166', emoji: '🗣️' },
+];
+
 const TaruWingsScreen: React.FC = () => {
   const [selectedWingId, setSelectedWingId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -2219,6 +2409,171 @@ const TaruWingsScreen: React.FC = () => {
     );
   };
 
+  const renderOKRsBlock = () => {
+    if (!selectedWing) return null;
+    const okrs = WING_OKRS.filter((o) => o.wingId === selectedWing.id);
+    if (okrs.length === 0) return null;
+    return (
+      <View style={styles.sectionBlock}>
+        <View style={styles.sectionHeaderRow}>
+          <Text style={styles.sectionTitle}>🎯 This term's OKRs</Text>
+          <Text style={styles.sectionCaption}>{okrs.length} objectives</Text>
+        </View>
+        {okrs.map((o) => (
+          <View key={o.id} style={[styles.okrCard, { borderLeftColor: o.color }]}>
+            <View style={styles.okrTopRow}>
+              <Text style={styles.okrEmoji}>{o.emoji}</Text>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.okrObjective} numberOfLines={2}>{o.objective}</Text>
+                <Text style={[styles.okrProgress, { color: o.color }]}>
+                  {Math.round(o.progress * 100)}% · mid-term
+                </Text>
+              </View>
+            </View>
+            <View style={styles.okrKrRow}>
+              <Text style={styles.okrKrBullet}>·</Text>
+              <Text style={styles.okrKrText} numberOfLines={2}>{o.kr1}</Text>
+            </View>
+            <View style={styles.okrKrRow}>
+              <Text style={styles.okrKrBullet}>·</Text>
+              <Text style={styles.okrKrText} numberOfLines={2}>{o.kr2}</Text>
+            </View>
+            <View style={styles.okrKrRow}>
+              <Text style={styles.okrKrBullet}>·</Text>
+              <Text style={styles.okrKrText} numberOfLines={2}>{o.kr3}</Text>
+            </View>
+            <View style={styles.okrBarBg}>
+              <View
+                style={[
+                  styles.okrBarFill,
+                  { width: `${Math.round(o.progress * 100)}%`, backgroundColor: o.color },
+                ]}
+              />
+            </View>
+          </View>
+        ))}
+      </View>
+    );
+  };
+
+  const renderTemplatesBlock = () => {
+    if (!selectedWing) return null;
+    const templates = DELIVERABLE_TEMPLATES.filter((t) => t.wingId === selectedWing.id);
+    if (templates.length === 0) return null;
+    return (
+      <View style={styles.sectionBlock}>
+        <View style={styles.sectionHeaderRow}>
+          <Text style={styles.sectionTitle}>🧩 Deliverable templates</Text>
+          <Text style={styles.sectionCaption}>{templates.length} ready to reuse</Text>
+        </View>
+        {templates.map((t) => (
+          <View key={t.id} style={[styles.tplCard, { borderLeftColor: t.color }]}>
+            <View style={styles.tplTopRow}>
+              <Text style={styles.tplEmoji}>{t.emoji}</Text>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.tplName} numberOfLines={2}>{t.name}</Text>
+                <Text style={styles.tplOwner} numberOfLines={1}>owner · {t.ownerRole}</Text>
+              </View>
+            </View>
+            <Text style={styles.tplPurpose} numberOfLines={3}>{t.purpose}</Text>
+            {t.steps.map((s, i) => (
+              <View key={i} style={styles.tplStepRow}>
+                <Text style={[styles.tplStepIdx, { color: t.color }]}>{i + 1}</Text>
+                <Text style={styles.tplStepText} numberOfLines={2}>{s}</Text>
+              </View>
+            ))}
+          </View>
+        ))}
+      </View>
+    );
+  };
+
+  const renderOnrampBlock = () => {
+    if (!selectedWing) return null;
+    const steps = ONRAMP_STEPS.filter((s) => s.wingId === selectedWing.id);
+    if (steps.length === 0) return null;
+    return (
+      <View style={styles.sectionBlock}>
+        <View style={styles.sectionHeaderRow}>
+          <Text style={styles.sectionTitle}>🛤️ On-ramp · first 21 days</Text>
+          <Text style={styles.sectionCaption}>{steps.length} steps</Text>
+        </View>
+        {steps.map((s) => (
+          <View key={s.id} style={[styles.onrRow, { borderLeftColor: s.color }]}>
+            <View style={styles.onrDayCol}>
+              <Text style={[styles.onrDay, { color: s.color }]}>{s.day}</Text>
+              <Text style={styles.onrEmoji}>{s.emoji}</Text>
+            </View>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.onrAction} numberOfLines={3}>{s.action}</Text>
+              <Text style={styles.onrOwner} numberOfLines={1}>by · {s.owner}</Text>
+            </View>
+          </View>
+        ))}
+      </View>
+    );
+  };
+
+  const renderShowcaseBlock = () => {
+    if (!selectedWing) return null;
+    const items = SHOWCASE_LINKS.filter((s) => s.wingId === selectedWing.id);
+    if (items.length === 0) return null;
+    return (
+      <View style={styles.sectionBlock}>
+        <View style={styles.sectionHeaderRow}>
+          <Text style={styles.sectionTitle}>🏅 Showcase · work we'd show a stranger</Text>
+          <Text style={styles.sectionCaption}>{items.length} entries</Text>
+        </View>
+        {items.map((s) => (
+          <View key={s.id} style={[styles.scCard, { borderLeftColor: s.color }]}>
+            <Text style={styles.scEmoji}>{s.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.scTitle} numberOfLines={2}>{s.title}</Text>
+              <Text style={styles.scVenue} numberOfLines={1}>{s.venue} · {s.year}</Text>
+              <View style={styles.scPillRow}>
+                <View
+                  style={[
+                    styles.scPill,
+                    { backgroundColor: s.color + '22', borderColor: s.color + '55' },
+                  ]}
+                >
+                  <Text style={[styles.scPillText, { color: s.color }]}>{s.medium}</Text>
+                </View>
+                <View style={styles.scPill}>
+                  <Text style={styles.scPillText}>{s.kind}</Text>
+                </View>
+              </View>
+            </View>
+          </View>
+        ))}
+      </View>
+    );
+  };
+
+  const renderFeedbackNormsBlock = () => {
+    if (!selectedWing) return null;
+    const norms = FEEDBACK_NORMS.filter((f) => f.wingId === selectedWing.id);
+    if (norms.length === 0) return null;
+    return (
+      <View style={styles.sectionBlock}>
+        <View style={styles.sectionHeaderRow}>
+          <Text style={styles.sectionTitle}>🪞 How we give feedback here</Text>
+          <Text style={styles.sectionCaption}>{norms.length} norms</Text>
+        </View>
+        {norms.map((f) => (
+          <View key={f.id} style={[styles.fnCard, { borderLeftColor: f.color }]}>
+            <View style={styles.fnTopRow}>
+              <Text style={styles.fnEmoji}>{f.emoji}</Text>
+              <Text style={styles.fnPrinciple} numberOfLines={2}>{f.principle}</Text>
+            </View>
+            <Text style={styles.fnDetail} numberOfLines={3}>{f.detail}</Text>
+            <Text style={styles.fnExample} numberOfLines={2}>e.g. · {f.example}</Text>
+          </View>
+        ))}
+      </View>
+    );
+  };
+
   const renderDetail = () => (
     <ScrollView
       contentContainerStyle={styles.scrollContent}
@@ -2234,15 +2589,20 @@ const TaruWingsScreen: React.FC = () => {
     >
       {renderWingDetailHeader()}
       {renderToolsBlock()}
+      {renderOKRsBlock()}
       {renderGrowthPathBlock()}
+      {renderOnrampBlock()}
       {renderPlaybookBlock()}
+      {renderTemplatesBlock()}
       {renderOpenRoles()}
       {renderProjectsBlock()}
       {renderShipLogBlock()}
       {renderGearBlock()}
+      {renderFeedbackNormsBlock()}
       {renderRetroBlock()}
       {renderCollabBlock()}
       {renderAwardsBlock()}
+      {renderShowcaseBlock()}
       {renderEventsBlock()}
       {renderRitualsBlock()}
       {renderCirclesBlock()}
@@ -3025,6 +3385,99 @@ const styles = StyleSheet.create({
   dirTrust: { fontSize: 10, fontWeight: '800', letterSpacing: 0.5, textTransform: 'uppercase' },
   dirHint: { color: Colors.tech.neonBlue, fontSize: 11, marginTop: 3, fontFamily: Platform.OS === 'ios' ? 'Menlo' : 'monospace' },
   dirNote: { color: Colors.text.muted, fontSize: 11, marginTop: 4, lineHeight: 15 },
+
+  // OKRs
+  okrCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  okrTopRow: { flexDirection: 'row', alignItems: 'flex-start' },
+  okrEmoji: { fontSize: 22, marginRight: 10, marginTop: 2 },
+  okrObjective: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', lineHeight: 17 },
+  okrProgress: { fontSize: 11, fontWeight: '900', marginTop: 4, letterSpacing: 0.5 },
+  okrKrRow: { flexDirection: 'row', marginTop: 6, paddingLeft: 32 },
+  okrKrBullet: { color: Colors.text.muted, fontSize: 12, marginRight: 6 },
+  okrKrText: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, flex: 1 },
+  okrBarBg: {
+    height: 4,
+    borderRadius: 2,
+    backgroundColor: 'rgba(255,255,255,0.06)',
+    marginTop: 10,
+    overflow: 'hidden',
+  },
+  okrBarFill: { height: 4, borderRadius: 2 },
+
+  // Templates
+  tplCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  tplTopRow: { flexDirection: 'row', alignItems: 'flex-start' },
+  tplEmoji: { fontSize: 22, marginRight: 10, marginTop: 2 },
+  tplName: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', lineHeight: 17 },
+  tplOwner: { color: Colors.text.muted, fontSize: 10, marginTop: 2, fontStyle: 'italic' },
+  tplPurpose: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8 },
+  tplStepRow: { flexDirection: 'row', marginTop: 6, paddingLeft: 4 },
+  tplStepIdx: { fontSize: 12, fontWeight: '900', marginRight: 8, width: 16 },
+  tplStepText: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, flex: 1 },
+
+  // On-ramp
+  onrRow: {
+    flexDirection: 'row',
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginBottom: 8,
+    borderLeftWidth: 3,
+  },
+  onrDayCol: { width: 64, alignItems: 'flex-start', marginRight: 10 },
+  onrDay: { fontSize: 10, fontWeight: '900', letterSpacing: 1, textTransform: 'uppercase' },
+  onrEmoji: { fontSize: 20, marginTop: 4 },
+  onrAction: { color: Colors.text.primary, fontSize: 12, lineHeight: 16 },
+  onrOwner: { color: Colors.text.muted, fontSize: 10, marginTop: 4, fontStyle: 'italic' },
+
+  // Showcase
+  scCard: {
+    flexDirection: 'row',
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginBottom: 8,
+    borderLeftWidth: 3,
+  },
+  scEmoji: { fontSize: 22, marginRight: 10, marginTop: 2 },
+  scTitle: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', lineHeight: 17 },
+  scVenue: { color: Colors.text.muted, fontSize: 10, marginTop: 2 },
+  scPillRow: { flexDirection: 'row', marginTop: 6, gap: 6 },
+  scPill: {
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: 999,
+    backgroundColor: 'rgba(255,255,255,0.04)',
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.08)',
+  },
+  scPillText: { color: Colors.text.secondary, fontSize: 9, fontWeight: '900', letterSpacing: 1, textTransform: 'uppercase' },
+
+  // Feedback norms
+  fnCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  fnTopRow: { flexDirection: 'row', alignItems: 'center' },
+  fnEmoji: { fontSize: 22, marginRight: 10 },
+  fnPrinciple: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', flex: 1, lineHeight: 17 },
+  fnDetail: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8 },
+  fnExample: { color: Colors.text.muted, fontSize: 11, lineHeight: 15, marginTop: 6, fontStyle: 'italic' },
 });
 
 export default TaruWingsScreen;
