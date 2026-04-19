@@ -1031,6 +1031,180 @@ const LIVE_FEED: FeedItem[] = [
 ];
 
 // -----------------------------------------------------
+// Onboarding path
+// -----------------------------------------------------
+
+interface OnboardingStep {
+  id: string;
+  week: string;
+  title: string;
+  body: string;
+  emoji: string;
+  color: string;
+  deliverable: string;
+}
+
+const ONBOARDING_STEPS: OnboardingStep[] = [
+  { id: 'ob-1', week: 'Week 0',  title: 'Welcome + sign the handbook',          body: 'Read the 12-page handbook. Pick one wing you want to try. Tell your buddy what you are curious about.', emoji: '📖', color: '#22C55E', deliverable: 'Handbook signed · wing chosen' },
+  { id: 'ob-2', week: 'Week 1',  title: 'Pair with a buddy · ship small',       body: 'Buddy walks you through one tiny task · a poster, a commit, a crew shift, a 200-word draft.',              emoji: '🤝', color: '#38BDF8', deliverable: 'One small thing shipped' },
+  { id: 'ob-3', week: 'Week 2',  title: 'Join a project standup',               body: 'Sit in two standups. Ask one curious question. Nothing more asked of you.',                                  emoji: '🎧', color: '#A78BFA', deliverable: 'Two standups attended' },
+  { id: 'ob-4', week: 'Week 3',  title: 'Own a slice',                          body: 'Pick one deliverable on an in-flight project. Your buddy is co-signed on it. You lead · not alone.',           emoji: '🧩', color: '#F59E0B', deliverable: 'Slice owned · PR/poster/story opened' },
+  { id: 'ob-5', week: 'Week 4',  title: 'Present in show-and-tell',             body: 'Three-minute show-and-tell to the wing. Mistakes are welcome here · this is the warm-up, not the exam.',      emoji: '🎤', color: '#F472B6', deliverable: 'Ship + present' },
+  { id: 'ob-6', week: 'Week 6',  title: 'Start a tiny experiment',              body: 'Propose a 2-week experiment you believe in. Doesn\'t need permission · needs one co-conspirator.',             emoji: '🧪', color: '#EC4899', deliverable: 'Experiment kicked off' },
+  { id: 'ob-7', week: 'Week 8',  title: 'Close the loop',                       body: 'Retrospective with your buddy. What worked, what didn\'t, what you want to try next. No grading.',              emoji: '🔄', color: '#6366F1', deliverable: 'Buddy retro written' },
+  { id: 'ob-8', week: 'Week 12', title: 'Full member · mentor the next cohort', body: 'Fly on your own wing. Pair with the next first-year. The loop renews. Welcome for good.',                     emoji: '🌱', color: '#16A34A', deliverable: 'Mentor assigned' },
+];
+
+// -----------------------------------------------------
+// Achievement badges
+// -----------------------------------------------------
+
+interface Badge {
+  id: string;
+  name: string;
+  emoji: string;
+  color: string;
+  rarity: 'common' | 'uncommon' | 'rare' | 'legendary';
+  earned: number;
+  criteria: string;
+}
+
+const BADGES: Badge[] = [
+  { id: 'bg-1',  name: 'First Ship',          emoji: '🚢', color: '#22C55E', rarity: 'common',    earned: 412, criteria: 'Ship your first club deliverable in any wing.' },
+  { id: 'bg-2',  name: 'Poster Perfect',      emoji: '🎨', color: '#F472B6', rarity: 'uncommon',  earned: 84,  criteria: 'Design posters used in 3+ live events.' },
+  { id: 'bg-3',  name: 'Long-form Voice',     emoji: '✍️', color: '#38BDF8', rarity: 'uncommon',  earned: 67,  criteria: 'Publish 5+ long-form pieces on Canopy Press.' },
+  { id: 'bg-4',  name: 'Stage Presence',      emoji: '🎤', color: '#A78BFA', rarity: 'uncommon',  earned: 39,  criteria: 'Speak at 3+ main-stage events.' },
+  { id: 'bg-5',  name: 'Release Captain',     emoji: '🚀', color: '#00D4FF', rarity: 'rare',      earned: 22,  criteria: 'Lead 3+ app releases without a rollback.' },
+  { id: 'bg-6',  name: 'Sapling Sponsor',     emoji: '🌱', color: '#16A34A', rarity: 'rare',      earned: 28,  criteria: 'Plant + care for 25+ saplings across drives.' },
+  { id: 'bg-7',  name: 'Zero-Waste Streak',   emoji: '♻️', color: '#84CC16', rarity: 'rare',      earned: 19,  criteria: 'Organise 3 events with <5kg mixed waste each.' },
+  { id: 'bg-8',  name: 'Chapter Anchor',      emoji: '📍', color: '#F59E0B', rarity: 'rare',      earned: 11,  criteria: 'Anchor a city chapter for 2+ seasons.' },
+  { id: 'bg-9',  name: 'Mentor of the Month', emoji: '🧭', color: '#6366F1', rarity: 'rare',      earned: 15,  criteria: 'Win peer-voted Mentor of the Month.' },
+  { id: 'bg-10', name: 'Ten-Year Torch',      emoji: '🔥', color: '#EF4444', rarity: 'legendary', earned: 3,   criteria: 'Stay involved as alumni across 10+ years.' },
+  { id: 'bg-11', name: 'Canopy Keeper',       emoji: '🌳', color: '#15803D', rarity: 'legendary', earned: 5,   criteria: 'Plant + confirm 100+ trees that survive 3+ years.' },
+  { id: 'bg-12', name: 'Silent Glue',         emoji: '🤲', color: '#D4AF37', rarity: 'legendary', earned: 7,   criteria: 'Nominated 3+ times as "the glue" of their wing.' },
+];
+
+// -----------------------------------------------------
+// Sustainability scoreboard (quarter view)
+// -----------------------------------------------------
+
+interface ScoreboardRow {
+  id: string;
+  metric: string;
+  q1: number;
+  q2: number;
+  q3: number;
+  q4: number;
+  unit: string;
+  emoji: string;
+  color: string;
+  target: number;
+}
+
+const SCOREBOARD: ScoreboardRow[] = [
+  { id: 'sb-1', metric: 'Saplings planted',      q1: 280, q2: 340, q3: 420, q4: 510, unit: 'trees', emoji: '🌱', color: '#22C55E', target: 2000 },
+  { id: 'sb-2', metric: 'E-waste collected',     q1: 84,  q2: 102, q3: 118, q4: 146, unit: 'kg',    emoji: '♻️', color: '#84CC16', target: 600 },
+  { id: 'sb-3', metric: 'Paper saved · digital', q1: 12000, q2: 13800, q3: 15400, q4: 18200, unit: 'sheets', emoji: '📄', color: '#38BDF8', target: 80000 },
+  { id: 'sb-4', metric: 'CO₂ avoided',            q1: 4.2, q2: 5.1, q3: 6.3, q4: 8.8, unit: 't CO₂e', emoji: '🌍', color: '#16A34A', target: 30 },
+  { id: 'sb-5', metric: 'Volunteer hours',       q1: 1240, q2: 1590, q3: 1860, q4: 2210, unit: 'hrs', emoji: '⏳', color: '#F59E0B', target: 8000 },
+  { id: 'sb-6', metric: 'Reuse · event kits',    q1: 14, q2: 19, q3: 24, q4: 29, unit: 'kits', emoji: '🧰', color: '#A78BFA', target: 100 },
+];
+
+// -----------------------------------------------------
+// Community norms
+// -----------------------------------------------------
+
+interface Norm {
+  id: string;
+  title: string;
+  body: string;
+  emoji: string;
+  color: string;
+}
+
+const NORMS: Norm[] = [
+  { id: 'nm-1', title: 'Show up honestly',      body: 'Say what you know. Say what you don\'t. Both are allowed here.',                                emoji: '🪞', color: '#38BDF8' },
+  { id: 'nm-2', title: 'Rough drafts welcome',  body: 'We review the draft kindly, then push it to the next draft. No first-draft shame.',              emoji: '📝', color: '#F472B6' },
+  { id: 'nm-3', title: 'Plan in public',        body: 'Decisions live in channels, not DMs. Future-you (and new members) will thank you.',              emoji: '📣', color: '#F59E0B' },
+  { id: 'nm-4', title: 'Default to credit',     body: 'Name the people who shipped the thing. In the caption, in the commit, in the crowd.',            emoji: '🏷️', color: '#22C55E' },
+  { id: 'nm-5', title: 'Repair over blame',     body: 'If something breaks, we fix it and write what we learned. Blame is expensive. Fixes are cheap.', emoji: '🧰', color: '#A78BFA' },
+  { id: 'nm-6', title: 'Rest is part of work',  body: 'Burn-out is not a badge. Sleep, food, walks. Show up whole.',                                      emoji: '🛌', color: '#6366F1' },
+  { id: 'nm-7', title: 'Keep the handbook alive', body: 'See a missing page? Add it. The handbook only works if every cohort edits it.',                emoji: '📖', color: '#0EA5E9' },
+];
+
+// -----------------------------------------------------
+// Collaboration opportunities
+// -----------------------------------------------------
+
+interface CollabOpp {
+  id: string;
+  title: string;
+  wing: string;
+  color: string;
+  commitment: string;
+  lookingFor: string;
+  contact: string;
+}
+
+const COLLAB_OPPS: CollabOpp[] = [
+  { id: 'co-1', title: 'Sapling dashboard · v2 redesign',      wing: 'Web/App',         color: '#00D4FF', commitment: '6–8 hrs/wk · 3 wks', lookingFor: '1 RN dev · 1 product designer', contact: 'build@taruguardians.org' },
+  { id: 'co-2', title: 'Canopy Press · monsoon issue',         wing: 'Content',         color: '#4CAF50', commitment: '3–4 hrs/wk · 4 wks', lookingFor: '2 writers · 1 copy editor',     contact: 'press@taruguardians.org' },
+  { id: 'co-3', title: 'Earth Day poster kit',                 wing: 'Graphic Design',  color: '#F472B6', commitment: '4 hrs/wk · 2 wks',   lookingFor: '2 designers · 1 illustrator',   contact: 'design@taruguardians.org' },
+  { id: 'co-4', title: 'Alumni fireside · reel series',        wing: 'Video',           color: '#FFD54F', commitment: '5 hrs/wk · 3 wks',   lookingFor: '1 editor · 1 motion artist',    contact: 'video@taruguardians.org' },
+  { id: 'co-5', title: 'Repair café · photo story',            wing: 'Photography',     color: '#AB47BC', commitment: '2 shoots · half-day', lookingFor: '2 photographers · 1 captioner', contact: 'photo@taruguardians.org' },
+  { id: 'co-6', title: 'Sponsor outreach · green partners',    wing: 'Public Relations', color: '#EF6C00', commitment: '3 hrs/wk · 6 wks',   lookingFor: '2 PR leads · 1 researcher',     contact: 'pr@taruguardians.org' },
+];
+
+// -----------------------------------------------------
+// Resource hub
+// -----------------------------------------------------
+
+interface Resource {
+  id: string;
+  title: string;
+  kind: 'handbook' | 'template' | 'deck' | 'tool' | 'guide';
+  emoji: string;
+  color: string;
+  updated: string;
+  blurb: string;
+  tag: string;
+}
+
+const RESOURCES: Resource[] = [
+  { id: 'rs-1',  title: 'Club handbook · 2026 ed',           kind: 'handbook', emoji: '📖', color: '#22C55E', updated: 'Apr 12', blurb: '12-page canonical doc · values · norms · how we ship.',                 tag: 'All wings' },
+  { id: 'rs-2',  title: 'Event postmortem template',         kind: 'template', emoji: '🧾', color: '#38BDF8', updated: 'Apr 04', blurb: 'Fill-in template we use after every event · 8 prompts · 30 min to run.', tag: 'Events' },
+  { id: 'rs-3',  title: 'Poster kit · Canva + Figma',        kind: 'template', emoji: '🎨', color: '#F472B6', updated: 'Mar 29', blurb: 'Grid · type · palette · 4 layouts. Don\'t start from scratch.',          tag: 'Graphic Design' },
+  { id: 'rs-4',  title: 'Release-rotation doc · v2',         kind: 'guide',    emoji: '🚀', color: '#00D4FF', updated: 'Mar 21', blurb: 'How we ship the app every Friday · rollback plan · on-call rota.',      tag: 'Web/App' },
+  { id: 'rs-5',  title: 'Sapling survey CSV · Q1',           kind: 'tool',     emoji: '📊', color: '#16A34A', updated: 'Mar 14', blurb: 'Clean dataset of every tree we\'ve planted + Q1 survival check.',         tag: 'Sustainability' },
+  { id: 'rs-6',  title: 'Alumni fireside deck · template',   kind: 'deck',     emoji: '🪟', color: '#A78BFA', updated: 'Feb 27', blurb: '10-slide template · alumni bio · 3 questions · 1 story.',                tag: 'PR + Events' },
+  { id: 'rs-7',  title: 'Video editing · mini-handbook',     kind: 'guide',    emoji: '🎬', color: '#FFD54F', updated: 'Feb 18', blurb: 'DaVinci quickstart · colour · pacing · captions · upload checklist.',   tag: 'Video' },
+  { id: 'rs-8',  title: 'Photography consent card',          kind: 'template', emoji: '📷', color: '#AB47BC', updated: 'Feb 04', blurb: 'Printable card we hand at every event · 3 levels of consent.',           tag: 'Photography' },
+  { id: 'rs-9',  title: 'Sponsor pitch · one-pager',         kind: 'template', emoji: '🤝', color: '#EF6C00', updated: 'Jan 28', blurb: 'One-page pitch template · numbers · audience · ask. Stop reinventing.', tag: 'Public Relations' },
+  { id: 'rs-10', title: 'Content Style Guide · v1.3',        kind: 'handbook', emoji: '🖋️', color: '#4CAF50', updated: 'Jan 14', blurb: 'Tone · voice · house-style rules · what we never say.',                  tag: 'Content' },
+];
+
+// -----------------------------------------------------
+// Campus calendar preview
+// -----------------------------------------------------
+
+interface CalendarPreview {
+  id: string;
+  day: string;
+  label: string;
+  chips: { text: string; color: string }[];
+}
+
+const CAMPUS_CAL: CalendarPreview[] = [
+  { id: 'cc-1', day: 'Mon', label: 'Apr 21', chips: [{ text: 'Standups', color: '#38BDF8' }, { text: 'Canopy Press lay-in', color: '#4CAF50' }] },
+  { id: 'cc-2', day: 'Tue', label: 'Apr 22', chips: [{ text: 'Sapling drive · EEE block', color: '#22C55E' }] },
+  { id: 'cc-3', day: 'Wed', label: 'Apr 23', chips: [{ text: 'Open design crit', color: '#F472B6' }, { text: 'Alumni office hrs', color: '#FFD54F' }] },
+  { id: 'cc-4', day: 'Thu', label: 'Apr 24', chips: [{ text: 'RN weekly', color: '#00D4FF' }] },
+  { id: 'cc-5', day: 'Fri', label: 'Apr 25', chips: [{ text: 'Release · v1.3.2', color: '#00D4FF' }, { text: 'Photo walk', color: '#AB47BC' }] },
+  { id: 'cc-6', day: 'Sat', label: 'Apr 26', chips: [{ text: 'Repair café', color: '#84CC16' }] },
+  { id: 'cc-7', day: 'Sun', label: 'Apr 27', chips: [{ text: 'Hyd chapter mixer', color: '#EF6C00' }] },
+];
+
+// -----------------------------------------------------
 // Quick wins
 // -----------------------------------------------------
 
@@ -1846,6 +2020,239 @@ const HomeScreen: React.FC = () => {
   );
 
   // ------ Event modal ------
+  const renderOnboarding = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🌿 Your first 12 weeks</Text>
+        <Text style={styles.sectionCaption}>Onboarding · kind pace</Text>
+      </View>
+      {ONBOARDING_STEPS.map((s, idx) => (
+        <View key={s.id} style={styles.obRow}>
+          <View style={[styles.obDot, { backgroundColor: s.color }]}>
+            <Text style={styles.obDotEmoji}>{s.emoji}</Text>
+          </View>
+          {idx < ONBOARDING_STEPS.length - 1 ? (
+            <View style={[styles.obConnector, { backgroundColor: s.color + '55' }]} />
+          ) : null}
+          <View style={styles.obCard}>
+            <View style={styles.obHeaderRow}>
+              <Text style={[styles.obWeek, { color: s.color }]}>{s.week}</Text>
+              <Text style={styles.obTitle}>{s.title}</Text>
+            </View>
+            <Text style={styles.obBody}>{s.body}</Text>
+            <View style={styles.obDeliverableRow}>
+              <Text style={styles.obDeliverableLabel}>Deliverable</Text>
+              <Text style={styles.obDeliverable}>{s.deliverable}</Text>
+            </View>
+          </View>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderBadges = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🏅 Achievement badges</Text>
+        <Text style={styles.sectionCaption}>{BADGES.length} · earn at your pace</Text>
+      </View>
+      <View style={styles.badgesGrid}>
+        {BADGES.map((b) => (
+          <View key={b.id} style={styles.badgeCard}>
+            <View
+              style={[
+                styles.badgeOrb,
+                {
+                  backgroundColor: b.color + '22',
+                  borderColor: b.color,
+                },
+              ]}
+            >
+              <Text style={styles.badgeEmoji}>{b.emoji}</Text>
+            </View>
+            <Text style={styles.badgeName} numberOfLines={1}>{b.name}</Text>
+            <Text
+              style={[
+                styles.badgeRarity,
+                {
+                  color:
+                    b.rarity === 'legendary'
+                      ? '#F59E0B'
+                      : b.rarity === 'rare'
+                        ? '#A78BFA'
+                        : b.rarity === 'uncommon'
+                          ? '#38BDF8'
+                          : '#94A3B8',
+                },
+              ]}
+            >
+              {b.rarity.toUpperCase()} · {b.earned}
+            </Text>
+            <Text style={styles.badgeCrit} numberOfLines={3}>{b.criteria}</Text>
+          </View>
+        ))}
+      </View>
+    </View>
+  );
+
+  const renderScoreboard = () => {
+    const maxes = SCOREBOARD.map((r) => Math.max(r.q1, r.q2, r.q3, r.q4));
+    return (
+      <View style={styles.sectionBlock}>
+        <View style={styles.sectionHeaderRow}>
+          <Text style={styles.sectionTitle}>♻️ Sustainability scoreboard</Text>
+          <Text style={styles.sectionCaption}>Q1–Q4 · toward annual target</Text>
+        </View>
+        {SCOREBOARD.map((r, idx) => {
+          const max = maxes[idx] || 1;
+          const pctTarget = Math.min(1, (r.q1 + r.q2 + r.q3 + r.q4) / r.target);
+          return (
+            <View key={r.id} style={styles.sbRow}>
+              <View style={styles.sbLabelRow}>
+                <Text style={styles.sbEmoji}>{r.emoji}</Text>
+                <Text style={styles.sbMetric}>{r.metric}</Text>
+                <Text style={[styles.sbPct, { color: r.color }]}>
+                  {Math.round(pctTarget * 100)}% of {r.target.toLocaleString()}
+                </Text>
+              </View>
+              <View style={styles.sbBars}>
+                {[
+                  { k: 'Q1', v: r.q1 },
+                  { k: 'Q2', v: r.q2 },
+                  { k: 'Q3', v: r.q3 },
+                  { k: 'Q4', v: r.q4 },
+                ].map((q) => {
+                  const h = Math.max(6, (q.v / max) * 60);
+                  return (
+                    <View key={q.k} style={styles.sbCol}>
+                      <View
+                        style={[
+                          styles.sbBar,
+                          { height: h, backgroundColor: r.color },
+                        ]}
+                      />
+                      <Text style={styles.sbColLabel}>{q.k}</Text>
+                      <Text style={styles.sbColValue}>
+                        {q.v >= 1000 ? `${(q.v / 1000).toFixed(1)}k` : q.v}
+                        {r.unit === 'kg' || r.unit === 'hrs' ? '' : ''}
+                      </Text>
+                    </View>
+                  );
+                })}
+              </View>
+            </View>
+          );
+        })}
+      </View>
+    );
+  };
+
+  const renderNorms = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🪞 Community norms</Text>
+        <Text style={styles.sectionCaption}>How we behave with each other</Text>
+      </View>
+      {NORMS.map((n) => (
+        <View key={n.id} style={[styles.normCard, { borderLeftColor: n.color }]}>
+          <Text style={styles.normEmoji}>{n.emoji}</Text>
+          <View style={{ flex: 1 }}>
+            <Text style={styles.normTitle}>{n.title}</Text>
+            <Text style={styles.normBody}>{n.body}</Text>
+          </View>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderCollab = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🤝 Open collabs</Text>
+        <Text style={styles.sectionCaption}>Pitch in · ship together</Text>
+      </View>
+      {COLLAB_OPPS.map((c) => (
+        <View key={c.id} style={[styles.collabCard, { borderLeftColor: c.color }]}>
+          <View style={styles.collabHeaderRow}>
+            <Text style={styles.collabTitle} numberOfLines={2}>{c.title}</Text>
+            <View style={[styles.collabWingPill, { backgroundColor: c.color + '2A' }]}>
+              <Text style={[styles.collabWingText, { color: c.color }]}>{c.wing}</Text>
+            </View>
+          </View>
+          <Text style={styles.collabMeta}>{c.commitment}</Text>
+          <Text style={styles.collabLookingFor}>Looking for: {c.lookingFor}</Text>
+          <Text style={styles.collabContact}>📬 {c.contact}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderResources = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>📚 Resource hub</Text>
+        <Text style={styles.sectionCaption}>{RESOURCES.length} · templates · guides · decks</Text>
+      </View>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.resourceScroll}
+      >
+        {RESOURCES.map((r) => (
+          <View key={r.id} style={styles.resourceCard}>
+            <View style={[styles.resourceIconWrap, { backgroundColor: r.color + '2A' }]}>
+              <Text style={styles.resourceEmoji}>{r.emoji}</Text>
+            </View>
+            <Text style={[styles.resourceKind, { color: r.color }]}>
+              {r.kind.toUpperCase()}
+            </Text>
+            <Text style={styles.resourceTitle} numberOfLines={2}>{r.title}</Text>
+            <Text style={styles.resourceBlurb} numberOfLines={3}>{r.blurb}</Text>
+            <View style={styles.resourceFootRow}>
+              <Text style={styles.resourceTag}>{r.tag}</Text>
+              <Text style={styles.resourceUpdated}>upd. {r.updated}</Text>
+            </View>
+          </View>
+        ))}
+      </ScrollView>
+    </View>
+  );
+
+  const renderCampusCal = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🗓️ This week on campus</Text>
+        <Text style={styles.sectionCaption}>Week of {CAMPUS_CAL[0].label}</Text>
+      </View>
+      <View style={styles.calGrid}>
+        {CAMPUS_CAL.map((c) => (
+          <View key={c.id} style={styles.calRow}>
+            <View style={styles.calDayCol}>
+              <Text style={styles.calDay}>{c.day}</Text>
+              <Text style={styles.calLabel}>{c.label}</Text>
+            </View>
+            <View style={styles.calChipCol}>
+              {c.chips.length === 0 ? (
+                <Text style={styles.calEmpty}>— open —</Text>
+              ) : (
+                c.chips.map((ch) => (
+                  <View
+                    key={ch.text}
+                    style={[styles.calChip, { backgroundColor: ch.color + '22', borderColor: ch.color + '55' }]}
+                  >
+                    <Text style={[styles.calChipText, { color: ch.color }]} numberOfLines={1}>
+                      {ch.text}
+                    </Text>
+                  </View>
+                ))
+              )}
+            </View>
+          </View>
+        ))}
+      </View>
+    </View>
+  );
+
   const renderEventModal = () => {
     if (!selectedEvent) return null;
     const e = selectedEvent;
@@ -2035,14 +2442,21 @@ const HomeScreen: React.FC = () => {
         {renderQuickActions()}
         {renderAnnouncements()}
         {renderFeaturedEvents()}
+        {renderCampusCal()}
         {renderImpactDashboard()}
+        {renderScoreboard()}
         {renderWeeklyDigest()}
         {renderMemberHighlights()}
         {renderSpotlights()}
+        {renderCollab()}
         {renderValues()}
+        {renderNorms()}
         {renderLiveFeed()}
         {renderTestimonials()}
         {renderGallery()}
+        {renderBadges()}
+        {renderOnboarding()}
+        {renderResources()}
         {renderPartners()}
         {renderTimeline()}
         {renderPledges()}
@@ -2633,6 +3047,270 @@ const styles = StyleSheet.create({
   feedActor: { color: Colors.text.primary, fontWeight: '800' },
   feedObject: { color: Colors.text.primary, fontWeight: '700' },
   feedAt: { color: Colors.text.muted, fontSize: 10, marginTop: 2 },
+
+  // Onboarding
+  obRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    marginTop: 6,
+    position: 'relative',
+  },
+  obDot: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 12,
+    zIndex: 2,
+  },
+  obDotEmoji: { fontSize: 18 },
+  obConnector: {
+    position: 'absolute',
+    left: 19,
+    top: 40,
+    width: 2,
+    bottom: -6,
+  },
+  obCard: {
+    flex: 1,
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginBottom: 8,
+    borderWidth: 1,
+    borderColor: '#ffffff0D',
+  },
+  obHeaderRow: { flexDirection: 'row', alignItems: 'baseline' },
+  obWeek: { fontSize: 11, fontWeight: '800', marginRight: 8 },
+  obTitle: {
+    flex: 1,
+    color: Colors.text.primary,
+    fontSize: 13,
+    fontWeight: '800',
+  },
+  obBody: {
+    color: Colors.text.secondary,
+    fontSize: 11,
+    lineHeight: 16,
+    marginTop: 6,
+  },
+  obDeliverableRow: {
+    marginTop: 8,
+    paddingTop: 8,
+    borderTopWidth: StyleSheet.hairlineWidth,
+    borderTopColor: '#ffffff12',
+  },
+  obDeliverableLabel: {
+    color: Colors.text.muted,
+    fontSize: 9,
+    fontWeight: '800',
+    letterSpacing: 1,
+  },
+  obDeliverable: {
+    color: Colors.text.primary,
+    fontSize: 11,
+    fontWeight: '700',
+    marginTop: 2,
+  },
+
+  // Badges
+  badgesGrid: { flexDirection: 'row', flexWrap: 'wrap', marginHorizontal: -4 },
+  badgeCard: {
+    width: '33.333%',
+    padding: 4,
+    alignItems: 'center',
+  },
+  badgeOrb: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 2,
+  },
+  badgeEmoji: { fontSize: 22 },
+  badgeName: {
+    color: Colors.text.primary,
+    fontSize: 11,
+    fontWeight: '800',
+    marginTop: 6,
+    textAlign: 'center',
+  },
+  badgeRarity: {
+    fontSize: 9,
+    fontWeight: '800',
+    letterSpacing: 0.8,
+    marginTop: 2,
+  },
+  badgeCrit: {
+    color: Colors.text.muted,
+    fontSize: 10,
+    lineHeight: 13,
+    marginTop: 4,
+    textAlign: 'center',
+  },
+
+  // Scoreboard
+  sbRow: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginBottom: 10,
+    borderWidth: 1,
+    borderColor: '#ffffff0D',
+  },
+  sbLabelRow: { flexDirection: 'row', alignItems: 'center' },
+  sbEmoji: { fontSize: 16, marginRight: 6 },
+  sbMetric: {
+    flex: 1,
+    color: Colors.text.primary,
+    fontSize: 12,
+    fontWeight: '800',
+  },
+  sbPct: { fontSize: 11, fontWeight: '800' },
+  sbBars: {
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    justifyContent: 'space-between',
+    marginTop: 12,
+    height: 80,
+  },
+  sbCol: { flex: 1, alignItems: 'center', justifyContent: 'flex-end' },
+  sbBar: { width: 22, borderRadius: 6 },
+  sbColLabel: { color: Colors.text.muted, fontSize: 9, marginTop: 4 },
+  sbColValue: { color: Colors.text.primary, fontSize: 10, fontWeight: '700' },
+
+  // Norms
+  normCard: {
+    flexDirection: 'row',
+    backgroundColor: '#0D141B',
+    padding: 12,
+    borderRadius: 12,
+    marginBottom: 8,
+    borderLeftWidth: 3,
+  },
+  normEmoji: { fontSize: 20, marginRight: 10 },
+  normTitle: {
+    color: Colors.text.primary,
+    fontSize: 13,
+    fontWeight: '800',
+  },
+  normBody: {
+    color: Colors.text.secondary,
+    fontSize: 11,
+    lineHeight: 16,
+    marginTop: 3,
+  },
+
+  // Collab
+  collabCard: {
+    backgroundColor: '#0D141B',
+    padding: 12,
+    borderRadius: 12,
+    marginBottom: 8,
+    borderLeftWidth: 3,
+  },
+  collabHeaderRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+  },
+  collabTitle: {
+    flex: 1,
+    color: Colors.text.primary,
+    fontSize: 13,
+    fontWeight: '800',
+  },
+  collabWingPill: {
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 10,
+    marginLeft: 8,
+  },
+  collabWingText: { fontSize: 10, fontWeight: '800' },
+  collabMeta: { color: Colors.text.muted, fontSize: 11, marginTop: 6 },
+  collabLookingFor: { color: Colors.text.secondary, fontSize: 11, marginTop: 2 },
+  collabContact: {
+    color: Colors.tech.neonBlue,
+    fontSize: 11,
+    fontWeight: '700',
+    marginTop: 4,
+  },
+
+  // Resources
+  resourceScroll: { paddingRight: 10, paddingBottom: 4 },
+  resourceCard: {
+    width: 200,
+    backgroundColor: '#0D141B',
+    borderRadius: 16,
+    padding: 12,
+    marginRight: 10,
+    borderWidth: 1,
+    borderColor: '#ffffff0F',
+  },
+  resourceIconWrap: {
+    width: 38,
+    height: 38,
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  resourceEmoji: { fontSize: 20 },
+  resourceKind: {
+    fontSize: 9,
+    fontWeight: '800',
+    letterSpacing: 1,
+    marginTop: 8,
+  },
+  resourceTitle: {
+    color: Colors.text.primary,
+    fontSize: 13,
+    fontWeight: '800',
+    marginTop: 4,
+  },
+  resourceBlurb: {
+    color: Colors.text.muted,
+    fontSize: 11,
+    lineHeight: 14,
+    marginTop: 4,
+  },
+  resourceFootRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 8,
+  },
+  resourceTag: { color: Colors.text.secondary, fontSize: 10, fontWeight: '700' },
+  resourceUpdated: { color: Colors.text.muted, fontSize: 10 },
+
+  // Campus cal
+  calGrid: { marginTop: 4 },
+  calRow: {
+    flexDirection: 'row',
+    paddingVertical: 8,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: '#ffffff10',
+  },
+  calDayCol: {
+    width: 56,
+    alignItems: 'flex-start',
+  },
+  calDay: {
+    color: Colors.text.primary,
+    fontSize: 12,
+    fontWeight: '800',
+  },
+  calLabel: { color: Colors.text.muted, fontSize: 10, marginTop: 2 },
+  calChipCol: { flex: 1, flexDirection: 'row', flexWrap: 'wrap' },
+  calChip: {
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 10,
+    borderWidth: 1,
+    marginRight: 6,
+    marginBottom: 4,
+  },
+  calChipText: { fontSize: 10, fontWeight: '700' },
+  calEmpty: { color: Colors.text.muted, fontSize: 11, fontStyle: 'italic' },
 });
 
 export default HomeScreen;
