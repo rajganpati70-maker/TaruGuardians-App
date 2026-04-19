@@ -603,6 +603,126 @@ const WING_JOURNAL: JournalEntry[] = [
 ];
 
 // -----------------------------------------------------
+// Ship log (recent shipments across all wings)
+// -----------------------------------------------------
+
+interface ShipLogItem {
+  id: string;
+  wingId: string;
+  date: string;
+  title: string;
+  kind: 'article' | 'release' | 'poster' | 'reel' | 'shoot' | 'campaign';
+  reach: string;
+  emoji: string;
+}
+
+const SHIP_LOG: ShipLogItem[] = [
+  { id: 'sl-1',  wingId: 'content',  date: 'Apr 18', title: 'Long-form · sapling survival audit',        kind: 'article',   reach: '11.2k reads · 42 shares',       emoji: '✍️' },
+  { id: 'sl-2',  wingId: 'webapp',   date: 'Apr 18', title: 'App v1.3.1 · bug-fix release',              kind: 'release',   reach: '3.4k installs · 0 rollbacks',   emoji: '🚀' },
+  { id: 'sl-3',  wingId: 'gd',       date: 'Apr 17', title: 'Earth Day poster kit · 12 templates',       kind: 'poster',    reach: '218 downloads · 9 campuses',    emoji: '🎨' },
+  { id: 'sl-4',  wingId: 'video',    date: 'Apr 17', title: 'Alumni fireside · reel #44',                kind: 'reel',      reach: '44k views · 3.2k saves',         emoji: '🎬' },
+  { id: 'sl-5',  wingId: 'photo',    date: 'Apr 16', title: 'Cubbon Park photo walk · 37 frames',        kind: 'shoot',     reach: '6.8k impressions · 410 likes',   emoji: '📷' },
+  { id: 'sl-6',  wingId: 'pr',       date: 'Apr 16', title: 'Earth Day sponsor outreach · 12 calls',     kind: 'campaign',  reach: '5 leads · 2 signed',             emoji: '🤝' },
+  { id: 'sl-7',  wingId: 'content',  date: 'Apr 14', title: 'Short · five rooftop farms worth visiting',  kind: 'article',   reach: '6.1k reads · 28 shares',         emoji: '✍️' },
+  { id: 'sl-8',  wingId: 'webapp',   date: 'Apr 12', title: 'App v1.3.0 · onboarding revamp',            kind: 'release',   reach: '2.8k installs · crash-free 99.4%', emoji: '🚀' },
+  { id: 'sl-9',  wingId: 'gd',       date: 'Apr 11', title: 'Repair café flyer · Kannada + English',      kind: 'poster',    reach: '420 scans · 68 attendees',       emoji: '🎨' },
+  { id: 'sl-10', wingId: 'video',    date: 'Apr 10', title: 'Sapling drive · cold-open montage',          kind: 'reel',      reach: '22k views · 1.4k saves',          emoji: '🎬' },
+  { id: 'sl-11', wingId: 'photo',    date: 'Apr 09', title: 'Workshop portraits · 14 members',             kind: 'shoot',     reach: '4.2k impressions · 260 likes',   emoji: '📷' },
+  { id: 'sl-12', wingId: 'pr',       date: 'Apr 08', title: 'Press mention · local daily',                kind: 'campaign',  reach: '1 print + 1 digital feature',    emoji: '🤝' },
+];
+
+// -----------------------------------------------------
+// Mentorship circles (per-wing peer groups)
+// -----------------------------------------------------
+
+interface MentorshipCircle {
+  id: string;
+  wingId: string;
+  name: string;
+  day: string;
+  time: string;
+  host: string;
+  members: number;
+  cadence: string;
+  topic: string;
+  color: string;
+}
+
+const MENTORSHIP_CIRCLES: MentorshipCircle[] = [
+  { id: 'mc-1',  wingId: 'content',  name: 'Draft Club',         day: 'Tue', time: '18:00', host: 'Ananya P.',     members: 14, cadence: 'Weekly',   topic: 'Read each other\'s drafts · gentle edits only', color: '#4CAF50' },
+  { id: 'mc-2',  wingId: 'content',  name: 'Voice Lab',          day: 'Fri', time: '17:30', host: 'Nivedita S.',   members: 9,  cadence: 'Bi-weekly', topic: 'Find your voice · 5-min read-alouds',           color: '#66BB6A' },
+  { id: 'mc-3',  wingId: 'webapp',   name: 'Pair Up',            day: 'Mon', time: '19:00', host: 'Rohit B.',      members: 18, cadence: 'Weekly',   topic: 'Ship a tiny commit together · any stack',       color: '#00D4FF' },
+  { id: 'mc-4',  wingId: 'webapp',   name: 'Architecture Tea',   day: 'Thu', time: '18:30', host: 'Meera I.',      members: 11, cadence: 'Monthly',  topic: 'One diagram · one decision · one 10-min chat',  color: '#29B6F6' },
+  { id: 'mc-5',  wingId: 'gd',       name: 'Crit Kindly',        day: 'Wed', time: '18:00', host: 'Ishita D.',     members: 16, cadence: 'Weekly',   topic: 'Bring a draft · leave with 3 suggestions',      color: '#F472B6' },
+  { id: 'mc-6',  wingId: 'gd',       name: 'Type Tuesday',       day: 'Tue', time: '17:00', host: 'Kabir M.',      members: 8,  cadence: 'Bi-weekly', topic: 'Type pairings · poster typography',             color: '#AB47BC' },
+  { id: 'mc-7',  wingId: 'video',    name: 'Cut Together',       day: 'Fri', time: '18:00', host: 'Aryan V.',      members: 12, cadence: 'Weekly',   topic: 'Edit a 60-sec reel · together · ship it',       color: '#FFD54F' },
+  { id: 'mc-8',  wingId: 'photo',    name: 'Photo Walk',         day: 'Sun', time: '07:00', host: 'Mira J.',       members: 17, cadence: 'Weekly',   topic: 'Early light · 2-hr walk · 30-frame debrief',    color: '#AB47BC' },
+  { id: 'mc-9',  wingId: 'pr',       name: 'Outreach Office',    day: 'Mon', time: '17:30', host: 'Kavya R.',      members: 10, cadence: 'Weekly',   topic: 'Practise cold calls · template swap',           color: '#EF6C00' },
+  { id: 'mc-10', wingId: 'pr',       name: 'Speak-up Circle',    day: 'Thu', time: '18:00', host: 'Dhruv G.',      members: 9,  cadence: 'Bi-weekly', topic: 'Practise 3-min pitches · get kind feedback',    color: '#FFB74D' },
+];
+
+// -----------------------------------------------------
+// Learning library (curated resources per wing)
+// -----------------------------------------------------
+
+interface LearningItem {
+  id: string;
+  wingId: string;
+  title: string;
+  kind: 'read' | 'watch' | 'exercise' | 'course' | 'talk';
+  duration: string;
+  level: 'beginner' | 'intermediate' | 'advanced';
+  curator: string;
+  why: string;
+}
+
+const LEARNING_ITEMS: LearningItem[] = [
+  { id: 'lr-1',  wingId: 'content', title: 'The arc of a reported piece',        kind: 'read',     duration: '14 min', level: 'beginner',     curator: 'Ananya P.', why: 'Shortest useful piece on the shape of a story.' },
+  { id: 'lr-2',  wingId: 'content', title: 'Writing for warm tone',              kind: 'exercise', duration: '30 min', level: 'beginner',     curator: 'Nivedita S.', why: '5 prompts · no wrong answers · ship a draft.' },
+  { id: 'lr-3',  wingId: 'content', title: 'Interview craft · long-form',         kind: 'talk',     duration: '45 min', level: 'intermediate', curator: 'Club archive', why: 'Alumni deep-dive recorded in 2024.' },
+  { id: 'lr-4',  wingId: 'webapp',  title: 'React Native · the parts that stick', kind: 'read',     duration: '22 min', level: 'beginner',     curator: 'Rohit B.',  why: 'What matters in year-one · what to skip.' },
+  { id: 'lr-5',  wingId: 'webapp',  title: 'Ship Fridays · case study',            kind: 'talk',     duration: '30 min', level: 'intermediate', curator: 'Meera I.',  why: 'How we went from panic releases to calm ones.' },
+  { id: 'lr-6',  wingId: 'webapp',  title: 'Android 11 debugging · hands-on',      kind: 'course',   duration: '2 hrs',  level: 'advanced',     curator: 'Vivaan S.', why: 'Real low-end device traces. No emulator shortcuts.' },
+  { id: 'lr-7',  wingId: 'gd',      title: 'Typography kindness · 20 rules',       kind: 'read',     duration: '18 min', level: 'beginner',     curator: 'Ishita D.', why: 'The rules we actually follow in the club.' },
+  { id: 'lr-8',  wingId: 'gd',      title: 'Poster grid workout',                  kind: 'exercise', duration: '45 min', level: 'intermediate', curator: 'Kabir M.',  why: 'Build 3 posters from one grid. No design ego.' },
+  { id: 'lr-9',  wingId: 'video',   title: 'Pacing a 60-sec reel',                 kind: 'watch',    duration: '10 min', level: 'beginner',     curator: 'Aryan V.',  why: 'How to know when to cut · when to breathe.' },
+  { id: 'lr-10', wingId: 'video',   title: 'Sound first · picture second',         kind: 'talk',     duration: '28 min', level: 'intermediate', curator: 'Alumni guest', why: 'The single best switch you can make this year.' },
+  { id: 'lr-11', wingId: 'photo',   title: 'Available light · for field work',     kind: 'read',     duration: '16 min', level: 'beginner',     curator: 'Mira J.',   why: 'No flash, no problem. Natural-light playbook.' },
+  { id: 'lr-12', wingId: 'photo',   title: 'Consent-led portraits',                kind: 'talk',     duration: '24 min', level: 'intermediate', curator: 'Mira J.',   why: 'How we ask permission · why it matters.' },
+  { id: 'lr-13', wingId: 'pr',      title: 'Warm cold-call template',              kind: 'read',     duration: '9 min',  level: 'beginner',     curator: 'Kavya R.',  why: 'Replace awkward outreach with honest openers.' },
+  { id: 'lr-14', wingId: 'pr',      title: 'One-pager that reads itself',          kind: 'exercise', duration: '35 min', level: 'intermediate', curator: 'Dhruv G.',  why: 'Build a sponsor one-pager from our template.' },
+  { id: 'lr-15', wingId: 'pr',      title: 'Handling a press mention',             kind: 'talk',     duration: '20 min', level: 'advanced',     curator: 'Club archive', why: 'What to do in the 48 hours after a journalist calls.' },
+];
+
+// -----------------------------------------------------
+// Wing rituals (weekly/monthly constants per wing)
+// -----------------------------------------------------
+
+interface WingRitual {
+  id: string;
+  wingId: string;
+  ritual: string;
+  when: string;
+  why: string;
+  emoji: string;
+}
+
+const WING_RITUALS: WingRitual[] = [
+  { id: 'wr-1',  wingId: 'content', ritual: 'Monday draft swap',          when: 'Mon · 18:00', why: 'Drop your latest · leave with 3 reader notes.',       emoji: '📝' },
+  { id: 'wr-2',  wingId: 'content', ritual: 'Friday read-aloud',          when: 'Fri · 17:30', why: 'Read your closing line aloud. The room votes.',       emoji: '🔊' },
+  { id: 'wr-3',  wingId: 'webapp',  ritual: 'Release Friday',              when: 'Fri · 16:00', why: 'Ship the app · one captain · rollback plan ready.',   emoji: '🚀' },
+  { id: 'wr-4',  wingId: 'webapp',  ritual: 'Pair-up Monday',              when: 'Mon · 19:00', why: 'Pair 45 min · ship a tiny commit · write the PR.',    emoji: '🤝' },
+  { id: 'wr-5',  wingId: 'gd',      ritual: 'Kind crit Wednesday',         when: 'Wed · 18:00', why: 'Bring a draft · leave with 3 warm suggestions.',      emoji: '🎨' },
+  { id: 'wr-6',  wingId: 'gd',      ritual: 'Poster Friday',               when: 'Fri · 17:00', why: 'Ship one poster · any purpose · real constraints.',   emoji: '🖼️' },
+  { id: 'wr-7',  wingId: 'video',   ritual: 'Cut-together Friday',          when: 'Fri · 18:00', why: 'Edit a 60-sec reel in one room · finish together.',   emoji: '🎬' },
+  { id: 'wr-8',  wingId: 'video',   ritual: 'Monthly reel awards',          when: 'Last Sat',    why: 'Peer-voted best reel · travelling trophy · hugs.',     emoji: '🏆' },
+  { id: 'wr-9',  wingId: 'photo',   ritual: 'Sunday walk',                  when: 'Sun · 07:00', why: 'Early light · 2-hour walk · 30-frame debrief.',       emoji: '🚶' },
+  { id: 'wr-10', wingId: 'photo',   ritual: 'Monthly print-and-pin',        when: 'Last Fri',    why: 'Print one frame. Pin it in the clubroom. Trust it.',  emoji: '📌' },
+  { id: 'wr-11', wingId: 'pr',      ritual: 'Outreach office hours',        when: 'Mon · 17:30', why: 'Practise cold calls · swap templates · debrief.',     emoji: '☎️' },
+  { id: 'wr-12', wingId: 'pr',      ritual: 'Quarterly press review',       when: 'Last Thu',    why: 'Count the warm mentions · name the quiet wins.',      emoji: '📰' },
+];
+
+// -----------------------------------------------------
 // Component
 // -----------------------------------------------------
 
@@ -1611,6 +1731,120 @@ const TaruWingsScreen: React.FC = () => {
     </Modal>
   );
 
+  const renderShipLogBlock = () => {
+    if (!selectedWing) return null;
+    const items = SHIP_LOG.filter((s) => s.wingId === selectedWing.id);
+    if (items.length === 0) return null;
+    return (
+      <View style={styles.sectionBlock}>
+        <View style={styles.sectionHeaderRow}>
+          <Text style={styles.sectionTitle}>📦 Ship log</Text>
+          <Text style={styles.sectionCaption}>Recent shipments</Text>
+        </View>
+        {items.map((s) => (
+          <View key={s.id} style={styles.shipRow}>
+            <Text style={styles.shipEmoji}>{s.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.shipTitle} numberOfLines={2}>{s.title}</Text>
+              <Text style={styles.shipReach}>{s.reach}</Text>
+            </View>
+            <View style={styles.shipRightCol}>
+              <Text style={styles.shipDate}>{s.date}</Text>
+              <Text style={styles.shipKind}>{s.kind}</Text>
+            </View>
+          </View>
+        ))}
+      </View>
+    );
+  };
+
+  const renderCirclesBlock = () => {
+    if (!selectedWing) return null;
+    const items = MENTORSHIP_CIRCLES.filter((c) => c.wingId === selectedWing.id);
+    if (items.length === 0) return null;
+    return (
+      <View style={styles.sectionBlock}>
+        <View style={styles.sectionHeaderRow}>
+          <Text style={styles.sectionTitle}>🧭 Mentorship circles</Text>
+          <Text style={styles.sectionCaption}>Peer groups · open to all</Text>
+        </View>
+        {items.map((c) => (
+          <View key={c.id} style={[styles.circleCard, { borderLeftColor: c.color }]}>
+            <View style={styles.circleHeaderRow}>
+              <Text style={styles.circleName}>{c.name}</Text>
+              <Text style={[styles.circleCadence, { color: c.color }]}>{c.cadence}</Text>
+            </View>
+            <Text style={styles.circleTopic}>{c.topic}</Text>
+            <View style={styles.circleFootRow}>
+              <Text style={styles.circleMeta}>
+                {c.day} · {c.time} · host {c.host}
+              </Text>
+              <Text style={styles.circleMembers}>{c.members} in circle</Text>
+            </View>
+          </View>
+        ))}
+      </View>
+    );
+  };
+
+  const renderLearningBlock = () => {
+    if (!selectedWing) return null;
+    const items = LEARNING_ITEMS.filter((l) => l.wingId === selectedWing.id);
+    if (items.length === 0) return null;
+    return (
+      <View style={styles.sectionBlock}>
+        <View style={styles.sectionHeaderRow}>
+          <Text style={styles.sectionTitle}>📚 Learning library</Text>
+          <Text style={styles.sectionCaption}>Curated · {items.length} items</Text>
+        </View>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.learningScroll}
+        >
+          {items.map((l) => (
+            <View key={l.id} style={styles.learnCard}>
+              <View style={styles.learnBadgeRow}>
+                <Text style={styles.learnKind}>{l.kind.toUpperCase()}</Text>
+                <Text style={styles.learnDuration}>{l.duration}</Text>
+              </View>
+              <Text style={styles.learnTitle} numberOfLines={3}>{l.title}</Text>
+              <Text style={styles.learnWhy} numberOfLines={3}>{l.why}</Text>
+              <View style={styles.learnFootRow}>
+                <Text style={styles.learnLevel}>{l.level}</Text>
+                <Text style={styles.learnCurator}>by {l.curator}</Text>
+              </View>
+            </View>
+          ))}
+        </ScrollView>
+      </View>
+    );
+  };
+
+  const renderRitualsBlock = () => {
+    if (!selectedWing) return null;
+    const items = WING_RITUALS.filter((r) => r.wingId === selectedWing.id);
+    if (items.length === 0) return null;
+    return (
+      <View style={styles.sectionBlock}>
+        <View style={styles.sectionHeaderRow}>
+          <Text style={styles.sectionTitle}>🕯️ Weekly rituals</Text>
+          <Text style={styles.sectionCaption}>What we always do</Text>
+        </View>
+        <View style={styles.ritualGrid}>
+          {items.map((r) => (
+            <View key={r.id} style={styles.ritualCard}>
+              <Text style={styles.ritualEmoji}>{r.emoji}</Text>
+              <Text style={styles.ritualName} numberOfLines={2}>{r.ritual}</Text>
+              <Text style={styles.ritualWhen}>{r.when}</Text>
+              <Text style={styles.ritualWhy} numberOfLines={3}>{r.why}</Text>
+            </View>
+          ))}
+        </View>
+      </View>
+    );
+  };
+
   const renderDetail = () => (
     <ScrollView
       contentContainerStyle={styles.scrollContent}
@@ -1629,8 +1863,12 @@ const TaruWingsScreen: React.FC = () => {
       {renderGrowthPathBlock()}
       {renderOpenRoles()}
       {renderProjectsBlock()}
+      {renderShipLogBlock()}
       {renderAwardsBlock()}
       {renderEventsBlock()}
+      {renderRitualsBlock()}
+      {renderCirclesBlock()}
+      {renderLearningBlock()}
       {renderJournalBlock()}
       {renderMembersBlock()}
     </ScrollView>
@@ -2143,6 +2381,157 @@ const styles = StyleSheet.create({
     color: Colors.text.secondary,
     fontSize: 11,
     lineHeight: 15,
+  },
+
+  // Ship log
+  shipRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    backgroundColor: '#0D141B',
+    padding: 12,
+    borderRadius: 12,
+    marginBottom: 8,
+    borderWidth: 1,
+    borderColor: '#ffffff0E',
+  },
+  shipEmoji: { fontSize: 20, marginRight: 10 },
+  shipTitle: {
+    color: Colors.text.primary,
+    fontSize: 13,
+    fontWeight: '800',
+  },
+  shipReach: {
+    color: Colors.text.muted,
+    fontSize: 11,
+    marginTop: 3,
+  },
+  shipRightCol: { alignItems: 'flex-end', marginLeft: 8 },
+  shipDate: {
+    color: Colors.text.secondary,
+    fontSize: 11,
+    fontWeight: '700',
+  },
+  shipKind: {
+    color: Colors.text.muted,
+    fontSize: 10,
+    marginTop: 2,
+  },
+
+  // Mentorship circles
+  circleCard: {
+    backgroundColor: '#0D141B',
+    padding: 12,
+    borderRadius: 12,
+    marginBottom: 8,
+    borderLeftWidth: 3,
+  },
+  circleHeaderRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  circleName: {
+    color: Colors.text.primary,
+    fontSize: 13,
+    fontWeight: '800',
+  },
+  circleCadence: { fontSize: 11, fontWeight: '800' },
+  circleTopic: {
+    color: Colors.text.secondary,
+    fontSize: 11,
+    marginTop: 4,
+    lineHeight: 15,
+  },
+  circleFootRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 6,
+  },
+  circleMeta: { color: Colors.text.muted, fontSize: 10 },
+  circleMembers: { color: Colors.text.primary, fontSize: 10, fontWeight: '800' },
+
+  // Learning library
+  learningScroll: { paddingRight: 10, paddingBottom: 4 },
+  learnCard: {
+    width: 220,
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginRight: 10,
+    borderWidth: 1,
+    borderColor: '#ffffff0E',
+  },
+  learnBadgeRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  learnKind: {
+    color: Colors.tech.neonBlue,
+    fontSize: 10,
+    fontWeight: '800',
+    letterSpacing: 1,
+  },
+  learnDuration: {
+    color: Colors.text.muted,
+    fontSize: 10,
+    fontWeight: '700',
+  },
+  learnTitle: {
+    color: Colors.text.primary,
+    fontSize: 13,
+    fontWeight: '800',
+    marginTop: 8,
+  },
+  learnWhy: {
+    color: Colors.text.secondary,
+    fontSize: 11,
+    marginTop: 6,
+    lineHeight: 14,
+  },
+  learnFootRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 8,
+  },
+  learnLevel: {
+    color: Colors.accent.softGold,
+    fontSize: 10,
+    fontWeight: '800',
+  },
+  learnCurator: {
+    color: Colors.text.muted,
+    fontSize: 10,
+  },
+
+  // Rituals
+  ritualGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginHorizontal: -4,
+  },
+  ritualCard: {
+    width: '50%',
+    padding: 4,
+  },
+  ritualEmoji: { fontSize: 18 },
+  ritualName: {
+    color: Colors.text.primary,
+    fontSize: 12,
+    fontWeight: '800',
+    marginTop: 4,
+  },
+  ritualWhen: {
+    color: Colors.tech.neonBlue,
+    fontSize: 10,
+    fontWeight: '700',
+    marginTop: 2,
+  },
+  ritualWhy: {
+    color: Colors.text.secondary,
+    fontSize: 11,
+    marginTop: 4,
+    lineHeight: 14,
   },
 });
 
