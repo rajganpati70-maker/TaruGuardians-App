@@ -1394,6 +1394,167 @@ const DAILY_RITUALS: DailyRitual[] = [
 // Component
 // -----------------------------------------------------
 
+// =====================================================
+// Phase 3v: deeper home structures
+// =====================================================
+
+interface WeatherToday {
+  id: string;
+  hour: string;
+  tempC: number;
+  condition: string;
+  wind: string;
+  aqi: number;
+  emoji: string;
+  color: string;
+}
+
+const WEATHER_TODAY: WeatherToday[] = [
+  { id: 'wt-1', hour: '07:00', tempC: 19, condition: 'Cool + clear',   wind: '6 km/h NW',  aqi: 38, emoji: '🌤️', color: '#38BDF8' },
+  { id: 'wt-2', hour: '10:00', tempC: 24, condition: 'Soft sun',       wind: '9 km/h N',   aqi: 46, emoji: '☀️',  color: '#FDE047' },
+  { id: 'wt-3', hour: '13:00', tempC: 29, condition: 'Warm',           wind: '12 km/h NE', aqi: 58, emoji: '🌞',  color: '#F59E0B' },
+  { id: 'wt-4', hour: '16:00', tempC: 27, condition: 'Partly cloudy',  wind: '10 km/h E',  aqi: 51, emoji: '⛅',  color: '#F59E0B' },
+  { id: 'wt-5', hour: '19:00', tempC: 22, condition: 'Cool evening',   wind: '7 km/h SE',  aqi: 42, emoji: '🌇',  color: '#A78BFA' },
+  { id: 'wt-6', hour: '22:00', tempC: 19, condition: 'Clear + calm',   wind: '5 km/h S',   aqi: 35, emoji: '🌌',  color: '#7E57C2' },
+];
+
+interface SaplingProgram {
+  id: string;
+  site: string;
+  species: string;
+  plantedCount: number;
+  aliveCount: number;
+  lastVisit: string;
+  steward: string;
+  color: string;
+  emoji: string;
+}
+
+const SAPLING_PROGRAMS: SaplingProgram[] = [
+  { id: 'sp-1', site: 'Campus west slope',          species: 'Neem · amla · moringa',     plantedCount: 240, aliveCount: 216, lastVisit: '2 days ago',  steward: 'Rahul · sapling wing',     color: '#22C55E', emoji: '🌳' },
+  { id: 'sp-2', site: 'Dorm-B courtyard',           species: 'Guava · curry leaf · bel',  plantedCount: 85,  aliveCount: 82,  lastVisit: '5 days ago',  steward: 'Meera · sapling wing',      color: '#22C55E', emoji: '🌱' },
+  { id: 'sp-3', site: 'Village · Kokare',           species: 'Jamun · mahua · teak',      plantedCount: 420, aliveCount: 371, lastVisit: '3 weeks ago', steward: 'Priya · field ops',         color: '#22C55E', emoji: '🌲' },
+  { id: 'sp-4', site: 'Riverbank · Krishna',        species: 'Arjuna · banyan · peepal',  plantedCount: 180, aliveCount: 168, lastVisit: '6 weeks ago', steward: 'Rohit · field ops',         color: '#22C55E', emoji: '🌿' },
+  { id: 'sp-5', site: 'School · Chandrapur',        species: 'Tamarind · lime · chiku',   plantedCount: 95,  aliveCount: 92,  lastVisit: '2 months ago', steward: 'Anmol · alumni network',   color: '#22C55E', emoji: '🍋' },
+  { id: 'sp-6', site: 'Highway · KM 42 median',     species: 'Gulmohar · bottle-brush',   plantedCount: 60,  aliveCount: 54,  lastVisit: '4 weeks ago', steward: 'Tanvi · road-side crew',    color: '#F59E0B', emoji: '🌺' },
+  { id: 'sp-7', site: 'Pond edge · Doddaballapur',  species: 'Bamboo · jamun · cashew',   plantedCount: 140, aliveCount: 131, lastVisit: '7 weeks ago', steward: 'Sanjana · partner NGO',    color: '#22C55E', emoji: '🎋' },
+  { id: 'sp-8', site: 'Rooftop · main block',       species: 'Curry · basil · lemongrass', plantedCount: 48, aliveCount: 46,  lastVisit: 'Yesterday',    steward: 'Dev + botany dept',         color: '#38BDF8', emoji: '🌿' },
+];
+
+interface MentorHour {
+  id: string;
+  mentor: string;
+  role: string;
+  day: string;
+  window: string;
+  topic: string;
+  mode: 'in-person' | 'online';
+  capacity: number;
+  color: string;
+  emoji: string;
+}
+
+const MENTOR_HOURS: MentorHour[] = [
+  { id: 'mh-1', mentor: 'Meera Iyer',      role: 'Alumni · climate-tech',   day: 'Tue', window: '18:30–19:30', topic: 'Field engineering + first jobs',  mode: 'online',     capacity: 4, color: '#38BDF8', emoji: '🧪' },
+  { id: 'mh-2', mentor: 'Tanvi Shah',      role: 'Alumni · design',         day: 'Wed', window: '19:00–20:00', topic: 'Portfolio reviews · 20 min each',  mode: 'online',     capacity: 3, color: '#F472B6', emoji: '🎨' },
+  { id: 'mh-3', mentor: 'Rohit Kapoor',    role: 'Alumni · climate policy', day: 'Thu', window: '17:00–18:00', topic: 'Writing for policy audiences',     mode: 'in-person',  capacity: 6, color: '#A78BFA', emoji: '📜' },
+  { id: 'mh-4', mentor: 'Anmol Sethi',     role: 'Alumni · hardware',       day: 'Fri', window: '16:00–17:00', topic: 'PCB first builds · live debug',    mode: 'in-person',  capacity: 4, color: '#00D4FF', emoji: '🔌' },
+  { id: 'mh-5', mentor: 'Sanjana Pillai',  role: 'Alumni · product',        day: 'Sat', window: '10:00–11:00', topic: 'Interviews · offer negotiation',   mode: 'online',     capacity: 5, color: '#FFD166', emoji: '💼' },
+  { id: 'mh-6', mentor: 'Dev Narayan',     role: 'Alumni · ML research',    day: 'Sat', window: '15:00–16:00', topic: 'Paper reading · two papers',        mode: 'online',     capacity: 8, color: '#7E57C2', emoji: '📚' },
+  { id: 'mh-7', mentor: 'Priya Ghosh',     role: 'Faculty · ecology',       day: 'Sun', window: '09:30–10:30', topic: 'Walk the campus trees · in-person', mode: 'in-person', capacity: 12, color: '#22C55E', emoji: '🌳' },
+];
+
+interface RecommendedRead {
+  id: string;
+  title: string;
+  author: string;
+  kind: 'book' | 'essay' | 'paper' | 'talk';
+  minutes: number;
+  why: string;
+  color: string;
+  emoji: string;
+}
+
+const RECOMMENDED_READS: RecommendedRead[] = [
+  { id: 'rr-1', title: 'The hidden life of trees',              author: 'Peter Wohlleben',        kind: 'book',  minutes: 360, why: 'Roots us in the long, quiet time-scale of forests.',    color: '#22C55E', emoji: '🌳' },
+  { id: 'rr-2', title: 'Braiding sweetgrass',                   author: 'Robin Wall Kimmerer',    kind: 'book',  minutes: 400, why: 'Science + indigenous knowledge woven with care.',        color: '#F472B6', emoji: '🌾' },
+  { id: 'rr-3', title: 'On bullshit (essay)',                    author: 'Harry Frankfurt',        kind: 'essay', minutes: 25,  why: 'A short read that made our content wing write cleaner.', color: '#A78BFA', emoji: '🧠' },
+  { id: 'rr-4', title: 'How forests think',                      author: 'Eduardo Kohn',           kind: 'book',  minutes: 420, why: 'Pairs well with field work · changes your eye for a walk.', color: '#7E57C2', emoji: '🦉' },
+  { id: 'rr-5', title: 'AlphaFold · a look at the paper',        author: 'DeepMind · Nature 2021', kind: 'paper', minutes: 60,  why: 'Good example of careful science writing · for our wings.', color: '#00D4FF', emoji: '🧬' },
+  { id: 'rr-6', title: 'Do things that don\'t scale (essay)',    author: 'Paul Graham',            kind: 'essay', minutes: 18,  why: 'A gift to any small team that feels late.',                color: '#F59E0B', emoji: '✍️' },
+  { id: 'rr-7', title: 'Last tango (short film · talk)',          author: 'Sam Mendes',             kind: 'talk',  minutes: 35,  why: 'How to tell a story in under two minutes.',               color: '#F87171', emoji: '🎬' },
+  { id: 'rr-8', title: 'The carbon footprint of our cities',     author: 'Vaclav Smil',            kind: 'book',  minutes: 340, why: 'Numbers-first · cuts through feel-good framing.',         color: '#F59E0B', emoji: '🏙️' },
+  { id: 'rr-9', title: 'A short history of nearly everything',   author: 'Bill Bryson',            kind: 'book',  minutes: 520, why: 'Wide + warm · good for first-years.',                      color: '#38BDF8', emoji: '🌏' },
+  { id: 'rr-10', title: 'Living with elephants (paper + film)',  author: 'Sanjay Gubbi · IISc',    kind: 'paper', minutes: 55,  why: 'Pairs science with field photography · models what we want.', color: '#22C55E', emoji: '🐘' },
+];
+
+interface VolunteerSlot {
+  id: string;
+  drive: string;
+  date: string;
+  slot: string;
+  seats: number;
+  filled: number;
+  kind: 'field' | 'campus' | 'remote';
+  color: string;
+  emoji: string;
+}
+
+const VOLUNTEER_SLOTS: VolunteerSlot[] = [
+  { id: 'vs-1',  drive: 'Tree walk · campus south',     date: '14 Apr · Sat', slot: '07:00–09:00', seats: 20, filled: 14, kind: 'campus', color: '#22C55E', emoji: '🚶' },
+  { id: 'vs-2',  drive: 'E-waste collection drive',     date: '16 Apr · Mon', slot: '16:00–19:00', seats: 12, filled: 10, kind: 'campus', color: '#F59E0B', emoji: '🔋' },
+  { id: 'vs-3',  drive: 'Sapling field visit · Kokare', date: '20 Apr · Fri', slot: '06:30–14:00', seats: 18, filled: 12, kind: 'field',  color: '#22C55E', emoji: '🌱' },
+  { id: 'vs-4',  drive: 'Caption + upload · reels',     date: 'Any · this week', slot: '2h block',  seats: 10, filled: 6,  kind: 'remote', color: '#A78BFA', emoji: '📝' },
+  { id: 'vs-5',  drive: 'Library shelving · science',   date: '22 Apr · Sun', slot: '10:00–12:00', seats: 14, filled: 9,  kind: 'campus', color: '#38BDF8', emoji: '📚' },
+  { id: 'vs-6',  drive: 'Pond clean-up · village',      date: '28 Apr · Sat', slot: '05:30–11:00', seats: 22, filled: 8,  kind: 'field',  color: '#22C55E', emoji: '🪣' },
+  { id: 'vs-7',  drive: 'Newsletter proof-read',         date: '15 Apr · Sun', slot: '1h block',   seats: 6,  filled: 4,  kind: 'remote', color: '#F472B6', emoji: '📰' },
+  { id: 'vs-8',  drive: 'Kids coding hour · school',     date: '19 Apr · Thu', slot: '10:00–11:30', seats: 8,  filled: 5,  kind: 'field',  color: '#00D4FF', emoji: '👩‍💻' },
+  { id: 'vs-9',  drive: 'Compost turn · Sunday garden',  date: '21 Apr · Sun', slot: '08:00–09:30', seats: 10, filled: 7,  kind: 'campus', color: '#F59E0B', emoji: '🍂' },
+];
+
+interface EcoHabit {
+  id: string;
+  habit: string;
+  streakWeeks: number;
+  co2SavedKg: number;
+  detail: string;
+  color: string;
+  emoji: string;
+}
+
+const ECO_HABITS: EcoHabit[] = [
+  { id: 'eh-1', habit: 'Carry your own bottle',          streakWeeks: 18, co2SavedKg: 24,  detail: 'About 240 disposable bottles avoided per person this term.', color: '#38BDF8', emoji: '🫙' },
+  { id: 'eh-2', habit: 'Walk + transit first',           streakWeeks: 26, co2SavedKg: 140, detail: 'Car rides swapped for metro + walks · track your weeks.',    color: '#A78BFA', emoji: '🚆' },
+  { id: 'eh-3', habit: 'Meat-free two days a week',      streakWeeks: 14, co2SavedKg: 62,  detail: 'Two Tuesdays + Fridays · mess has options listed.',          color: '#F472B6', emoji: '🥗' },
+  { id: 'eh-4', habit: 'Segregate wet + dry + e-waste',  streakWeeks: 30, co2SavedKg: 18,  detail: 'Three bins on every floor · guide sheet posted.',             color: '#22C55E', emoji: '♻️' },
+  { id: 'eh-5', habit: 'Two-minute shower challenge',     streakWeeks: 10, co2SavedKg: 12,  detail: 'Smaller geyser draw · hot-water bill down 22%.',              color: '#38BDF8', emoji: '🚿' },
+  { id: 'eh-6', habit: 'Paper-free submissions',         streakWeeks: 12, co2SavedKg: 8,   detail: 'Only three courses still ask for printed copies.',            color: '#F59E0B', emoji: '📄' },
+  { id: 'eh-7', habit: 'Second-hand first',              streakWeeks: 6,  co2SavedKg: 14,  detail: 'Gear desk + book swap · cuts new purchases by a lot.',       color: '#FFD166', emoji: '🛒' },
+  { id: 'eh-8', habit: 'Adopt one campus tree · a year', streakWeeks: 22, co2SavedKg: 20,  detail: 'Water · mulch · a note when it flowers.',                      color: '#22C55E', emoji: '🌳' },
+];
+
+interface TrailMarker {
+  id: string;
+  name: string;
+  distanceKm: number;
+  elevationM: number;
+  minutes: number;
+  difficulty: 'easy' | 'medium' | 'hard';
+  color: string;
+  emoji: string;
+}
+
+const TRAIL_MARKERS: TrailMarker[] = [
+  { id: 'tr-1', name: 'Sunrise rocks loop',          distanceKm: 1.8, elevationM: 60,  minutes: 35,  difficulty: 'easy',   color: '#22C55E', emoji: '🪨' },
+  { id: 'tr-2', name: 'Banyan grove + bench',        distanceKm: 2.4, elevationM: 40,  minutes: 45,  difficulty: 'easy',   color: '#22C55E', emoji: '🌳' },
+  { id: 'tr-3', name: 'Pond trail · west',           distanceKm: 3.6, elevationM: 85,  minutes: 65,  difficulty: 'medium', color: '#F59E0B', emoji: '🪷' },
+  { id: 'tr-4', name: 'Ridge walk · north',          distanceKm: 4.2, elevationM: 120, minutes: 80,  difficulty: 'medium', color: '#F59E0B', emoji: '🗻' },
+  { id: 'tr-5', name: 'Hilltop temple · steep',      distanceKm: 5.0, elevationM: 220, minutes: 110, difficulty: 'hard',   color: '#EF4444', emoji: '⛰️' },
+  { id: 'tr-6', name: 'Stream crossing · rocky',     distanceKm: 3.2, elevationM: 95,  minutes: 70,  difficulty: 'medium', color: '#38BDF8', emoji: '💧' },
+  { id: 'tr-7', name: 'Butterfly meadow · gentle',   distanceKm: 2.0, elevationM: 20,  minutes: 40,  difficulty: 'easy',   color: '#F472B6', emoji: '🦋' },
+  { id: 'tr-8', name: 'Owl-hoot evening loop',       distanceKm: 2.8, elevationM: 55,  minutes: 55,  difficulty: 'easy',   color: '#7E57C2', emoji: '🦉' },
+];
+
 const HomeScreen: React.FC = () => {
   // ------ State ------
   const [refreshing, setRefreshing] = useState(false);
@@ -2847,6 +3008,241 @@ const HomeScreen: React.FC = () => {
     );
   };
 
+  // ------ Phase 3v deeper home blocks ------
+  const renderWeatherStrip = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🌤️ Today's sky · your hours</Text>
+        <Text style={styles.sectionCaption}>plan a walk around it</Text>
+      </View>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={{ paddingHorizontal: HORIZONTAL_PADDING, gap: 10 }}
+      >
+        {WEATHER_TODAY.map((w) => (
+          <View
+            key={w.id}
+            style={[styles.weatherCard, { borderColor: w.color + '55' }]}
+          >
+            <Text style={styles.weatherHour}>{w.hour}</Text>
+            <Text style={styles.weatherEmoji}>{w.emoji}</Text>
+            <Text style={[styles.weatherTemp, { color: w.color }]}>{w.tempC}°C</Text>
+            <Text style={styles.weatherCond} numberOfLines={1}>{w.condition}</Text>
+            <Text style={styles.weatherMeta} numberOfLines={1}>{w.wind}</Text>
+            <View style={styles.weatherAqiRow}>
+              <Text style={styles.weatherAqiLabel}>AQI</Text>
+              <Text
+                style={[
+                  styles.weatherAqiVal,
+                  { color: w.aqi < 50 ? '#22C55E' : w.aqi < 100 ? '#F59E0B' : '#EF4444' },
+                ]}
+              >
+                {w.aqi}
+              </Text>
+            </View>
+          </View>
+        ))}
+      </ScrollView>
+    </View>
+  );
+
+  const renderSaplingPrograms = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🌳 Sapling programs · live status</Text>
+        <Text style={styles.sectionCaption}>{SAPLING_PROGRAMS.length} sites</Text>
+      </View>
+      {SAPLING_PROGRAMS.map((s) => {
+        const survival = Math.round((s.aliveCount / s.plantedCount) * 100);
+        return (
+          <View key={s.id} style={[styles.spCard, { borderLeftColor: s.color }]}>
+            <View style={styles.spTopRow}>
+              <Text style={styles.spEmoji}>{s.emoji}</Text>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.spSite} numberOfLines={1}>{s.site}</Text>
+                <Text style={styles.spSpecies} numberOfLines={1}>{s.species}</Text>
+              </View>
+              <View style={styles.spStatsCol}>
+                <Text style={[styles.spSurvival, { color: s.color }]}>{survival}%</Text>
+                <Text style={styles.spSurvivalLabel}>alive</Text>
+              </View>
+            </View>
+            <View style={styles.spBarBg}>
+              <View
+                style={[styles.spBarFill, { width: `${survival}%`, backgroundColor: s.color }]}
+              />
+            </View>
+            <View style={styles.spFootRow}>
+              <Text style={styles.spMeta}>{s.aliveCount}/{s.plantedCount} alive</Text>
+              <Text style={styles.spMeta}>last visit · {s.lastVisit}</Text>
+            </View>
+            <Text style={styles.spSteward}>steward · {s.steward}</Text>
+          </View>
+        );
+      })}
+    </View>
+  );
+
+  const renderMentorHours = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🧭 Alumni office hours</Text>
+        <Text style={styles.sectionCaption}>book a slot</Text>
+      </View>
+      {MENTOR_HOURS.map((m) => (
+        <View key={m.id} style={[styles.mhRow, { borderLeftColor: m.color }]}>
+          <Text style={styles.mhEmoji}>{m.emoji}</Text>
+          <View style={{ flex: 1 }}>
+            <View style={styles.mhTopRow}>
+              <Text style={styles.mhMentor} numberOfLines={1}>{m.mentor}</Text>
+              <Text style={[styles.mhDay, { color: m.color }]}>{m.day} · {m.window}</Text>
+            </View>
+            <Text style={styles.mhRole} numberOfLines={1}>{m.role}</Text>
+            <Text style={styles.mhTopic} numberOfLines={2}>{m.topic}</Text>
+            <View style={styles.mhMetaRow}>
+              <View
+                style={[
+                  styles.mhMode,
+                  {
+                    backgroundColor: m.mode === 'online' ? '#0E7490' + '33' : '#22C55E' + '33',
+                    borderColor: m.mode === 'online' ? '#0E7490' : '#22C55E',
+                  },
+                ]}
+              >
+                <Text style={styles.mhModeText}>{m.mode}</Text>
+              </View>
+              <Text style={styles.mhCap}>{m.capacity} seats</Text>
+            </View>
+          </View>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderRecommendedReads = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>📚 Reading list · the club's shelf</Text>
+        <Text style={styles.sectionCaption}>{RECOMMENDED_READS.length} picks</Text>
+      </View>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={{ paddingHorizontal: HORIZONTAL_PADDING, gap: 12 }}
+      >
+        {RECOMMENDED_READS.map((r) => (
+          <View
+            key={r.id}
+            style={[styles.rrCard, { borderColor: r.color + '55' }]}
+          >
+            <Text style={styles.rrEmoji}>{r.emoji}</Text>
+            <Text style={[styles.rrKind, { color: r.color }]}>{r.kind.toUpperCase()}</Text>
+            <Text style={styles.rrTitle} numberOfLines={3}>{r.title}</Text>
+            <Text style={styles.rrAuthor} numberOfLines={1}>by {r.author}</Text>
+            <Text style={styles.rrMin}>{r.minutes} min</Text>
+            <Text style={styles.rrWhy} numberOfLines={3}>{r.why}</Text>
+          </View>
+        ))}
+      </ScrollView>
+    </View>
+  );
+
+  const renderVolunteerSlots = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🙋 Volunteer slots this week</Text>
+        <Text style={styles.sectionCaption}>tap · claim a slot</Text>
+      </View>
+      {VOLUNTEER_SLOTS.map((v) => {
+        const pct = Math.round((v.filled / v.seats) * 100);
+        return (
+          <View key={v.id} style={[styles.vsRow, { borderLeftColor: v.color }]}>
+            <Text style={styles.vsEmoji}>{v.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <View style={styles.vsTopRow}>
+                <Text style={styles.vsDrive} numberOfLines={1}>{v.drive}</Text>
+                <View
+                  style={[
+                    styles.vsKindPill,
+                    {
+                      backgroundColor: v.color + '22',
+                      borderColor: v.color + '66',
+                    },
+                  ]}
+                >
+                  <Text style={[styles.vsKindText, { color: v.color }]}>{v.kind}</Text>
+                </View>
+              </View>
+              <Text style={styles.vsDate} numberOfLines={1}>{v.date} · {v.slot}</Text>
+              <View style={styles.vsBarBg}>
+                <View
+                  style={[styles.vsBarFill, { width: `${pct}%`, backgroundColor: v.color }]}
+                />
+              </View>
+              <Text style={styles.vsSeats}>{v.filled}/{v.seats} filled</Text>
+            </View>
+          </View>
+        );
+      })}
+    </View>
+  );
+
+  const renderEcoHabits = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🌿 Eco habits · our rolling streaks</Text>
+        <Text style={styles.sectionCaption}>group averages</Text>
+      </View>
+      {ECO_HABITS.map((h) => (
+        <View key={h.id} style={[styles.ehCard, { borderLeftColor: h.color }]}>
+          <View style={styles.ehTopRow}>
+            <Text style={styles.ehEmoji}>{h.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.ehHabit} numberOfLines={2}>{h.habit}</Text>
+              <Text style={styles.ehDetail} numberOfLines={2}>{h.detail}</Text>
+            </View>
+          </View>
+          <View style={styles.ehFootRow}>
+            <Text style={[styles.ehStreak, { color: h.color }]}>{h.streakWeeks} wks</Text>
+            <Text style={styles.ehCo2}>−{h.co2SavedKg} kg CO₂</Text>
+          </View>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderTrails = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🥾 Campus walking trails</Text>
+        <Text style={styles.sectionCaption}>{TRAIL_MARKERS.length} routes</Text>
+      </View>
+      {TRAIL_MARKERS.map((t) => (
+        <View key={t.id} style={[styles.trCard, { borderLeftColor: t.color }]}>
+          <Text style={styles.trEmoji}>{t.emoji}</Text>
+          <View style={{ flex: 1 }}>
+            <Text style={styles.trName} numberOfLines={1}>{t.name}</Text>
+            <Text style={styles.trMeta} numberOfLines={1}>
+              {t.distanceKm} km · {t.elevationM} m gain · {t.minutes} min
+            </Text>
+          </View>
+          <View
+            style={[
+              styles.trDiff,
+              {
+                backgroundColor: t.color + '22',
+                borderColor: t.color + '66',
+              },
+            ]}
+          >
+            <Text style={[styles.trDiffText, { color: t.color }]}>{t.difficulty}</Text>
+          </View>
+        </View>
+      ))}
+    </View>
+  );
+
   // ------ Quick-action sheet ------
   const renderQuickActionSheet = () => (
     <Modal
@@ -2899,11 +3295,18 @@ const HomeScreen: React.FC = () => {
       >
         {renderHero()}
         {renderStats()}
+        {renderWeatherStrip()}
         {renderQuickWins()}
         {renderQuickActions()}
         {renderAnnouncements()}
         {renderFeaturedEvents()}
         {renderCampusCal()}
+        {renderSaplingPrograms()}
+        {renderVolunteerSlots()}
+        {renderMentorHours()}
+        {renderRecommendedReads()}
+        {renderEcoHabits()}
+        {renderTrails()}
         {renderQuarterGoals()}
         {renderImpactRegions()}
         {renderWorkshops()}
@@ -3963,6 +4366,148 @@ const styles = StyleSheet.create({
   ritualTitle: { color: Colors.text.primary, fontSize: 13, fontWeight: '800' },
   ritualDetail: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4 },
   ritualLead: { color: Colors.text.muted, fontSize: 10, marginTop: 4, fontStyle: 'italic' },
+
+  // --- Phase 3v: weather ---
+  weatherCard: {
+    width: 110,
+    backgroundColor: '#0D141B',
+    borderRadius: 16,
+    padding: 12,
+    borderWidth: 1,
+    alignItems: 'center',
+  },
+  weatherHour: { color: Colors.text.muted, fontSize: 11, fontWeight: '700', letterSpacing: 1 },
+  weatherEmoji: { fontSize: 28, marginTop: 4 },
+  weatherTemp: { fontSize: 22, fontWeight: '900', marginTop: 4 },
+  weatherCond: { color: Colors.text.secondary, fontSize: 11, marginTop: 2, textAlign: 'center' },
+  weatherMeta: { color: Colors.text.muted, fontSize: 10, marginTop: 3, textAlign: 'center' },
+  weatherAqiRow: { flexDirection: 'row', alignItems: 'center', marginTop: 8, gap: 4 },
+  weatherAqiLabel: { color: Colors.text.muted, fontSize: 9, fontWeight: '700', letterSpacing: 1 },
+  weatherAqiVal: { fontSize: 12, fontWeight: '900' },
+
+  // --- Phase 3v: saplings ---
+  spCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  spTopRow: { flexDirection: 'row', alignItems: 'center' },
+  spEmoji: { fontSize: 22, marginRight: 10 },
+  spSite: { color: Colors.text.primary, fontSize: 13, fontWeight: '800' },
+  spSpecies: { color: Colors.text.secondary, fontSize: 11, marginTop: 2 },
+  spStatsCol: { alignItems: 'flex-end', marginLeft: 8 },
+  spSurvival: { fontSize: 18, fontWeight: '900' },
+  spSurvivalLabel: { color: Colors.text.muted, fontSize: 9, letterSpacing: 1, textTransform: 'uppercase' },
+  spBarBg: { height: 4, borderRadius: 2, backgroundColor: 'rgba(255,255,255,0.06)', marginTop: 10, overflow: 'hidden' },
+  spBarFill: { height: 4, borderRadius: 2 },
+  spFootRow: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 6 },
+  spMeta: { color: Colors.text.muted, fontSize: 10 },
+  spSteward: { color: Colors.text.muted, fontSize: 11, marginTop: 4, fontStyle: 'italic' },
+
+  // --- Phase 3v: mentor hours ---
+  mhRow: {
+    flexDirection: 'row',
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginBottom: 8,
+    borderLeftWidth: 3,
+  },
+  mhEmoji: { fontSize: 22, marginRight: 10, marginTop: 2 },
+  mhTopRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  mhMentor: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', flex: 1 },
+  mhDay: { fontSize: 11, fontWeight: '900', marginLeft: 8, letterSpacing: 0.5 },
+  mhRole: { color: Colors.text.muted, fontSize: 10, marginTop: 2, fontStyle: 'italic' },
+  mhTopic: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 6 },
+  mhMetaRow: { flexDirection: 'row', alignItems: 'center', marginTop: 8, gap: 10 },
+  mhMode: {
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: 999,
+    borderWidth: 1,
+  },
+  mhModeText: { color: Colors.text.primary, fontSize: 9, fontWeight: '900', letterSpacing: 1, textTransform: 'uppercase' },
+  mhCap: { color: Colors.text.muted, fontSize: 10 },
+
+  // --- Phase 3v: recommended reads ---
+  rrCard: {
+    width: 180,
+    backgroundColor: '#0D141B',
+    borderRadius: 16,
+    padding: 14,
+    borderWidth: 1,
+  },
+  rrEmoji: { fontSize: 28 },
+  rrKind: { fontSize: 9, fontWeight: '900', letterSpacing: 1.5, marginTop: 6 },
+  rrTitle: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', lineHeight: 17, marginTop: 4 },
+  rrAuthor: { color: Colors.text.muted, fontSize: 10, marginTop: 2, fontStyle: 'italic' },
+  rrMin: { color: Colors.text.secondary, fontSize: 10, marginTop: 6 },
+  rrWhy: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 6 },
+
+  // --- Phase 3v: volunteer slots ---
+  vsRow: {
+    flexDirection: 'row',
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginBottom: 8,
+    borderLeftWidth: 3,
+  },
+  vsEmoji: { fontSize: 22, marginRight: 10, marginTop: 2 },
+  vsTopRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+  vsDrive: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', flex: 1 },
+  vsKindPill: {
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: 999,
+    marginLeft: 8,
+    borderWidth: 1,
+  },
+  vsKindText: { fontSize: 9, fontWeight: '900', letterSpacing: 1, textTransform: 'uppercase' },
+  vsDate: { color: Colors.text.muted, fontSize: 10, marginTop: 2 },
+  vsBarBg: { height: 4, borderRadius: 2, backgroundColor: 'rgba(255,255,255,0.06)', marginTop: 8, overflow: 'hidden' },
+  vsBarFill: { height: 4, borderRadius: 2 },
+  vsSeats: { color: Colors.text.secondary, fontSize: 10, marginTop: 4 },
+
+  // --- Phase 3v: eco habits ---
+  ehCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginBottom: 8,
+    borderLeftWidth: 3,
+  },
+  ehTopRow: { flexDirection: 'row', alignItems: 'flex-start' },
+  ehEmoji: { fontSize: 22, marginRight: 10, marginTop: 2 },
+  ehHabit: { color: Colors.text.primary, fontSize: 13, fontWeight: '800' },
+  ehDetail: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4 },
+  ehFootRow: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 8, paddingLeft: 32 },
+  ehStreak: { fontSize: 12, fontWeight: '900', letterSpacing: 0.5 },
+  ehCo2: { color: Colors.text.muted, fontSize: 11, fontWeight: '700' },
+
+  // --- Phase 3v: trails ---
+  trCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginBottom: 8,
+    borderLeftWidth: 3,
+  },
+  trEmoji: { fontSize: 22, marginRight: 10 },
+  trName: { color: Colors.text.primary, fontSize: 13, fontWeight: '800' },
+  trMeta: { color: Colors.text.secondary, fontSize: 11, marginTop: 3 },
+  trDiff: {
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 999,
+    marginLeft: 8,
+    borderWidth: 1,
+  },
+  trDiffText: { fontSize: 9, fontWeight: '900', letterSpacing: 1, textTransform: 'uppercase' },
 });
 
 export default HomeScreen;
