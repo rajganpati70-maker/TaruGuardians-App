@@ -944,6 +944,183 @@ const CONSENT_RULES: ConsentRule[] = [
 ];
 
 // =====================================================
+// Food vendors (on-site F&B)
+// =====================================================
+
+interface FoodVendor {
+  id: string;
+  name: string;
+  cuisine: string;
+  veg: 'full-veg' | 'veg + non-veg' | 'vegan-friendly';
+  priceBand: '₹'| '₹₹' | '₹₹₹';
+  hours: string;
+  dietary: string[];
+  contact: string;
+  highlight: string;
+  emoji: string;
+  color: string;
+}
+
+const FOOD_VENDORS: FoodVendor[] = [
+  { id: 'fv-1', name: 'Anandi\'s Thali',          cuisine: 'Gujarati thali',          veg: 'full-veg',        priceBand: '₹₹',   hours: '11:00 – 22:00', dietary: ['gluten-free options', 'jain on request'],          contact: '+91 98XXX 11002', highlight: 'Unlimited roti + 8 fresh sides · the default lunch for the whole team.',     emoji: '🍽️', color: '#F59E0B' },
+  { id: 'fv-2', name: 'Ghar Ki Chai',              cuisine: 'Chai + snacks',           veg: 'full-veg',        priceBand: '₹',    hours: '07:00 – 23:00', dietary: ['dairy', 'sugar-free chai on ask'],                     contact: '+91 98XXX 11003', highlight: 'Adrak chai + kanda bhaji · the morning handshake.',                             emoji: '🍵', color: '#EA580C' },
+  { id: 'fv-3', name: 'Sprout Bowl',                cuisine: 'Salads + grain bowls',    veg: 'vegan-friendly',  priceBand: '₹₹',   hours: '10:00 – 21:00', dietary: ['vegan', 'nut-free', 'low-oil'],                         contact: '+91 98XXX 11004', highlight: 'A proper clean lunch · grain + greens + protein · zero drama.',                   emoji: '🥗', color: '#22C55E' },
+  { id: 'fv-4', name: 'Kulcha Works',                cuisine: 'Amritsari kulcha',        veg: 'veg + non-veg',   priceBand: '₹₹',   hours: '12:00 – 23:00', dietary: ['egg', 'chicken', 'mutton'],                              contact: '+91 98XXX 11005', highlight: 'Tandoor on-site · the after-session comfort food.',                               emoji: '🫓', color: '#B45309' },
+  { id: 'fv-5', name: 'Forest Floor Coffee',         cuisine: 'Specialty coffee',        veg: 'full-veg',        priceBand: '₹₹₹',  hours: '08:00 – 22:00', dietary: ['oat milk', 'almond milk', 'decaf'],                      contact: '+91 98XXX 11006', highlight: 'Filter · pour-over · flat white · the caffeine HQ for the edit team.',           emoji: '☕', color: '#92400E' },
+  { id: 'fv-6', name: 'Puran Poli Akka',             cuisine: 'Maharashtrian sweets',    veg: 'full-veg',        priceBand: '₹₹',   hours: '11:00 – 20:00', dietary: ['traditional ghee', 'jaggery'],                            contact: '+91 98XXX 11007', highlight: 'The Friday dessert · hot puran poli with a slick of ghee.',                       emoji: '🍯', color: '#D97706' },
+  { id: 'fv-7', name: 'South Tide',                   cuisine: 'South Indian tiffin',     veg: 'full-veg',        priceBand: '₹₹',   hours: '07:00 – 22:00', dietary: ['gluten-free by default', 'dairy'],                        contact: '+91 98XXX 11008', highlight: 'Podi idli + ghee sambhar · it has kept morale afloat for three workshops.',       emoji: '🥘', color: '#0891B2' },
+  { id: 'fv-8', name: 'The Fruit Cart',               cuisine: 'Fresh fruit + shakes',    veg: 'full-veg',        priceBand: '₹',    hours: '09:00 – 21:00', dietary: ['low-sugar', 'no-ice on request'],                         contact: '+91 98XXX 11009', highlight: 'Cut-fruit plates + shakes · the quick between-sessions snack.',                   emoji: '🥭', color: '#F97316' },
+  { id: 'fv-9', name: 'Baker\'s Bench',              cuisine: 'Breads + sandwiches',     veg: 'veg + non-veg',   priceBand: '₹₹',   hours: '10:00 – 21:00', dietary: ['sourdough', 'grilled chicken', 'eggless cakes'],          contact: '+91 98XXX 11010', highlight: 'Fresh sourdough + cold-cut sandwiches · the pack-and-go lunch.',                 emoji: '🥪', color: '#F59E0B' },
+  { id: 'fv-10', name: 'Nimbu Soda House',            cuisine: 'Mocktails + sharbat',     veg: 'full-veg',        priceBand: '₹',    hours: '10:00 – 23:00', dietary: ['no-sugar options', 'herbal'],                              contact: '+91 98XXX 11011', highlight: 'Jaljeera · nimbu soda · the 4pm reset button.',                                     emoji: '🥤', color: '#84CC16' },
+];
+
+// =====================================================
+// Event packing list (what to bring)
+// =====================================================
+
+interface PackingItem {
+  id: string;
+  name: string;
+  why: string;
+  mustHave: boolean;
+  emoji: string;
+  category: 'essentials' | 'comfort' | 'tech' | 'climate';
+}
+
+const PACKING_LIST: PackingItem[] = [
+  { id: 'pk-1',  name: 'Government ID · original',           why: 'Needed at the gate · digital copy is not accepted.',                         mustHave: true,  emoji: '🪪', category: 'essentials' },
+  { id: 'pk-2',  name: 'Printed ticket or QR on phone',      why: 'Saves 10 minutes in line · we do accept screenshots.',                         mustHave: true,  emoji: '🎫', category: 'essentials' },
+  { id: 'pk-3',  name: 'Refillable water bottle',            why: 'Six refill stations on-site · we avoid single-use plastic end-to-end.',        mustHave: true,  emoji: '💧', category: 'climate' },
+  { id: 'pk-4',  name: 'Reusable cloth bag',                 why: 'For handouts + small gear · no plastic bags handed out on-site.',              mustHave: false, emoji: '🛍️', category: 'climate' },
+  { id: 'pk-5',  name: 'Warm layer for AC halls',            why: 'Halls run cool · a light shawl or hoodie is enough.',                          mustHave: false, emoji: '🧥', category: 'comfort' },
+  { id: 'pk-6',  name: 'Closed-toe shoes',                   why: 'You will walk more than you expect · 6–8km over a full day.',                 mustHave: true,  emoji: '👟', category: 'comfort' },
+  { id: 'pk-7',  name: 'Power bank · 10,000mAh+',            why: 'Wall outlets are limited · the volunteer station has a few chargers.',         mustHave: false, emoji: '🔋', category: 'tech' },
+  { id: 'pk-8',  name: 'Laptop + charger',                   why: 'Only needed if you are in a hands-on workshop · otherwise leave at home.',      mustHave: false, emoji: '💻', category: 'tech' },
+  { id: 'pk-9',  name: 'Notebook + 2 pens',                  why: 'Screens die · a notebook has not once been a bad idea at a workshop.',          mustHave: false, emoji: '📓', category: 'tech' },
+  { id: 'pk-10', name: 'Any medication you need',            why: 'A small first-aid table is on-site · we cannot stock personal meds.',           mustHave: true,  emoji: '💊', category: 'essentials' },
+  { id: 'pk-11', name: 'Light snack + fruit',                why: 'Between sessions, the cart takes 5-10 min · pack a small snack.',                mustHave: false, emoji: '🍎', category: 'comfort' },
+  { id: 'pk-12', name: 'Handkerchief / small towel',         why: 'In peak summer, the walk from gate to hall takes a toll.',                       mustHave: false, emoji: '🧻', category: 'comfort' },
+];
+
+// =====================================================
+// Parking + transit (detailed)
+// =====================================================
+
+interface ParkingLot {
+  id: string;
+  name: string;
+  capacity: number;
+  type: 'on-site' | 'satellite' | 'paid-mall';
+  walkMinutes: number;
+  priceNote: string;
+  evChargers: number;
+  cycleRacks: number;
+  accessible: boolean;
+  color: string;
+}
+
+const PARKING_LOTS: ParkingLot[] = [
+  { id: 'pl-1', name: 'Main gate · block A',            capacity: 320, type: 'on-site',     walkMinutes: 2,  priceNote: 'Free · volunteers only',              evChargers: 6, cycleRacks: 40, accessible: true,  color: '#22C55E' },
+  { id: 'pl-2', name: 'Hostel loop · block C',           capacity: 180, type: 'on-site',     walkMinutes: 6,  priceNote: 'Free · full-day pass at the gate',    evChargers: 2, cycleRacks: 24, accessible: true,  color: '#38BDF8' },
+  { id: 'pl-3', name: 'Library basement',                capacity: 95,  type: 'on-site',     walkMinutes: 4,  priceNote: 'Free · usually full by 09:30',         evChargers: 0, cycleRacks: 0,  accessible: true,  color: '#A78BFA' },
+  { id: 'pl-4', name: 'Brigade Road · satellite',       capacity: 280, type: 'satellite',   walkMinutes: 15, priceNote: '₹40/day · pay at the booth',            evChargers: 4, cycleRacks: 10, accessible: false, color: '#F59E0B' },
+  { id: 'pl-5', name: 'MG Road mall · paid',            capacity: 520, type: 'paid-mall',   walkMinutes: 22, priceNote: '₹100/day · validated with receipt',    evChargers: 10, cycleRacks: 0,  accessible: true,  color: '#F472B6' },
+  { id: 'pl-6', name: 'Cycle-only racks · north gate',   capacity: 64,  type: 'on-site',     walkMinutes: 3,  priceNote: 'Free · lock required',                   evChargers: 0, cycleRacks: 64, accessible: true,  color: '#14B8A6' },
+];
+
+interface TransitRoute {
+  id: string;
+  mode: 'metro' | 'bus' | 'train' | 'shuttle' | 'auto';
+  name: string;
+  fromHub: string;
+  toVenue: string;
+  firstRun: string;
+  lastRun: string;
+  frequency: string;
+  cost: string;
+  accessibility: string;
+  emoji: string;
+  color: string;
+}
+
+const TRANSIT_ROUTES: TransitRoute[] = [
+  { id: 'tr-1', mode: 'metro',   name: 'Purple Line',           fromHub: 'MG Road Metro',      toVenue: '12-min walk to north gate',    firstRun: '05:30', lastRun: '23:30', frequency: 'Every 7–10 min',  cost: '₹20 – ₹40',   accessibility: 'Lift at MG Road · ramp at venue.',                 emoji: '🚇', color: '#A78BFA' },
+  { id: 'tr-2', mode: 'bus',     name: 'KSRTC 356-A',            fromHub: 'Majestic BMTC',      toVenue: 'Stops at main gate',            firstRun: '05:00', lastRun: '23:00', frequency: 'Every 15 min',    cost: '₹18',          accessibility: 'Low-floor on alt. buses · ask the conductor.',      emoji: '🚌', color: '#22C55E' },
+  { id: 'tr-3', mode: 'train',   name: 'Local · Yeshwantpur',   fromHub: 'Yeshwantpur Jn',      toVenue: '25-min walk · 10-min auto',     firstRun: '05:45', lastRun: '22:00', frequency: 'Every 45 min',    cost: '₹20 – ₹60',   accessibility: 'Platform ramps · station lifts partial.',           emoji: '🚆', color: '#38BDF8' },
+  { id: 'tr-4', mode: 'shuttle', name: 'Event shuttle · Kempegowda', fromHub: 'Kempegowda airport', toVenue: 'Main gate drop-off',             firstRun: '06:30', lastRun: '20:00', frequency: 'Every 30 min',    cost: 'Free with pass',  accessibility: 'Low-floor · pre-book a wheelchair slot in RSVP.',    emoji: '🚐', color: '#F59E0B' },
+  { id: 'tr-5', mode: 'shuttle', name: 'City shuttle · Indiranagar', fromHub: 'Indiranagar metro',  toVenue: 'North gate drop-off',             firstRun: '07:30', lastRun: '21:30', frequency: 'Every 45 min',    cost: 'Free with pass',  accessibility: 'Low-floor · full wheelchair access.',                emoji: '🚐', color: '#F472B6' },
+  { id: 'tr-6', mode: 'auto',    name: 'Auto-rickshaw',           fromHub: 'Any city hub',        toVenue: 'Main gate / north gate',          firstRun: 'Anytime', lastRun: 'Anytime', frequency: 'Hail or Ola/Uber', cost: '₹80 – ₹260',   accessibility: 'Limited · pick a shuttle for full accessibility.',   emoji: '🛺', color: '#EA580C' },
+  { id: 'tr-7', mode: 'metro',   name: 'Green Line',              fromHub: 'Kempegowda interchange', toVenue: '6-min walk + 1 shuttle',         firstRun: '05:30', lastRun: '23:30', frequency: 'Every 6–9 min',   cost: '₹15 – ₹45',   accessibility: 'Full lift + ramp access end-to-end.',                emoji: '🚇', color: '#22C55E' },
+];
+
+// =====================================================
+// First-aid + medical (on-site)
+// =====================================================
+
+interface MedicalStation {
+  id: string;
+  name: string;
+  location: string;
+  hours: string;
+  capabilities: string[];
+  emergencyLink: string;
+  escalation: string;
+  color: string;
+  emoji: string;
+}
+
+const MEDICAL_STATIONS: MedicalStation[] = [
+  { id: 'ms-1', name: 'Central first-aid tent',     location: 'Main gate · 40m inside',         hours: '07:00 – 23:00', capabilities: ['minor cuts', 'sprains', 'headache', 'dehydration', 'BP check'],         emergencyLink: '+91 80 4000 11', escalation: '5-min ambulance to Sparsh Hospital · MG Road.',           color: '#22C55E', emoji: '⛑️' },
+  { id: 'ms-2', name: 'Hall B · side room',          location: 'Hall B · west wing',              hours: '09:00 – 20:00', capabilities: ['anxiety support', 'quiet room', 'low-light + fan', 'water + ORS'],         emergencyLink: '+91 80 4000 12', escalation: 'Linked to main tent · medic-on-call.',                   color: '#38BDF8', emoji: '🩹' },
+  { id: 'ms-3', name: 'North gate · ambulance',      location: 'North gate · parking B',          hours: '08:00 – 22:00', capabilities: ['full ambulance', 'defibrillator', 'IV', 'oxygen'],                           emergencyLink: '+91 80 4000 13', escalation: 'Direct transit to Sparsh · 4 min.',                       color: '#EF4444', emoji: '🚑' },
+  { id: 'ms-4', name: 'Food court · medic pair',     location: 'Food court · centre',             hours: '11:00 – 21:00', capabilities: ['allergies', 'food poisoning', 'oral meds', 'minor burns'],                  emergencyLink: '+91 80 4000 14', escalation: 'Escalate to central tent if not resolving in 20 min.',    color: '#F59E0B', emoji: '🍽️' },
+  { id: 'ms-5', name: 'Mental-health drop-in',        location: 'Library basement · room 04',      hours: '10:00 – 20:00', capabilities: ['listening room', 'counsellor on-call', 'quiet + weighted blanket', 'tea'],   emergencyLink: '+91 80 4000 15', escalation: 'On-call psychiatrist · warm handoff with consent only.',   color: '#A78BFA', emoji: '🫂' },
+];
+
+// =====================================================
+// Schedule-at-a-glance (30-minute blocks)
+// =====================================================
+
+interface ScheduleBlock {
+  id: string;
+  day: 'Day 1' | 'Day 2' | 'Day 3';
+  startTime: string;
+  endTime: string;
+  title: string;
+  kind: 'keynote' | 'workshop' | 'panel' | 'meal' | 'social' | 'field';
+  room: string;
+  lead: string;
+  color: string;
+}
+
+const SCHEDULE_BLOCKS: ScheduleBlock[] = [
+  { id: 'sb-1',  day: 'Day 1', startTime: '09:00', endTime: '09:30', title: 'Registration + badge pickup',          kind: 'social',   room: 'Main gate',         lead: 'Ops team',                 color: '#38BDF8' },
+  { id: 'sb-2',  day: 'Day 1', startTime: '09:30', endTime: '10:00', title: 'Opening · keynote I',                   kind: 'keynote',  room: 'Hall A',             lead: 'Meera I. (alumni)',         color: '#F59E0B' },
+  { id: 'sb-3',  day: 'Day 1', startTime: '10:15', endTime: '12:00', title: 'Workshop · design tokens 101',          kind: 'workshop', room: 'Lab 3',              lead: 'Tanvi S. (alumni)',         color: '#F472B6' },
+  { id: 'sb-4',  day: 'Day 1', startTime: '12:00', endTime: '13:00', title: 'Lunch · Gujarati thali / sprout bowl',  kind: 'meal',     room: 'Food court',         lead: 'Anandi + Sprout Bowl',      color: '#F59E0B' },
+  { id: 'sb-5',  day: 'Day 1', startTime: '13:15', endTime: '15:00', title: 'Workshop · field research ethics',       kind: 'workshop', room: 'Hall B',             lead: 'Aditi P. (alumni)',          color: '#A78BFA' },
+  { id: 'sb-6',  day: 'Day 1', startTime: '15:15', endTime: '16:30', title: 'Panel · funding without selling out',    kind: 'panel',    room: 'Hall A',             lead: 'Kanishka + 2 guests',        color: '#22C55E' },
+  { id: 'sb-7',  day: 'Day 1', startTime: '16:45', endTime: '18:00', title: 'Field walk · campus sapling audit',      kind: 'field',    room: 'South lawn',         lead: 'Aarav + volunteers',         color: '#22C55E' },
+  { id: 'sb-8',  day: 'Day 1', startTime: '19:00', endTime: '21:00', title: 'Community dinner + open mic',            kind: 'social',   room: 'Garden lawn',        lead: 'Hospitality crew',           color: '#F59E0B' },
+
+  { id: 'sb-9',  day: 'Day 2', startTime: '09:00', endTime: '10:30', title: 'Keynote II · ten years of open-source',  kind: 'keynote',  room: 'Hall A',             lead: 'Meera I. (alumni)',          color: '#38BDF8' },
+  { id: 'sb-10', day: 'Day 2', startTime: '10:45', endTime: '12:30', title: 'Workshop · long-form writing clinic',    kind: 'workshop', room: 'Library · room 2',   lead: 'Ishaan K. (alumni)',         color: '#F87171' },
+  { id: 'sb-11', day: 'Day 2', startTime: '12:30', endTime: '13:30', title: 'Lunch · kulcha + podi idli',             kind: 'meal',     room: 'Food court',         lead: 'Kulcha Works + South Tide',   color: '#F59E0B' },
+  { id: 'sb-12', day: 'Day 2', startTime: '13:45', endTime: '15:30', title: 'Workshop · portfolio review · design',   kind: 'workshop', room: 'Lab 4',              lead: 'Tanvi S. + Mira J.',         color: '#F472B6' },
+  { id: 'sb-13', day: 'Day 2', startTime: '15:45', endTime: '17:00', title: 'Panel · climate careers · Q&A',           kind: 'panel',    room: 'Hall A',             lead: 'Kanishka + 3 guests',         color: '#22C55E' },
+  { id: 'sb-14', day: 'Day 2', startTime: '17:15', endTime: '18:30', title: 'Fireside · ‘fieldwork that doesn\'t break you’', kind: 'panel', room: 'Hall C',   lead: 'Aditi + Farhan',              color: '#A78BFA' },
+  { id: 'sb-15', day: 'Day 2', startTime: '19:30', endTime: '22:30', title: 'Alumni-student dinner + DJ set',          kind: 'social',   room: 'Garden lawn',        lead: 'Music crew',                  color: '#F472B6' },
+
+  { id: 'sb-16', day: 'Day 3', startTime: '09:00', endTime: '10:30', title: 'Wing standups · public show-and-tell',   kind: 'panel',    room: 'Hall A',             lead: 'All wing leads',              color: '#38BDF8' },
+  { id: 'sb-17', day: 'Day 3', startTime: '10:45', endTime: '12:30', title: 'Workshop · video editing · reel cuts',    kind: 'workshop', room: 'Lab 5',              lead: 'Dhruv R. + Akshara N.',       color: '#F87171' },
+  { id: 'sb-18', day: 'Day 3', startTime: '12:30', endTime: '13:30', title: 'Lunch · fruit cart + nimbu soda',         kind: 'meal',     room: 'Food court',         lead: 'The Fruit Cart + Nimbu House', color: '#F59E0B' },
+  { id: 'sb-19', day: 'Day 3', startTime: '13:45', endTime: '15:15', title: 'Workshop · PR basics for first-timers',    kind: 'workshop', room: 'Lab 6',              lead: 'Varun M. (alumni)',           color: '#22C55E' },
+  { id: 'sb-20', day: 'Day 3', startTime: '15:30', endTime: '17:00', title: 'Closing panel · ‘what we got wrong this year’', kind: 'panel', room: 'Hall A',   lead: 'Leads + alumni',               color: '#F472B6' },
+  { id: 'sb-21', day: 'Day 3', startTime: '17:15', endTime: '18:00', title: 'Awards + thanks',                         kind: 'keynote',  room: 'Hall A',             lead: 'Leadership team',              color: '#F59E0B' },
+  { id: 'sb-22', day: 'Day 3', startTime: '18:15', endTime: '20:00', title: 'Community wind-down · slow dinner',        kind: 'meal',     room: 'Garden lawn',        lead: 'Hospitality crew',              color: '#22C55E' },
+];
+
+// =====================================================
 // COMPONENT
 // =====================================================
 
@@ -2601,15 +2778,198 @@ const EventsScreen: React.FC = () => {
     </View>
   );
 
+  const renderFoodVendorsSection = () => (
+    <View style={styles.extrasSection}>
+      <View style={styles.extrasHeaderRow}>
+        <Text style={styles.extrasTitle}>🍽️ Food vendors on-site</Text>
+        <Text style={styles.extrasSubtitle}>{FOOD_VENDORS.length} carts · all week</Text>
+      </View>
+      {FOOD_VENDORS.map((v) => (
+        <View key={v.id} style={[styles.vendorCard, { borderLeftColor: v.color }]}>
+          <View style={styles.vendorHeaderRow}>
+            <Text style={styles.vendorEmoji}>{v.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <View style={styles.vendorTopRow}>
+                <Text style={styles.vendorName} numberOfLines={1}>{v.name}</Text>
+                <Text style={[styles.vendorPrice, { color: v.color }]}>{v.priceBand}</Text>
+              </View>
+              <Text style={styles.vendorCuisine}>{v.cuisine} · {v.veg}</Text>
+            </View>
+          </View>
+          <Text style={styles.vendorHighlight} numberOfLines={3}>{v.highlight}</Text>
+          <View style={styles.vendorPillRow}>
+            {v.dietary.map((d) => (
+              <View key={d} style={styles.vendorPill}>
+                <Text style={styles.vendorPillText}>{d}</Text>
+              </View>
+            ))}
+          </View>
+          <View style={styles.vendorFootRow}>
+            <Text style={styles.vendorHours}>{v.hours}</Text>
+            <Text style={styles.vendorContact}>{v.contact}</Text>
+          </View>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderPackingListSection = () => (
+    <View style={styles.extrasSection}>
+      <View style={styles.extrasHeaderRow}>
+        <Text style={styles.extrasTitle}>🎒 Pack before you come</Text>
+        <Text style={styles.extrasSubtitle}>Must-haves marked · the rest is optional</Text>
+      </View>
+      {PACKING_LIST.map((p) => (
+        <View key={p.id} style={styles.packRow}>
+          <Text style={styles.packEmoji}>{p.emoji}</Text>
+          <View style={{ flex: 1 }}>
+            <View style={styles.packTopRow}>
+              <Text style={styles.packName} numberOfLines={1}>{p.name}</Text>
+              {p.mustHave ? (
+                <View style={styles.packMustPill}>
+                  <Text style={styles.packMustText}>MUST</Text>
+                </View>
+              ) : (
+                <Text style={styles.packOpt}>optional</Text>
+              )}
+            </View>
+            <Text style={styles.packWhy} numberOfLines={3}>{p.why}</Text>
+          </View>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderParkingSection = () => (
+    <View style={styles.extrasSection}>
+      <View style={styles.extrasHeaderRow}>
+        <Text style={styles.extrasTitle}>🅿️ Parking lots</Text>
+        <Text style={styles.extrasSubtitle}>{PARKING_LOTS.length} lots · EV + cycles welcomed</Text>
+      </View>
+      {PARKING_LOTS.map((l) => (
+        <View key={l.id} style={[styles.parkRow, { borderLeftColor: l.color }]}>
+          <View style={styles.parkTopRow}>
+            <Text style={styles.parkName} numberOfLines={1}>{l.name}</Text>
+            <Text style={[styles.parkType, { color: l.color }]}>{l.type}</Text>
+          </View>
+          <Text style={styles.parkMeta}>
+            {l.capacity} slots · {l.walkMinutes} min walk · EV {l.evChargers} · 🚲 {l.cycleRacks}
+          </Text>
+          <Text style={styles.parkPrice}>{l.priceNote}</Text>
+          {l.accessible ? (
+            <Text style={[styles.parkAccess, { color: '#22C55E' }]}>♿ accessible route from this lot</Text>
+          ) : (
+            <Text style={[styles.parkAccess, { color: '#F59E0B' }]}>♿ limited — prefer lot 1 or 5</Text>
+          )}
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderTransitSection = () => (
+    <View style={styles.extrasSection}>
+      <View style={styles.extrasHeaderRow}>
+        <Text style={styles.extrasTitle}>🚇 Public transit</Text>
+        <Text style={styles.extrasSubtitle}>Prefer transit · shuttle is free with a pass</Text>
+      </View>
+      {TRANSIT_ROUTES.map((t) => (
+        <View key={t.id} style={[styles.transitCard, { borderLeftColor: t.color }]}>
+          <View style={styles.transitTopRow}>
+            <Text style={styles.transitEmoji}>{t.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.transitName} numberOfLines={1}>{t.name}</Text>
+              <Text style={styles.transitHub}>{t.fromHub} → {t.toVenue}</Text>
+            </View>
+          </View>
+          <View style={styles.transitMetaRow}>
+            <Text style={styles.transitMetaText}>
+              {t.firstRun}–{t.lastRun} · {t.frequency}
+            </Text>
+            <Text style={[styles.transitCost, { color: t.color }]}>{t.cost}</Text>
+          </View>
+          <Text style={styles.transitAccess} numberOfLines={2}>♿ {t.accessibility}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderMedicalSection = () => (
+    <View style={styles.extrasSection}>
+      <View style={styles.extrasHeaderRow}>
+        <Text style={styles.extrasTitle}>⛑️ First-aid + medical</Text>
+        <Text style={styles.extrasSubtitle}>Five stations on-site · one is mental-health only</Text>
+      </View>
+      {MEDICAL_STATIONS.map((m) => (
+        <View key={m.id} style={[styles.medCard, { borderLeftColor: m.color }]}>
+          <View style={styles.medTopRow}>
+            <Text style={styles.medEmoji}>{m.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.medName} numberOfLines={1}>{m.name}</Text>
+              <Text style={styles.medLoc}>{m.location} · {m.hours}</Text>
+            </View>
+          </View>
+          <View style={styles.medCapRow}>
+            {m.capabilities.map((c) => (
+              <View key={c} style={[styles.medCapPill, { borderColor: m.color + '55' }]}>
+                <Text style={[styles.medCapText, { color: m.color }]}>{c}</Text>
+              </View>
+            ))}
+          </View>
+          <View style={styles.medFootRow}>
+            <Text style={styles.medPhone}>{m.emergencyLink}</Text>
+            <Text style={styles.medEsc} numberOfLines={2}>↳ {m.escalation}</Text>
+          </View>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderScheduleSection = () => {
+    const days: ScheduleBlock['day'][] = ['Day 1', 'Day 2', 'Day 3'];
+    return (
+      <View style={styles.extrasSection}>
+        <View style={styles.extrasHeaderRow}>
+          <Text style={styles.extrasTitle}>🗓️ Schedule-at-a-glance</Text>
+          <Text style={styles.extrasSubtitle}>Three days · every 30-min block published</Text>
+        </View>
+        {days.map((d) => (
+          <View key={d} style={styles.schedDayBlock}>
+            <Text style={styles.schedDayLabel}>{d}</Text>
+            {SCHEDULE_BLOCKS.filter((b) => b.day === d).map((b) => (
+              <View key={b.id} style={[styles.schedRow, { borderLeftColor: b.color }]}>
+                <View style={styles.schedTimeCol}>
+                  <Text style={styles.schedStart}>{b.startTime}</Text>
+                  <Text style={styles.schedEnd}>{b.endTime}</Text>
+                </View>
+                <View style={{ flex: 1 }}>
+                  <Text style={styles.schedTitle} numberOfLines={2}>{b.title}</Text>
+                  <Text style={styles.schedMeta} numberOfLines={1}>
+                    {b.kind} · {b.room} · {b.lead}
+                  </Text>
+                </View>
+              </View>
+            ))}
+          </View>
+        ))}
+      </View>
+    );
+  };
+
   const renderExtrasFooter = () => (
     <View>
       {renderCalendarSection()}
+      {renderScheduleSection()}
       {renderTicketsSection()}
       {renderSpeakersSection()}
       {renderSponsorsSection()}
       {renderVenuesSection()}
       {renderTravelSection()}
+      {renderTransitSection()}
+      {renderParkingSection()}
       {renderStaySection()}
+      {renderPackingListSection()}
+      {renderFoodVendorsSection()}
+      {renderMedicalSection()}
       {renderStreamSection()}
       {renderFaqSection()}
       {renderConductSection()}
@@ -4679,6 +5039,138 @@ const styles = StyleSheet.create({
     marginTop: 3,
     lineHeight: 15,
   },
+
+  // Food vendors
+  vendorCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  vendorHeaderRow: { flexDirection: 'row', alignItems: 'flex-start' },
+  vendorEmoji: { fontSize: 22, marginRight: 10, marginTop: 2 },
+  vendorTopRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+  vendorName: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', flex: 1 },
+  vendorPrice: { fontSize: 12, fontWeight: '800', marginLeft: 8 },
+  vendorCuisine: { color: Colors.text.secondary, fontSize: 11, marginTop: 2 },
+  vendorHighlight: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8 },
+  vendorPillRow: { flexDirection: 'row', flexWrap: 'wrap', marginTop: 8 },
+  vendorPill: {
+    backgroundColor: 'rgba(255,255,255,0.04)',
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 999,
+    marginRight: 6,
+    marginBottom: 4,
+  },
+  vendorPillText: { color: Colors.text.muted, fontSize: 10, fontWeight: '700' },
+  vendorFootRow: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 8 },
+  vendorHours: { color: Colors.text.muted, fontSize: 10 },
+  vendorContact: { color: Colors.tech.neonBlue, fontSize: 10, fontWeight: '700' },
+
+  // Packing list
+  packRow: {
+    flexDirection: 'row',
+    backgroundColor: '#0D141B',
+    padding: 12,
+    borderRadius: 12,
+    marginBottom: 8,
+  },
+  packEmoji: { fontSize: 20, marginRight: 10, marginTop: 2 },
+  packTopRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  packName: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', flex: 1 },
+  packMustPill: {
+    backgroundColor: 'rgba(34,197,94,0.18)',
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: 6,
+  },
+  packMustText: { color: '#22C55E', fontSize: 9, fontWeight: '900', letterSpacing: 1 },
+  packOpt: { color: Colors.text.muted, fontSize: 10, fontStyle: 'italic' },
+  packWhy: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 3 },
+
+  // Parking lots
+  parkRow: {
+    backgroundColor: '#0D141B',
+    borderRadius: 12,
+    padding: 12,
+    marginBottom: 8,
+    borderLeftWidth: 3,
+  },
+  parkTopRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+  parkName: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', flex: 1 },
+  parkType: { fontSize: 10, fontWeight: '800', letterSpacing: 0.5 },
+  parkMeta: { color: Colors.text.secondary, fontSize: 11, marginTop: 4 },
+  parkPrice: { color: Colors.text.muted, fontSize: 11, marginTop: 2 },
+  parkAccess: { fontSize: 11, marginTop: 6, fontWeight: '700' },
+
+  // Transit
+  transitCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginBottom: 8,
+    borderLeftWidth: 3,
+  },
+  transitTopRow: { flexDirection: 'row', alignItems: 'flex-start' },
+  transitEmoji: { fontSize: 20, marginRight: 10, marginTop: 2 },
+  transitName: { color: Colors.text.primary, fontSize: 13, fontWeight: '800' },
+  transitHub: { color: Colors.text.secondary, fontSize: 11, marginTop: 2 },
+  transitMetaRow: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 8 },
+  transitMetaText: { color: Colors.text.muted, fontSize: 11 },
+  transitCost: { fontSize: 11, fontWeight: '800' },
+  transitAccess: { color: Colors.text.secondary, fontSize: 11, marginTop: 6, lineHeight: 15 },
+
+  // Medical
+  medCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  medTopRow: { flexDirection: 'row', alignItems: 'flex-start' },
+  medEmoji: { fontSize: 22, marginRight: 10, marginTop: 2 },
+  medName: { color: Colors.text.primary, fontSize: 13, fontWeight: '800' },
+  medLoc: { color: Colors.text.muted, fontSize: 11, marginTop: 2 },
+  medCapRow: { flexDirection: 'row', flexWrap: 'wrap', marginTop: 8 },
+  medCapPill: {
+    borderWidth: 1,
+    borderRadius: 999,
+    paddingHorizontal: 9,
+    paddingVertical: 3,
+    marginRight: 6,
+    marginBottom: 4,
+  },
+  medCapText: { fontSize: 10, fontWeight: '800' },
+  medFootRow: { marginTop: 8 },
+  medPhone: { color: Colors.tech.neonBlue, fontSize: 11, fontWeight: '800' },
+  medEsc: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 3 },
+
+  // Schedule
+  schedDayBlock: { marginBottom: 14 },
+  schedDayLabel: {
+    color: Colors.tech.neonBlue,
+    fontSize: 11,
+    fontWeight: '900',
+    letterSpacing: 1.5,
+    marginBottom: 6,
+    marginTop: 6,
+  },
+  schedRow: {
+    flexDirection: 'row',
+    backgroundColor: '#0D141B',
+    padding: 10,
+    borderRadius: 10,
+    marginBottom: 6,
+    borderLeftWidth: 3,
+  },
+  schedTimeCol: { width: 50, alignItems: 'flex-start', marginRight: 10 },
+  schedStart: { color: Colors.text.primary, fontSize: 12, fontWeight: '800' },
+  schedEnd: { color: Colors.text.muted, fontSize: 10, marginTop: 1 },
+  schedTitle: { color: Colors.text.primary, fontSize: 12, fontWeight: '800', lineHeight: 16 },
+  schedMeta: { color: Colors.text.muted, fontSize: 10, marginTop: 2 },
 });
 
 export default EventsScreen;
