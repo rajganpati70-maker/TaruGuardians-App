@@ -1880,6 +1880,92 @@ const SUGGESTION_FOLLOWUP_RINGS: SuggestionFollowUpRing[] = [
   { id: 'sfr-7', after: 'Day 1000 · legacy review',                                                                                                     checkIn: 'Public archive entry · named · dated',                                                                                                               signal: 'Did it change how we work · or become furniture?',                                                                                                                    responder: 'Archive keeper + council chair',                                                                                                                  color: '#EF4444', emoji: '🗄️' },
 ];
 
+// =====================================================
+// Phase 3bd: deeper suggestion structures — round 6
+// =====================================================
+
+interface SuggestionReviewWindow {
+  id: string;
+  window: string;
+  cadence: string;
+  facilitator: string;
+  agenda: string;
+  color: string;
+  emoji: string;
+}
+
+const SUGGESTION_REVIEW_WINDOWS: SuggestionReviewWindow[] = [
+  { id: 'srw-1', window: 'Weekly intake hour',              cadence: 'Thursday · 4 PM · 60 min',            facilitator: 'Council chair rotating',                  agenda: 'Read 5 newest notes · tag with a verb · reply by Friday 10 AM.',                        color: '#00D4FF', emoji: '🕓' },
+  { id: 'srw-2', window: 'Bi-weekly scoring jam',                         cadence: 'Alternate Saturday · 10 AM',                                 facilitator: 'Operations lead',                                  agenda: 'Score 15 suggestions on impact + effort · discuss tied scores · publish sheet.',                                      color: '#F59E0B', emoji: '🎯' },
+  { id: 'srw-3', window: 'Monthly council review',                                       cadence: 'First Sunday · 1 hour',                                                facilitator: 'All 6 chairs',                                                   agenda: 'Promote 3 to pilots · close 2 with thanks · archive 5 · write notes for archive.',                                              color: '#F472B6', emoji: '🪔' },
+  { id: 'srw-4', window: 'Quarterly cohort review',                                                     cadence: 'First Saturday of quarter',                                                                  facilitator: 'Rotating wing',                                                             agenda: 'Cohort selects top 5 · votes blind · winners enter next quarter\'s plan.',                                                        color: '#22C55E', emoji: '🗳️' },
+  { id: 'srw-5', window: 'Half-year deep review',                                                                  cadence: 'Semester closing week',                                                                                       facilitator: 'Council + alumni advisor',                                                                     agenda: 'Read every ignored note · decide revive / retire · write public list · close loops.',                                                       color: '#A78BFA', emoji: '📚' },
+  { id: 'srw-6', window: 'Annual legacy sift',                                                                                cadence: 'December · year-end retreat',                                                                                               facilitator: 'Archive keeper',                                                                                        agenda: 'Mark 3 suggestions as legacy · plan 1 permanent memorial · remove 10 from live list.',                                                                color: '#FFD166', emoji: '🗄️' },
+  { id: 'srw-7', window: 'Silent reviews · emergency',                                                                                             cadence: 'When needed · 24 hour turnaround',                                                                                                          facilitator: 'Council chair + wellness lead',                                                                                                       agenda: 'Handle safety or wellbeing asks immediately · no public discussion · private reply within 24 hours.',                                                        color: '#EF4444', emoji: '🚨' },
+  { id: 'srw-8', window: 'Alumni sanity review',                                                                                                             cadence: 'Twice a year · May + November',                                                                                                                         facilitator: 'Alumni liaison · 3 alumni',                                                                                                                               agenda: 'Independent eyes · alumni read suggestions pool · flag blindspots · publish observations.',                                                                                color: '#16A34A', emoji: '👁️' },
+];
+
+interface SuggestionResponseTemplate {
+  id: string;
+  scenario: string;
+  opening: string;
+  body_hint: string;
+  closing: string;
+  color: string;
+  emoji: string;
+}
+
+const SUGGESTION_RESPONSE_TEMPLATES: SuggestionResponseTemplate[] = [
+  { id: 'srt-1', scenario: 'We will pilot this',                    opening: 'Thank you · we are trying this.',               body_hint: 'Name one small pilot · name the owner · name the date we review.',                       closing: 'We will report back by [date]. Keep writing.',                    color: '#22C55E', emoji: '✅' },
+  { id: 'srt-2', scenario: 'We will not do this',                              opening: 'We heard this · we are not doing it · here is why.',                              body_hint: 'Three clear reasons · no more · no less · no defensiveness.',                                              closing: 'We understand this may feel dismissive · we invite another angle.',                                   color: '#EF4444', emoji: '❌' },
+  { id: 'srt-3', scenario: 'We already tried this',                                          opening: 'This has a past · let us show you.',                                              body_hint: 'Link the archive entry · what worked · what didn\'t · what we\'d need to try again.',                                                   closing: 'If you think conditions are different now · tell us what changed.',                                                 color: '#F59E0B', emoji: '🔁' },
+  { id: 'srt-4', scenario: 'We need more information',                                                    opening: 'Thank you · we need to understand more.',                                                          body_hint: 'Three specific questions · each with one example answer shape.',                                                                 closing: 'Reply here or book 15 minutes with us · either works.',                                                                  color: '#00D4FF', emoji: '❓' },
+  { id: 'srt-5', scenario: 'We are assigning this',                                                                   opening: 'Thank you · this has an owner now.',                                                                             body_hint: 'Name the owner · name the next step · name the check-in date.',                                                                                   closing: 'You\'ll hear from [owner] within 7 days.',                                                                                  color: '#F472B6', emoji: '🪔' },
+  { id: 'srt-6', scenario: 'This belongs elsewhere',                                                                                opening: 'Thank you · this is not our question to answer.',                                                                                            body_hint: 'Route to correct body · name the person · explain why they own this.',                                                                                            closing: 'We have introduced you to [person]. They will take it from here.',                                                                                 color: '#A78BFA', emoji: '↗️' },
+  { id: 'srt-7', scenario: 'This is wellbeing-critical',                                                                                             opening: 'Thank you for telling us. We are taking this seriously.',                                                                                                       body_hint: 'Confirm receipt privately · name the protective response · name who is with you now.',                                                                                                         closing: 'You are not alone. We are with you.',                                                                                                                       color: '#16A34A', emoji: '🌱' },
+  { id: 'srt-8', scenario: 'This is beautiful · we loved it',                                                                                                        opening: 'Thank you · this made us pause.',                                                                                                                         body_hint: 'Name what moved you · specifically · personally · without over-explaining.',                                                                                                                             closing: 'It will live in the archive · signed and dated · so it is never lost.',                                                                                                                                color: '#FFD166', emoji: '💛' },
+];
+
+interface SuggestionHiddenPattern {
+  id: string;
+  pattern: string;
+  example: string;
+  kindness: string;
+  color: string;
+  emoji: string;
+}
+
+const SUGGESTION_HIDDEN_PATTERNS: SuggestionHiddenPattern[] = [
+  { id: 'shp-1', pattern: 'A lone suggestion about the same room · repeated across months',                                                             example: '"The library is always too cold" · 7 times · 7 different people',                                                                           kindness: 'Fix the room · then thank every author · even the oldest note.',                                                        color: '#00D4FF', emoji: '❄️' },
+  { id: 'shp-2', pattern: 'Anonymous ask that returns in different wording',                                                                                              example: 'Three differently-worded asks to loosen a strict norm',                                                                                                                kindness: 'Read them together · take the ask seriously · open the conversation publicly.',                                                                                                color: '#F59E0B', emoji: '🕵️' },
+  { id: 'shp-3', pattern: 'One person writes 20+ suggestions in 2 weeks',                                                                                                                    example: 'A new member flooding the inbox with ideas',                                                                                                                                               kindness: 'Invite them to council tea · hear them · channel energy into one good pilot.',                                                                                                                        color: '#F472B6', emoji: '🌊' },
+  { id: 'shp-4', pattern: 'Suggestions that read as complaints but end with hope',                                                                                                                                example: '"This is broken · but here is what it could be"',                                                                                                                                                                    kindness: 'Read the second half first · reply to the hope · then address the broken.',                                                                                                                                        color: '#22C55E', emoji: '🌈' },
+  { id: 'shp-5', pattern: 'Suggestions that seem small but rhyme with an ignored bigger ask',                                                                                                                                                   example: '"Put a mirror in corridor" rhymes with "We feel invisible"',                                                                                                                                                                                             kindness: 'Respond to the small ask · name what it gestures toward · invite a longer letter.',                                                                                                                                                                        color: '#A78BFA', emoji: '🪞' },
+  { id: 'shp-6', pattern: 'Chorus of quiet signals about a single person',                                                                                                                                                                                             example: 'Five different suggestions mention being hurt by one member',                                                                                                                                                                                                                    kindness: 'This is safety work · move to private channel · support authors · act with care.',                                                                                                                                                                                                       color: '#EF4444', emoji: '🛡️' },
+  { id: 'shp-7', pattern: 'Suggestions with love notes for people who left',                                                                                                                                                                                                                       example: '"Remember so-and-so · they mattered · we miss them"',                                                                                                                                                                                                                                                kindness: 'Acknowledge publicly · plant a sapling · write a line · send it to the leaver.',                                                                                                                                                                                                                                       color: '#FFD166', emoji: '💌' },
+  { id: 'shp-8', pattern: 'Suggestions that have already been actioned · but submitted again',                                                                                                                                                                                                                                              example: '"We should write a code of care" · after we wrote one 2 years ago',                                                                                                                                                                                                                                                                         kindness: 'Send the existing doc · thank them for caring · invite them to update it.',                                                                                                                                                                                                                                                                                                             color: '#16A34A', emoji: '📖' },
+];
+
+interface SuggestionFollowupLetter {
+  id: string;
+  suggestion: string;
+  update: string;
+  response: string;
+  color: string;
+  emoji: string;
+}
+
+const SUGGESTION_FOLLOWUP_LETTERS: SuggestionFollowupLetter[] = [
+  { id: 'sfl-1', suggestion: 'Library should have more plants',               update: '30 plants added · watering roster set · 3 died · replaced',         response: '"It finally feels like a place I can breathe in while studying."',             color: '#22C55E', emoji: '🪴' },
+  { id: 'sfl-2', suggestion: 'Event nights should end earlier for women',                      update: 'Hard-stop at 9 PM for any event · optional after-parties off-campus',                          response: '"Thank you. This single change made me come to three more events."',                                  color: '#F472B6', emoji: '🕗' },
+  { id: 'sfl-3', suggestion: 'Mentors should be allowed to say no',                                    update: 'Mentor burnout charter signed · capacity checks every 6 weeks',                                                 response: '"I felt seen for the first time. I said no once and the world did not end."',                             color: '#F59E0B', emoji: '🪔' },
+  { id: 'sfl-4', suggestion: 'Create a quiet room in the club house',                                                    update: 'Small room converted · cushions · soft light · phone-free rule',                                                    response: '"I did 20 minutes in there before my viva. I don\'t know how I passed otherwise."',                                  color: '#00D4FF', emoji: '🤫' },
+  { id: 'sfl-5', suggestion: 'Alumni should meet new members in person',                                                                update: 'Quarterly alumni + new-member dinners · rotating alumni attend',                                                                  response: '"I thought alumni forgot us. They remembered my name. That mattered."',                                                 color: '#A78BFA', emoji: '🍽️' },
+  { id: 'sfl-6', suggestion: 'There should be a way to apologise publicly',                                                                             update: 'Yearly "corrections hour" · people publicly revise past positions',                                                                                  response: '"I apologised for something I said 2 years ago. I can breathe again."',                                                              color: '#FFD166', emoji: '🕊️' },
+  { id: 'sfl-7', suggestion: 'Take a break from productivity language',                                                                                           update: 'Tabled "output" from meeting templates · added "what matters to you"',                                                                                                  response: '"My meetings feel like meetings with humans again. Not managers."',                                                                                    color: '#EF4444', emoji: '📝' },
+  { id: 'sfl-8', suggestion: 'Create a sapling grove for each departing senior',                                                                                                      update: 'Grove opened · 40 saplings · each with hand-painted plaque',                                                                                                             response: '"I drive 90 km every August to water my tree. I\'ll never stop."',                                                                                                    color: '#16A34A', emoji: '🌳' },
+];
+
 const SuggestionScreen: React.FC = () => {
   // ------------ State ------------
   const [suggestions, setSuggestions] = useState<ExtSuggestion[]>(SAMPLE_SUGGESTIONS);
@@ -4177,6 +4263,87 @@ const SuggestionScreen: React.FC = () => {
     </View>
   );
 
+  // ------ Phase 3bd: round 6 suggestion blocks ------
+  const renderSuggReviewWindows = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🕓 Review windows · when we read · when we decide</Text>
+        <Text style={styles.sectionCaption}>{SUGGESTION_REVIEW_WINDOWS.length} windows</Text>
+      </View>
+      {SUGGESTION_REVIEW_WINDOWS.map((w) => (
+        <View key={w.id} style={[styles.srwCard, { borderLeftColor: w.color }]}>
+          <View style={styles.srwTopRow}>
+            <Text style={styles.srwEmoji}>{w.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.srwWindow} numberOfLines={1}>{w.window}</Text>
+              <Text style={[styles.srwCadence, { color: w.color }]} numberOfLines={1}>{w.cadence}</Text>
+            </View>
+          </View>
+          <Text style={styles.srwFacilitator} numberOfLines={1}>facilitator · {w.facilitator}</Text>
+          <Text style={styles.srwAgenda} numberOfLines={3}>{w.agenda}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderSuggResponseTemplates = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>✍️ Response templates · how we reply · with care</Text>
+        <Text style={styles.sectionCaption}>{SUGGESTION_RESPONSE_TEMPLATES.length} templates</Text>
+      </View>
+      {SUGGESTION_RESPONSE_TEMPLATES.map((t) => (
+        <View key={t.id} style={[styles.srtCard, { borderLeftColor: t.color }]}>
+          <View style={styles.srtTopRow}>
+            <Text style={styles.srtEmoji}>{t.emoji}</Text>
+            <Text style={styles.srtScenario} numberOfLines={1}>{t.scenario}</Text>
+          </View>
+          <Text style={[styles.srtOpening, { color: t.color }]} numberOfLines={2}>opening · {t.opening}</Text>
+          <Text style={styles.srtBody} numberOfLines={3}>body · {t.body_hint}</Text>
+          <Text style={styles.srtClosing} numberOfLines={2}>closing · {t.closing}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderSuggHiddenPatterns = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🕵️ Hidden patterns · what the pile is really saying</Text>
+        <Text style={styles.sectionCaption}>{SUGGESTION_HIDDEN_PATTERNS.length} patterns</Text>
+      </View>
+      {SUGGESTION_HIDDEN_PATTERNS.map((h) => (
+        <View key={h.id} style={[styles.shpCard, { borderLeftColor: h.color }]}>
+          <View style={styles.shpTopRow}>
+            <Text style={styles.shpEmoji}>{h.emoji}</Text>
+            <Text style={styles.shpPattern} numberOfLines={3}>{h.pattern}</Text>
+          </View>
+          <Text style={[styles.shpExample, { color: h.color }]} numberOfLines={2}>example · {h.example}</Text>
+          <Text style={styles.shpKindness} numberOfLines={3}>kindness · {h.kindness}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderSuggFollowupLetters = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>💌 Follow-up letters · what people wrote back</Text>
+        <Text style={styles.sectionCaption}>{SUGGESTION_FOLLOWUP_LETTERS.length} letters</Text>
+      </View>
+      {SUGGESTION_FOLLOWUP_LETTERS.map((f) => (
+        <View key={f.id} style={[styles.sflCard, { borderLeftColor: f.color }]}>
+          <View style={styles.sflTopRow}>
+            <Text style={styles.sflEmoji}>{f.emoji}</Text>
+            <Text style={styles.sflSuggestion} numberOfLines={2}>{f.suggestion}</Text>
+          </View>
+          <Text style={[styles.sflUpdate, { color: f.color }]} numberOfLines={3}>update · {f.update}</Text>
+          <Text style={styles.sflResponse} numberOfLines={3}>{f.response}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
   const listHeader = (
     <View>
       {renderHeader()}
@@ -4224,6 +4391,10 @@ const SuggestionScreen: React.FC = () => {
       {renderSuggPilotRecipes()}
       {renderSuggImpactLedger()}
       {renderSuggFollowUpRings()}
+      {renderSuggReviewWindows()}
+      {renderSuggResponseTemplates()}
+      {renderSuggHiddenPatterns()}
+      {renderSuggFollowupLetters()}
       {renderListHeader()}
     </View>
   );
@@ -5579,6 +5750,40 @@ const styles = StyleSheet.create({
   sfrCheckIn: { fontSize: 11, fontWeight: '700', marginTop: 2 },
   sfrSignal: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8, paddingLeft: 32 },
   sfrResponder: { color: Colors.text.muted, fontSize: 11, marginTop: 4, paddingLeft: 32 },
+
+  // --- Phase 3bd: review windows ---
+  srwCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  srwTopRow: { flexDirection: 'row', alignItems: 'center' },
+  srwEmoji: { fontSize: 22, marginRight: 10 },
+  srwWindow: { color: Colors.text.primary, fontSize: 13, fontWeight: '900' },
+  srwCadence: { fontSize: 11, fontWeight: '700', marginTop: 2 },
+  srwFacilitator: { color: Colors.text.muted, fontSize: 11, marginTop: 8, paddingLeft: 32 },
+  srwAgenda: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32 },
+
+  // --- Phase 3bd: response templates ---
+  srtCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  srtTopRow: { flexDirection: 'row', alignItems: 'center' },
+  srtEmoji: { fontSize: 22, marginRight: 10 },
+  srtScenario: { color: Colors.text.primary, fontSize: 13, fontWeight: '900', flex: 1 },
+  srtOpening: { fontSize: 11, fontWeight: '700', marginTop: 8, paddingLeft: 32, lineHeight: 15 },
+  srtBody: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32 },
+  srtClosing: { color: Colors.text.muted, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32, fontStyle: 'italic' },
+
+  // --- Phase 3bd: hidden patterns ---
+  shpCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  shpTopRow: { flexDirection: 'row', alignItems: 'flex-start' },
+  shpEmoji: { fontSize: 22, marginRight: 10, marginTop: 2 },
+  shpPattern: { color: Colors.text.primary, fontSize: 12, fontWeight: '900', flex: 1, lineHeight: 16 },
+  shpExample: { fontSize: 11, fontWeight: '700', marginTop: 8, paddingLeft: 32, lineHeight: 15 },
+  shpKindness: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32 },
+
+  // --- Phase 3bd: follow-up letters ---
+  sflCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  sflTopRow: { flexDirection: 'row', alignItems: 'flex-start' },
+  sflEmoji: { fontSize: 22, marginRight: 10, marginTop: 2 },
+  sflSuggestion: { color: Colors.text.primary, fontSize: 12, fontWeight: '900', flex: 1, lineHeight: 16 },
+  sflUpdate: { fontSize: 11, fontWeight: '700', marginTop: 8, paddingLeft: 32, lineHeight: 15 },
+  sflResponse: { color: Colors.text.secondary, fontSize: 11, lineHeight: 16, marginTop: 4, paddingLeft: 32, fontStyle: 'italic' },
 });
 
 export default SuggestionScreen;
