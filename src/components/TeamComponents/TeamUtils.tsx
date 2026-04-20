@@ -23,6 +23,7 @@ import {
   Share,
   Image,
   ActivityIndicator,
+  Linking,
 } from 'react-native';
 import { Colors } from '../../constants/colors';
 import {

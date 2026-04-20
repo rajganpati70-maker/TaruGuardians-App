@@ -1,237 +1,6268 @@
 // =====================================================
-// ULTRA PREMIUM ALUMNI SCREEN
-// HIGH-QUALITY UI
+// TARU GUARDIANS — ALUMNI NETWORK (Premium Screen)
+// Nature + Tech fusion · advanced filtering · rich data
 // =====================================================
 
-import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Animated, Dimensions, StatusBar, Modal, Linking, RefreshControl, Platform, TextInput } from 'react-native';
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+  Animated,
+  Dimensions,
+  StatusBar,
+  Modal,
+  Linking,
+  RefreshControl,
+  Platform,
+  TextInput,
+  FlatList,
+  Easing,
+  Share,
+  Alert,
+  Pressable,
+  KeyboardAvoidingView,
+  Image,
+} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Colors } from '../../constants/colors';
 import { Alumni, AlumniStats } from '../../types/navigation';
 
+// -----------------------------------------------------
+// Responsive + design tokens
+// -----------------------------------------------------
+
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
-const isSmallScreen = SCREEN_WIDTH < 375;
+const IS_SMALL = SCREEN_WIDTH < 375;
+const IS_TABLET = SCREEN_WIDTH >= 768;
+const HORIZONTAL_PADDING = IS_SMALL ? 14 : 18;
+const CARD_RADIUS = 22;
+const AVATAR_SIZE = IS_SMALL ? 56 : 64;
 
-const ALUMNI_STATS: AlumniStats = { totalAlumni: 500, avgExperience: 5, placementRate: 95, companiesHired: 50 };
+const ANIM = {
+  duration: {
+    instant: 60,
+    fast: 200,
+    normal: 360,
+    slow: 540,
+    xslow: 820,
+  },
+  easing: {
+    inOut: Easing.inOut(Easing.cubic),
+    out: Easing.out(Easing.cubic),
+    soft: Easing.bezier(0.25, 0.1, 0.25, 1),
+    overshoot: Easing.bezier(0.175, 0.885, 0.32, 1.275),
+  },
+};
 
-const BATCH_YEARS = ['2025', '2024', '2023', '2022', '2021', '2020'];
+// -----------------------------------------------------
+// Batches / domains / filters
+// -----------------------------------------------------
 
-const ALUMNI_DATA: Alumni[] = [
-  { id: '1', name: 'Rohit Sharma', batch: '2020', role: 'Senior Software Engineer', company: 'Google', location: 'Bangalore', imageUrl: '', email: 'rohit@google.com', linkedin: 'https://linkedin.com/in/rohit', currentRole: 'Engineering Manager', pastRoles: ['Software Engineer', 'Senior Engineer'], achievements: ['Google Excellence Award'], messageToStudents: 'Dream big and work hard!' },
-  { id: '2', name: 'Priya Singh', batch: '2021', role: 'Product Manager', company: 'Amazon', location: 'Hyderabad', imageUrl: '', email: 'priya@amazon.com', linkedin: 'https://linkedin.com/in/priya', currentRole: 'Senior Product Manager', pastRoles: ['Associate PM', 'Product Manager'], achievements: ['Amazon Star Award'], messageToStudents: 'Focus on impact, not just features.' },
-  { id: '3', name: 'Ankit Patel', batch: '2022', role: 'Data Scientist', company: 'Microsoft', location: 'Bangalore', imageUrl: '', email: 'ankit@microsoft.com', linkedin: 'https://linkedin.com/in/ankit', currentRole: 'ML Engineer', pastRoles: ['Data Analyst', 'Junior DS'], achievements: ['Microsoft AI Award'], messageToStudents: 'Data is the new oil!' },
-  { id: '4', name: 'Sneha Gupta', batch: '2023', role: 'UX Designer', company: 'Apple', location: 'Bangalore', imageUrl: '', email: 'sneha@apple.com', linkedin: 'https://linkedin.com/in/sneha', currentRole: 'Senior Designer', pastRoles: ['Junior Designer'], achievements: ['Apple Design Award'], messageToStudents: 'Design with empathy.' },
-  { id: '5', name: 'Vikram Kumar', batch: '2024', role: 'Startup Founder', company: 'EcoTech Solutions', location: 'Bangalore', imageUrl: '', email: 'vikram@ecotech.com', linkedin: 'https://linkedin.com/in/vikram', currentRole: 'CEO', pastRoles: ['CTO'], achievements: ['Forbes 30 Under 30'], messageToStudents: 'Solve real problems.' },
-  { id: '6', name: 'Meera Shah', batch: '2025', role: 'Consultant', company: 'McKinsey', location: 'Mumbai', imageUrl: '', email: 'meera@mckinsey.com', linkedin: 'https://linkedin.com/in/meera', currentRole: 'Business Analyst', pastRoles: [], achievements: ['Top Performer'], messageToStudents: 'Always be curious.' },
-  { id: '7', name: 'Aditya Reddy', batch: '2020', role: 'Investment Banker', company: 'Goldman Sachs', location: 'Bangalore', imageUrl: '', email: 'aditya@gs.com', linkedin: 'https://linkedin.com/in/aditya', currentRole: 'Vice President', pastRoles: ['Analyst', 'Associate'], achievements: ['Best Analyst Award'], messageToStudents: 'Network is net worth.' },
-  { id: '8', name: 'Kavya Nair', batch: '2021', role: 'Research Scientist', company: 'ISRO', location: 'Bangalore', imageUrl: '', email: 'kavya@isro.gov.in', linkedin: 'https://linkedin.com/in/kavya', currentRole: 'Scientist', pastRoles: ['Junior Researcher'], achievements: ['ISRO Young Scientist'], messageToStudents: 'Reach for the stars.' },
+const BATCH_YEARS = ['2025', '2024', '2023', '2022', '2021', '2020', '2019', '2018'] as const;
+
+type SectorId =
+  | 'all'
+  | 'tech'
+  | 'product'
+  | 'data'
+  | 'design'
+  | 'research'
+  | 'entrepreneur'
+  | 'finance'
+  | 'impact'
+  | 'creative';
+
+interface SectorMeta {
+  id: SectorId;
+  label: string;
+  icon: string;
+  color: string;
+}
+
+const SECTORS: SectorMeta[] = [
+  { id: 'all', label: 'All Sectors', icon: '🌐', color: Colors.tech.neonBlue },
+  { id: 'tech', label: 'Software & Tech', icon: '💻', color: '#2DD4BF' },
+  { id: 'product', label: 'Product', icon: '🧭', color: '#FBBF24' },
+  { id: 'data', label: 'Data / AI', icon: '🧠', color: '#A78BFA' },
+  { id: 'design', label: 'Design', icon: '🎨', color: '#F472B6' },
+  { id: 'research', label: 'Research', icon: '🔬', color: '#60A5FA' },
+  { id: 'entrepreneur', label: 'Founders', icon: '🚀', color: '#F97316' },
+  { id: 'finance', label: 'Finance', icon: '💹', color: '#10B981' },
+  { id: 'impact', label: 'Sustainability', icon: '🌱', color: '#4ADE80' },
+  { id: 'creative', label: 'Creative / Media', icon: '🎬', color: '#F87171' },
+];
+
+type SortKey =
+  | 'recent-batch'
+  | 'oldest-batch'
+  | 'name-asc'
+  | 'name-desc'
+  | 'company-asc';
+
+const SORT_OPTIONS: { key: SortKey; label: string; icon: string }[] = [
+  { key: 'recent-batch', label: 'Most recent batch', icon: '🆕' },
+  { key: 'oldest-batch', label: 'Earliest batch', icon: '📜' },
+  { key: 'name-asc', label: 'Name A→Z', icon: '🔤' },
+  { key: 'name-desc', label: 'Name Z→A', icon: '🔡' },
+  { key: 'company-asc', label: 'Company A→Z', icon: '🏢' },
+];
+
+type ViewMode = 'list' | 'grid';
+
+// -----------------------------------------------------
+// Domain helpers
+// -----------------------------------------------------
+
+interface ExtAlumni extends Alumni {
+  sector: SectorId;
+  featured?: boolean;
+  mentor?: boolean;
+  experienceYears: number;
+  skills: string[];
+  sustainabilityPledge?: string;
+  quote?: string;
+  timeline: { year: string; role: string; company: string }[];
+}
+
+const makeAlumni = (
+  id: number,
+  name: string,
+  batch: string,
+  currentRole: string,
+  company: string,
+  location: string,
+  sector: SectorId,
+  experienceYears: number,
+  achievements: string[],
+  skills: string[],
+  message: string,
+  opts?: {
+    featured?: boolean;
+    mentor?: boolean;
+    pledge?: string;
+    quote?: string;
+    pastRoles?: string[];
+    timeline?: { year: string; role: string; company: string }[];
+    linkedin?: string;
+    email?: string;
+    role?: string;
+  }
+): ExtAlumni => ({
+  id: String(id),
+  name,
+  batch,
+  role: opts?.role ?? currentRole,
+  company,
+  location,
+  imageUrl: '',
+  email: opts?.email ?? `${name.toLowerCase().replace(/[^a-z]/g, '')}@alumni.taruguardians.org`,
+  linkedin:
+    opts?.linkedin ?? `https://linkedin.com/in/${name.toLowerCase().replace(/[^a-z]/g, '-')}`,
+  currentRole,
+  pastRoles: opts?.pastRoles ?? [],
+  achievements,
+  messageToStudents: message,
+  sector,
+  experienceYears,
+  skills,
+  featured: opts?.featured,
+  mentor: opts?.mentor,
+  sustainabilityPledge: opts?.pledge,
+  quote: opts?.quote,
+  timeline:
+    opts?.timeline ??
+    [
+      { year: batch, role: 'Graduated', company: 'Taru Guardians' },
+      { year: String(Number(batch) + 1), role: currentRole, company },
+    ],
+});
+
+// -----------------------------------------------------
+// Alumni dataset
+// -----------------------------------------------------
+
+const ALUMNI_DATA: ExtAlumni[] = [
+  makeAlumni(
+    1,
+    'Rohit Sharma',
+    '2020',
+    'Engineering Manager',
+    'Google',
+    'Bangalore, India',
+    'tech',
+    6,
+    ['Google Excellence Award 2023', 'Led migration of 400M-user billing service', 'Author of 2 internal design docs turned org-wide'],
+    ['Go', 'Kubernetes', 'Distributed Systems', 'Site Reliability', 'Team Leadership'],
+    'Dream bada rakho lekin ground realities ko respect karo — shortcuts long-term compound nahi karte.',
+    {
+      featured: true,
+      mentor: true,
+      pledge: 'Plant 50 trees every year + fund 5 scholarships annually.',
+      quote: 'Code is easy. Calibrating impact is hard.',
+      pastRoles: ['Software Engineer', 'Senior SWE'],
+      timeline: [
+        { year: '2020', role: 'Graduated', company: 'Taru Guardians' },
+        { year: '2020', role: 'SWE Intern', company: 'Infosys' },
+        { year: '2021', role: 'Software Engineer', company: 'Flipkart' },
+        { year: '2023', role: 'Senior SWE', company: 'Google' },
+        { year: '2025', role: 'Engineering Manager', company: 'Google' },
+      ],
+    }
+  ),
+  makeAlumni(
+    2,
+    'Priya Singh',
+    '2021',
+    'Senior Product Manager',
+    'Amazon',
+    'Hyderabad, India',
+    'product',
+    5,
+    ['Amazon Star Award 2024', 'Shipped 3 0→1 products with >50M users', 'Keynote at PMF India 2024'],
+    ['Product Strategy', 'User Research', 'Growth', 'A/B Experimentation', 'SQL'],
+    'Features kam banao, outcomes zyada sochna seekho — user pain points ka ek clear tree rakho.',
+    {
+      featured: true,
+      mentor: true,
+      quote: 'A PM without data is just opinions with confidence.',
+      pledge: 'Mentor 10 first-gen college students every year.',
+      timeline: [
+        { year: '2021', role: 'Graduated', company: 'Taru Guardians' },
+        { year: '2021', role: 'APM', company: 'Swiggy' },
+        { year: '2023', role: 'Product Manager', company: 'Amazon' },
+        { year: '2025', role: 'Senior PM', company: 'Amazon' },
+      ],
+    }
+  ),
+  makeAlumni(
+    3,
+    'Ankit Patel',
+    '2022',
+    'Machine Learning Engineer',
+    'Microsoft',
+    'Bangalore, India',
+    'data',
+    4,
+    ['Microsoft AI Impact Award', 'Co-authored 2 NeurIPS workshop papers', 'Open-sourced a ranking library (3.2k stars)'],
+    ['Python', 'PyTorch', 'Transformers', 'MLOps', 'Distributed Training'],
+    'ML me shortcut lene se models unreliable ho jaate hain — baseline strong banao pehle.',
+    {
+      featured: true,
+      mentor: true,
+      quote: 'Data is the new oil — but refining matters more than volume.',
+      pledge: 'Donate 5% of stipend to open-source AI safety research.',
+    }
+  ),
+  makeAlumni(
+    4,
+    'Sneha Gupta',
+    '2023',
+    'Senior Product Designer',
+    'Apple',
+    'Bangalore, India',
+    'design',
+    3,
+    ['Apple Design Excellence 2024', '3 WWDC session feature shipments', 'Design system used by 14 teams'],
+    ['Figma', 'Design Systems', 'Motion', 'Prototyping', 'User Research'],
+    'Aesthetic likna easy hai, accessibility tough — dono ek saath practice karte raho.',
+    {
+      featured: true,
+      mentor: true,
+      quote: 'Great design is invisible — and opinionated.',
+      pledge: 'Free accessibility audits for 12 NGO websites every year.',
+    }
+  ),
+  makeAlumni(
+    5,
+    'Vikram Kumar',
+    '2024',
+    'Founder & CEO',
+    'EcoTech Solutions',
+    'Bangalore, India',
+    'entrepreneur',
+    2,
+    ['Forbes 30 Under 30 — Asia 2025', 'Raised Seed + Series A ($8.4M)', 'Recognized by UNEP for rural cleantech'],
+    ['Business Strategy', 'Hardware–Software', 'Fundraising', 'IoT', 'Supply Chain'],
+    'Idea se zyada execution matter karta hai — aur execution = honest feedback loops.',
+    {
+      featured: true,
+      mentor: true,
+      pledge: 'Hire 30% of workforce from tier-3 colleges and rural talent.',
+      quote: 'Startups don\'t need vision decks — they need weekly cash runways and believers.',
+      timeline: [
+        { year: '2024', role: 'Graduated', company: 'Taru Guardians' },
+        { year: '2024', role: 'Co-founder', company: 'EcoTech Solutions' },
+        { year: '2025', role: 'CEO', company: 'EcoTech Solutions' },
+      ],
+    }
+  ),
+  makeAlumni(
+    6,
+    'Meera Shah',
+    '2025',
+    'Business Analyst',
+    'McKinsey & Company',
+    'Mumbai, India',
+    'finance',
+    1,
+    ['Top Performer Q4 2025', 'Led 3 CSR engagements', 'Best Campus Rookie — McK Mumbai'],
+    ['Structured Problem Solving', 'Excel Modeling', 'Client Communication', 'Strategy'],
+    'Pehla saal seekhne me invest karo — compensation baad me apne aap chase karega.',
+    {
+      mentor: true,
+      quote: 'Consulting is 80% listening, 20% framing.',
+      pledge: 'Volunteer 100+ hrs with rural financial-literacy NGOs.',
+    }
+  ),
+  makeAlumni(
+    7,
+    'Aditya Reddy',
+    '2020',
+    'Vice President — Investment Banking',
+    'Goldman Sachs',
+    'Bangalore, India',
+    'finance',
+    6,
+    ['Best Analyst 2022', 'Closed $1.2B cross-border deal', 'Directors\' List 3 years in a row'],
+    ['Valuation', 'M&A', 'Financial Modeling', 'Cross-border deals'],
+    'Network is net worth — par trust unka hi banta hai jinhone mistakes mana aur fix kiya ho.',
+    {
+      mentor: true,
+      quote: 'In finance, compounding your reputation matters more than compounding your Excel tricks.',
+    }
+  ),
+  makeAlumni(
+    8,
+    'Kavya Nair',
+    '2021',
+    'Scientist-C',
+    'ISRO',
+    'Bangalore, India',
+    'research',
+    5,
+    ['ISRO Young Scientist Award 2024', 'Co-designed Chandrayaan-3 payload thermal subsystem', '3 peer-reviewed publications'],
+    ['MATLAB', 'Thermal Analysis', 'Systems Engineering', 'Scientific Writing'],
+    'Reach for the stars — lekin paper pehle publish karo, ghar waale phir satisfy hote hain.',
+    {
+      featured: true,
+      mentor: true,
+      quote: 'Space missions fail silently. Engineering rigor is not optional.',
+    }
+  ),
+  makeAlumni(
+    9,
+    'Harshit Jain',
+    '2019',
+    'Staff Software Engineer',
+    'Netflix',
+    'Los Gatos, USA',
+    'tech',
+    7,
+    ['Netflix Rockstar 2023', 'Led CDN rollout in APAC', 'Invited speaker QCon SF'],
+    ['Streaming Systems', 'Rust', 'Edge Computing', 'Video Codecs'],
+    'Bahar jaake kaam karna hai to system-design me genuinely deep jaao — interviews ki ratt mat lagao.',
+    {
+      quote: 'Scale eats assumptions for breakfast.',
+    }
+  ),
+  makeAlumni(
+    10,
+    'Shruti Menon',
+    '2022',
+    'UX Researcher',
+    'Spotify',
+    'Stockholm, Sweden',
+    'research',
+    4,
+    ['Spotify R&D Award', 'Led listener-behavior study across 12 markets', 'Published Nielsen-Norman guest essay'],
+    ['Mixed-methods Research', 'Diary Studies', 'NPS', 'Quant+Qual', 'Storytelling'],
+    'Research agar action me translate na ho to report nahi, museum piece ban jaati hai.',
+    {
+      mentor: true,
+      quote: 'Users don\'t owe you coherence. You owe them clarity.',
+    }
+  ),
+  makeAlumni(
+    11,
+    'Devraj Iyer',
+    '2021',
+    'Senior iOS Engineer',
+    'Swiggy',
+    'Bangalore, India',
+    'tech',
+    5,
+    ['Swiggy Spotlight 2024', 'Shipped delivery-partner iOS rewrite', 'Led 4-person pod'],
+    ['Swift', 'SwiftUI', 'Combine', 'Performance Tuning', 'CI/CD'],
+    'Crash-free sessions >= 99.7% ke neeche chhota hi launch mat karo.',
+    {}
+  ),
+  makeAlumni(
+    12,
+    'Anaya Verma',
+    '2023',
+    'Sustainability Analyst',
+    'BCG — Climate & Sustainability',
+    'Gurugram, India',
+    'impact',
+    3,
+    ['Clean Tech Rising 2025', 'ESG framework for 2 Fortune 500', 'TEDx Youth Bangalore'],
+    ['ESG Reporting', 'Carbon Accounting', 'Policy Analysis', 'Workshops'],
+    'Sustainability marketing ke paar le jaao — real KPIs ke bina intent shallow hai.',
+    {
+      featured: true,
+      mentor: true,
+      pledge: 'Help 20 startups publish their first sustainability report pro-bono.',
+      quote: 'Climate is not a vertical. It\'s a context.',
+    }
+  ),
+  makeAlumni(
+    13,
+    'Ritika Bansal',
+    '2020',
+    'Lead Data Scientist',
+    'Ola',
+    'Bangalore, India',
+    'data',
+    6,
+    ['Ola Innovate 2023', 'Built matching engine v3', '3 patents filed'],
+    ['Causal Inference', 'Bayesian Methods', 'PyMC', 'Spark', 'A/B'],
+    'Data scientist ko philosopher banna padta hai — pehle question, phir model.',
+    {
+      mentor: true,
+    }
+  ),
+  makeAlumni(
+    14,
+    'Arjun Pillai',
+    '2022',
+    'Backend Engineer',
+    'Stripe',
+    'Dublin, Ireland',
+    'tech',
+    4,
+    ['Stripe Engineering Excellence', 'Owned payments reconciliation SLA', 'Open-source contributor to Postgres'],
+    ['Java', 'Postgres', 'Kafka', 'Observability', 'Consistency models'],
+    'Payments systems me integrity > latency. Har bug ka blast radius sochke code likho.',
+    {
+      mentor: true,
+      quote: 'Correctness is a feature, not a luxury.',
+    }
+  ),
+  makeAlumni(
+    15,
+    'Nandini Rao',
+    '2024',
+    'Brand Strategist',
+    'Ogilvy',
+    'Mumbai, India',
+    'creative',
+    2,
+    ['Young Lions Shortlist', 'Led 3 fintech repositioning campaigns'],
+    ['Brand Strategy', 'Copy', 'Storytelling', 'Campaign Planning'],
+    'Brand matlab logo nahi — brand matlab emotional default jo customer ke mann me apna ghar bana le.',
+    {
+      quote: 'Ads ruk jaate hain, reputation compound hoti hai.',
+    }
+  ),
+  makeAlumni(
+    16,
+    'Sanjay Rane',
+    '2019',
+    'Co-founder & CTO',
+    'GreenLogix',
+    'Pune, India',
+    'entrepreneur',
+    7,
+    ['Seed raised $1.8M', 'Deploy cleantech in 14 MSMEs', 'IIT Bombay collaborator'],
+    ['Hardware', 'Low-power electronics', 'Embedded C', 'Operations'],
+    'Customer ke saath 20 hafta gujaro phir build karo — chair-builder hardware startup zinda nahi rahti.',
+    {
+      mentor: true,
+      pledge: 'Co-build 4 open-source hardware kits for schools.',
+    }
+  ),
+  makeAlumni(
+    17,
+    'Ayesha Khan',
+    '2023',
+    'Frontend Engineer',
+    'Razorpay',
+    'Bangalore, India',
+    'tech',
+    3,
+    ['Razorpay Shine Award', 'Accessible payment flow redesign', 'Internal speaker program host'],
+    ['React', 'TypeScript', 'Accessibility', 'Performance', 'Design tokens'],
+    'Frontend me polish obvious dikhti hai — isliye uske peeche "fundamentals" ko dhanda karo.',
+    {
+      mentor: true,
+      quote: 'Shipping fast is good. Shipping correct is non-negotiable.',
+    }
+  ),
+  makeAlumni(
+    18,
+    'Rahul Desai',
+    '2021',
+    'Senior Consultant',
+    'Deloitte Strategy',
+    'Bangalore, India',
+    'finance',
+    5,
+    ['Outstanding Consultant 2024', 'Turnaround for state-run utility'],
+    ['Market Entry', 'Due Diligence', 'Financial Modeling', 'Workshops'],
+    'Consulting deck me slide kam, decision framework zyada honi chahiye.',
+    {}
+  ),
+  makeAlumni(
+    19,
+    'Pooja Kulkarni',
+    '2020',
+    'DevOps Architect',
+    'Atlassian',
+    'Bangalore, India',
+    'tech',
+    6,
+    ['Atlassian Values Award', 'Reduced CI minutes by 42%', 'Speaker at DevOpsDays'],
+    ['Kubernetes', 'Terraform', 'Observability', 'Incident Management'],
+    'Automate apni insanity — log roz dekhne padein to pipeline adhoora hai.',
+    {
+      mentor: true,
+    }
+  ),
+  makeAlumni(
+    20,
+    'Tanmay Joshi',
+    '2022',
+    'Game Designer',
+    'Ubisoft',
+    'Montreal, Canada',
+    'creative',
+    4,
+    ['Game Awards Shortlist 2024', 'Designed 2 mechanics shipped in AAA title'],
+    ['Unity', 'Game Balance', 'Level Design', 'Playtesting'],
+    'Game design me "fun" feel se judge hota hai, metrics se prove hota hai.',
+    {
+      quote: 'Players don\'t play your intention. They play your systems.',
+    }
+  ),
+  makeAlumni(
+    21,
+    'Megha Srinivasan',
+    '2019',
+    'Principal Engineer',
+    'Adobe',
+    'Noida, India',
+    'tech',
+    7,
+    ['Adobe Founders\' Award', 'Led Premiere Rush perf overhaul', 'Architect of cloud-sync subsystem'],
+    ['C++', 'Graphics', 'Cross-platform', 'Profiling', 'Leadership'],
+    'Principal role = technical judgment + taste + humility to be overruled by data.',
+    {
+      featured: true,
+      mentor: true,
+    }
+  ),
+  makeAlumni(
+    22,
+    'Aniket Bose',
+    '2024',
+    'Associate',
+    'Bain & Company',
+    'New Delhi, India',
+    'finance',
+    2,
+    ['Bain Best Campus Recruit 2024', 'Led PE due-diligence for consumer deal'],
+    ['Excel Modeling', 'Slide-writing', 'Primary Research'],
+    'Modeling jitni shortcut se karoge utna recover karna mehenga padega.',
+    {
+      quote: 'The first draft of your model is always wrong. Iterate ruthlessly.',
+    }
+  ),
+  makeAlumni(
+    23,
+    'Shalini Yadav',
+    '2023',
+    'AI Researcher',
+    'Google DeepMind',
+    'London, UK',
+    'research',
+    3,
+    ['Chevening Scholar 2024', 'Published at ICML', 'Collaborator on foundation-model safety'],
+    ['JAX', 'Reinforcement Learning', 'Safety Research', 'Writing'],
+    'Research me hype-cycle ko ignore karna seekho, baseline methods me mehnat karo.',
+    {
+      featured: true,
+      mentor: true,
+      quote: 'Papers are conversations, not trophies.',
+    }
+  ),
+  makeAlumni(
+    24,
+    'Siddharth Menon',
+    '2021',
+    'Associate Product Manager',
+    'Cred',
+    'Bangalore, India',
+    'product',
+    5,
+    ['Cred Bootcamp Top 3', 'Launched 2 new experiments yielding +7% NPS'],
+    ['Product Sense', 'SQL', 'Amplitude', 'Feature Specs'],
+    'PM roles me listening a superpower hai — kabhi bhi "smart jawab" se pehle 2 questions aur puchho.',
+    {}
+  ),
+  makeAlumni(
+    25,
+    'Divya Menon',
+    '2018',
+    'Head of Design',
+    'Zerodha',
+    'Bangalore, India',
+    'design',
+    8,
+    ['AIGA Honor 2024', 'Scaled design team 3→22', 'Author of Kite design language book'],
+    ['Design Leadership', 'Systems', 'Culture Building', 'Hiring'],
+    'Taste 3 saal me develop hoti hai, sensibility ban\'ne me 10 lagta hai — patient raho.',
+    {
+      featured: true,
+      mentor: true,
+      pledge: 'Run 4 free design bootcamps per year for tier-3 students.',
+    }
+  ),
+  makeAlumni(
+    26,
+    'Rakesh Pandey',
+    '2020',
+    'Senior SRE',
+    'PhonePe',
+    'Bangalore, India',
+    'tech',
+    6,
+    ['PhonePe Technology Excellence', 'Sub-60 sec MTTR for transactions infra'],
+    ['SRE', 'Kafka', 'Scaling', 'Incident Review'],
+    'SRE role me ego checkbox pe chhodo — blameless postmortem culture sirf words me nahi, practice me chahiye.',
+    {}
+  ),
+  makeAlumni(
+    27,
+    'Avni Saxena',
+    '2022',
+    'Impact Investment Analyst',
+    'Omidyar Network India',
+    'Mumbai, India',
+    'impact',
+    4,
+    ['Top Analyst 2024', 'Supported 6 early-stage impact startups'],
+    ['Impact Modeling', 'Due Diligence', 'Portfolio Support'],
+    'Impact measure karo ya mat maapo — par blind faith me invest mat karo.',
+    {
+      mentor: true,
+    }
+  ),
+  makeAlumni(
+    28,
+    'Manish Ahuja',
+    '2019',
+    'Principal Data Scientist',
+    'Walmart Labs',
+    'Bangalore, India',
+    'data',
+    7,
+    ['Walmart CTO Recognition', 'Built demand forecasting engine v4', 'Speaker KDD 2024'],
+    ['Forecasting', 'Causal ML', 'Python', 'Scientific Writing'],
+    'Business value dikhane ke liye pahle problem clearly articulate karo — model baad ki baat hai.',
+    {
+      mentor: true,
+      quote: 'A clean problem statement is half the model.',
+    }
+  ),
+  makeAlumni(
+    29,
+    'Ishita Roy',
+    '2024',
+    'Growth Marketing Lead',
+    'Meesho',
+    'Bangalore, India',
+    'creative',
+    2,
+    ['Meesho Lightspeed Award', 'Led 0→1 creator program'],
+    ['Growth Loops', 'Attribution', 'Creator Ops', 'Content'],
+    'Growth me vanity-metrics se bacho — unit economics aur retention ko always front-and-center rakho.',
+    {}
+  ),
+  makeAlumni(
+    30,
+    'Parth Saluja',
+    '2023',
+    'Full-stack Developer',
+    'Atlan',
+    'Bangalore, India',
+    'tech',
+    3,
+    ['Atlan Hackday Winner 2024', 'Built lineage visualization v2'],
+    ['TypeScript', 'GraphQL', 'Data catalogs', 'UX-engineering'],
+    'Product-engineer banna hai to spec likhna seekho, sirf ticket-execute mat karo.',
+    {}
+  ),
+  makeAlumni(
+    31,
+    'Riya Chauhan',
+    '2021',
+    'Senior Lawyer (Tech & IP)',
+    'Cyril Amarchand Mangaldas',
+    'Mumbai, India',
+    'finance',
+    5,
+    ['Rising Star — Legal 500', 'Advised 3 IPO-track startups'],
+    ['Technology Law', 'IP', 'Contract Drafting', 'Negotiation'],
+    'Legal me shortcut = long term se bahut mehenga — har clause justify kar saktey ho tabhi draft bhejo.',
+    {
+      mentor: true,
+    }
+  ),
+  makeAlumni(
+    32,
+    'Karan Malhotra',
+    '2020',
+    'Founding Engineer',
+    'Turing',
+    'Remote (Bangalore)',
+    'entrepreneur',
+    6,
+    ['Forbes Asia Emerging Builders 2024', 'Built core matching engine'],
+    ['Python', 'Ruby', 'Django', 'Team Building'],
+    'Joining a 5-person company chhoti si family jaisa hai — culture fit skill fit se zyada critical hai.',
+    {
+      quote: 'Employee #1 → Employee #50 is two different universes.',
+    }
+  ),
+  makeAlumni(
+    33,
+    'Neha Bhatt',
+    '2022',
+    'Behavioral Scientist',
+    'Dalberg Design',
+    'Delhi NCR, India',
+    'research',
+    4,
+    ['Dalberg MVP 2024', 'Field research across 6 states'],
+    ['Behavioral Economics', 'Field Research', 'Workshops', 'Synthesis'],
+    'Policy aur design ke beech ka pul hona hota hai — dono ko speak karna padega.',
+    {
+      mentor: true,
+    }
+  ),
+  makeAlumni(
+    34,
+    'Yash Agarwal',
+    '2024',
+    'Software Engineer',
+    'Linear',
+    'Remote (Mumbai)',
+    'tech',
+    2,
+    ['Linear Launch-week contributor'],
+    ['React', 'GraphQL', 'Elixir', 'Product sense'],
+    'Small team = big leverage. Apne bugs khud fix karo, apni launches khud own karo.',
+    {}
+  ),
+  makeAlumni(
+    35,
+    'Lavanya Iyer',
+    '2020',
+    'Director of Operations',
+    'Piramal Foundation',
+    'Mumbai, India',
+    'impact',
+    6,
+    ['Aspire Fellow 2023', 'Scaled rural health programs across 4 states'],
+    ['Operations', 'Government Relations', 'Monitoring & Evaluation'],
+    'Impact operations me data aur humility dono chahiye — yaha sirf spreadsheets se truth nahi milti.',
+    {
+      mentor: true,
+      pledge: 'Design a rural leadership accelerator with 100 cohort slots / year.',
+    }
+  ),
+  makeAlumni(
+    36,
+    'Ankita Mehta',
+    '2019',
+    'Senior Economist',
+    'World Bank',
+    'Washington DC, USA',
+    'research',
+    7,
+    ['Chevening Scholar 2021', '3 World Bank policy papers'],
+    ['Econometrics', 'Policy Analysis', 'Stata', 'Writing'],
+    'Economics ke without politics samjhe kaam adhoora hai — humility rakho data pe.',
+    {
+      featured: true,
+    }
+  ),
+  makeAlumni(
+    37,
+    'Rohan Kapoor',
+    '2021',
+    'AI Platform Engineer',
+    'OpenAI',
+    'San Francisco, USA',
+    'tech',
+    5,
+    ['OpenAI Builder of the Quarter 2025', 'Core author of model-eval framework'],
+    ['Python', 'CUDA', 'Distributed systems', 'Infrastructure'],
+    'Frontier AI companies me prod reliability > research glamour — build boring but solid.',
+    {
+      featured: true,
+      mentor: true,
+      quote: 'The model is the artist. The infra is the stage.',
+    }
+  ),
+  makeAlumni(
+    38,
+    'Sana Fatima',
+    '2023',
+    'Content Strategist',
+    'Netflix',
+    'Mumbai, India',
+    'creative',
+    3,
+    ['Netflix India Rookie 2024', 'Commissioned 2 regional documentaries'],
+    ['Editorial', 'Research', 'Pitch-writing', 'Audience insight'],
+    'Content jo apne audience ko respect karta hai wahi compound karta hai — baaki is churn ka hissa hai.',
+    {}
+  ),
+  makeAlumni(
+    39,
+    'Tejas Sawant',
+    '2018',
+    'Chief of Staff',
+    'Razorpay',
+    'Bangalore, India',
+    'product',
+    8,
+    ['Glue Award for Leadership', 'Built OKR rollout infra', 'Public speaker on operational craft'],
+    ['Operations', 'Program Management', 'Strategy', 'Coaching'],
+    'Chief of staff = leverage through clarity — politics me pado nahi, work speak karne do.',
+    {
+      mentor: true,
+      featured: true,
+    }
+  ),
+  makeAlumni(
+    40,
+    'Geetika Bose',
+    '2020',
+    'Co-founder',
+    'Climafarms',
+    'Kolkata, India',
+    'entrepreneur',
+    6,
+    ['Ashoka Fellow 2024', 'Deployed cleantech on 20k acres of farmland'],
+    ['AgriTech', 'Field Deployment', 'Partnerships', 'Community Building'],
+    'Farmers ke saath baith ke cycle pakdo — MVP hackathon se nahi mitti se banta hai.',
+    {
+      featured: true,
+      pledge: 'Train 1000 women farmers every year on regenerative agriculture.',
+    }
+  ),
+  makeAlumni(
+    41,
+    'Ayaan Sinha',
+    '2022',
+    'Site Reliability Engineer',
+    'Shopify',
+    'Bangalore, India',
+    'tech',
+    4,
+    ['Shopify Shoutout 2024'],
+    ['K8s', 'Go', 'Incident Response', 'Observability'],
+    'Night on-call shift pe khud hi seekhoge: prevention > firefighting.',
+    {}
+  ),
+  makeAlumni(
+    42,
+    'Komal Arya',
+    '2024',
+    'Associate Product Designer',
+    'Paytm',
+    'Noida, India',
+    'design',
+    2,
+    ['Paytm Young Gun 2025'],
+    ['Figma', 'Mobile IA', 'Prototyping'],
+    'Pehla saal portfolio se zyada ek strong mentor find karne me lagaao.',
+    {}
+  ),
+  makeAlumni(
+    43,
+    'Siddharth Nair',
+    '2019',
+    'Partner',
+    'Blume Ventures',
+    'Bangalore, India',
+    'entrepreneur',
+    7,
+    ['Seed backer of 12 unicorn-track startups'],
+    ['Venture Investing', 'Dealflow', 'Founder Coaching'],
+    'VC business me bet thoughts nahi, founders pe lagate hain — chemistry aur craft dono dekho.',
+    {
+      mentor: true,
+    }
+  ),
+  makeAlumni(
+    44,
+    'Priyanshi Jain',
+    '2021',
+    'Lead Copywriter',
+    'Wieden+Kennedy',
+    'Delhi NCR, India',
+    'creative',
+    5,
+    ['Goafest Young Lion 2024'],
+    ['Long-form writing', 'Brand voice', 'Pitches'],
+    'Copy me clarity > cleverness — tagline ke peeche story honi chahiye.',
+    {}
+  ),
+  makeAlumni(
+    45,
+    'Harsh Vardhan',
+    '2018',
+    'Senior Director — Engineering',
+    'Freshworks',
+    'Chennai, India',
+    'tech',
+    8,
+    ['Freshworks Engineering Excellence', 'Scaled platform to 60k+ customers'],
+    ['SaaS', 'Architecture', 'Leadership'],
+    'Senior role me humility chahiye — junior best engineers se seekh sakte ho daily.',
+    {
+      featured: true,
+      mentor: true,
+      timeline: [
+        { year: '2018', role: 'Graduated', company: 'Taru Guardians' },
+        { year: '2018', role: 'Software Engineer', company: 'Freshworks' },
+        { year: '2021', role: 'Engineering Manager', company: 'Freshworks' },
+        { year: '2023', role: 'Director', company: 'Freshworks' },
+        { year: '2025', role: 'Senior Director', company: 'Freshworks' },
+      ],
+    }
+  ),
+  makeAlumni(
+    46,
+    'Nisha Pillai',
+    '2022',
+    'Energy Analyst',
+    'IEA (International Energy Agency)',
+    'Paris, France',
+    'impact',
+    4,
+    ['IEA Young Analyst Program'],
+    ['Energy Modeling', 'Policy Research', 'Writing'],
+    'Sustainability me rich data mil jaati hai — par comms skill zyada matter karta hai.',
+    {
+      mentor: true,
+    }
+  ),
+  makeAlumni(
+    47,
+    'Gaurav Khanna',
+    '2023',
+    'Android Engineer',
+    'Truecaller',
+    'Bangalore, India',
+    'tech',
+    3,
+    ['Truecaller Q3 2024 MVP'],
+    ['Kotlin', 'Compose', 'Performance', 'Play Store hygiene'],
+    'Library churn me phasne se bacho — fundamentals tight rakho (concurrency, memory, render).',
+    {}
+  ),
+  makeAlumni(
+    48,
+    'Sara D\'Souza',
+    '2020',
+    'Diplomatic Fellow',
+    'United Nations Development Programme',
+    'Geneva, Switzerland',
+    'impact',
+    6,
+    ['UN Gender Action Fellowship 2024', '4 cross-country field missions'],
+    ['Policy', 'Multi-lateral negotiation', 'Writing', 'Languages'],
+    'Diplomacy me patience + precision — zor se bolna communication nahi hota.',
+    {
+      featured: true,
+    }
+  ),
+  makeAlumni(
+    49,
+    'Ashish Gowda',
+    '2019',
+    'Principal Product Manager',
+    'Atlassian',
+    'Bangalore, India',
+    'product',
+    7,
+    ['Atlassian PM of the Year 2023'],
+    ['Dev tools', 'B2B SaaS', 'Cross-functional leadership'],
+    'B2B PM role me user != buyer — dono ko genuinely serve karo.',
+    {
+      mentor: true,
+      featured: true,
+    }
+  ),
+  makeAlumni(
+    50,
+    'Ritu Saxena',
+    '2021',
+    'Creative Director',
+    'Scroll.in',
+    'New Delhi, India',
+    'creative',
+    5,
+    ['Ramnath Goenka Award 2024', '3 long-form visual essays shipped'],
+    ['Visual storytelling', 'Editorial', 'Digital publishing'],
+    'Media me trust build karna slow kaam hai — viral hona goal mat banao.',
+    {}
+  ),
+  makeAlumni(
+    51,
+    'Varun Rao',
+    '2024',
+    'Backend Engineer',
+    'Uber',
+    'Bangalore, India',
+    'tech',
+    2,
+    ['Uber Hackathon Winner 2025'],
+    ['Go', 'gRPC', 'Distributed systems', 'Streaming'],
+    'Jab pehla system design review aaye, prepare karke jaana — shortcut nahi chalte.',
+    {}
+  ),
+  makeAlumni(
+    52,
+    'Bhoomika Das',
+    '2018',
+    'VP — Product',
+    'Swiggy',
+    'Bangalore, India',
+    'product',
+    8,
+    ['Swiggy Innovation Trailblazer', 'Scaled food+grocery product org 25→240'],
+    ['Zero-to-one', 'Consumer product', 'Org design'],
+    'VP role me sabse important skill hai delegate-with-trust + tough-decisions-with-kindness.',
+    {
+      featured: true,
+      mentor: true,
+      pledge: 'Mentor 30 women founders each year.',
+    }
+  ),
+];
+
+// -----------------------------------------------------
+// Aggregates
+// -----------------------------------------------------
+
+const uniqueCompanies = Array.from(new Set(ALUMNI_DATA.map((a) => a.company))).sort();
+
+const ALUMNI_STATS: AlumniStats & { avgYoE: number; countries: number; mentors: number } = {
+  totalAlumni: 500,
+  avgExperience: Math.round(
+    (ALUMNI_DATA.reduce((acc, a) => acc + a.experienceYears, 0) / ALUMNI_DATA.length) * 10
+  ) / 10,
+  placementRate: 96,
+  companiesHired: uniqueCompanies.length + 120,
+  avgYoE:
+    Math.round(
+      (ALUMNI_DATA.reduce((acc, a) => acc + a.experienceYears, 0) / ALUMNI_DATA.length) * 10
+    ) / 10,
+  countries: new Set(ALUMNI_DATA.map((a) => a.location.split(',').slice(-1)[0].trim())).size,
+  mentors: ALUMNI_DATA.filter((a) => a.mentor).length,
+};
+
+// -----------------------------------------------------
+// Testimonials / featured quotes
+// -----------------------------------------------------
+
+interface Testimonial {
+  id: string;
+  authorId: string;
+  quote: string;
+  role: string;
+}
+
+const TESTIMONIALS: Testimonial[] = ALUMNI_DATA
+  .filter((a) => !!a.quote)
+  .slice(0, 8)
+  .map((a) => ({
+    id: `t-${a.id}`,
+    authorId: a.id,
+    quote: a.quote!,
+    role: `${a.currentRole} · ${a.company}`,
+  }));
+
+// -----------------------------------------------------
+// Top companies aggregate
+// -----------------------------------------------------
+
+const TOP_COMPANIES = (() => {
+  const map = new Map<string, number>();
+  ALUMNI_DATA.forEach((a) => map.set(a.company, (map.get(a.company) ?? 0) + 1));
+  return Array.from(map.entries())
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 10);
+})();
+
+// -----------------------------------------------------
+// Hall of Fame (featured alumni highlights)
+// -----------------------------------------------------
+
+const HALL_OF_FAME = ALUMNI_DATA.filter((a) => a.featured);
+
+// -----------------------------------------------------
+// Meetups / upcoming alumni events
+// -----------------------------------------------------
+
+interface AlumniMeetup {
+  id: string;
+  title: string;
+  date: string;
+  city: string;
+  mode: 'offline' | 'virtual' | 'hybrid';
+  description: string;
+  capacity: number;
+  registered: number;
+  tags: string[];
+}
+
+const ALUMNI_MEETUPS: AlumniMeetup[] = [
+  {
+    id: 'm1',
+    title: 'Bangalore Alumni Catch-up — Q2 2026',
+    date: '2026-05-17',
+    city: 'Bangalore',
+    mode: 'offline',
+    description:
+      'Casual evening with snacks + lightning talks from 6 alumni across product, tech, sustainability.',
+    capacity: 120,
+    registered: 87,
+    tags: ['networking', 'talks', 'offline'],
+  },
+  {
+    id: 'm2',
+    title: 'Climate Tech Fireside — online',
+    date: '2026-04-30',
+    city: 'Virtual',
+    mode: 'virtual',
+    description:
+      'Alumni working in cleantech share practical lessons on building in the climate space.',
+    capacity: 500,
+    registered: 312,
+    tags: ['cleantech', 'virtual', 'fireside'],
+  },
+  {
+    id: 'm3',
+    title: 'Hyderabad Mentor Night',
+    date: '2026-06-08',
+    city: 'Hyderabad',
+    mode: 'offline',
+    description:
+      'Speed-mentoring with 12 alumni across product, data, design. Open to current students.',
+    capacity: 80,
+    registered: 64,
+    tags: ['mentorship', 'offline'],
+  },
+  {
+    id: 'm4',
+    title: 'Alumni Founders Panel — Mumbai',
+    date: '2026-07-12',
+    city: 'Mumbai',
+    mode: 'hybrid',
+    description:
+      'Panel with alumni founders across edtech, cleantech, fintech — Q&A with students + alumni.',
+    capacity: 200,
+    registered: 143,
+    tags: ['founders', 'panel', 'hybrid'],
+  },
+  {
+    id: 'm5',
+    title: 'Design Systems Masterclass',
+    date: '2026-08-03',
+    city: 'Virtual',
+    mode: 'virtual',
+    description:
+      'Hands-on 3-hour workshop from Head-of-Design alumni. Build a starter design system together.',
+    capacity: 250,
+    registered: 112,
+    tags: ['design', 'workshop'],
+  },
+  {
+    id: 'm6',
+    title: 'Global Alumni Summit 2026',
+    date: '2026-11-20',
+    city: 'Bangalore',
+    mode: 'hybrid',
+    description:
+      'Annual flagship 2-day summit — 40+ speakers, 10 workshops, awards night, campus connect.',
+    capacity: 700,
+    registered: 280,
+    tags: ['summit', 'annual', 'flagship'],
+  },
+];
+
+// -----------------------------------------------------
+// Mentorship spots
+// -----------------------------------------------------
+
+interface MentorshipSlot {
+  id: string;
+  mentorId: string;
+  topic: string;
+  slotsRemaining: number;
+  durationMin: number;
+  format: 'call' | 'chat' | 'in-person';
+}
+
+const MENTORSHIP_SLOTS: MentorshipSlot[] = ALUMNI_DATA
+  .filter((a) => a.mentor)
+  .slice(0, 12)
+  .map((a, idx) => ({
+    id: `ms-${a.id}`,
+    mentorId: a.id,
+    topic: [
+      'Breaking into Product',
+      'System design fundamentals',
+      'Design portfolio review',
+      'Research path after college',
+      'Sustainability career advice',
+      'Founding engineer journey',
+      'Data science interviews',
+      'Finance off-campus prep',
+      'Consulting case workshop',
+      'ML engineering career',
+      'Startup fundraising basics',
+      'Cross-border careers',
+    ][idx % 12],
+    slotsRemaining: 2 + (idx % 4),
+    durationMin: [30, 45, 60][idx % 3],
+    format: (['call', 'chat', 'in-person'] as const)[idx % 3],
+  }));
+
+// -----------------------------------------------------
+// Alumni pledges / sustainability initiatives
+// -----------------------------------------------------
+
+const ALUMNI_PLEDGES = ALUMNI_DATA.filter((a) => !!a.sustainabilityPledge).slice(0, 10);
+
+// -----------------------------------------------------
+// City chapters / regional hubs
+// -----------------------------------------------------
+
+interface ChapterHub {
+  id: string;
+  city: string;
+  country: string;
+  emoji: string;
+  color: string;
+  founded: string;
+  anchors: string[];
+  members: number;
+  cadence: string;
+  meetup: string;
+  vibe: string;
+}
+
+const CHAPTERS: ChapterHub[] = [
+  {
+    id: 'ch-blr',
+    city: 'Bengaluru',
+    country: 'India',
+    emoji: '🌆',
+    color: '#4CAF50',
+    founded: '2022',
+    anchors: ['Meera Iyer · 2019', 'Rahul Das · 2020'],
+    members: 92,
+    cadence: 'Every 1st Saturday · 10:00–12:30',
+    meetup: 'Cubbon Park · Bandstand corner',
+    vibe: 'Sunday photo walks, alumni brunches, sapling drives at Turahalli.',
+  },
+  {
+    id: 'ch-hyd',
+    city: 'Hyderabad',
+    country: 'India',
+    emoji: '🏛️',
+    color: '#38BDF8',
+    founded: '2023',
+    anchors: ['Aditi Pawar · 2020'],
+    members: 47,
+    cadence: 'Every 2nd Sunday · 16:00–18:30',
+    meetup: 'KBR Park · Main gate',
+    vibe: 'Slow walks. Biriyani afterwards. A running book club since 2023.',
+  },
+  {
+    id: 'ch-pune',
+    city: 'Pune',
+    country: 'India',
+    emoji: '🏞️',
+    color: '#F59E0B',
+    founded: '2023',
+    anchors: ['Ishaan Kulkarni · 2021'],
+    members: 38,
+    cadence: 'Fortnightly Sundays',
+    meetup: 'ARAI Hill (monsoon) · FC Road cafes (rest of year)',
+    vibe: 'Monsoon treks, ghazal nights, FC Road cafes the rest of the year.',
+  },
+  {
+    id: 'ch-mum',
+    city: 'Mumbai',
+    country: 'India',
+    emoji: '🌊',
+    color: '#A78BFA',
+    founded: '2024',
+    anchors: ['Zara Qureshi · 2022', 'Raghav Sethi · 2019'],
+    members: 64,
+    cadence: 'Monthly · last Sunday',
+    meetup: 'Worli Sea Face (sunsets) · Bandra cafes',
+    vibe: 'Sunsets by the sea-face, and a rotating cohort of sector-specific hangs.',
+  },
+  {
+    id: 'ch-del',
+    city: 'Delhi NCR',
+    country: 'India',
+    emoji: '🌳',
+    color: '#F472B6',
+    founded: '2022',
+    anchors: ['Kanishka Arora · 2018', 'Farhan Siddiqui · 2023'],
+    members: 71,
+    cadence: 'Monthly · 1st Sunday',
+    meetup: 'Lodhi Garden · Tomb cluster',
+    vibe: 'Lodhi walks, climate-talks and winter bookbinding meets.',
+  },
+  {
+    id: 'ch-chn',
+    city: 'Chennai',
+    country: 'India',
+    emoji: '🏖️',
+    color: '#22C55E',
+    founded: '2024',
+    anchors: ['Divya Rajagopal · 2021'],
+    members: 29,
+    cadence: 'Monthly · 2nd Saturday',
+    meetup: 'Besant Nagar · Elliot\'s Beach',
+    vibe: 'Beach cleanups, filter coffee, very slow Tamil literature readings.',
+  },
+  {
+    id: 'ch-sfo',
+    city: 'SF Bay Area',
+    country: 'USA',
+    emoji: '🌉',
+    color: '#6366F1',
+    founded: '2024',
+    anchors: ['Tanvi Shah · 2019', 'Rohan Menon · 2020'],
+    members: 31,
+    cadence: 'Monthly · rotating hosts',
+    meetup: 'Dolores Park · Mission St. cafés',
+    vibe: 'Friendly weekend meet-ups. Quarterly hiring AMAs for new grads.',
+  },
+  {
+    id: 'ch-ldn',
+    city: 'London',
+    country: 'UK',
+    emoji: '☂️',
+    color: '#F87171',
+    founded: '2025',
+    anchors: ['Harsh Bhargava · 2020'],
+    members: 18,
+    cadence: 'Monthly · 3rd Saturday',
+    meetup: 'Regent\'s Park · Primrose Hill slope',
+    vibe: 'Slow park lunches, climate policy chats, and actual British weather.',
+  },
+  {
+    id: 'ch-sgp',
+    city: 'Singapore',
+    country: 'Singapore',
+    emoji: '🌴',
+    color: '#FBBF24',
+    founded: '2024',
+    anchors: ['Nandini Pillai · 2021'],
+    members: 22,
+    cadence: 'Fortnightly · Sunday mornings',
+    meetup: 'Botanic Gardens · Swan Lake',
+    vibe: 'Sunday mornings at the Botanic Gardens, and a sprawling WhatsApp group.',
+  },
+  {
+    id: 'ch-blr-west',
+    city: 'Bengaluru · West',
+    country: 'India',
+    emoji: '🌿',
+    color: '#EC4899',
+    founded: '2025',
+    anchors: ['Varun Nambiar · 2022'],
+    members: 26,
+    cadence: 'Monthly · 3rd Sunday',
+    meetup: 'Kaikondrahalli Lake',
+    vibe: 'Lake cleanups, bird counts, post-walk iced filter coffee.',
+  },
+];
+
+// -----------------------------------------------------
+// Career pivots — stories of non-obvious moves
+// -----------------------------------------------------
+
+interface CareerPivot {
+  id: string;
+  from: string;
+  to: string;
+  alumniId: string;
+  year: string;
+  story: string;
+  takeaway: string;
+  icon: string;
+  color: string;
+}
+
+const CAREER_PIVOTS: CareerPivot[] = [
+  {
+    id: 'cp-1',
+    alumniId: 'al-1',
+    from: 'Backend at fintech',
+    to: 'Climate-data platform lead',
+    year: '2024',
+    story: 'Shipped the club sustainability dashboard in senior year. Two years later, he rebuilt it for a real emissions-data startup.',
+    takeaway: 'The club\'s dashboards were the portfolio that mattered.',
+    icon: '🌡️',
+    color: '#22C55E',
+  },
+  {
+    id: 'cp-2',
+    alumniId: 'al-5',
+    from: 'Consulting',
+    to: 'Co-founded climate fund',
+    year: '2025',
+    story: 'Spent 18 months reading every impact-VC deck. Raised a modest early-stage climate fund out of Bengaluru. Still writes monthly LP letters longhand.',
+    takeaway: 'Patience compounds faster than a Series A.',
+    icon: '💼',
+    color: '#F59E0B',
+  },
+  {
+    id: 'cp-3',
+    alumniId: 'al-3',
+    from: 'Frontend dev',
+    to: 'Design systems engineer',
+    year: '2023',
+    story: 'Co-authored the club\'s design tokens. Got pulled into a full design-systems role at her company. Still ships the quarterly club kit.',
+    takeaway: 'Ownership in open source creates the career you want.',
+    icon: '🎨',
+    color: '#F472B6',
+  },
+  {
+    id: 'cp-4',
+    alumniId: 'al-7',
+    from: 'ML research intern',
+    to: 'Field sustainability researcher',
+    year: '2024',
+    story: 'Decided the lab wasn\'t where the problems lived. Works out of 4 villages in North Karnataka now. Publishes quarterly field briefs.',
+    takeaway: 'The shortest loop between problem and fix is sometimes the field.',
+    icon: '🌾',
+    color: '#84CC16',
+  },
+  {
+    id: 'cp-5',
+    alumniId: 'al-9',
+    from: 'Product at social app',
+    to: 'Public-school tech lead',
+    year: '2023',
+    story: 'Left a fast-growing product job to rebuild a state-school computer lab. 4 teachers trained, 180 students onboarded.',
+    takeaway: 'Impact × proximity > salary.',
+    icon: '🏫',
+    color: '#38BDF8',
+  },
+  {
+    id: 'cp-6',
+    alumniId: 'al-11',
+    from: 'Data science at retailer',
+    to: 'Open-data journalist',
+    year: '2025',
+    story: 'Wrote 8 posts on campus energy data for the club. A national paper picked it up. Now full-time data journalist.',
+    takeaway: 'The first 8 posts were the audition.',
+    icon: '📰',
+    color: '#A78BFA',
+  },
+];
+
+// -----------------------------------------------------
+// Mentor board (council of returning alumni)
+// -----------------------------------------------------
+
+interface MentorBoardSeat {
+  id: string;
+  alumniId: string;
+  name: string;
+  role: string;
+  domain: string;
+  office: string;
+  color: string;
+  focus: string;
+  hoursLeft: number;
+}
+
+const MENTOR_BOARD: MentorBoardSeat[] = [
+  { id: 'mb-1', alumniId: 'al-1', name: 'Meera Iyer', role: 'Platform eng · climate SaaS', domain: 'Technology', office: 'Bengaluru · in-person Wednesdays', color: '#38BDF8', focus: 'Backend architecture, field data pipelines, junior mentorship.', hoursLeft: 4 },
+  { id: 'mb-2', alumniId: 'al-3', name: 'Tanvi Shah', role: 'Design systems eng', domain: 'Design', office: 'SF Bay · remote + async review', color: '#F472B6', focus: 'Design tokens, accessibility, portfolio review.', hoursLeft: 3 },
+  { id: 'mb-3', alumniId: 'al-5', name: 'Kanishka Arora', role: 'Climate fund partner', domain: 'Finance', office: 'Delhi · Friday afternoons', color: '#F59E0B', focus: 'Grant writing, pitch prep, budgeting early-stage.', hoursLeft: 2 },
+  { id: 'mb-4', alumniId: 'al-7', name: 'Aditi Pawar', role: 'Field researcher', domain: 'Research', office: 'Hyderabad + 4 villages', color: '#A78BFA', focus: 'Field research ethics, stakeholder interviews, publication.', hoursLeft: 5 },
+  { id: 'mb-5', alumniId: 'al-9', name: 'Farhan Siddiqui', role: 'Ed-tech · public schools', domain: 'Impact', office: 'Delhi NCR · monthly Zoom', color: '#22C55E', focus: 'Classroom tech, curricula co-design, teacher trust.', hoursLeft: 6 },
+  { id: 'mb-6', alumniId: 'al-11', name: 'Ishaan Kulkarni', role: 'Data journalist', domain: 'Content', office: 'Pune · alternate Saturdays', color: '#F87171', focus: 'Investigative pitching, data vis, long-form editing.', hoursLeft: 3 },
+];
+
+// =====================================================
+// Fireside recaps (past events with guest stories)
+// =====================================================
+
+interface FiresideRecap {
+  id: string;
+  title: string;
+  date: string;
+  host: string;
+  guests: string[];
+  attendance: number;
+  highlight: string;
+  quote: string;
+  quoteAuthor: string;
+  color: string;
+  emoji: string;
+}
+
+const FIRESIDE_RECAPS: FiresideRecap[] = [
+  { id: 'fr-1', title: 'Fireside · ‘Fieldwork that doesn\'t break you’',             date: 'Mar 15, 2026', host: 'Aditi Pawar',       guests: ['Aditi Pawar', 'Farhan Siddiqui'],        attendance: 142, highlight: 'Two researchers mapped the line between rigour and self-care. The room stayed quiet for a long time after.', quote: 'If the research breaks you, it wasn\'t honest research. It was extraction from the inside out.',            quoteAuthor: 'Aditi Pawar',       color: '#A78BFA', emoji: '🔥' },
+  { id: 'fr-2', title: 'Fireside · ‘Designing for the last user, not the first’',     date: 'Feb 22, 2026', host: 'Tanvi Shah',        guests: ['Tanvi Shah', 'Mira Jain'],               attendance: 118, highlight: 'A designer\'s case for the slow, quiet polish that the loudest users never see.',                                            quote: 'Beautiful onboarding is easy. The hard work is the 400th screen. That\'s the one that teaches you to design.', quoteAuthor: 'Tanvi Shah',        color: '#F472B6', emoji: '🔥' },
+  { id: 'fr-3', title: 'Fireside · ‘Funding without selling your soul’',              date: 'Jan 28, 2026', host: 'Kanishka Arora',    guests: ['Kanishka Arora', 'Vishwas Kapoor'],      attendance: 156, highlight: 'How small climate orgs raise money without warping their work. The honest answer: slowly.',                                 quote: 'The best grant I ever wrote started with a line our CEO crossed out three times: ‘what we got wrong last year.’', quoteAuthor: 'Kanishka Arora',  color: '#F59E0B', emoji: '🔥' },
+  { id: 'fr-4', title: 'Fireside · ‘Writing for readers who don\'t have time’',        date: 'Dec 12, 2025', host: 'Ishaan Kulkarni',   guests: ['Ishaan Kulkarni', 'Ananya Prasad'],      attendance: 204, highlight: 'A data journalist on the discipline of writing for people who will give you 90 seconds and no longer.',                       quote: 'If your lede doesn\'t survive the lift, the whole piece dies in a coat pocket.',                                      quoteAuthor: 'Ishaan Kulkarni',   color: '#F87171', emoji: '🔥' },
+  { id: 'fr-5', title: 'Fireside · ‘Open-source as a village discipline’',             date: 'Nov 30, 2025', host: 'Meera Iyer',        guests: ['Meera Iyer', 'Rohit Bhatt'],             attendance: 187, highlight: 'Two engineers on treating an OSS project like a village: the maintainers, the outsiders, the elders, the kids.',           quote: 'An issue backlog is a memory. You weed it. You don\'t let it become a landfill.',                                  quoteAuthor: 'Meera Iyer',        color: '#38BDF8', emoji: '🔥' },
+  { id: 'fr-6', title: 'Fireside · ‘Career pivots we don\'t regret’',                   date: 'Oct 18, 2025', host: 'Varun Mehta',       guests: ['Varun Mehta', 'Saanvi Rao', 'Rehan Qureshi'], attendance: 234, highlight: 'Three alumni on leaving jobs that looked right on paper. No villains. Just honest reasons.',                                 quote: 'The day I stopped defending the thing I was doing is the day I learned I had already left it.',                      quoteAuthor: 'Saanvi Rao',         color: '#22C55E', emoji: '🔥' },
+];
+
+// =====================================================
+// Relocation grants (alumni-funded support)
+// =====================================================
+
+interface RelocationGrant {
+  id: string;
+  name: string;
+  amount: string;
+  cadence: string;
+  usedFor: string;
+  eligibility: string;
+  deadline: string;
+  color: string;
+}
+
+const RELOCATION_GRANTS: RelocationGrant[] = [
+  { id: 'rg-1', name: 'First-month floor grant',        amount: '₹18,000',   cadence: 'One-off',      usedFor: 'Deposit + first-month rent for alumni moving to a new city for their first role.',          eligibility: 'Any alumni within 12 months of graduation · first move.',   deadline: 'Rolling',         color: '#22C55E' },
+  { id: 'rg-2', name: 'Climate-job travel stipend',     amount: '₹12,500',   cadence: 'Bi-annual',    usedFor: 'Travel + 3 nights of stay for in-person interviews at climate-sector employers.',             eligibility: 'Interview invite from a verified climate org.',              deadline: 'Mar 31 / Sep 30', color: '#F59E0B' },
+  { id: 'rg-3', name: 'Field-research microgrant',       amount: '₹22,000',   cadence: 'Quarterly',    usedFor: 'Field-travel, stay, and a 30-day data plan for alumni doing first-time primary research.',   eligibility: 'Alumni + 1 mentor co-signed · open proposal form.',          deadline: 'Apr 30',          color: '#A78BFA' },
+  { id: 'rg-4', name: 'Gear-return buy-back',             amount: '₹4,500 avg', cadence: 'Rolling',     usedFor: 'Buy-back on cameras / mics / second laptops returning to the club pool from alumni.',        eligibility: 'Gear bought with alumni\'s own money during club years.',     deadline: 'Rolling',         color: '#38BDF8' },
+  { id: 'rg-5', name: 'Legal / taxes first-time',         amount: 'Free',       cadence: 'Bi-annual',    usedFor: 'A 45-min session with a CA + a lawyer on first-time tax filing, NDA reviews, and offers.',   eligibility: 'First-year after graduation.',                                deadline: 'Jul 31',          color: '#F472B6' },
+  { id: 'rg-6', name: 'Emergency food-and-rent',          amount: '₹6,000',    cadence: 'On request',   usedFor: 'Private fund for alumni in a 2-4 week rough patch. No form. A quick call. Trust-based.',     eligibility: 'Any alumni · confidential · never published.',                deadline: 'Rolling',         color: '#EF4444' },
+];
+
+// =====================================================
+// Alumni polls (quarterly pulse)
+// =====================================================
+
+interface AlumniPoll {
+  id: string;
+  question: string;
+  total: number;
+  answers: { label: string; pct: number; color: string }[];
+  finishedAt: string;
+  commentary: string;
+}
+
+const ALUMNI_POLLS: AlumniPoll[] = [
+  {
+    id: 'ap-1',
+    question: 'What do you wish you\'d learned in your last semester?',
+    total: 148,
+    finishedAt: 'Q1 2026',
+    commentary: 'Negotiating offers beat ‘another framework’ by a wide margin — and it\'s been the same answer three quarters in a row.',
+    answers: [
+      { label: 'Negotiating offers + compensation',        pct: 38, color: '#22C55E' },
+      { label: 'Managing up · working with seniors',        pct: 22, color: '#38BDF8' },
+      { label: 'Writing clearly in email / docs',          pct: 17, color: '#A78BFA' },
+      { label: 'Tax / legal / relocation basics',          pct: 14, color: '#F59E0B' },
+      { label: 'Another technical framework',              pct: 9,  color: '#F472B6' },
+    ],
+  },
+  {
+    id: 'ap-2',
+    question: 'How often do you still talk to your club batch?',
+    total: 162,
+    finishedAt: 'Q1 2026',
+    commentary: 'A long tail of alumni still message their batch weekly — even 4 years in. The app helps · in-person helps more.',
+    answers: [
+      { label: 'Weekly · group is still active',           pct: 28, color: '#22C55E' },
+      { label: 'Monthly · on a call / meetup',             pct: 34, color: '#38BDF8' },
+      { label: 'Quarterly · only at chapter meetups',      pct: 22, color: '#A78BFA' },
+      { label: 'Rarely · but I want to more',              pct: 12, color: '#F59E0B' },
+      { label: 'Never',                                     pct: 4,  color: '#F472B6' },
+    ],
+  },
+  {
+    id: 'ap-3',
+    question: 'Which support from the club mattered most?',
+    total: 134,
+    finishedAt: 'Q4 2025',
+    commentary: 'Alumni-to-alumni support outranks official mentorship. We\'re getting better at scaffolding it.',
+    answers: [
+      { label: 'Alumni-to-alumni introductions',           pct: 32, color: '#22C55E' },
+      { label: 'Formal mentorship · paired',               pct: 24, color: '#38BDF8' },
+      { label: 'Relocation / grant support',               pct: 18, color: '#A78BFA' },
+      { label: 'Mock interviews + portfolio reviews',      pct: 16, color: '#F59E0B' },
+      { label: 'Nothing specific · just the community',    pct: 10, color: '#F472B6' },
+    ],
+  },
+  {
+    id: 'ap-4',
+    question: 'If you could add one more alumni service, what would it be?',
+    total: 118,
+    finishedAt: 'Q4 2025',
+    commentary: 'A dedicated therapy stipend is now the top write-in · leadership is exploring it for Q3.',
+    answers: [
+      { label: 'Subsidised therapy · mental health support', pct: 34, color: '#22C55E' },
+      { label: 'Alumni-to-alumni lending circle',            pct: 21, color: '#38BDF8' },
+      { label: 'Job-hunting cohort · 6-week structured',     pct: 18, color: '#A78BFA' },
+      { label: 'More in-person city meetups',                 pct: 16, color: '#F59E0B' },
+      { label: 'Online-only · less in-person please',          pct: 11, color: '#F472B6' },
+    ],
+  },
+];
+
+// =====================================================
+// Alumni publications (writing & research credits)
+// =====================================================
+
+interface Publication {
+  id: string;
+  alumniId: string;
+  author: string;
+  title: string;
+  venue: string;
+  year: number;
+  kind: 'paper' | 'essay' | 'book' | 'talk';
+  color: string;
+}
+
+const PUBLICATIONS: Publication[] = [
+  { id: 'pub-1',  alumniId: 'al-1',  author: 'Meera Iyer',        title: 'Field-first data pipelines · a pattern library',          venue: 'Open-Source Climate Journal',       year: 2025, kind: 'paper', color: '#38BDF8' },
+  { id: 'pub-2',  alumniId: 'al-3',  author: 'Tanvi Shah',         title: 'Design tokens for low-bandwidth apps',                   venue: 'SmashingConf · Freiburg',             year: 2025, kind: 'talk',  color: '#F472B6' },
+  { id: 'pub-3',  alumniId: 'al-5',  author: 'Kanishka Arora',     title: 'Writing a climate grant without lying',                  venue: 'India Impact Review',                 year: 2024, kind: 'essay', color: '#F59E0B' },
+  { id: 'pub-4',  alumniId: 'al-7',  author: 'Aditi Pawar',        title: 'Consent protocols in village field research',            venue: 'Journal of Applied Anthropology',     year: 2024, kind: 'paper', color: '#A78BFA' },
+  { id: 'pub-5',  alumniId: 'al-9',  author: 'Farhan Siddiqui',    title: 'Teacher trust is the curriculum',                        venue: 'Ed-tech Stories Anthology',           year: 2025, kind: 'book',  color: '#22C55E' },
+  { id: 'pub-6',  alumniId: 'al-11', author: 'Ishaan Kulkarni',    title: 'A data-journalist\'s rough-draft notebook',              venue: 'Personal · open repo',                year: 2024, kind: 'essay', color: '#F87171' },
+  { id: 'pub-7',  alumniId: 'al-1',  author: 'Meera Iyer',         title: 'What release rotations taught a tiny open-source team',  venue: 'GitHub Universe',                      year: 2024, kind: 'talk',  color: '#38BDF8' },
+  { id: 'pub-8',  alumniId: 'al-3',  author: 'Tanvi Shah',         title: 'Designing for the last user',                            venue: 'Config · Figma',                        year: 2026, kind: 'talk',  color: '#F472B6' },
+  { id: 'pub-9',  alumniId: 'al-5',  author: 'Kanishka Arora',     title: 'The quiet grant · an anatomy',                          venue: 'Stanford Social Innovation Review',    year: 2025, kind: 'essay', color: '#F59E0B' },
+  { id: 'pub-10', alumniId: 'al-7',  author: 'Aditi Pawar',        title: 'Rain on the landslide · a 5-village study',             venue: 'Environment & Urbanization',          year: 2025, kind: 'paper', color: '#A78BFA' },
+];
+
+// =====================================================
+// Phase 3q-alumni: deeper alumni structures
+// =====================================================
+
+interface AlumniScholarship {
+  id: string;
+  name: string;
+  fundedBy: string;
+  amountInr: number;
+  batch: string;
+  discipline: string;
+  recipients: number;
+  note: string;
+  color: string;
+  emoji: string;
+}
+
+const ALUMNI_SCHOLARSHIPS: AlumniScholarship[] = [
+  { id: 'sch-1', name: 'Meera Iyer · field-engineering grant', fundedBy: 'Meera Iyer · 2018 batch', amountInr: 120000, batch: '2026 entry', discipline: 'Engineering + climate', recipients: 4, note: 'Two semesters · covers tuition gap + travel to one field site.', color: '#38BDF8', emoji: '🧪' },
+  { id: 'sch-2', name: 'Tanvi · design-for-good fund', fundedBy: 'Tanvi Shah · 2019 batch', amountInr: 80000, batch: '2026 entry', discipline: 'Design · UX or brand', recipients: 3, note: 'Buys a first Wacom or a monitor · no paperwork beyond a thank-you note.', color: '#F472B6', emoji: '🎨' },
+  { id: 'sch-3', name: 'Kanishka · writing-residency fund', fundedBy: 'Kanishka Arora · 2020 batch', amountInr: 60000, batch: '2026 entry', discipline: 'Writing / journalism', recipients: 2, note: 'Two-week residency + one editor mentor + one byline guarantee.', color: '#F59E0B', emoji: '✍️' },
+  { id: 'sch-4', name: 'Aditi · field-research grant', fundedBy: 'Aditi Pawar · 2021 batch', amountInr: 100000, batch: '2026 entry', discipline: 'Social sciences · rural', recipients: 3, note: 'Three months · travel · one published paper at the end.', color: '#A78BFA', emoji: '🌾' },
+  { id: 'sch-5', name: 'Farhan · teacher-training bursary', fundedBy: 'Farhan Siddiqui · 2019 batch', amountInr: 70000, batch: '2026 entry', discipline: 'Education', recipients: 5, note: 'One year · covers training plus one school visit per quarter.', color: '#22C55E', emoji: '📚' },
+  { id: 'sch-6', name: 'Ishaan · open-journalism fund', fundedBy: 'Ishaan Kulkarni · 2021 batch', amountInr: 50000, batch: '2026 entry', discipline: 'Data journalism', recipients: 2, note: 'Pays for one story · editor + lawyer + publication support.', color: '#F87171', emoji: '📰' },
+  { id: 'sch-7', name: 'Rohit · RN engineer bootstrap', fundedBy: 'Rohit Sen · 2022 batch', amountInr: 35000, batch: '2026 entry', discipline: 'Mobile engineering', recipients: 3, note: 'Buys a test device + a one-year course · short check-in calls.', color: '#00D4FF', emoji: '📱' },
+  { id: 'sch-8', name: 'Nabhya · accessibility fund', fundedBy: 'Nabhya Gupta · 2022 batch', amountInr: 45000, batch: '2026 entry', discipline: 'A11y-focused work', recipients: 2, note: 'Gear + course + one deliverable (a11y audit) to a real org.', color: '#7E57C2', emoji: '♿' },
+];
+
+interface AdvisorySpecialism {
+  id: string;
+  alumniId: string;
+  name: string;
+  specialism: string;
+  hoursPerMonth: number;
+  slotsFilled: number;
+  slotsOpen: number;
+  note: string;
+  color: string;
+  emoji: string;
+}
+
+const ADVISORY_SPECIALISMS: AdvisorySpecialism[] = [
+  { id: 'av-1', alumniId: 'al-1', name: 'Meera Iyer', specialism: 'Climate-data engineering', hoursPerMonth: 4, slotsFilled: 3, slotsOpen: 1, note: 'Prefers short field-logs + one focused call per fortnight.', color: '#38BDF8', emoji: '🧪' },
+  { id: 'av-2', alumniId: 'al-3', name: 'Tanvi Shah', specialism: 'Brand + product-design crit', hoursPerMonth: 3, slotsFilled: 3, slotsOpen: 0, note: 'Opens a new slot every six months · join the waitlist.', color: '#F472B6', emoji: '🎨' },
+  { id: 'av-3', alumniId: 'al-5', name: 'Kanishka Arora', specialism: 'Grants + long-form writing', hoursPerMonth: 2, slotsFilled: 2, slotsOpen: 1, note: 'One 90-min workshop on writing a grant draft without lying.', color: '#F59E0B', emoji: '✍️' },
+  { id: 'av-4', alumniId: 'al-7', name: 'Aditi Pawar', specialism: 'Field-research consent', hoursPerMonth: 2, slotsFilled: 1, slotsOpen: 1, note: 'Reviews protocols · rarely on calls · prefers async notes.', color: '#A78BFA', emoji: '🌾' },
+  { id: 'av-5', alumniId: 'al-9', name: 'Farhan Siddiqui', specialism: 'Teacher-training curriculum', hoursPerMonth: 4, slotsFilled: 2, slotsOpen: 2, note: 'Runs one in-person sit-in per term in Bengaluru.', color: '#22C55E', emoji: '📚' },
+  { id: 'av-6', alumniId: 'al-11', name: 'Ishaan Kulkarni', specialism: 'Data-journalism + public records', hoursPerMonth: 3, slotsFilled: 2, slotsOpen: 1, note: 'Shares the quiet rules of requesting public documents.', color: '#F87171', emoji: '📰' },
+  { id: 'av-7', alumniId: 'al-2', name: 'Rohit Sen', specialism: 'RN · Android · CI', hoursPerMonth: 4, slotsFilled: 3, slotsOpen: 1, note: 'Paired-debug session on anyone\'s real bug · bring logs.', color: '#00D4FF', emoji: '📱' },
+  { id: 'av-8', alumniId: 'al-4', name: 'Nabhya Gupta', specialism: 'Accessibility audits', hoursPerMonth: 3, slotsFilled: 1, slotsOpen: 2, note: 'Teaches by auditing one of your real pages with you.', color: '#7E57C2', emoji: '♿' },
+];
+
+interface DiasporaCluster {
+  id: string;
+  city: string;
+  country: string;
+  alumniCount: number;
+  meetsEvery: string;
+  lead: string;
+  flag: string;
+  color: string;
+}
+
+const DIASPORA_CLUSTERS: DiasporaCluster[] = [
+  { id: 'dc-1', city: 'Bengaluru', country: 'India', alumniCount: 42, meetsEvery: 'Last Sun · monthly', lead: 'Meera', flag: '🇮🇳', color: '#00D4FF' },
+  { id: 'dc-2', city: 'Pune', country: 'India', alumniCount: 21, meetsEvery: 'Fortnightly Fri · evening', lead: 'Rohit', flag: '🇮🇳', color: '#22C55E' },
+  { id: 'dc-3', city: 'Mumbai', country: 'India', alumniCount: 33, meetsEvery: 'First Sat · monthly', lead: 'Tanvi', flag: '🇮🇳', color: '#F472B6' },
+  { id: 'dc-4', city: 'Delhi NCR', country: 'India', alumniCount: 29, meetsEvery: 'Monthly · rotating café', lead: 'Kanishka', flag: '🇮🇳', color: '#F59E0B' },
+  { id: 'dc-5', city: 'London', country: 'UK', alumniCount: 14, meetsEvery: 'Quarterly · Saturday brunch', lead: 'Aditi', flag: '🇬🇧', color: '#A78BFA' },
+  { id: 'dc-6', city: 'Berlin', country: 'Germany', alumniCount: 9, meetsEvery: 'Quarterly · park walk', lead: 'Farhan', flag: '🇩🇪', color: '#22C55E' },
+  { id: 'dc-7', city: 'San Francisco Bay', country: 'USA', alumniCount: 12, meetsEvery: 'Quarterly · Sunday coffee', lead: 'Ishaan', flag: '🇺🇸', color: '#F87171' },
+  { id: 'dc-8', city: 'Singapore', country: 'Singapore', alumniCount: 7, meetsEvery: 'Quarterly · Marina walk', lead: 'Nabhya', flag: '🇸🇬', color: '#7E57C2' },
+  { id: 'dc-9', city: 'Dubai', country: 'UAE', alumniCount: 6, meetsEvery: 'Quarterly · desert drive', lead: 'Rohit', flag: '🇦🇪', color: '#FFB74D' },
+];
+
+interface AskMeAnything {
+  id: string;
+  alumniId: string;
+  alumniName: string;
+  date: string;
+  topic: string;
+  questionsCollected: number;
+  mode: 'text' | 'audio' | 'video';
+  color: string;
+  emoji: string;
+}
+
+const AMA_SESSIONS: AskMeAnything[] = [
+  { id: 'ama-1', alumniId: 'al-1', alumniName: 'Meera Iyer', date: 'Apr 27 · Sat', topic: 'First 90 days as a tech lead in a climate org', questionsCollected: 34, mode: 'audio', color: '#38BDF8', emoji: '🎙️' },
+  { id: 'ama-2', alumniId: 'al-3', alumniName: 'Tanvi Shah', date: 'May 04 · Sat', topic: 'Breaking into design without a portfolio site', questionsCollected: 52, mode: 'video', color: '#F472B6', emoji: '🎥' },
+  { id: 'ama-3', alumniId: 'al-5', alumniName: 'Kanishka Arora', date: 'May 11 · Sat', topic: 'Writing a grant · the parts nobody tells you', questionsCollected: 21, mode: 'text', color: '#F59E0B', emoji: '✍️' },
+  { id: 'ama-4', alumniId: 'al-7', alumniName: 'Aditi Pawar', date: 'May 18 · Sat', topic: 'Consent-first field research in rural India', questionsCollected: 18, mode: 'audio', color: '#A78BFA', emoji: '🎙️' },
+  { id: 'ama-5', alumniId: 'al-9', alumniName: 'Farhan Siddiqui', date: 'May 25 · Sat', topic: 'Training teachers who did not ask for training', questionsCollected: 29, mode: 'video', color: '#22C55E', emoji: '🎥' },
+  { id: 'ama-6', alumniId: 'al-11', alumniName: 'Ishaan Kulkarni', date: 'Jun 01 · Sat', topic: 'Requesting public records · without anger', questionsCollected: 15, mode: 'text', color: '#F87171', emoji: '📝' },
+];
+
+interface GivingLedger {
+  id: string;
+  source: string;
+  amountInr: number;
+  used: string;
+  dateReceived: string;
+  visibility: 'named' | 'anonymous';
+  color: string;
+  emoji: string;
+}
+
+const GIVING_LEDGER: GivingLedger[] = [
+  { id: 'gl-1', source: 'Meera Iyer · 2018', amountInr: 120000, used: 'Scholarship fund + field-engineering grant.', dateReceived: '2026-01-18', visibility: 'named', color: '#38BDF8', emoji: '🌱' },
+  { id: 'gl-2', source: 'Tanvi Shah · 2019', amountInr: 80000, used: 'Design bursary · Wacom / monitor grants.', dateReceived: '2026-02-02', visibility: 'named', color: '#F472B6', emoji: '🎨' },
+  { id: 'gl-3', source: 'Anonymous · batch 2018', amountInr: 60000, used: 'Covered hostel deposit for two first-years.', dateReceived: '2026-02-20', visibility: 'anonymous', color: '#94A3B8', emoji: '🤲' },
+  { id: 'gl-4', source: 'Kanishka Arora · 2020', amountInr: 60000, used: 'Writing residency · two fellows.', dateReceived: '2026-03-11', visibility: 'named', color: '#F59E0B', emoji: '✍️' },
+  { id: 'gl-5', source: 'Aditi Pawar · 2021', amountInr: 100000, used: 'Field-research grant · three fellows.', dateReceived: '2026-03-22', visibility: 'named', color: '#A78BFA', emoji: '🌾' },
+  { id: 'gl-6', source: 'Anonymous · batch 2022', amountInr: 30000, used: 'Replaced broken studio strobe.', dateReceived: '2026-04-01', visibility: 'anonymous', color: '#94A3B8', emoji: '💡' },
+  { id: 'gl-7', source: 'Farhan Siddiqui · 2019', amountInr: 70000, used: 'Teacher-training bursary · five teachers.', dateReceived: '2026-04-08', visibility: 'named', color: '#22C55E', emoji: '📚' },
+  { id: 'gl-8', source: 'Ishaan Kulkarni · 2021', amountInr: 50000, used: 'Open-journalism fund · two investigations.', dateReceived: '2026-04-12', visibility: 'named', color: '#F87171', emoji: '📰' },
+];
+
+interface CompanyReferral {
+  id: string;
+  company: string;
+  alumniLead: string;
+  openRoles: number;
+  type: 'full-time' | 'internship' | 'contract';
+  lastUpdated: string;
+  note: string;
+  color: string;
+  emoji: string;
+}
+
+const COMPANY_REFERRALS: CompanyReferral[] = [
+  { id: 'cr-1', company: 'Atlassian', alumniLead: 'Rohit Sen · 2022', openRoles: 3, type: 'full-time', lastUpdated: '2 days ago', note: 'Android + release-engineering · remote within APAC only.', color: '#0052CC', emoji: '🧱' },
+  { id: 'cr-2', company: 'Figma', alumniLead: 'Tanvi Shah · 2019', openRoles: 2, type: 'internship', lastUpdated: '5 days ago', note: 'Brand + product-design interns · portfolio review by Tanvi.', color: '#F24E1E', emoji: '🎨' },
+  { id: 'cr-3', company: 'Scroll.in', alumniLead: 'Kanishka Arora · 2020', openRoles: 1, type: 'full-time', lastUpdated: '1 week ago', note: 'Climate correspondent · bilingual preferred.', color: '#EF4444', emoji: '📰' },
+  { id: 'cr-4', company: 'Pratham', alumniLead: 'Farhan Siddiqui · 2019', openRoles: 4, type: 'full-time', lastUpdated: '3 days ago', note: 'Teacher training + curriculum · Bengaluru + Delhi.', color: '#22C55E', emoji: '📚' },
+  { id: 'cr-5', company: 'WaterAid India', alumniLead: 'Aditi Pawar · 2021', openRoles: 2, type: 'contract', lastUpdated: '2 weeks ago', note: 'Field research · Assam + Karnataka · 3-month contracts.', color: '#38BDF8', emoji: '💧' },
+  { id: 'cr-6', company: 'The Ken', alumniLead: 'Ishaan Kulkarni · 2021', openRoles: 1, type: 'internship', lastUpdated: '4 days ago', note: 'Data-journalism intern · remote · 3-month duration.', color: '#F59E0B', emoji: '📊' },
+  { id: 'cr-7', company: 'Microsoft', alumniLead: 'Meera Iyer · 2018', openRoles: 2, type: 'full-time', lastUpdated: '1 day ago', note: 'Climate-data engineering · Hyderabad + Bengaluru.', color: '#0078D4', emoji: '🧪' },
+  { id: 'cr-8', company: 'Mozilla Foundation', alumniLead: 'Nabhya Gupta · 2022', openRoles: 1, type: 'contract', lastUpdated: '6 days ago', note: 'A11y audit contractor · 6-month engagement.', color: '#A855F7', emoji: '♿' },
+];
+
+// =====================================================
+// Phase 3x: deeper alumni structures
+// =====================================================
+
+interface LegacyProject {
+  id: string;
+  title: string;
+  alumnus: string;
+  batch: string;
+  stillAlive: boolean;
+  useNote: string;
+  color: string;
+  emoji: string;
+}
+
+const LEGACY_PROJECTS: LegacyProject[] = [
+  { id: 'lp-1',  title: 'Sapling tracker v1 · Excel',        alumnus: 'Meera Iyer · 2014',   batch: '2014', stillAlive: false, useNote: 'Retired when the app took over · blueprint preserved.',          color: '#94A3B8', emoji: '📊' },
+  { id: 'lp-2',  title: 'Club handbook · first draft',        alumnus: 'Rohit Kapoor · 2015', batch: '2015', stillAlive: true,  useNote: 'Still the backbone of our on-boarding · updated twice.',            color: '#F59E0B', emoji: '📘' },
+  { id: 'lp-3',  title: 'Campus tree-walk audio guide',       alumnus: 'Tanvi Shah · 2016',   batch: '2016', stillAlive: true,  useNote: 'Plays on a rented speaker on every founding day.',                  color: '#22C55E', emoji: '🎧' },
+  { id: 'lp-4',  title: 'Annual report · print template',     alumnus: 'Priya Ghosh · 2017',  batch: '2017', stillAlive: true,  useNote: 'Used for the last six annual reports · same typography.',          color: '#F472B6', emoji: '📰' },
+  { id: 'lp-5',  title: 'Open-mic stage design',              alumnus: 'Anmol Sethi · 2018',  batch: '2018', stillAlive: true,  useNote: 'Five-year run · the stage you see on every showcase night.',        color: '#7E57C2', emoji: '🎤' },
+  { id: 'lp-6',  title: 'Field-shoot consent-form template',  alumnus: 'Maya Sinha · 2019',   batch: '2019', stillAlive: true,  useNote: 'Translated to Hindi by a junior · now a club standard.',              color: '#FFD166', emoji: '📄' },
+  { id: 'lp-7',  title: 'Code of conduct · v1',                alumnus: 'Ananya Rao · 2020',   batch: '2020', stillAlive: true,  useNote: 'Refined yearly · the spirit still hers.',                             color: '#EF4444', emoji: '🛡️' },
+  { id: 'lp-8',  title: 'Bus-factor handover guide',          alumnus: 'Ishita Verma · 2021', batch: '2021', stillAlive: true,  useNote: 'Now pinned in every wing chat · saved a core lead-change once.',     color: '#00D4FF', emoji: '🔁' },
+  { id: 'lp-9',  title: 'Taru Wings · first documentary',     alumnus: 'Vikram Joshi · 2019', batch: '2019', stillAlive: true,  useNote: 'Still shown to first-years · ten minutes of heart.',                  color: '#EF4444', emoji: '🎞️' },
+];
+
+interface AlumniAward {
+  id: string;
+  award: string;
+  alumnus: string;
+  year: string;
+  body: string;
+  note: string;
+  color: string;
+  emoji: string;
+}
+
+const ALUMNI_AWARDS: AlumniAward[] = [
+  { id: 'aa-1', award: 'Green Campus Ambassador',        alumnus: 'Meera Iyer · 2014',   year: '2019', body: 'Ministry of Environment',                 note: 'For village sapling programs that crossed 40k trees.',           color: '#22C55E', emoji: '🌳' },
+  { id: 'aa-2', award: 'Young Engineer of the Year',     alumnus: 'Anmol Sethi · 2018',  year: '2021', body: 'Institution of Engineers',                note: 'For solar-water-pump prototype built in final year.',             color: '#00D4FF', emoji: '🔌' },
+  { id: 'aa-3', award: 'Forty Under Forty',              alumnus: 'Tanvi Shah · 2016',   year: '2023', body: 'Design Today · India',                    note: 'Long piece on poster systems · honest about mistakes.',           color: '#F472B6', emoji: '🎨' },
+  { id: 'aa-4', award: 'Climate Journalism Grant',       alumnus: 'Rohit Kapoor · 2015', year: '2022', body: 'Pulitzer Climate Centre',                 note: 'For reporting from Sundarbans · grant took a full year.',         color: '#F59E0B', emoji: '📰' },
+  { id: 'aa-5', award: 'NIT Distinguished Alumna',        alumnus: 'Priya Ghosh · 2017',  year: '2024', body: 'Alumni Council · NIT Surat',              note: 'First ecology-focused awardee · citation hand-written.',          color: '#A78BFA', emoji: '🎓' },
+  { id: 'aa-6', award: 'Wildlife Photographer · Shortlist', alumnus: 'Maya Sinha · 2019', year: '2023', body: 'Royal Photography Society',               note: 'For a long exposure of a melting glacier · printed at the Met.',  color: '#FFD166', emoji: '📷' },
+  { id: 'aa-7', award: 'Independent Films · Best Short',   alumnus: 'Vikram Joshi · 2019', year: '2024', body: 'Mumbai Film Festival',                    note: 'An 11-minute piece on a river waking up after monsoon.',           color: '#EF4444', emoji: '🎬' },
+];
+
+interface AlumniVenture {
+  id: string;
+  company: string;
+  founder: string;
+  year: string;
+  stage: 'idea' | 'seed' | 'series A' | 'series B+' | 'non-profit';
+  missionLine: string;
+  hiringNote: string;
+  color: string;
+  emoji: string;
+}
+
+const ALUMNI_VENTURES: AlumniVenture[] = [
+  { id: 'av-1',  company: 'Sorrel Cold-Chain',       founder: 'Meera Iyer · 2014',   year: '2019', stage: 'series A',  missionLine: 'Solar cold-chains for rural dairy · 31 villages.',                hiringNote: 'Hiring field engineers · base in Pune.',              color: '#00D4FF', emoji: '🧊' },
+  { id: 'av-2',  company: 'Moss Studio',              founder: 'Tanvi Shah · 2016',   year: '2022', stage: 'seed',       missionLine: 'Design studio · climate and care briefs only.',                     hiringNote: 'Open to two motion designers · remote ok.',             color: '#F472B6', emoji: '🌿' },
+  { id: 'av-3',  company: 'Jaldhaara',                founder: 'Rohit Kapoor · 2015', year: '2021', stage: 'non-profit', missionLine: 'Pond-restoration non-profit · 68 ponds so far.',                    hiringNote: 'Volunteer weekends · Karnataka + Tamil Nadu.',         color: '#38BDF8', emoji: '💧' },
+  { id: 'av-4',  company: 'PaperTrails · school kits', founder: 'Anmol Sethi · 2018', year: '2023', stage: 'seed',       missionLine: 'Paper-light school kits for low-ink government schools.',          hiringNote: 'Not hiring yet · looking for school partners.',        color: '#F59E0B', emoji: '📚' },
+  { id: 'av-5',  company: 'SongOfBirds · camera trap', founder: 'Maya Sinha · 2019',  year: '2024', stage: 'idea',       missionLine: 'Low-cost camera traps for small-town forest offices.',              hiringNote: 'Looking for one embedded engineer · early co-founder.', color: '#FFD166', emoji: '🐦' },
+  { id: 'av-6',  company: 'Long Lens Films',          founder: 'Vikram Joshi · 2019', year: '2022', stage: 'seed',       missionLine: 'Documentary studio · quiet, long-form, patient.',                   hiringNote: 'Needs an editor · part-time, per-film.',               color: '#EF4444', emoji: '🎞️' },
+  { id: 'av-7',  company: 'Okta Mentor Collective',    founder: 'Ananya Rao · 2020',  year: '2023', stage: 'non-profit', missionLine: 'Mentor matchmaking for first-gen engineers · free.',                hiringNote: 'Need mentors more than hires · please raise your hand.', color: '#7E57C2', emoji: '🫶' },
+  { id: 'av-8',  company: 'Mangrove · climate pods',   founder: 'Ishita Verma · 2021', year: '2024', stage: 'idea',       missionLine: 'Offline-first climate learning pods for schools.',                  hiringNote: 'Pilot teachers in Kerala + Assam · join as builder.',   color: '#22C55E', emoji: '🌱' },
+];
+
+interface ReunionPlan {
+  id: string;
+  title: string;
+  date: string;
+  location: string;
+  seats: number;
+  rsvped: number;
+  color: string;
+  emoji: string;
+}
+
+const REUNION_PLANS: ReunionPlan[] = [
+  { id: 'rp-1', title: 'Founding-day gather · all batches',  date: '20 May · Sat',     location: 'Campus lawn · main block',        seats: 200, rsvped: 132, color: '#FFD166', emoji: '🎉' },
+  { id: 'rp-2', title: '10-year reunion · 2014 batch',        date: '07 Jun · Fri',     location: 'The old library · auditorium',    seats: 60,  rsvped: 41,  color: '#F59E0B', emoji: '🎓' },
+  { id: 'rp-3', title: '5-year reunion · 2019 batch',         date: '14 Jun · Fri',     location: 'Black-box theatre',                seats: 80,  rsvped: 64,  color: '#A78BFA', emoji: '🪞' },
+  { id: 'rp-4', title: 'Alumni + student open-mic',           date: '22 Jun · Sat',     location: 'Open-air amphitheatre',            seats: 150, rsvped: 84,  color: '#F472B6', emoji: '🎤' },
+  { id: 'rp-5', title: 'Forest walk · alumni + juniors',      date: '30 Jun · Sun',     location: 'Campus ridge + hill trail',        seats: 40,  rsvped: 28,  color: '#22C55E', emoji: '🥾' },
+  { id: 'rp-6', title: 'Quiet tea · only 2015–2018 batches',  date: '14 Jul · Sun',     location: 'Rooftop · dorm A',                 seats: 30,  rsvped: 20,  color: '#38BDF8', emoji: '🍵' },
+];
+
+interface FamilyHeritage {
+  id: string;
+  alumniName: string;
+  relation: string;
+  relatedTo: string;
+  kind: 'parent' | 'sibling' | 'partner' | 'mentor';
+  note: string;
+  color: string;
+  emoji: string;
+}
+
+const FAMILY_HERITAGE: FamilyHeritage[] = [
+  { id: 'fh-1', alumniName: 'Meera Iyer · 2014',     relation: 'daughter of',   relatedTo: 'Prof. V. Iyer · botany dept',      kind: 'parent',  note: 'She wrote the first tree-walk script with him.',           color: '#22C55E', emoji: '🌳' },
+  { id: 'fh-2', alumniName: 'Rahul Khanna · 2023',   relation: 'brother of',    relatedTo: 'Ira Khanna · 2020 batch',            kind: 'sibling', note: 'Both edited for the club magazine.',                       color: '#F59E0B', emoji: '📰' },
+  { id: 'fh-3', alumniName: 'Anmol Sethi · 2018',    relation: 'mentee of',     relatedTo: 'Priya Ghosh · 2017 batch',           kind: 'mentor',  note: 'First-year mentor match · still meet every month.',         color: '#A78BFA', emoji: '🧭' },
+  { id: 'fh-4', alumniName: 'Tanvi Shah · 2016',     relation: 'partner of',    relatedTo: 'Vikram Joshi · 2019 batch',          kind: 'partner', note: 'Met at the documentary night · three years in.',           color: '#F472B6', emoji: '🪷' },
+  { id: 'fh-5', alumniName: 'Maya Sinha · 2019',     relation: 'daughter of',   relatedTo: 'Mrs. R. Sinha · campus librarian',   kind: 'parent',  note: 'Books + film · the library is on every thank-you card.',  color: '#FFD166', emoji: '📚' },
+  { id: 'fh-6', alumniName: 'Ananya Rao · 2020',     relation: 'mentee of',     relatedTo: 'Rohit Kapoor · 2015 batch',          kind: 'mentor',  note: 'Reporting + policy · hands off a baton slowly.',           color: '#7E57C2', emoji: '📜' },
+  { id: 'fh-7', alumniName: 'Ishita Verma · 2021',   relation: 'sister of',     relatedTo: 'Ira Verma · 2024 batch',             kind: 'sibling', note: 'Both in the core council · quiet joke about the surname.', color: '#00D4FF', emoji: '👭' },
+];
+
+interface AlumniStoryBeat {
+  id: string;
+  alumnusLine: string;
+  year: string;
+  beat: string;
+  detail: string;
+  color: string;
+  emoji: string;
+}
+
+const STORY_BEATS: AlumniStoryBeat[] = [
+  { id: 'sb-1', alumnusLine: 'Meera · 2014',     year: '2014', beat: 'Planted the first sapling row on the west slope',            detail: 'Twelve trees · forty-one still standing after a decade.',          color: '#22C55E', emoji: '🌱' },
+  { id: 'sb-2', alumnusLine: 'Rohit · 2015',     year: '2016', beat: 'Wrote the handbook on a long train ride',                    detail: 'From Bengaluru to Delhi · 36 hours · the draft still has soot marks.', color: '#F59E0B', emoji: '📘' },
+  { id: 'sb-3', alumnusLine: 'Priya · 2017',     year: '2017', beat: 'Sent 21 hand-written cards on founding day',                 detail: 'Every junior got one · kept in a drawer, most of them.',              color: '#A78BFA', emoji: '💌' },
+  { id: 'sb-4', alumnusLine: 'Anmol · 2018',      year: '2019', beat: 'Solar-pump prototype ran for 44 hours straight',             detail: 'A tiny party when it hit 40 hours · then 44 was the real win.',        color: '#00D4FF', emoji: '🔋' },
+  { id: 'sb-5', alumnusLine: 'Tanvi · 2016',     year: '2020', beat: 'Gave the first real retrospective talk',                     detail: 'Named the mistakes before the wins · the room clapped twice for the honesty.', color: '#F472B6', emoji: '🪞' },
+  { id: 'sb-6', alumnusLine: 'Vikram · 2019',    year: '2022', beat: 'Shipped a documentary that was five months late',             detail: 'The wait was the film · everyone said so afterwards.',                 color: '#EF4444', emoji: '🎬' },
+  { id: 'sb-7', alumnusLine: 'Ananya · 2020',    year: '2023', beat: 'Matched 140 juniors to mentors in a month',                  detail: 'Spreadsheet grew to 12 tabs · then she simplified it back to 3.',      color: '#7E57C2', emoji: '🫶' },
+  { id: 'sb-8', alumnusLine: 'Ishita · 2021',    year: '2024', beat: 'Quietly refused an award so a junior could take it',         detail: 'Said nothing about it · the junior didn\'t know for a year.',           color: '#FFD166', emoji: '🕊️' },
+];
+
+// =====================================================
+// Component
+// =====================================================
+
+// =====================================================
+// Phase 3ad: deeper alumni structures — round 2
+// =====================================================
+
+interface AlumniFirstJob {
+  id: string;
+  alum: string;
+  batch: string;
+  company: string;
+  role: string;
+  pay: string;
+  lesson: string;
+  color: string;
+  emoji: string;
+}
+
+const ALUMNI_FIRST_JOBS: AlumniFirstJob[] = [
+  { id: 'afj-1', alum: 'Rohit S.',         batch: '2015',  company: 'Freshworks',          role: 'Junior engineer',           pay: '₹ 4.2 LPA',  lesson: 'Writing tests is not overhead · it\'s how you keep your Fridays.',           color: '#00D4FF', emoji: '💻' },
+  { id: 'afj-2', alum: 'Priya N.',         batch: '2017',  company: 'Zerodha',              role: 'Content marketer',         pay: '₹ 3.8 LPA',  lesson: 'Write what you wish you\'d known a month ago · that\'s the piece.',         color: '#F59E0B', emoji: '✍️' },
+  { id: 'afj-3', alum: 'Karan T.',         batch: '2016',  company: 'Leap',                  role: 'Motion designer',           pay: '₹ 4.5 LPA',  lesson: 'Ship a 10-second loop a day · ninety days make a showreel.',                 color: '#F472B6', emoji: '🎞️' },
+  { id: 'afj-4', alum: 'Sana M.',           batch: '2018',  company: 'Byju\'s',               role: 'Graphic designer',          pay: '₹ 5.0 LPA',  lesson: 'Grids are not boring · they are the reason your brain feels at rest.',         color: '#A78BFA', emoji: '🎨' },
+  { id: 'afj-5', alum: 'Amit R.',           batch: '2019',  company: 'Freelance → Swiggy',  role: 'Photographer',              pay: '₹ 3.2 LPA → 7.0 LPA', lesson: 'Build the portfolio first · jobs come to finished portfolios · not plans.', color: '#EF4444', emoji: '📸' },
+  { id: 'afj-6', alum: 'Nidhi K.',          batch: '2020',  company: 'The Ken',              role: 'Features reporter',         pay: '₹ 6.0 LPA',  lesson: 'Pitch three ideas every Monday · one sticks · the other two age into columns.', color: '#FFD166', emoji: '📰' },
+  { id: 'afj-7', alum: 'Vikram P.',          batch: '2014',  company: 'Razorpay',             role: 'Backend intern → FTE',      pay: '₹ 6.5 LPA',  lesson: 'Intern like you already work there · doors open both ways.',                 color: '#22C55E', emoji: '🔐' },
+  { id: 'afj-8', alum: 'Meera K.',           batch: '2016',  company: 'Dentsu',               role: 'Copy intern',               pay: '₹ 2.5 LPA',  lesson: 'Low pay first job · high portfolio first year · long career · that\'s ok.',     color: '#38BDF8', emoji: '🪄' },
+];
+
+interface AlumniKnowledge {
+  id: string;
+  topic: string;
+  alum: string;
+  format: 'talk' | 'doc' | 'thread' | 'video';
+  where: string;
+  color: string;
+  emoji: string;
+}
+
+const ALUMNI_KNOWLEDGE: AlumniKnowledge[] = [
+  { id: 'ak-1',  topic: 'How I switched from marketing to product',       alum: 'Priya N. · 2017', format: 'talk',   where: 'Monthly fireside · 42 min',                 color: '#F59E0B', emoji: '🎙️' },
+  { id: 'ak-2',  topic: 'Notion templates for first-year reporters',       alum: 'Nidhi K. · 2020', format: 'doc',    where: 'Team drive · /alumni/knowledge/reporters',   color: '#FFD166', emoji: '📄' },
+  { id: 'ak-3',  topic: '50 tiny motion design drills',                    alum: 'Karan T. · 2016', format: 'video',  where: 'Unlisted YouTube playlist',                  color: '#F472B6', emoji: '🎥' },
+  { id: 'ak-4',  topic: 'The case for writing your own release notes',     alum: 'Rohit S. · 2015', format: 'thread', where: 'Pinned · #dev-journals',                     color: '#00D4FF', emoji: '🧵' },
+  { id: 'ak-5',  topic: 'How to critique a layout in six questions',        alum: 'Sana M. · 2018',  format: 'doc',    where: 'Team drive · /alumni/knowledge/design-crit',  color: '#A78BFA', emoji: '🪞' },
+  { id: 'ak-6',  topic: 'Building a photo portfolio in 90 days',             alum: 'Amit R. · 2019', format: 'talk',    where: 'Campus talk · recorded · 38 min',            color: '#EF4444', emoji: '📸' },
+  { id: 'ak-7',  topic: 'My first 30 days at a startup · diary',              alum: 'Kabir V. · 2021', format: 'doc',     where: 'Team drive · /alumni/knowledge/first30',      color: '#22C55E', emoji: '📔' },
+  { id: 'ak-8',  topic: 'Rejection log · the ones that stung + what I learnt', alum: 'Meera K. · 2016', format: 'thread', where: 'Pinned · #careers · resurfaced quarterly',    color: '#38BDF8', emoji: '🪴' },
+];
+
+interface AlumniCommunityCare {
+  id: string;
+  initiative: string;
+  details: string;
+  lead: string;
+  cadence: string;
+  impact: string;
+  color: string;
+  emoji: string;
+}
+
+const ALUMNI_CARE: AlumniCommunityCare[] = [
+  { id: 'ac-1', initiative: 'Grief desk · quiet cover',                 details: 'When a member loses someone · the desk covers their duties for two weeks · no questions asked.', lead: 'Alumni core + people lead', cadence: 'As needed',    impact: 'Used 3× in 2024 · averaged 17 days of cover per case.',               color: '#EF4444', emoji: '🤍' },
+  { id: 'ac-2', initiative: 'Exam-season kitchen · Sundays',             details: 'Alumni in the city host Sunday dinner for finals-week juniors · homemade · no pizza · no phones.', lead: 'Rotating city captains',  cadence: 'Mar + Nov',    impact: '11 Sundays · 220 dinners · two new mentorships started per season.',   color: '#F59E0B', emoji: '🍲' },
+  { id: 'ac-3', initiative: 'Mental-health partners · paid sessions',    details: 'Three vetted counsellors · subsidised sessions · alumni-led wait-list.',                        lead: 'Anon alumni committee · chair rotates', cadence: 'Year-round', impact: 'Covered 58 sessions in 2024 · 93% reported one sustained change.',    color: '#A78BFA', emoji: '🫶' },
+  { id: 'ac-4', initiative: 'Moving-cities buddy',                        details: 'Relocating to a new city · an alumnus hosts for the first 72 hours + local onboarding.',        lead: 'City captains',            cadence: 'On trigger',   impact: '14 moves supported in 2024 · avg 3.2 nights hosted.',                 color: '#00D4FF', emoji: '🧳' },
+  { id: 'ac-5', initiative: 'Care package · first full-time job',        details: 'Small kit · one book · one note · one sapling · mailed to every first-job alum.',                lead: 'Alumni hospitality',      cadence: 'Monthly',       impact: '47 kits mailed in 2024 · 100% noted the sapling lived.',             color: '#22C55E', emoji: '🎁' },
+  { id: 'ac-6', initiative: 'Come-home Fridays',                           details: 'First Friday of every month · campus chai · no agenda · no fee · phone in a basket at the gate.', lead: 'Alumni council',           cadence: 'Monthly',       impact: 'Ran 24 Fridays straight · avg 18 alumni per evening.',                color: '#FFD166', emoji: '🍵' },
+];
+
+interface AlumniLegacyLine {
+  id: string;
+  year: string;
+  line: string;
+  who: string;
+  color: string;
+  emoji: string;
+}
+
+const ALUMNI_LEGACY_LINES: AlumniLegacyLine[] = [
+  { id: 'al-1', year: '2009', line: '"We started this club with four plastic chairs and a spiral notebook."',       who: 'Founding batch',                color: '#F59E0B', emoji: '🪑' },
+  { id: 'al-2', year: '2012', line: '"The first tree · south gate · still the tallest thing we built."',             who: 'Tara R. · 2012',                color: '#22C55E', emoji: '🌳' },
+  { id: 'al-3', year: '2014', line: '"We put the first PR into production · the server survived · so did we."',      who: 'Rohit S. + Vikram P.',           color: '#00D4FF', emoji: '🚀' },
+  { id: 'al-4', year: '2016', line: '"The open-mic rule was written in a notebook · we still read from it."',        who: 'Meera K.',                        color: '#F472B6', emoji: '📖' },
+  { id: 'al-5', year: '2018', line: '"The year the design library was born · 37 components · one shared library."',  who: 'Sana M. · GD lead',              color: '#A78BFA', emoji: '🎨' },
+  { id: 'al-6', year: '2020', line: '"The lockdown batch met on video calls · our first fully remote retro."',        who: 'Nidhi K. · 2020',                color: '#38BDF8', emoji: '💻' },
+  { id: 'al-7', year: '2022', line: '"We planted 300 saplings · the first time we hit the annual target."',           who: 'Green team',                      color: '#16A34A', emoji: '🌱' },
+  { id: 'al-8', year: '2024', line: '"The alumni app opened up · 600+ voices in one room · quietly."',                  who: 'Alumni council',                  color: '#FFD166', emoji: '📱' },
+];
+
+interface AlumniCareerGrant {
+  id: string;
+  grant: string;
+  amount: string;
+  criteria: string;
+  applyBy: string;
+  color: string;
+  emoji: string;
+}
+
+const ALUMNI_CAREER_GRANTS: AlumniCareerGrant[] = [
+  { id: 'acg-1', grant: 'First interview travel · domestic',         amount: '₹ 12,000 · one-time',     criteria: 'Final-year · paid interview · receipts.',              applyBy: 'Rolling',               color: '#00D4FF', emoji: '🚆' },
+  { id: 'acg-2', grant: 'Certification seed',                          amount: '₹ 8,000 · one-time',      criteria: 'One course per year · alumni mentor co-signs.',          applyBy: 'Last Friday monthly',    color: '#A78BFA', emoji: '🎓' },
+  { id: 'acg-3', grant: 'Laptop upgrade · need-based',                amount: 'up to ₹ 30,000 · 3-yr interest free', criteria: 'Need letter · lead + alumni lead sign-off.',          applyBy: 'Quarterly window',        color: '#F59E0B', emoji: '💻' },
+  { id: 'acg-4', grant: 'First-job relocation kit',                    amount: '₹ 15,000 · one-time',     criteria: 'Offer letter · new city · 50 km+ from home.',           applyBy: 'Within 30 days of offer', color: '#F472B6', emoji: '🧳' },
+  { id: 'acg-5', grant: 'Portfolio build · stipend',                    amount: '₹ 6,000 / month · 3 mo',  criteria: 'Freelance ramp-up · portfolio checkpoints fortnightly.', applyBy: 'Feb + Aug',               color: '#22C55E', emoji: '🗂️' },
+  { id: 'acg-6', grant: 'Health · dental + eyes',                        amount: 'up to ₹ 5,000 / year',    criteria: 'Any member · one claim per head · receipts.',            applyBy: 'Rolling',                 color: '#EF4444', emoji: '🫶' },
+  { id: 'acg-7', grant: 'Take-a-break stipend',                         amount: '₹ 10,000 · one-time',     criteria: 'After a layoff · 8 weeks cover · no strings.',            applyBy: 'Rolling',                 color: '#FFD166', emoji: '🌿' },
+];
+
+interface AlumniSignOffQuote {
+  id: string;
+  quote: string;
+  who: string;
+  color: string;
+  emoji: string;
+}
+
+const ALUMNI_SIGN_OFFS: AlumniSignOffQuote[] = [
+  { id: 'aso-1', quote: 'The campus is still the softest landing. I don\'t say that lightly.',                                   who: 'Priya N. · 2017',   color: '#F59E0B', emoji: '🕊️' },
+  { id: 'aso-2', quote: 'I learned more in the corridor conversations than in half my classes. Keep the corridors open.',         who: 'Rohit S. · 2015',   color: '#00D4FF', emoji: '🚪' },
+  { id: 'aso-3', quote: 'The best thing the club gave me was a habit of saying thank-you in writing.',                              who: 'Meera K. · 2016',   color: '#F472B6', emoji: '✉️' },
+  { id: 'aso-4', quote: 'Plant the tree before you leave. Then visit it once. Then once more, a year on.',                        who: 'Tara R. · 2012',    color: '#22C55E', emoji: '🌳' },
+  { id: 'aso-5', quote: 'I still read the old retros. They age better than most articles I\'ve written.',                           who: 'Nidhi K. · 2020',   color: '#FFD166', emoji: '🪞' },
+  { id: 'aso-6', quote: 'You will not remember the deliverables. You will remember the people who sat with you at 2 AM.',         who: 'Vikram P. · 2014',  color: '#A78BFA', emoji: '🫶' },
+];
+
+// =====================================================
+// Phase 3ak: deeper alumni structures — round 3
+// =====================================================
+
+interface AlumniMentorPod {
+  id: string;
+  podName: string;
+  mentor: string;
+  focus: string;
+  meetingCadence: string;
+  seats: string;
+  color: string;
+  emoji: string;
+}
+
+const ALUMNI_MENTOR_PODS: AlumniMentorPod[] = [
+  { id: 'amp-1', podName: 'Writer\'s dojo',         mentor: 'Priya N. · content, 2017',       focus: 'Long-reads · editorial voice · newsletter basics.',               meetingCadence: 'Saturday · 90 min · online',     seats: '3 open of 6',  color: '#F59E0B', emoji: '📝' },
+  { id: 'amp-2', podName: 'Full-stack sandbox',      mentor: 'Sameer M. · tech, 2015',          focus: 'Ship end-to-end features · read codebases · mock interviews.',   meetingCadence: 'Sunday · 2 hr · hybrid',          seats: '2 open of 5',  color: '#00D4FF', emoji: '💻' },
+  { id: 'amp-3', podName: 'Brand studio',             mentor: 'Ananya R. · design, 2016',        focus: 'Systems-thinking · poster kits · typography crits.',              meetingCadence: 'Fortnight · Friday · in-person', seats: 'Full',         color: '#F472B6', emoji: '🎨' },
+  { id: 'amp-4', podName: 'Story room',               mentor: 'Zara S. · video, 2020',           focus: 'Cuts to story · colour starter kit · interview prep.',             meetingCadence: 'Weekly · Thursday · online',      seats: '1 open of 4',  color: '#A78BFA', emoji: '🎞️' },
+  { id: 'amp-5', podName: 'Photo walks',              mentor: 'Arjun K. · photo, 2014',           focus: 'Light reading · culling honestly · essay-building.',               meetingCadence: 'Monthly · first Saturday',        seats: '4 open of 8',  color: '#22C55E', emoji: '📷' },
+  { id: 'amp-6', podName: 'Campaign clinic',           mentor: 'Dev P. · PR, 2018',               focus: 'Cold pitches · press kits · partner playbook.',                   meetingCadence: 'Bi-weekly · Wednesday · online',  seats: '2 open of 5',  color: '#FFD166', emoji: '📰' },
+  { id: 'amp-7', podName: 'Founder\'s table',         mentor: 'Ishita T. · founder, 2013',        focus: 'Early-stage clarity · first 10 users · ramen-profit runway.',     meetingCadence: 'Monthly · last Sunday',           seats: '2 open of 4',  color: '#EF4444', emoji: '🚀' },
+];
+
+interface AlumniCareerCheckpoint {
+  id: string;
+  year: string;
+  checkpoint: string;
+  prompt: string;
+  color: string;
+  emoji: string;
+}
+
+const ALUMNI_CAREER_CHECKPOINTS: AlumniCareerCheckpoint[] = [
+  { id: 'ack-1', year: 'Graduation + 0',   checkpoint: 'First paycheck call',           prompt: 'Who do you thank · first job specifics · what surprised you in month 1.',                color: '#00D4FF', emoji: '💼' },
+  { id: 'ack-2', year: 'Graduation + 1',   checkpoint: 'Year-one reflection',            prompt: 'One thing you would tell the junior you · one decision you would make again today.',    color: '#F59E0B', emoji: '🪞' },
+  { id: 'ack-3', year: 'Graduation + 2',   checkpoint: 'Craft-check',                     prompt: 'One artefact you shipped · what you learned · what you wish you had learned faster.',    color: '#A78BFA', emoji: '🎯' },
+  { id: 'ack-4', year: 'Graduation + 3',   checkpoint: 'Mentor ask',                      prompt: 'One junior you want to mentor · one opening you can offer from your company.',         color: '#F472B6', emoji: '🤝' },
+  { id: 'ack-5', year: 'Graduation + 5',   checkpoint: 'Pivot audit',                      prompt: 'Staying · pivoting · building own thing? Walk us through the math you used.',            color: '#22C55E', emoji: '🔀' },
+  { id: 'ack-6', year: 'Graduation + 7',   checkpoint: 'Giving-back choice',                prompt: 'Grant · mentor-pod · campaign · which of these will you fund or lead this year?',       color: '#FFD166', emoji: '🎁' },
+  { id: 'ack-7', year: 'Graduation + 10',  checkpoint: 'Decade letter',                    prompt: 'Write the ten-year open letter · pin it in the Alumni Hall · it matters.',              color: '#EF4444', emoji: '📜' },
+];
+
+interface AlumniReturnProgram {
+  id: string;
+  program: string;
+  who: string;
+  commitment: string;
+  payoff: string;
+  color: string;
+  emoji: string;
+}
+
+const ALUMNI_RETURN_PROGRAMS: AlumniReturnProgram[] = [
+  { id: 'arp-1', program: 'Guest crit · open studio',            who: '3+ years out · any discipline',        commitment: '2 hours · in person or online · one weekend.',                             payoff: 'Fresh eye for juniors · your own voice sharpened.',                color: '#00D4FF', emoji: '🪞' },
+  { id: 'arp-2', program: 'Mock interview camp',                  who: 'Tech · product · PR alumni',            commitment: 'Saturday · 10–4 · 4 rounds of 30-min.',                                    payoff: 'Seven juniors leave ready · one company may hire on the spot.',    color: '#A78BFA', emoji: '🎙️' },
+  { id: 'arp-3', program: 'Open letter · back to first-years',    who: 'Any alumnus · any year',                commitment: '800–1200 words · read-aloud on induction weekend.',                         payoff: 'The hardest onboarding question answered kindly.',                  color: '#F59E0B', emoji: '✉️' },
+  { id: 'arp-4', program: 'Field trip host · cities you live in', who: '5+ alumni within a city',               commitment: 'Half-day walk · one meal · one studio visit if possible.',                   payoff: 'A junior leaves seeing their own future more clearly.',              color: '#22C55E', emoji: '🚌' },
+  { id: 'arp-5', program: 'Bonfire week · closing camp',           who: 'Any alumnus returning in December',     commitment: 'Three nights on campus · one story · one skill-share.',                       payoff: 'The calendar keeps being the calendar · because you show up.',       color: '#EF4444', emoji: '🔥' },
+  { id: 'arp-6', program: 'Quarterly open office hours',           who: 'Any alumnus · any discipline',          commitment: '60 min · once a quarter · public booking page.',                               payoff: 'Juniors learn how to ask well · you meet the next version of you.',  color: '#FFD166', emoji: '🗓️' },
+  { id: 'arp-7', program: 'Archive rescue · digitise old work',    who: '2018 and before graduates',             commitment: 'One afternoon · scan · label · upload · share stories.',                        payoff: 'Twenty years of work · preserved · credited · findable.',           color: '#A78BFA', emoji: '🗄️' },
+];
+
+interface AlumniHonourList {
+  id: string;
+  honour: string;
+  recipient: string;
+  year: string;
+  citation: string;
+  color: string;
+  emoji: string;
+}
+
+const ALUMNI_HONOUR_LIST: AlumniHonourList[] = [
+  { id: 'ahl-1', honour: 'Guardian of the Grove',       recipient: 'Ramu chacha + alumni batch 2015',  year: '2023',   citation: 'Planted and guarded the extension grove · 3,000 trees · still visiting every season.',            color: '#22C55E', emoji: '🌳' },
+  { id: 'ahl-2', honour: 'Craft kept alive award',      recipient: 'Priya N. · content, 2017',          year: '2024',   citation: 'Eight years of Friday edits · unbroken streak of paying forward what was paid to her.',           color: '#F59E0B', emoji: '📝' },
+  { id: 'ahl-3', honour: 'Quiet builder medal',         recipient: 'Sameer M. · tech, 2015',            year: '2023',   citation: 'Seventeen pull-requests reviewed at midnight · no brag · no post · just the junior thanking him.',  color: '#00D4FF', emoji: '🔧' },
+  { id: 'ahl-4', honour: 'Hospitality laurel',          recipient: 'Sunita didi + 2018 batch',           year: '2024',   citation: 'Fed every returning alumnus · every bonfire · for a decade · with the same warm eyes.',           color: '#F472B6', emoji: '🍲' },
+  { id: 'ahl-5', honour: 'Bridge-builder award',        recipient: 'Dev P. · PR, 2018',                   year: '2023',   citation: 'Wrote forty-three pitches · landed twenty-eight · opened eleven press doors for the club.',       color: '#FFD166', emoji: '🌉' },
+  { id: 'ahl-6', honour: 'Keeper of the archive',        recipient: 'Arjun K. · photo, 2014',              year: '2024',   citation: 'Digitised ten years of prints · restored two lost collections · taught three juniors to do same.', color: '#A78BFA', emoji: '🗄️' },
+  { id: 'ahl-7', honour: 'Lifetime guardian',            recipient: 'Founding circle · 1998',              year: '2024',   citation: 'Built the grove · wrote the first covenant · still returns every bonfire without fail.',           color: '#EF4444', emoji: '🎖️' },
+];
+
+interface AlumniLetterHome {
+  id: string;
+  excerpt: string;
+  writer: string;
+  when: string;
+  color: string;
+  emoji: string;
+}
+
+const ALUMNI_LETTERS_HOME: AlumniLetterHome[] = [
+  { id: 'alh-1', excerpt: 'The grove held me when the city forgot me · come back when it forgets you too · it will · and it will be okay.',                                       writer: 'Priya N. · 2017',     when: 'Written from Berlin · 2021',      color: '#F59E0B', emoji: '🌳' },
+  { id: 'alh-2', excerpt: 'The only advice I trust anymore is the kind that was given slowly · by someone who had watched me long enough to mean it.',                            writer: 'Sameer M. · 2015',    when: 'From Bangalore · 2022',             color: '#00D4FF', emoji: '📝' },
+  { id: 'alh-3', excerpt: 'The rituals that survived · were the ones nobody tried to scale · scale quietly · stay strange · stay ours.',                                          writer: 'Ananya R. · 2016',    when: 'From Bombay · 2023',                color: '#F472B6', emoji: '🎨' },
+  { id: 'alh-4', excerpt: 'I never became the person in my year-one résumé · thank god · thank the club · for keeping me honest.',                                                writer: 'Arjun K. · 2014',     when: 'From Delhi · 2020',                 color: '#A78BFA', emoji: '📷' },
+  { id: 'alh-5', excerpt: 'The most expensive thing I learned was that kindness scales · and that it costs more than speed · pay it anyway.',                                    writer: 'Dev P. · 2018',        when: 'From Hyderabad · 2024',             color: '#FFD166', emoji: '🫂' },
+  { id: 'alh-6', excerpt: 'If you are the smartest person at the table · leave the table · go plant something · come back quieter.',                                              writer: 'Zara S. · 2020',       when: 'From Pune · 2024',                  color: '#22C55E', emoji: '🌱' },
+  { id: 'alh-7', excerpt: 'The club is a garden · not a ladder · please keep it a garden · or go find another garden · do not make it a ladder.',                                  writer: 'Ishita T. · 2013',     when: 'From Kolkata · 2019',                color: '#EF4444', emoji: '🌼' },
+];
+
+interface AlumniRegionCircle {
+  id: string;
+  region: string;
+  anchor: string;
+  meetups: string;
+  members: string;
+  color: string;
+  emoji: string;
+}
+
+const ALUMNI_REGION_CIRCLES: AlumniRegionCircle[] = [
+  { id: 'arc-1', region: 'Bangalore circle',     anchor: 'Priya + Sameer',                meetups: 'Third Sunday · breakfast walk',      members: '42 active · 28 joined last year',         color: '#00D4FF', emoji: '🌆' },
+  { id: 'arc-2', region: 'Delhi + NCR circle',    anchor: 'Arjun + Ritika',                 meetups: 'Last Saturday · rooftop potluck',   members: '38 active · 19 first-jobbers',           color: '#F472B6', emoji: '🏙️' },
+  { id: 'arc-3', region: 'Bombay circle',         anchor: 'Ananya + Tanvi',                 meetups: 'First Saturday · studio visit',     members: '34 active · design-heavy',                color: '#A78BFA', emoji: '🌉' },
+  { id: 'arc-4', region: 'Hyderabad circle',      anchor: 'Dev + Kavya',                     meetups: 'Alternate Sundays · chai + walk',   members: '24 active · mostly PR + tech',             color: '#FFD166', emoji: '📡' },
+  { id: 'arc-5', region: 'Pune circle',            anchor: 'Zara + Ravi',                     meetups: 'Monthly · film night',              members: '22 active · storytelling-heavy',         color: '#F59E0B', emoji: '🎬' },
+  { id: 'arc-6', region: 'Berlin + EU circle',    anchor: 'Priya (roaming)',                  meetups: 'Quarterly · wherever someone hosts', members: '11 active · growing',                      color: '#EF4444', emoji: '🛫' },
+  { id: 'arc-7', region: 'New York + US circle',  anchor: 'Ritika (remote)',                  meetups: 'Quarterly · zoom + one potluck',     members: '14 active · mostly 2018–2022',            color: '#22C55E', emoji: '🗽' },
+];
+
+interface AlumniCraftArchive {
+  id: string;
+  archive: string;
+  period: string;
+  keeper: string;
+  size: string;
+  status: string;
+  color: string;
+  emoji: string;
+}
+
+const ALUMNI_CRAFT_ARCHIVES: AlumniCraftArchive[] = [
+  { id: 'aca-1', archive: 'Posters · 2008–2015',              period: '7 years',  keeper: 'Ananya R.',              size: '1,240 files · 8.1 GB',    status: 'Digitised · tagged · public share link live.',        color: '#F472B6', emoji: '🎨' },
+  { id: 'aca-2', archive: 'Print editorial · magazines',      period: '2010–2020', keeper: 'Priya N.',               size: '64 issues · 2.4 GB',       status: 'Scanned · captions 80% done · searchable.',           color: '#F59E0B', emoji: '📰' },
+  { id: 'aca-3', archive: 'Open-source code · internal',       period: '2012–2024', keeper: 'Sameer M.',              size: '22 repos · 4 languages',   status: 'Hosted on our org · MIT-licensed · documented.',     color: '#00D4FF', emoji: '💻' },
+  { id: 'aca-4', archive: 'Documentary shorts',                period: '2014–2023', keeper: 'Zara S.',                size: '18 films · 310 GB',        status: 'Cold storage + DVD copies · survivors curated.',     color: '#A78BFA', emoji: '🎞️' },
+  { id: 'aca-5', archive: 'Nature photography',                 period: '2006–2024', keeper: 'Arjun K.',               size: '5,800 frames · 92 GB',      status: 'RAW archive · contact sheets · essays indexed.',      color: '#22C55E', emoji: '📷' },
+  { id: 'aca-6', archive: 'Press coverage scrapbook',            period: '1998–2024', keeper: 'Dev P.',                  size: '310 clippings · 26 years',   status: 'Scanned · cross-referenced · on display in library.', color: '#FFD166', emoji: '🗞️' },
+  { id: 'aca-7', archive: 'Handwritten journal stack',           period: '1998–2008', keeper: 'Founding circle',          size: '12 notebooks · fragile',     status: 'Archive-safe box · read-only visits by appointment.', color: '#EF4444', emoji: '📓' },
+];
+
+// =====================================================
+// Phase 3aq: deeper alumni structures — round 4
+// =====================================================
+
+interface AlumniCareerLetter {
+  id: string;
+  year: string;
+  excerpt: string;
+  writer: string;
+  role: string;
+  color: string;
+  emoji: string;
+}
+
+const ALUMNI_CAREER_LETTERS: AlumniCareerLetter[] = [
+  { id: 'acl-1', year: '2014', excerpt: 'First job · copywriting at a tiny agency · 12k a month · one room · one window. I rewrote brochures nobody asked for · at night · for practice. Ten years later · I run content at a firm I admire. The boredom was the curriculum.',        writer: 'Rhea N.', role: 'Head of content · edtech',                   color: '#F59E0B', emoji: '🪔' },
+  { id: 'acl-2', year: '2015', excerpt: 'First offer · rejected · for a scholarship that never came. Spent a year tutoring · coding at midnight · doubting everything. The second job came from a LinkedIn message from someone who liked my portfolio. Portfolio was the raft.',     writer: 'Dev P.',  role: 'Staff engineer · fintech',                    color: '#00D4FF', emoji: '🛟' },
+  { id: 'acl-3', year: '2017', excerpt: 'I cried in a pantry after my first review. The feedback was right. I took it home · wrote it down · kept one page of it in a notebook. Every year I re-read it. It is still sharp · I am still reading it. Feedback that lands is rare.',    writer: 'Zara S.', role: 'Design lead · healthcare',                    color: '#F472B6', emoji: '🗒️' },
+  { id: 'acl-4', year: '2018', excerpt: 'Left the big firm after 18 months. It was the right place · and also not for me. No drama · just clarity. A year of freelancing · a year of quiet · the firm I run now started as a tax rebate and a single client who trusted me.',          writer: 'Arjun K.', role: 'Founder · independent studio',                color: '#A78BFA', emoji: '🛠️' },
+  { id: 'acl-5', year: '2020', excerpt: 'Hospital hallways · in a city I did not know · phone low · afraid. My alumni group fund paid three months of rent. I did not ask · they noticed. I will spend my life making sure someone after me does not have to ask either.',                writer: 'Meera V.', role: 'Program lead · public health',               color: '#22C55E', emoji: '🫂' },
+  { id: 'acl-6', year: '2021', excerpt: 'Remote job · different timezone · slow learning · lots of lonely lunches. Found a running group in the neighbourhood · met a mentor at a bakery · life opened slowly · not in the job at all. Jobs are · sometimes · not where the life is.', writer: 'Rehan Q.', role: 'Product manager · climate',                   color: '#FFD166', emoji: '🏃' },
+  { id: 'acl-7', year: '2023', excerpt: 'Teaching a Saturday class at a government school · twelve months in. One kid asked me why I travel every weekend. Said I missed my school. Was not quite true · but the longing was. The club was the closest I had to a school that saw me.', writer: 'Nidhi P.', role: 'Associate · policy · volunteer teacher',        color: '#EF4444', emoji: '📚' },
+];
+
+interface AlumniVillageFund {
+  id: string;
+  circle: string;
+  purpose: string;
+  corpus: string;
+  active: string;
+  steward: string;
+  color: string;
+  emoji: string;
+}
+
+const ALUMNI_VILLAGE_FUNDS: AlumniVillageFund[] = [
+  { id: 'avf-1', circle: 'Tuition top-ups',                purpose: 'Tuition gap · small amounts · fast · no interview.',                   corpus: '~₹8,40,000',    active: 'Open · disburse monthly',       steward: 'Alumni · 3-member panel',           color: '#00D4FF', emoji: '🎓' },
+  { id: 'avf-2', circle: 'Medical emergency',                purpose: 'Emergency medical · up to ₹50,000 · same-day transfers.',                 corpus: '~₹11,60,000',   active: 'Rolling · 24 hr response',         steward: 'Medical-duty alumni pair',             color: '#EF4444', emoji: '🩺' },
+  { id: 'avf-3', circle: 'Rent buffer',                        purpose: 'Two months\' rent for alumni in transition · repay when able.',              corpus: '~₹4,20,000',     active: 'Open · quiet · no paperwork',         steward: 'Alumni · anonymous pair',               color: '#F472B6', emoji: '🏠' },
+  { id: 'avf-4', circle: 'Travel for interviews',                   purpose: 'Flights · buses · stay during final-round interviews.',                      corpus: '~₹2,60,000',      active: 'Open · flexible · simple form',           steward: 'Career-services alumni',                      color: '#FFD166', emoji: '✈️' },
+  { id: 'avf-5', circle: 'Seed for first venture',                      purpose: '₹25,000 to ₹1,00,000 · for alumni starting something small.',                    corpus: '~₹6,80,000',      active: 'Quarterly cycle · 3 rounds',                steward: 'Venture alumni · 4 reviewers',                color: '#A78BFA', emoji: '🌱' },
+  { id: 'avf-6', circle: 'Rest fund',                                   purpose: 'Pay for a week of actual rest · groceries · no work · no guilt.',                    corpus: '~₹3,40,000',       active: 'Open · anonymous · self-nominate',          steward: 'Wellness alumni lead',                         color: '#22C55E', emoji: '🏝️' },
+  { id: 'avf-7', circle: 'Family fund',                                     purpose: 'One-off help · family events · funerals · weddings · small amounts.',                 corpus: '~₹5,20,000',       active: 'Open · private · caring-hand response',        steward: 'Alumni · community lead',                         color: '#F59E0B', emoji: '🫱' },
+];
+
+interface AlumniLineage {
+  id: string;
+  ancestor: string;
+  inheritor: string;
+  craft: string;
+  whatPassed: string;
+  color: string;
+  emoji: string;
+}
+
+const ALUMNI_LINEAGES: AlumniLineage[] = [
+  { id: 'aln-1', ancestor: 'Shreya R. · 1998',           inheritor: 'Priya N. · 2008',             craft: 'Content voice · long-form essays',                 whatPassed: 'A drafting template · a reading list · "cut the first three paragraphs" rule.',          color: '#F59E0B', emoji: '✍️' },
+  { id: 'aln-2', ancestor: 'Arjun M. · 2001',              inheritor: 'Rhea T. · 2014',               craft: 'Photography · grove chronicles',                     whatPassed: 'A beat-up Pentax · an unwritten rule to photograph slowly · without flash · without demanding.',   color: '#00D4FF', emoji: '📷' },
+  { id: 'aln-3', ancestor: 'Priya N. · 2005',                inheritor: 'Kabir S. · 2018',               craft: 'Council leadership · quiet dissent',                    whatPassed: 'A notebook of "things I got wrong" · and a copy of "Rest is Resistance" marked in margins.', color: '#A78BFA', emoji: '🪔' },
+  { id: 'aln-4', ancestor: 'Dev P. · 2008',                     inheritor: 'Sameer M. · 2019',                 craft: 'Web · accessibility-first',                                whatPassed: 'A PR checklist · a list of 40 screen-reader users who reviewed work · humility about defaults.',  color: '#F472B6', emoji: '♿' },
+  { id: 'aln-5', ancestor: 'Meera V. · 2010',                       inheritor: 'Ria B. · 2021',                       craft: 'Public health · rural deployment',                              whatPassed: 'A two-bag packing list · 16 field-learnt phrases · a trust-first interview template.',               color: '#22C55E', emoji: '🩺' },
+  { id: 'aln-6', ancestor: 'Zara S. · 2013',                             inheritor: 'Isha L. · 2023',                           craft: 'Design systems · maintainable',                                  whatPassed: 'A Figma library named "grandmother" · governance doc · one-line rule: "names outlive designs."',     color: '#FFD166', emoji: '🎨' },
+  { id: 'aln-7', ancestor: 'Kabir S. · 2015',                                inheritor: 'Nidhi P. · 2024',                              craft: 'Alumni stewardship',                                               whatPassed: 'A phone-list of 200 alumni · a note about who to call in what situation · privacy commitments.',        color: '#EF4444', emoji: '📞' },
+];
+
+interface AlumniAdvisoryTrack {
+  id: string;
+  track: string;
+  audience: string;
+  cadence: string;
+  format: string;
+  color: string;
+  emoji: string;
+}
+
+const ALUMNI_ADVISORY_TRACKS: AlumniAdvisoryTrack[] = [
+  { id: 'aat-1', track: 'Resume · portfolio review',                   audience: 'Final-year students + 1-2 yr alumni',                 cadence: 'Every 2 weeks',               format: 'Two 30-min slots · written feedback sent within 72 hrs.',                      color: '#00D4FF', emoji: '📄' },
+  { id: 'aat-2', track: 'Interview rehearsal · mock interviews',           audience: 'Students in final rounds',                             cadence: 'Weekly during hiring',             format: '45 min · 3 questions · recorded with consent · reviewed together.',                 color: '#F59E0B', emoji: '🎤' },
+  { id: 'aat-3', track: 'Founder office hours',                               audience: 'Any alumni building a venture',                            cadence: 'Monthly · first Saturday',             format: 'Public agenda · open · small group · pair founders with mentors.',                     color: '#A78BFA', emoji: '🌱' },
+  { id: 'aat-4', track: 'Grad-school planning',                                  audience: 'Aspirants for Masters · PhD',                                    cadence: 'Quarterly',                              format: 'Panel · 4 alumni from different programs · Q&A · shared doc with links.',                 color: '#F472B6', emoji: '🎓' },
+  { id: 'aat-5', track: 'Switch-career conversations',                               audience: 'Alumni considering a pivot',                                      cadence: 'Monthly',                                  format: '1:1 · confidential · no obligation · one hour · active listening first.',                    color: '#FFD166', emoji: '🔀' },
+  { id: 'aat-6', track: 'Life-design clinic',                                             audience: 'Alumni in 30s reassessing',                                          cadence: 'Bi-annual · weekend retreat',                   format: 'Two days · 8 alumni · facilitator · daily walk · one quiet meal.',                             color: '#22C55E', emoji: '🧭' },
+  { id: 'aat-7', track: 'Visa + relocation prep',                                               audience: 'Alumni moving abroad',                                                    cadence: 'On demand',                                         format: 'Checklist · document templates · alumni-in-country connects · culture notes.',                   color: '#EF4444', emoji: '🌍' },
+];
+
+interface AlumniRememberedAtPark {
+  id: string;
+  name: string;
+  marker: string;
+  visitedBy: string;
+  note: string;
+  color: string;
+  emoji: string;
+}
+
+const ALUMNI_REMEMBERED: AlumniRememberedAtPark[] = [
+  { id: 'arp-1', name: 'Aditi V. · 2002',        marker: 'Pipal tree near library steps',                        visitedBy: 'Every reunion · class of 2002',                note: 'Taught us that editing is love · we sit under her tree and read a page each.',                         color: '#22C55E', emoji: '🌳' },
+  { id: 'arp-2', name: 'Rahul M. · 2006',            marker: 'Bench by the walkway',                                     visitedBy: 'Monthly · sustainability wing',                     note: 'Sat here every morning · fed two stray cats · we still bring biscuits.',                                color: '#F59E0B', emoji: '🪑' },
+  { id: 'arp-3', name: 'Pragya B. · 2011',                 marker: 'Gulmohar at the north gate',                                visitedBy: 'Every spring · when it flowers',                          note: 'Her handwriting is engraved on a stone at its base · quote she wrote in a margin at 19.',                 color: '#EF4444', emoji: '🌺' },
+  { id: 'arp-4', name: 'Karan J. · 2013',                      marker: 'Reading room corner · window seat',                            visitedBy: 'Finals week · quietly · alone',                             note: 'Studied here every evening · someone left a bookmark of his here · we\'ve kept it clipped on the window.', color: '#00D4FF', emoji: '📖' },
+  { id: 'arp-5', name: 'Sana K. · 2015',                           marker: 'Mess kitchen · little blackboard',                                   visitedBy: 'Before big cook-offs · always',                                  note: 'Favourite recipe written in chalk · never erased · we trace over it each year.',                            color: '#F472B6', emoji: '🍳' },
+  { id: 'arp-6', name: 'Aryan T. · 2017',                               marker: 'Running track · mile-2 marker',                                          visitedBy: 'Every run-club · mile-2 silence',                                     note: 'Ran here every morning · we keep 30 seconds of quiet at mile 2 · his pace.',                                  color: '#A78BFA', emoji: '🏃' },
+  { id: 'arp-7', name: 'Iman F. · 2019',                                    marker: 'Amphitheatre · left side · row 3 · seat 4',                                        visitedBy: 'Every event · chair kept empty',                                          note: 'Hated being centre-stage · loved being in the audience · we keep her seat open · always.',                        color: '#FFD166', emoji: '🎭' },
+];
+
+// =====================================================
+// Phase 3aw: deeper alumni structures — round 5
+// =====================================================
+
+interface AlumniHomecoming {
+  id: string;
+  year: string;
+  theme: string;
+  attended: string;
+  moment: string;
+  color: string;
+  emoji: string;
+}
+
+const ALUMNI_HOMECOMINGS: AlumniHomecoming[] = [
+  { id: 'ahc-1', year: '2014 · first homecoming',                    theme: 'Ten years · the founders return',                    attended: '8 founding members · 24 early cohort',                   moment: 'Planted the original grove\'s 100th sapling together · everyone carried one.',                       color: '#22C55E', emoji: '🌱' },
+  { id: 'ahc-2', year: '2016 · second homecoming',                         theme: 'Letters we never sent',                                     attended: '60 alumni across 8 cohorts',                                 moment: 'Each wrote one letter to a mentor · read aloud · sealed · shipped in the morning.',                                 color: '#F59E0B', emoji: '✉️' },
+  { id: 'ahc-3', year: '2018 · third homecoming',                                  theme: 'Hands that built it',                                                attended: '80 alumni + 30 current',                                            moment: 'Led workshops on their craft · juniors chose what to attend · everyone taught.',                                            color: '#F472B6', emoji: '🛠️' },
+  { id: 'ahc-4', year: '2020 · fourth · virtual',                                            theme: 'Still here · across distance',                                                      attended: '140 alumni · 12 countries',                                                       moment: 'Bake-along · same recipe across time zones · one kind letter to each current member.',                                               color: '#A78BFA', emoji: '💻' },
+  { id: 'ahc-5', year: '2022 · fifth homecoming',                                                      theme: 'Retrospective · 25 years',                                                                    attended: '200 alumni + full council',                                                                     moment: 'A walk through the archives · four photo books launched · one founder cried · she meant to.',                                                   color: '#00D4FF', emoji: '📚' },
+  { id: 'ahc-6', year: '2024 · sixth homecoming',                                                                   theme: 'Hands we pass it to',                                                                                  attended: '240 alumni + 60 current',                                                                                        moment: 'Mentor pairings announced · 40 new lines formed · the grove kept growing.',                                                                     color: '#FFD166', emoji: '🔗' },
+  { id: 'ahc-7', year: '2026 · seventh · upcoming',                                                                             theme: 'Thirty years of grove',                                                                                                 attended: 'Expected 300+ alumni',                                                                                                          moment: 'Planned · a new public library wing funded by alumni · opening to the whole campus.',                                                                  color: '#EF4444', emoji: '🏛️' },
+];
+
+interface AlumniTradition {
+  id: string;
+  name: string;
+  originYear: string;
+  practice: string;
+  keptBy: string;
+  color: string;
+  emoji: string;
+}
+
+const ALUMNI_TRADITIONS: AlumniTradition[] = [
+  { id: 'atr-1', name: 'The steel mug',                                       originYear: '1999',                         practice: 'Every member gets a numbered steel mug · stays with them for life · refilled at every visit.',                           keptBy: 'First cohort · still active',                            color: '#00D4FF', emoji: '☕' },
+  { id: 'atr-2', name: 'Signing the club book',                                      originYear: '2001',                                 practice: 'On joining · a signature · on leaving · a note · 24 years of handwriting preserved.',                                         keptBy: 'Archive keeper · rotating role',                                    color: '#F59E0B', emoji: '📖' },
+  { id: 'atr-3', name: 'Planting on joining',                                                 originYear: '2003',                                           practice: 'Each member plants one sapling on joining · returns on leaving · photograph both years.',                                               keptBy: 'Grove keeper · on staff',                                                 color: '#22C55E', emoji: '🌿' },
+  { id: 'atr-4', name: 'Friday read-aloud',                                                            originYear: '2006',                                                       practice: 'Last meeting of the week · someone reads a chosen text · no discussion required.',                                                              keptBy: 'Content wing · rotating',                                                           color: '#A78BFA', emoji: '📜' },
+  { id: 'atr-5', name: 'Chair always kept · Iman\'s seat',                                                                     originYear: '2019',                                                                  practice: 'At every event · one chair in row 3 is kept empty · in honour of Iman F.',                                                                                      keptBy: 'Council · every event',                                                                       color: '#FFD166', emoji: '💺' },
+  { id: 'atr-6', name: 'Mile-2 silence',                                                                                               originYear: '2020',                                                                            practice: 'Every run-club · 30 seconds of silence at mile 2 · Aryan\'s pace · nothing more.',                                                                                                  keptBy: 'Run club · daily',                                                                                   color: '#F472B6', emoji: '🏃' },
+  { id: 'atr-7', name: 'The margin-bookmark',                                                                                                        originYear: '2013',                                                                                      practice: 'Karan\'s bookmark stays clipped to the reading room window · never moved.',                                                                                                                keptBy: 'Library · daily rotation',                                                                                                color: '#EF4444', emoji: '🔖' },
+];
+
+interface AlumniGrovePlot {
+  id: string;
+  plot: string;
+  founded: string;
+  saplings: string;
+  steward: string;
+  color: string;
+  emoji: string;
+}
+
+const ALUMNI_GROVE_PLOTS: AlumniGrovePlot[] = [
+  { id: 'agp-1', plot: 'Founders\' grove · east campus',                             founded: '1998 · year one',                                     saplings: '100 · neem · peepal · jamun',                                      steward: 'Grove keeper + founding members',                                  color: '#22C55E', emoji: '🌳' },
+  { id: 'agp-2', plot: 'Second cohort · north slope',                                          founded: '2000',                                                            saplings: '80 · gulmohar · kachnar',                                                       steward: 'Second cohort · annual visit',                                                    color: '#F472B6', emoji: '🌸' },
+  { id: 'agp-3', plot: 'Millennium grove · lake-side',                                                     founded: '2005',                                                                         saplings: '120 · banyan · mango',                                                                       steward: 'Rotating keepers · alumni+students',                                                                 color: '#F59E0B', emoji: '🥭' },
+  { id: 'agp-4', plot: 'Memorial grove · far path',                                                                     founded: '2013',                                                                                          saplings: '30 trees · one per alumnus remembered',                                                                                  steward: 'Archive keeper · founders council',                                                                                    color: '#EF4444', emoji: '🕯️' },
+  { id: 'agp-5', plot: 'Birthday grove · recent',                                                                                   founded: '2018',                                                                                                        saplings: '50 · every new member plants on joining',                                                                                                   steward: 'Wellness lead + grove keeper',                                                                                                  color: '#00D4FF', emoji: '🎂' },
+  { id: 'agp-6', plot: 'Farewell grove · west slope',                                                                                            founded: '2020',                                                                                                                    saplings: '40 · every departing senior · third year',                                                                                                                  steward: 'Outgoing seniors + mentors',                                                                                                                  color: '#A78BFA', emoji: '🍂' },
+  { id: 'agp-7', plot: 'Global grove · corners of world',                                                                                                      founded: '2022',                                                                                                                                           saplings: '200+ · planted by alumni wherever they went · shared photos',                                                                                                                             steward: 'Global alumni chapter · leads',                                                                                                                     color: '#FFD166', emoji: '🌍' },
+];
+
+// =====================================================
+// Phase 3bc: deeper alumni structures — round 6
+// =====================================================
+
+interface AlumniChapterCity {
+  id: string;
+  city: string;
+  founded: string;
+  members: string;
+  rituals: string;
+  color: string;
+  emoji: string;
+}
+
+const ALUMNI_CHAPTER_CITIES: AlumniChapterCity[] = [
+  { id: 'acc-1', city: 'Bengaluru chapter',            founded: '2007',                members: '160+ active alumni',                    rituals: 'Monthly chai + code · Cubbon park walk · annual homecoming drive.',                   color: '#00D4FF', emoji: '🧑‍💻' },
+  { id: 'acc-2', city: 'Delhi NCR chapter',                       founded: '2009',                             members: '120+ active alumni',                                rituals: 'Quarterly bookshop meet · India Habitat film screen · Holi chai picnic.',                                           color: '#F59E0B', emoji: '🏛️' },
+  { id: 'acc-3', city: 'Mumbai chapter',                                      founded: '2011',                                          members: '95+ active alumni',                                                  rituals: 'Bandra bandstand walk · annual print-zine issue · monsoon poetry night.',                                                   color: '#F472B6', emoji: '🌊' },
+  { id: 'acc-4', city: 'Hyderabad chapter',                                                  founded: '2014',                                                     members: '70+ active alumni',                                                                 rituals: 'Shamshabad film shoot · Mozamjahi market crawl · alumni biryani fund.',                                                                     color: '#A78BFA', emoji: '🍛' },
+  { id: 'acc-5', city: 'Pune chapter',                                                                  founded: '2015',                                                                   members: '60+ active alumni',                                                                                  rituals: 'Law college hill walks · FC Road reading circle · yearly co-work sprint.',                                                                            color: '#22C55E', emoji: '📚' },
+  { id: 'acc-6', city: 'Chennai chapter',                                                                              founded: '2017',                                                                                members: '55+ active alumni',                                                                                                 rituals: 'Marina beach cleanup · alumni photo-walk · annual tech-expo stand.',                                                                                            color: '#FFD166', emoji: '🏖️' },
+  { id: 'acc-7', city: 'Kolkata chapter',                                                                                         founded: '2019',                                                                                                     members: '40+ active alumni',                                                                                                                   rituals: 'Coffee-house addas · book-launch nights · annual Durga pandal crawl.',                                                                                                    color: '#EF4444', emoji: '🎭' },
+  { id: 'acc-8', city: 'Global chapter',                                                                                                     founded: '2021',                                                                                                                       members: '180+ active alumni',                                                                                                                                   rituals: 'Monthly online coffee · yearly video yearbook · co-signed open letters.',                                                                                                                  color: '#16A34A', emoji: '🌍' },
+];
+
+interface AlumniHelpLedger {
+  id: string;
+  ask: string;
+  offered: string;
+  when: string;
+  outcome: string;
+  color: string;
+  emoji: string;
+}
+
+const ALUMNI_HELP_LEDGER: AlumniHelpLedger[] = [
+  { id: 'ahl-1', ask: 'First-job review for 5 freshers',                   offered: 'Priya N. (alumna · 2004 batch)',               when: '2024 · March',                                outcome: '5 offers · 3 accepted · mock-interview deck published by PR wing.',                        color: '#00D4FF', emoji: '📞' },
+  { id: 'ahl-2', ask: 'Mental-health panel for exam month',                            offered: 'Meera K. (alumna · 2010 batch · clinical psych)',                       when: '2024 · October',                                                   outcome: 'Panel reached 200+ students · wellness helpline booklet printed and distributed.',                                   color: '#22C55E', emoji: '🌱' },
+  { id: 'ahl-3', ask: 'Portfolio review for design cohort',                                           offered: 'Kabir V. (alum · 2012 batch · senior designer)',                                                when: '2025 · January',                                                                     outcome: '9 portfolios reviewed · 3 seniors shortlisted by agency · portfolio template v3 published.',                                     color: '#F472B6', emoji: '🎨' },
+  { id: 'ahl-4', ask: 'Setup session on fellowship applications',                                                       offered: 'Tanvi P. (alumna · 2009 batch · Rhodes scholar)',                                                       when: '2025 · February',                                                                                      outcome: '4 strong apps · 2 advanced to interview round · process doc archived.',                                                             color: '#F59E0B', emoji: '🎓' },
+  { id: 'ahl-5', ask: 'Legal help for campus safety policy',                                                                        offered: 'Rohan S. (alum · 2008 batch · lawyer at NLS)',                                                                         when: '2024 · August',                                                                                                       outcome: 'Policy draft revised · campus safety manual published · adopted into student charter.',                                                            color: '#EF4444', emoji: '⚖️' },
+  { id: 'ahl-6', ask: 'Startup legal setup review',                                                                                                offered: 'Nidhi B. (alumna · 2013 batch · VC operator)',                                                                                                        when: '2025 · March',                                                                                                                                 outcome: '3 alumni startups · cap tables reviewed · advisory notes now stored in alumni vault.',                                                                         color: '#A78BFA', emoji: '💼' },
+  { id: 'ahl-7', ask: 'Photo-scholarship mentor for 4 juniors',                                                                                                          offered: 'Iman R. (alum · 2011 batch · documentary photographer)',                                                                                                                             when: '2025 · May',                                                                                                                                                                  outcome: 'All 4 landed paid mentorships · one won national award · mentorship model open-sourced.',                                                                                         color: '#22C55E', emoji: '📷' },
+  { id: 'ahl-8', ask: 'Community care fund for members in crisis',                                                                                                                     offered: 'Global chapter · collective contribution',                                                                                                                                                when: '2024–25 · ongoing',                                                                                                                                                                            outcome: '₹3.4L disbursed · 7 members supported · process is anonymous, fast and quiet.',                                                                                                          color: '#FFD166', emoji: '🫶' },
+];
+
+interface AlumniReunionFormat {
+  id: string;
+  format: string;
+  cadence: string;
+  highlights: string;
+  keeper: string;
+  color: string;
+  emoji: string;
+}
+
+const ALUMNI_REUNION_FORMATS: AlumniReunionFormat[] = [
+  { id: 'arf-1', format: 'Year-end bonfire · on-campus',                    cadence: 'Annual · December',                  highlights: 'Letters read aloud · sealed envelopes opened · gratitude circle · slow midnight tea.',                    keeper: 'Council chair + alumni liaison',                   color: '#EF4444', emoji: '🔥' },
+  { id: 'arf-2', format: 'Milestone homecoming · 10/20/25-yr batches',                             cadence: 'Each decade mark',                                   highlights: 'Campus tour · classroom sit-in · grove visit · batch plants new sapling.',                                            keeper: 'Alumni liaison + outgoing chair',                                   color: '#22C55E', emoji: '🌳' },
+  { id: 'arf-3', format: 'Chapter city meetups',                                               cadence: 'Quarterly · per city',                                                 highlights: 'Local venue · 20–60 alumni · one story each · one alumni-led mini workshop.',                                                      keeper: 'City chapter lead',                                                      color: '#00D4FF', emoji: '🏙️' },
+  { id: 'arf-4', format: 'Online yearbook release',                                                           cadence: 'Annual · August',                                                              highlights: '8-page yearbook · alumni essays · photos · numbers · sent to all alumni PDF + print-to-order.',                                                keeper: 'Content wing + alumni liaison',                                                                color: '#F59E0B', emoji: '📰' },
+  { id: 'arf-5', format: 'Career panels for students',                                                                         cadence: 'Bi-annual',                                                                                   highlights: '5 alumni across 5 paths · 30-min panel · 30-min 1:1 · students leave with notes.',                                                                      keeper: 'Alumni liaison + student council',                                                                         color: '#F472B6', emoji: '🎤' },
+  { id: 'arf-6', format: 'Global summit · online',                                                                                         cadence: 'Bi-annual',                                                                                                         highlights: '6-hour conference · keynote · lightning talks · breakout rooms · time zones welcomed.',                                                                                keeper: 'Global chapter + PR wing',                                                                                             color: '#A78BFA', emoji: '🌐' },
+  { id: 'arf-7', format: 'Memorial visits',                                                                                                             cadence: 'Annual · when needed',                                                                                                                 highlights: 'Sapling planting for remembered alumni · names read aloud · silence · tea.',                                                                                                          keeper: 'Archive keeper + council chair',                                                                                                             color: '#FFD166', emoji: '🕯️' },
+  { id: 'arf-8', format: 'Slow returns · any time',                                                                                                                  cadence: 'Always open',                                                                                                                                           highlights: 'Any alum may return to campus any day · steel mug waits · chair waits · no RSVP.',                                                                                                                 keeper: 'Whoever is there',                                                                                                                              color: '#16A34A', emoji: '🫖' },
+];
+
+interface AlumniLetterBox {
+  id: string;
+  kind: string;
+  opened: string;
+  excerpt: string;
+  color: string;
+  emoji: string;
+}
+
+const ALUMNI_LETTER_BOX: AlumniLetterBox[] = [
+  { id: 'alb-1', kind: 'Sealed-intentions letter',            opened: '2024 · December · 10-yr mark',          excerpt: '"I hoped to make one piece of work that someone quoted years later. I did. It was small. It was enough."',        color: '#22C55E', emoji: '🔏' },
+  { id: 'alb-2', kind: 'Letter-to-your-future-self',                       opened: '2025 · February · 5-yr mark',                         excerpt: '"Be gentler with your drafts. Writers are not timelines. The voice you are finding will keep finding you."',                               color: '#F59E0B', emoji: '📜' },
+  { id: 'alb-3', kind: 'Mentor-thanks letter',                                         opened: '2024 · June · at homecoming',                                          excerpt: '"You let me redo the pitch eight times. I still hear your line: clarity is care. I pass it on weekly."',                                            color: '#F472B6', emoji: '🙏' },
+  { id: 'alb-4', kind: 'Farewell bonfire letter',                                                       opened: '2024 · December · bonfire',                                                               excerpt: '"I am leaving but I am not leaving. The grove is my second address. My tree is labelled. I\'ll water it when I pass."',                                color: '#EF4444', emoji: '🔥' },
+  { id: 'alb-5', kind: 'Letter from alumni to first-years',                                                                    opened: '2025 · August · induction',                                                                                   excerpt: '"Start a habit of writing two sentences a day. At the end of year one you will be a person I wish I had been."',                                    color: '#00D4FF', emoji: '🪶' },
+  { id: 'alb-6', kind: 'Public letter · open online',                                                                                         opened: '2025 · June · after controversy',                                                                                                      excerpt: '"We were kinder than we needed to be. We are harder on ourselves than we deserve. We keep showing up."',                                                         color: '#A78BFA', emoji: '📬' },
+  { id: 'alb-7', kind: 'Letter to campus safety staff',                                                                                                    opened: '2025 · January · annual thanks',                                                                                                                     excerpt: '"You are the first face we see at 9 PM. You remember our names. You let us lock up. Thank you a hundred times."',                                            color: '#FFD166', emoji: '✉️' },
+  { id: 'alb-8', kind: 'Letter sealed for 25-yr reunion',                                                                                                                 opened: '2026 · December · projected',                                                                                                                                            excerpt: '"[to be opened] Dear future self · I am writing this in the noise of now · so that you can read it in the quiet of later."',                                                                            color: '#16A34A', emoji: '🕰️' },
 ];
 
 const AlumniScreen: React.FC = () => {
-  const [selectedBatch, setSelectedBatch] = useState<string>('all');
+  // -------------- State ------------------
+  const [selectedBatch, setSelectedBatch] = useState<'all' | string>('all');
+  const [selectedSector, setSelectedSector] = useState<SectorId>('all');
+  const [selectedCompany, setSelectedCompany] = useState<'all' | string>('all');
   const [searchQuery, setSearchQuery] = useState('');
-  const [alumni, setAlumni] = useState<Alumni[]>(ALUMNI_DATA);
-  const [filteredAlumni, setFilteredAlumni] = useState<Alumni[]>(ALUMNI_DATA);
-  const [selectedAlumni, setSelectedAlumni] = useState<Alumni | null>(null);
+  const [sortKey, setSortKey] = useState<SortKey>('recent-batch');
+  const [viewMode, setViewMode] = useState<ViewMode>('list');
+  const [onlyMentors, setOnlyMentors] = useState(false);
+  const [onlyFeatured, setOnlyFeatured] = useState(false);
+  const [selectedAlumni, setSelectedAlumni] = useState<ExtAlumni | null>(null);
   const [showAlumniModal, setShowAlumniModal] = useState(false);
+  const [showSortMenu, setShowSortMenu] = useState(false);
+  const [showCompanyMenu, setShowCompanyMenu] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  const animationValues = useRef(Array.from({ length: 15 }, () => ({ opacity: new Animated.Value(0), translateY: new Animated.Value(50) }))).current;
+  // -------------- Animations -------------
+  const headerAnim = useRef(new Animated.Value(0)).current;
+  const statsAnim = useRef(new Animated.Value(0)).current;
+  const sectorAnim = useRef(new Animated.Value(0)).current;
+  const batchAnim = useRef(new Animated.Value(0)).current;
+  const listAnim = useRef(new Animated.Value(0)).current;
+  const modalScale = useRef(new Animated.Value(0.9)).current;
+  const modalOpacity = useRef(new Animated.Value(0)).current;
+  const testimonialIndex = useRef(new Animated.Value(0)).current;
 
-  useEffect(() => { startAnimations(); }, []);
-  useEffect(() => { filterAlumni(); }, [selectedBatch, searchQuery]);
+  // -------------- Effects ----------------
+  useEffect(() => {
+    Animated.stagger(120, [
+      Animated.timing(headerAnim, {
+        toValue: 1,
+        duration: ANIM.duration.slow,
+        easing: ANIM.easing.out,
+        useNativeDriver: true,
+      }),
+      Animated.timing(statsAnim, {
+        toValue: 1,
+        duration: ANIM.duration.slow,
+        easing: ANIM.easing.out,
+        useNativeDriver: true,
+      }),
+      Animated.timing(sectorAnim, {
+        toValue: 1,
+        duration: ANIM.duration.slow,
+        easing: ANIM.easing.out,
+        useNativeDriver: true,
+      }),
+      Animated.timing(batchAnim, {
+        toValue: 1,
+        duration: ANIM.duration.slow,
+        easing: ANIM.easing.out,
+        useNativeDriver: true,
+      }),
+      Animated.timing(listAnim, {
+        toValue: 1,
+        duration: ANIM.duration.slow,
+        easing: ANIM.easing.out,
+        useNativeDriver: true,
+      }),
+    ]).start();
 
-  const startAnimations = () => {
-    animationValues.forEach((anim, index) => {
+    const timer = setTimeout(() => setLoading(false), 620);
+    return () => clearTimeout(timer);
+  }, [headerAnim, statsAnim, sectorAnim, batchAnim, listAnim]);
+
+  useEffect(() => {
+    if (showAlumniModal) {
       Animated.parallel([
-        Animated.timing(anim.opacity, { toValue: 1, duration: 500, delay: index * 50, useNativeDriver: true }),
-        Animated.timing(anim.translateY, { toValue: 0, duration: 500, delay: index * 50, useNativeDriver: true }),
+        Animated.spring(modalScale, { toValue: 1, useNativeDriver: true, friction: 7 }),
+        Animated.timing(modalOpacity, {
+          toValue: 1,
+          duration: ANIM.duration.fast,
+          useNativeDriver: true,
+        }),
       ]).start();
-    });
-  };
-
-  const filterAlumni = () => {
-    let filtered = alumni;
-    if (selectedBatch !== 'all') filtered = filtered.filter(a => a.batch === selectedBatch);
-    if (searchQuery.trim()) {
-      const query = searchQuery.toLowerCase();
-      filtered = filtered.filter(a => a.name.toLowerCase().includes(query) || a.company.toLowerCase().includes(query));
+    } else {
+      modalScale.setValue(0.9);
+      modalOpacity.setValue(0);
     }
-    setFilteredAlumni(filtered);
-  };
+  }, [showAlumniModal, modalScale, modalOpacity]);
 
-  const onRefresh = useCallback(() => { setRefreshing(true); setTimeout(() => setRefreshing(false), 2000); }, []);
+  // -------------- Filtering --------------
+  const filteredAlumni = useMemo(() => {
+    let list: ExtAlumni[] = ALUMNI_DATA;
 
-  const handleAlumniPress = (alumnus: Alumni) => { setSelectedAlumni(alumnus); setShowAlumniModal(true); };
-  const handleLinkedIn = (alumnus: Alumni) => { if (alumnus.linkedin) Linking.openURL(alumnus.linkedin); };
-  const handleEmail = (alumnus: Alumni) => { Linking.openURL(`mailto:${alumnus.email}`); };
+    if (selectedBatch !== 'all') list = list.filter((a) => a.batch === selectedBatch);
+    if (selectedSector !== 'all') list = list.filter((a) => a.sector === selectedSector);
+    if (selectedCompany !== 'all') list = list.filter((a) => a.company === selectedCompany);
+    if (onlyMentors) list = list.filter((a) => a.mentor);
+    if (onlyFeatured) list = list.filter((a) => a.featured);
+
+    const q = searchQuery.trim().toLowerCase();
+    if (q) {
+      list = list.filter(
+        (a) =>
+          a.name.toLowerCase().includes(q) ||
+          a.company.toLowerCase().includes(q) ||
+          a.currentRole.toLowerCase().includes(q) ||
+          a.location.toLowerCase().includes(q) ||
+          a.skills.some((s) => s.toLowerCase().includes(q))
+      );
+    }
+
+    switch (sortKey) {
+      case 'recent-batch':
+        list = [...list].sort((a, b) => Number(b.batch) - Number(a.batch));
+        break;
+      case 'oldest-batch':
+        list = [...list].sort((a, b) => Number(a.batch) - Number(b.batch));
+        break;
+      case 'name-asc':
+        list = [...list].sort((a, b) => a.name.localeCompare(b.name));
+        break;
+      case 'name-desc':
+        list = [...list].sort((a, b) => b.name.localeCompare(a.name));
+        break;
+      case 'company-asc':
+        list = [...list].sort((a, b) => a.company.localeCompare(b.company));
+        break;
+    }
+
+    return list;
+  }, [selectedBatch, selectedSector, selectedCompany, onlyMentors, onlyFeatured, searchQuery, sortKey]);
+
+  const hasFilters =
+    selectedBatch !== 'all' ||
+    selectedSector !== 'all' ||
+    selectedCompany !== 'all' ||
+    onlyMentors ||
+    onlyFeatured ||
+    searchQuery.trim().length > 0;
+
+  // -------------- Handlers ---------------
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => setRefreshing(false), 1200);
+  }, []);
+
+  const openAlumni = useCallback((alumnus: ExtAlumni) => {
+    setSelectedAlumni(alumnus);
+    setShowAlumniModal(true);
+  }, []);
+
+  const closeAlumni = useCallback(() => {
+    Animated.parallel([
+      Animated.timing(modalScale, {
+        toValue: 0.9,
+        duration: ANIM.duration.fast,
+        useNativeDriver: true,
+      }),
+      Animated.timing(modalOpacity, {
+        toValue: 0,
+        duration: ANIM.duration.fast,
+        useNativeDriver: true,
+      }),
+    ]).start(() => {
+      setShowAlumniModal(false);
+      setSelectedAlumni(null);
+    });
+  }, [modalScale, modalOpacity]);
+
+  const handleLinkedIn = useCallback(async (alumnus: ExtAlumni) => {
+    try {
+      await Linking.openURL(alumnus.linkedin);
+    } catch {
+      Alert.alert('Unable to open link', 'LinkedIn link could not be opened.');
+    }
+  }, []);
+
+  const handleEmail = useCallback(async (alumnus: ExtAlumni) => {
+    try {
+      await Linking.openURL(`mailto:${alumnus.email}`);
+    } catch {
+      Alert.alert('Unable to open email', 'Your device cannot open a mail composer.');
+    }
+  }, []);
+
+  const handleShare = useCallback(async (alumnus: ExtAlumni) => {
+    try {
+      await Share.share({
+        message: `Meet ${alumnus.name} — ${alumnus.currentRole} @ ${alumnus.company}. Class of ${alumnus.batch} from Taru Guardians.`,
+      });
+    } catch {
+      // user cancelled
+    }
+  }, []);
+
+  const handleMentorshipRequest = useCallback((alumnus: ExtAlumni) => {
+    Alert.alert(
+      'Request mentorship',
+      `Send a request to ${alumnus.name}? They will receive a short intro template to reply to.`,
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Send request',
+          onPress: () => {
+            Alert.alert('Request sent!', 'The alumnus will reach out within a few days.');
+          },
+        },
+      ]
+    );
+  }, []);
+
+  const clearFilters = useCallback(() => {
+    setSelectedBatch('all');
+    setSelectedSector('all');
+    setSelectedCompany('all');
+    setOnlyMentors(false);
+    setOnlyFeatured(false);
+    setSearchQuery('');
+  }, []);
+
+  // -------------- Sub-renderers ----------
 
   const renderHeader = () => (
-    <Animated.View style={[styles.headerContainer, { opacity: animationValues[0].opacity, transform: [{ translateY: animationValues[0].translateY }] }]}>
-      <LinearGradient colors={[Colors.background.deepBlack, Colors.accent.softGold]} style={styles.headerGradient}>
-        <View style={styles.headerContent}>
-          <Text style={styles.mainTitle}>🎓 Alumni Network</Text>
-          <Text style={styles.subTitle}>Our Successful Graduates</Text>
-          <View style={styles.statsContainer}>
-            <View style={styles.statItem}><Text style={styles.statValue}>{ALUMNI_STATS.totalAlumni}+</Text><Text style={styles.statLabel}>Alumni</Text></View>
-            <View style={styles.statDivider} />
-            <View style={styles.statItem}><Text style={styles.statValue}>{ALUMNI_STATS.placementRate}%</Text><Text style={styles.statLabel}>Placed</Text></View>
-            <View style={styles.statDivider} />
-            <View style={styles.statItem}><Text style={styles.statValue}>{ALUMNI_STATS.companiesHired}+</Text><Text style={styles.statLabel}>Companies</Text></View>
+    <Animated.View
+      style={[
+        styles.headerContainer,
+        {
+          opacity: headerAnim,
+          transform: [
+            {
+              translateY: headerAnim.interpolate({ inputRange: [0, 1], outputRange: [28, 0] }),
+            },
+          ],
+        },
+      ]}
+    >
+      <LinearGradient
+        colors={['#0A1A1F', '#0E2F1F', Colors.accent.softGold + '55']}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={styles.headerGradient}
+      >
+        <View style={styles.headerTopRow}>
+          <View style={styles.headerLeadBlock}>
+            <Text style={styles.headerEyebrow}>🌿 Taru Guardians</Text>
+            <Text style={styles.headerTitle}>Alumni Network</Text>
+            <Text style={styles.headerSubtitle}>
+              500+ alumni · 60+ companies · 12 countries — building tech, climate, product and design.
+            </Text>
           </View>
-          <View style={styles.searchBarContainer}>
-            <Text style={styles.searchIcon}>🔍</Text>
-            <TextInput style={styles.searchInput} placeholder="Search alumni..." placeholderTextColor={Colors.text.muted} value={searchQuery} onChangeText={setSearchQuery} />
-            {searchQuery.length > 0 && <TouchableOpacity onPress={() => setSearchQuery('')}><Text style={styles.clearIcon}>✕</Text></TouchableOpacity>}
+          <View style={styles.headerControls}>
+            <TouchableOpacity
+              accessibilityLabel="Change sort order"
+              style={styles.headerIconBtn}
+              onPress={() => setShowSortMenu(true)}
+            >
+              <Text style={styles.headerIcon}>⇅</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              accessibilityLabel="Toggle view"
+              style={styles.headerIconBtn}
+              onPress={() => setViewMode((m) => (m === 'list' ? 'grid' : 'list'))}
+            >
+              <Text style={styles.headerIcon}>{viewMode === 'list' ? '▦' : '≡'}</Text>
+            </TouchableOpacity>
           </View>
+        </View>
+
+        <Animated.View
+          style={[
+            styles.statsRow,
+            {
+              opacity: statsAnim,
+              transform: [
+                {
+                  translateY: statsAnim.interpolate({ inputRange: [0, 1], outputRange: [18, 0] }),
+                },
+              ],
+            },
+          ]}
+        >
+          <View style={styles.statCell}>
+            <Text style={styles.statValue}>{ALUMNI_STATS.totalAlumni}+</Text>
+            <Text style={styles.statLabel}>Alumni</Text>
+          </View>
+          <View style={styles.statDivider} />
+          <View style={styles.statCell}>
+            <Text style={styles.statValue}>{ALUMNI_STATS.placementRate}%</Text>
+            <Text style={styles.statLabel}>Placed</Text>
+          </View>
+          <View style={styles.statDivider} />
+          <View style={styles.statCell}>
+            <Text style={styles.statValue}>{ALUMNI_STATS.companiesHired}+</Text>
+            <Text style={styles.statLabel}>Companies</Text>
+          </View>
+          <View style={styles.statDivider} />
+          <View style={styles.statCell}>
+            <Text style={styles.statValue}>{ALUMNI_STATS.mentors}</Text>
+            <Text style={styles.statLabel}>Mentors</Text>
+          </View>
+          <View style={styles.statDivider} />
+          <View style={styles.statCell}>
+            <Text style={styles.statValue}>{ALUMNI_STATS.countries}</Text>
+            <Text style={styles.statLabel}>Countries</Text>
+          </View>
+        </Animated.View>
+
+        <View style={styles.searchBar}>
+          <Text style={styles.searchIcon}>🔍</Text>
+          <TextInput
+            style={styles.searchInput}
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+            placeholder="Search by name, company, role, skill, city…"
+            placeholderTextColor={Colors.text.muted}
+            returnKeyType="search"
+          />
+          {searchQuery.length > 0 && (
+            <TouchableOpacity onPress={() => setSearchQuery('')}>
+              <Text style={styles.clearIcon}>✕</Text>
+            </TouchableOpacity>
+          )}
+        </View>
+
+        <View style={styles.quickFilterRow}>
+          <TouchableOpacity
+            onPress={() => setOnlyMentors((v) => !v)}
+            style={[styles.chip, onlyMentors && styles.chipActive]}
+          >
+            <Text style={[styles.chipText, onlyMentors && styles.chipTextActive]}>
+              🤝 Mentors only
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => setOnlyFeatured((v) => !v)}
+            style={[styles.chip, onlyFeatured && styles.chipActive]}
+          >
+            <Text style={[styles.chipText, onlyFeatured && styles.chipTextActive]}>
+              ⭐ Featured
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => setShowCompanyMenu(true)}
+            style={[styles.chip, selectedCompany !== 'all' && styles.chipActive]}
+          >
+            <Text
+              style={[styles.chipText, selectedCompany !== 'all' && styles.chipTextActive]}
+              numberOfLines={1}
+            >
+              🏢 {selectedCompany === 'all' ? 'Company' : selectedCompany}
+            </Text>
+          </TouchableOpacity>
+          {hasFilters && (
+            <TouchableOpacity onPress={clearFilters} style={styles.chipReset}>
+              <Text style={styles.chipResetText}>Reset</Text>
+            </TouchableOpacity>
+          )}
         </View>
       </LinearGradient>
     </Animated.View>
   );
 
-  const renderBatchTabs = () => (
-    <Animated.View style={[styles.batchContainer, { opacity: animationValues[1].opacity, transform: [{ translateY: animationValues[1].translateY }] }]}>
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.batchScroll}>
-        <TouchableOpacity style={[styles.batchChip, selectedBatch === 'all' && styles.activeBatchChip]} onPress={() => setSelectedBatch('all')}>
-          <Text style={[styles.batchName, selectedBatch === 'all' && styles.activeBatchName]}>All Batches</Text>
+  const renderSectorRail = () => (
+    <Animated.View
+      style={{
+        opacity: sectorAnim,
+        transform: [
+          {
+            translateY: sectorAnim.interpolate({ inputRange: [0, 1], outputRange: [16, 0] }),
+          },
+        ],
+      }}
+    >
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.sectorScroll}
+      >
+        {SECTORS.map((s) => {
+          const active = s.id === selectedSector;
+          return (
+            <TouchableOpacity
+              key={s.id}
+              onPress={() => setSelectedSector(s.id)}
+              style={[
+                styles.sectorChip,
+                active && { borderColor: s.color, backgroundColor: s.color + '22' },
+              ]}
+            >
+              <Text style={styles.sectorIcon}>{s.icon}</Text>
+              <Text
+                style={[styles.sectorLabel, active && { color: s.color, fontWeight: '700' }]}
+              >
+                {s.label}
+              </Text>
+            </TouchableOpacity>
+          );
+        })}
+      </ScrollView>
+    </Animated.View>
+  );
+
+  const renderBatchRail = () => (
+    <Animated.View
+      style={{
+        opacity: batchAnim,
+        transform: [
+          {
+            translateY: batchAnim.interpolate({ inputRange: [0, 1], outputRange: [12, 0] }),
+          },
+        ],
+      }}
+    >
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.batchScroll}
+      >
+        <TouchableOpacity
+          onPress={() => setSelectedBatch('all')}
+          style={[styles.batchChip, selectedBatch === 'all' && styles.batchChipActive]}
+        >
+          <Text
+            style={[styles.batchText, selectedBatch === 'all' && styles.batchTextActive]}
+          >
+            All batches
+          </Text>
         </TouchableOpacity>
-        {BATCH_YEARS.map((batch) => (
-          <TouchableOpacity key={batch} style={[styles.batchChip, selectedBatch === batch && styles.activeBatchChip]} onPress={() => setSelectedBatch(batch)}>
-            <Text style={[styles.batchName, selectedBatch === batch && styles.activeBatchName]}>{batch}</Text>
+        {BATCH_YEARS.map((b) => (
+          <TouchableOpacity
+            key={b}
+            onPress={() => setSelectedBatch(b)}
+            style={[styles.batchChip, selectedBatch === b && styles.batchChipActive]}
+          >
+            <Text style={[styles.batchText, selectedBatch === b && styles.batchTextActive]}>
+              {b}
+            </Text>
           </TouchableOpacity>
         ))}
       </ScrollView>
     </Animated.View>
   );
 
-  const renderAlumniList = () => (
-    <View style={styles.alumniListContainer}>
-      {filteredAlumni.length > 0 ? filteredAlumni.map((alumnus, index) => (
-        <Animated.View key={alumnus.id} style={[styles.alumniCardContainer, { opacity: animationValues[index + 2]?.opacity || animationValues[0].opacity }]}>
-          <TouchableOpacity style={styles.alumniCard} onPress={() => handleAlumniPress(alumnus)}>
-            <View style={styles.alumniImageContainer}><View style={styles.alumniImagePlaceholder}><Text style={styles.alumniInitial}>{alumnus.name.charAt(0)}</Text></View></View>
-            <View style={styles.alumniInfo}>
-              <Text style={styles.alumniName}>{alumnus.name}</Text>
-              <Text style={styles.alumniRole}>{alumnus.currentRole} at {alumnus.company}</Text>
-              <Text style={styles.alumniBatch}>Class of {alumnus.batch} • {alumnus.location}</Text>
+  const renderHallOfFame = () => {
+    if (hasFilters) return null;
+    return (
+      <View style={styles.sectionBlock}>
+        <View style={styles.sectionHeaderRow}>
+          <Text style={styles.sectionTitle}>🏆 Hall of Fame</Text>
+          <Text style={styles.sectionCaption}>{HALL_OF_FAME.length} featured alumni</Text>
+        </View>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          snapToInterval={IS_TABLET ? 340 : SCREEN_WIDTH * 0.8}
+          decelerationRate="fast"
+          contentContainerStyle={styles.hofScroll}
+        >
+          {HALL_OF_FAME.map((a) => (
+            <TouchableOpacity
+              key={a.id}
+              onPress={() => openAlumni(a)}
+              style={styles.hofCard}
+              activeOpacity={0.9}
+            >
+              <LinearGradient
+                colors={[
+                  SECTORS.find((s) => s.id === a.sector)?.color + '33' ?? '#00000000',
+                  '#0A0F14',
+                ]}
+                style={styles.hofGradient}
+              >
+                <View style={styles.hofTopRow}>
+                  <View
+                    style={[
+                      styles.avatar,
+                      {
+                        backgroundColor:
+                          (SECTORS.find((s) => s.id === a.sector)?.color ?? Colors.tech.neonBlue) +
+                          '33',
+                      },
+                    ]}
+                  >
+                    <Text style={styles.avatarText}>{a.name.charAt(0)}</Text>
+                  </View>
+                  <View style={{ flex: 1 }}>
+                    <Text style={styles.hofName} numberOfLines={1}>
+                      {a.name}
+                    </Text>
+                    <Text style={styles.hofRole} numberOfLines={1}>
+                      {a.currentRole}
+                    </Text>
+                    <Text style={styles.hofCompany} numberOfLines={1}>
+                      @ {a.company} · {a.batch}
+                    </Text>
+                  </View>
+                </View>
+                {a.quote ? (
+                  <Text style={styles.hofQuote} numberOfLines={3}>
+                    “{a.quote}”
+                  </Text>
+                ) : (
+                  <Text style={styles.hofQuote} numberOfLines={3}>
+                    {a.messageToStudents}
+                  </Text>
+                )}
+                <View style={styles.hofFooter}>
+                  {a.mentor && <Text style={styles.hofBadge}>🤝 Mentor</Text>}
+                  <Text style={styles.hofLoc}>📍 {a.location.split(',')[0]}</Text>
+                </View>
+              </LinearGradient>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+      </View>
+    );
+  };
+
+  const renderTestimonials = () => {
+    if (hasFilters) return null;
+    return (
+      <View style={styles.sectionBlock}>
+        <View style={styles.sectionHeaderRow}>
+          <Text style={styles.sectionTitle}>💬 Alumni Voices</Text>
+          <Text style={styles.sectionCaption}>{TESTIMONIALS.length} quotes</Text>
+        </View>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          snapToInterval={IS_TABLET ? 380 : SCREEN_WIDTH * 0.78}
+          decelerationRate="fast"
+          contentContainerStyle={styles.testimonialScroll}
+        >
+          {TESTIMONIALS.map((t) => {
+            const author = ALUMNI_DATA.find((a) => a.id === t.authorId)!;
+            const c = SECTORS.find((s) => s.id === author.sector)!.color;
+            return (
+              <View key={t.id} style={styles.testimonialCard}>
+                <LinearGradient
+                  colors={[c + '30', '#000000AA']}
+                  style={styles.testimonialGradient}
+                >
+                  <Text style={styles.testimonialQuoteMark}>”</Text>
+                  <Text style={styles.testimonialQuote}>{t.quote}</Text>
+                  <View style={styles.testimonialAuthorRow}>
+                    <View style={[styles.smallAvatar, { backgroundColor: c + '55' }]}>
+                      <Text style={styles.smallAvatarText}>{author.name.charAt(0)}</Text>
+                    </View>
+                    <View style={{ flex: 1 }}>
+                      <Text style={styles.testimonialAuthor}>{author.name}</Text>
+                      <Text style={styles.testimonialRole}>{t.role}</Text>
+                    </View>
+                  </View>
+                </LinearGradient>
+              </View>
+            );
+          })}
+        </ScrollView>
+      </View>
+    );
+  };
+
+  const renderTopCompanies = () => {
+    if (hasFilters) return null;
+    return (
+      <View style={styles.sectionBlock}>
+        <View style={styles.sectionHeaderRow}>
+          <Text style={styles.sectionTitle}>🏢 Top Companies</Text>
+          <Text style={styles.sectionCaption}>Where our alumni work</Text>
+        </View>
+        <View style={styles.companyGrid}>
+          {TOP_COMPANIES.map(([company, count]) => (
+            <TouchableOpacity
+              key={company}
+              onPress={() => setSelectedCompany(company)}
+              style={styles.companyPill}
+              activeOpacity={0.8}
+            >
+              <Text style={styles.companyName} numberOfLines={1}>
+                {company}
+              </Text>
+              <Text style={styles.companyCount}>{count} alumni</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+      </View>
+    );
+  };
+
+  const renderMeetups = () => {
+    if (hasFilters) return null;
+    return (
+      <View style={styles.sectionBlock}>
+        <View style={styles.sectionHeaderRow}>
+          <Text style={styles.sectionTitle}>📅 Upcoming Alumni Meetups</Text>
+          <Text style={styles.sectionCaption}>{ALUMNI_MEETUPS.length} events</Text>
+        </View>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          snapToInterval={IS_TABLET ? 340 : SCREEN_WIDTH * 0.78}
+          decelerationRate="fast"
+          contentContainerStyle={styles.meetupScroll}
+        >
+          {ALUMNI_MEETUPS.map((m) => {
+            const ratio = m.registered / m.capacity;
+            return (
+              <View key={m.id} style={styles.meetupCard}>
+                <LinearGradient
+                  colors={[Colors.tech.neonBlue + '22', '#000000AA']}
+                  style={styles.meetupGradient}
+                >
+                  <Text style={styles.meetupBadge}>
+                    {m.mode === 'offline' ? '📍 Offline' : m.mode === 'virtual' ? '💻 Online' : '🌐 Hybrid'}
+                  </Text>
+                  <Text style={styles.meetupTitle}>{m.title}</Text>
+                  <Text style={styles.meetupMeta}>
+                    {m.date} · {m.city}
+                  </Text>
+                  <Text style={styles.meetupDescription} numberOfLines={3}>
+                    {m.description}
+                  </Text>
+                  <View style={styles.meetupBar}>
+                    <View style={[styles.meetupBarFill, { width: `${ratio * 100}%` }]} />
+                  </View>
+                  <Text style={styles.meetupCapacity}>
+                    {m.registered} / {m.capacity} registered
+                  </Text>
+                  <View style={styles.meetupTagRow}>
+                    {m.tags.map((tag) => (
+                      <View key={tag} style={styles.meetupTag}>
+                        <Text style={styles.meetupTagText}>#{tag}</Text>
+                      </View>
+                    ))}
+                  </View>
+                </LinearGradient>
+              </View>
+            );
+          })}
+        </ScrollView>
+      </View>
+    );
+  };
+
+  const renderMentorshipSlots = () => {
+    if (hasFilters) return null;
+    return (
+      <View style={styles.sectionBlock}>
+        <View style={styles.sectionHeaderRow}>
+          <Text style={styles.sectionTitle}>🧭 Mentorship Slots</Text>
+          <Text style={styles.sectionCaption}>Open right now</Text>
+        </View>
+        <View style={styles.mentorshipList}>
+          {MENTORSHIP_SLOTS.map((m) => {
+            const alumnus = ALUMNI_DATA.find((a) => a.id === m.mentorId);
+            if (!alumnus) return null;
+            const c = SECTORS.find((s) => s.id === alumnus.sector)!.color;
+            return (
+              <TouchableOpacity
+                key={m.id}
+                onPress={() => openAlumni(alumnus)}
+                style={styles.mentorshipItem}
+                activeOpacity={0.85}
+              >
+                <View style={[styles.mentorshipDot, { backgroundColor: c }]} />
+                <View style={{ flex: 1 }}>
+                  <Text style={styles.mentorshipTopic} numberOfLines={1}>
+                    {m.topic}
+                  </Text>
+                  <Text style={styles.mentorshipMeta} numberOfLines={1}>
+                    {alumnus.name} · {alumnus.currentRole} @ {alumnus.company}
+                  </Text>
+                  <Text style={styles.mentorshipFormat}>
+                    {m.durationMin} min · {m.format} · {m.slotsRemaining} slot(s) left
+                  </Text>
+                </View>
+                <Text style={styles.mentorshipArrow}>›</Text>
+              </TouchableOpacity>
+            );
+          })}
+        </View>
+      </View>
+    );
+  };
+
+  const renderPledges = () => {
+    if (hasFilters) return null;
+    return (
+      <View style={styles.sectionBlock}>
+        <View style={styles.sectionHeaderRow}>
+          <Text style={styles.sectionTitle}>🌱 Sustainability Pledges</Text>
+          <Text style={styles.sectionCaption}>{ALUMNI_PLEDGES.length} alumni pledges</Text>
+        </View>
+        <View>
+          {ALUMNI_PLEDGES.map((a) => (
+            <TouchableOpacity
+              key={`pl-${a.id}`}
+              onPress={() => openAlumni(a)}
+              style={styles.pledgeItem}
+              activeOpacity={0.85}
+            >
+              <Text style={styles.pledgeLeaf}>🍃</Text>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.pledgeAuthor}>
+                  {a.name} · {a.currentRole} @ {a.company}
+                </Text>
+                <Text style={styles.pledgeText} numberOfLines={3}>
+                  {a.sustainabilityPledge}
+                </Text>
+              </View>
+            </TouchableOpacity>
+          ))}
+        </View>
+      </View>
+    );
+  };
+
+  const renderChapters = () => {
+    if (hasFilters) return null;
+    return (
+      <View style={styles.sectionBlock}>
+        <View style={styles.sectionHeaderRow}>
+          <Text style={styles.sectionTitle}>🌍 Chapters · city hubs</Text>
+          <Text style={styles.sectionCaption}>{CHAPTERS.length} cities</Text>
+        </View>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.chaptersScroll}
+        >
+          {CHAPTERS.map((c) => (
+            <View key={c.id} style={styles.chapterCard}>
+              <LinearGradient
+                colors={[c.color + '40', '#0A0F14']}
+                style={styles.chapterGradient}
+              >
+                <View style={styles.chapterTopRow}>
+                  <Text style={styles.chapterEmoji}>{c.emoji}</Text>
+                  <View style={styles.chapterPill}>
+                    <Text style={styles.chapterPillText}>est. {c.founded}</Text>
+                  </View>
+                </View>
+                <Text style={styles.chapterCity}>{c.city}</Text>
+                <Text style={styles.chapterCountry}>{c.country}</Text>
+                <View style={styles.chapterDivider} />
+                <Text style={styles.chapterMetaLabel}>Cadence</Text>
+                <Text style={styles.chapterMetaValue}>{c.cadence}</Text>
+                <Text style={styles.chapterMetaLabel}>Meetup spot</Text>
+                <Text style={styles.chapterMetaValue}>{c.meetup}</Text>
+                <Text style={styles.chapterMetaLabel}>Anchors</Text>
+                {c.anchors.map((a) => (
+                  <Text key={a} style={styles.chapterAnchor}>• {a}</Text>
+                ))}
+                <View style={styles.chapterFootRow}>
+                  <Text style={[styles.chapterMembers, { color: c.color }]}>
+                    {c.members} members
+                  </Text>
+                  <Text style={styles.chapterVibe} numberOfLines={3}>{c.vibe}</Text>
+                </View>
+              </LinearGradient>
             </View>
-            <Text style={styles.alumniArrow}>›</Text>
-          </TouchableOpacity>
-        </Animated.View>
-      )) : (
-        <View style={styles.emptyState}><Text style={styles.emptyIcon}>🎓</Text><Text style={styles.emptyTitle}>No Alumni Found</Text></View>
+          ))}
+        </ScrollView>
+      </View>
+    );
+  };
+
+  const renderCareerPivots = () => {
+    if (hasFilters) return null;
+    return (
+      <View style={styles.sectionBlock}>
+        <View style={styles.sectionHeaderRow}>
+          <Text style={styles.sectionTitle}>🔀 Career pivots</Text>
+          <Text style={styles.sectionCaption}>Non-obvious moves</Text>
+        </View>
+        {CAREER_PIVOTS.map((p) => (
+          <View key={p.id} style={[styles.pivotCard, { borderLeftColor: p.color }]}>
+            <View style={styles.pivotTopRow}>
+              <View style={[styles.pivotIconWrap, { backgroundColor: p.color + '2A' }]}>
+                <Text style={styles.pivotIcon}>{p.icon}</Text>
+              </View>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.pivotArrowRow}>
+                  <Text style={styles.pivotFrom}>{p.from}</Text>
+                  <Text style={styles.pivotArrow}>  →  </Text>
+                  <Text style={[styles.pivotTo, { color: p.color }]}>{p.to}</Text>
+                </Text>
+                <Text style={styles.pivotYear}>{p.year}</Text>
+              </View>
+            </View>
+            <Text style={styles.pivotStory}>{p.story}</Text>
+            <View style={[styles.pivotTakeawayRow, { backgroundColor: p.color + '14' }]}>
+              <Text style={styles.pivotTakeawayLabel}>Takeaway</Text>
+              <Text style={styles.pivotTakeaway}>{p.takeaway}</Text>
+            </View>
+          </View>
+        ))}
+      </View>
+    );
+  };
+
+  const renderMentorBoard = () => {
+    if (hasFilters) return null;
+    return (
+      <View style={styles.sectionBlock}>
+        <View style={styles.sectionHeaderRow}>
+          <Text style={styles.sectionTitle}>🧭 Mentor board</Text>
+          <Text style={styles.sectionCaption}>{MENTOR_BOARD.length} seats</Text>
+        </View>
+        <View style={styles.boardGrid}>
+          {MENTOR_BOARD.map((s) => (
+            <View key={s.id} style={styles.boardCard}>
+              <LinearGradient
+                colors={[s.color + '33', '#0A0F14']}
+                style={styles.boardGradient}
+              >
+                <View style={styles.boardHeaderRow}>
+                  <View style={[styles.boardDot, { backgroundColor: s.color }]} />
+                  <Text style={styles.boardDomain}>{s.domain}</Text>
+                </View>
+                <Text style={styles.boardName}>{s.name}</Text>
+                <Text style={styles.boardRole} numberOfLines={2}>{s.role}</Text>
+                <Text style={styles.boardOffice}>📍 {s.office}</Text>
+                <Text style={styles.boardFocus} numberOfLines={3}>{s.focus}</Text>
+                <View style={styles.boardHoursRow}>
+                  <View style={[styles.boardHoursPill, { backgroundColor: s.color + '22' }]}>
+                    <Text style={[styles.boardHoursText, { color: s.color }]}>
+                      {s.hoursLeft} hrs left this month
+                    </Text>
+                  </View>
+                </View>
+              </LinearGradient>
+            </View>
+          ))}
+        </View>
+      </View>
+    );
+  };
+
+  const renderScholarships = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🎓 Alumni-funded scholarships</Text>
+        <Text style={styles.sectionCaption}>
+          ₹{(ALUMNI_SCHOLARSHIPS.reduce((a, s) => a + s.amountInr, 0) / 1000).toFixed(0)}K · {ALUMNI_SCHOLARSHIPS.length} active
+        </Text>
+      </View>
+      {ALUMNI_SCHOLARSHIPS.map((s) => (
+        <View key={s.id} style={[styles.schCard, { borderLeftColor: s.color }]}>
+          <View style={styles.schTopRow}>
+            <Text style={styles.schEmoji}>{s.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.schName} numberOfLines={2}>{s.name}</Text>
+              <Text style={styles.schFunded}>by {s.fundedBy}</Text>
+            </View>
+            <Text style={[styles.schAmount, { color: s.color }]}>
+              ₹{(s.amountInr / 1000).toFixed(0)}K
+            </Text>
+          </View>
+          <View style={styles.schMetaRow}>
+            <Text style={styles.schMetaText}>{s.discipline}</Text>
+            <Text style={styles.schMetaText}>{s.recipients} recipients</Text>
+          </View>
+          <Text style={styles.schNote} numberOfLines={3}>{s.note}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderAdvisors = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🧭 Alumni advisors · by specialism</Text>
+        <Text style={styles.sectionCaption}>
+          {ADVISORY_SPECIALISMS.reduce((a, s) => a + s.slotsOpen, 0)} slots open
+        </Text>
+      </View>
+      {ADVISORY_SPECIALISMS.map((s) => (
+        <View key={s.id} style={[styles.advCard, { borderLeftColor: s.color }]}>
+          <View style={styles.advTopRow}>
+            <Text style={styles.advEmoji}>{s.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.advName} numberOfLines={1}>{s.name}</Text>
+              <Text style={styles.advSpec} numberOfLines={1}>{s.specialism}</Text>
+            </View>
+            <View
+              style={[
+                styles.advPill,
+                {
+                  backgroundColor:
+                    s.slotsOpen > 0 ? 'rgba(34,197,94,0.18)' : 'rgba(239,68,68,0.18)',
+                },
+              ]}
+            >
+              <Text
+                style={[
+                  styles.advPillText,
+                  { color: s.slotsOpen > 0 ? '#22C55E' : '#EF4444' },
+                ]}
+              >
+                {s.slotsOpen > 0 ? `${s.slotsOpen} open` : 'waitlist'}
+              </Text>
+            </View>
+          </View>
+          <View style={styles.advStatRow}>
+            <Text style={styles.advStatText}>{s.hoursPerMonth}h / month</Text>
+            <Text style={styles.advStatText}>
+              {s.slotsFilled} / {s.slotsFilled + s.slotsOpen} booked
+            </Text>
+          </View>
+          <Text style={styles.advNote} numberOfLines={2}>{s.note}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderDiaspora = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🌍 Diaspora clusters</Text>
+        <Text style={styles.sectionCaption}>
+          {DIASPORA_CLUSTERS.reduce((a, c) => a + c.alumniCount, 0)} alumni · {DIASPORA_CLUSTERS.length} cities
+        </Text>
+      </View>
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.diasporaScroll}>
+        {DIASPORA_CLUSTERS.map((c) => (
+          <View key={c.id} style={[styles.diasporaCard, { borderColor: c.color + '55' }]}>
+            <View style={styles.diasporaFlagRow}>
+              <Text style={styles.diasporaFlag}>{c.flag}</Text>
+              <Text style={[styles.diasporaCount, { color: c.color }]}>{c.alumniCount}</Text>
+            </View>
+            <Text style={styles.diasporaCity} numberOfLines={1}>{c.city}</Text>
+            <Text style={styles.diasporaCountry} numberOfLines={1}>{c.country}</Text>
+            <Text style={styles.diasporaMeet} numberOfLines={2}>{c.meetsEvery}</Text>
+            <Text style={styles.diasporaLead} numberOfLines={1}>lead · {c.lead}</Text>
+          </View>
+        ))}
+      </ScrollView>
+    </View>
+  );
+
+  const renderAMA = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>💬 Ask-me-anything · upcoming</Text>
+        <Text style={styles.sectionCaption}>{AMA_SESSIONS.length} sessions · one Saturday each</Text>
+      </View>
+      {AMA_SESSIONS.map((a) => (
+        <View key={a.id} style={[styles.amaCard, { borderLeftColor: a.color }]}>
+          <Text style={styles.amaEmoji}>{a.emoji}</Text>
+          <View style={{ flex: 1 }}>
+            <View style={styles.amaTopRow}>
+              <Text style={styles.amaName}>{a.alumniName}</Text>
+              <Text style={[styles.amaMode, { color: a.color }]}>{a.mode}</Text>
+            </View>
+            <Text style={styles.amaTopic} numberOfLines={2}>{a.topic}</Text>
+            <View style={styles.amaFootRow}>
+              <Text style={styles.amaDate}>{a.date}</Text>
+              <Text style={styles.amaQCount}>{a.questionsCollected} questions in</Text>
+            </View>
+          </View>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderGivingLedger = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🤝 Giving ledger · this year</Text>
+        <Text style={styles.sectionCaption}>
+          ₹{(GIVING_LEDGER.reduce((a, g) => a + g.amountInr, 0) / 1000).toFixed(0)}K received
+        </Text>
+      </View>
+      {GIVING_LEDGER.map((g) => (
+        <View key={g.id} style={[styles.gvRow, { borderLeftColor: g.color }]}>
+          <Text style={styles.gvEmoji}>{g.emoji}</Text>
+          <View style={{ flex: 1 }}>
+            <View style={styles.gvTopRow}>
+              <Text style={styles.gvSource} numberOfLines={1}>{g.source}</Text>
+              <Text style={[styles.gvAmount, { color: g.color }]}>
+                ₹{(g.amountInr / 1000).toFixed(0)}K
+              </Text>
+            </View>
+            <Text style={styles.gvUsed} numberOfLines={2}>{g.used}</Text>
+            <Text style={styles.gvMeta}>
+              {g.dateReceived} · {g.visibility === 'named' ? 'named gift' : 'anonymous'}
+            </Text>
+          </View>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderCompanyReferrals = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🔗 Alumni-led referrals</Text>
+        <Text style={styles.sectionCaption}>
+          {COMPANY_REFERRALS.reduce((a, c) => a + c.openRoles, 0)} open · {COMPANY_REFERRALS.length} companies
+        </Text>
+      </View>
+      {COMPANY_REFERRALS.map((c) => (
+        <View key={c.id} style={[styles.crCard, { borderLeftColor: c.color }]}>
+          <View style={styles.crTopRow}>
+            <Text style={styles.crEmoji}>{c.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <View style={styles.crCoRow}>
+                <Text style={styles.crCo} numberOfLines={1}>{c.company}</Text>
+                <Text style={[styles.crRoles, { color: c.color }]}>{c.openRoles}</Text>
+              </View>
+              <Text style={styles.crLead} numberOfLines={1}>{c.alumniLead}</Text>
+            </View>
+          </View>
+          <View style={styles.crMetaRow}>
+            <Text style={styles.crType}>{c.type}</Text>
+            <Text style={styles.crUpdated}>upd. {c.lastUpdated}</Text>
+          </View>
+          <Text style={styles.crNote} numberOfLines={2}>{c.note}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderAlumniListHeader = () => (
+    <View style={styles.listHeaderRow}>
+      <Text style={styles.listHeaderTitle}>
+        {filteredAlumni.length} alumni
+        {selectedBatch !== 'all' ? ` · batch ${selectedBatch}` : ''}
+        {selectedSector !== 'all'
+          ? ` · ${SECTORS.find((s) => s.id === selectedSector)!.label}`
+          : ''}
+      </Text>
+      {hasFilters && (
+        <TouchableOpacity onPress={clearFilters}>
+          <Text style={styles.listHeaderReset}>Reset filters</Text>
+        </TouchableOpacity>
       )}
     </View>
   );
 
-  const renderAlumniModal = () => (
-    <Modal visible={showAlumniModal} animationType="slide" transparent onRequestClose={() => setShowAlumniModal(false)}>
-      <View style={styles.modalOverlay}>
-        <View style={styles.modalContent}>
-          <View style={styles.modalHeader}>
-            <Text style={styles.modalTitle}>Alumni Profile</Text>
-            <TouchableOpacity style={styles.modalCloseButton} onPress={() => setShowAlumniModal(false)}><Text style={styles.modalCloseText}>✕</Text></TouchableOpacity>
+  const renderAlumniRow = ({ item, index }: { item: ExtAlumni; index: number }) => {
+    const c = SECTORS.find((s) => s.id === item.sector)!.color;
+    if (viewMode === 'list') {
+      return (
+        <Animated.View
+          style={[
+            styles.alumniCard,
+            {
+              opacity: listAnim,
+              transform: [
+                {
+                  translateY: listAnim.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [12 + (index % 5) * 2, 0],
+                  }),
+                },
+              ],
+            },
+          ]}
+        >
+          <Pressable
+            onPress={() => openAlumni(item)}
+            android_ripple={{ color: c + '22' }}
+            style={({ pressed }) => [
+              styles.alumniInner,
+              pressed && { opacity: 0.9 },
+            ]}
+          >
+            <LinearGradient
+              colors={[c + '18', '#0A0F14']}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.alumniGradient}
+            >
+              <View style={[styles.avatar, { backgroundColor: c + '33' }]}>
+                <Text style={styles.avatarText}>{item.name.charAt(0)}</Text>
+              </View>
+              <View style={styles.alumniMeta}>
+                <View style={styles.alumniMetaRow}>
+                  <Text style={styles.alumniName} numberOfLines={1}>
+                    {item.name}
+                  </Text>
+                  {item.featured && <Text style={styles.featuredPill}>⭐</Text>}
+                  {item.mentor && <Text style={styles.mentorPill}>🤝</Text>}
+                </View>
+                <Text style={styles.alumniRole} numberOfLines={1}>
+                  {item.currentRole}
+                </Text>
+                <Text style={styles.alumniCompany} numberOfLines={1}>
+                  @ {item.company}
+                </Text>
+                <Text style={styles.alumniLoc} numberOfLines={1}>
+                  📍 {item.location} · Class of {item.batch}
+                </Text>
+              </View>
+              <Text style={styles.alumniArrow}>›</Text>
+            </LinearGradient>
+          </Pressable>
+        </Animated.View>
+      );
+    }
+
+    // grid variant
+    return (
+      <View style={styles.gridItem}>
+        <Pressable
+          onPress={() => openAlumni(item)}
+          android_ripple={{ color: c + '22' }}
+          style={styles.gridInner}
+        >
+          <LinearGradient colors={[c + '22', '#0A0F14']} style={styles.gridGradient}>
+            <View style={[styles.avatarLarge, { backgroundColor: c + '44' }]}>
+              <Text style={styles.avatarLargeText}>{item.name.charAt(0)}</Text>
+            </View>
+            <Text style={styles.gridName} numberOfLines={1}>
+              {item.name}
+            </Text>
+            <Text style={styles.gridRole} numberOfLines={1}>
+              {item.currentRole}
+            </Text>
+            <Text style={styles.gridCompany} numberOfLines={1}>
+              @ {item.company}
+            </Text>
+            <View style={styles.gridBadges}>
+              {item.mentor && <Text style={styles.gridBadge}>🤝</Text>}
+              {item.featured && <Text style={styles.gridBadge}>⭐</Text>}
+            </View>
+          </LinearGradient>
+        </Pressable>
+      </View>
+    );
+  };
+
+  const renderEmpty = () => (
+    <View style={styles.emptyState}>
+      <Text style={styles.emptyIcon}>🔍</Text>
+      <Text style={styles.emptyTitle}>No alumni match these filters</Text>
+      <Text style={styles.emptySubtitle}>Try widening your search or reset all filters.</Text>
+      <TouchableOpacity style={styles.emptyButton} onPress={clearFilters}>
+        <Text style={styles.emptyButtonText}>Reset filters</Text>
+      </TouchableOpacity>
+    </View>
+  );
+
+  const renderSkeletonList = () => (
+    <View>
+      {[1, 2, 3, 4].map((i) => (
+        <View key={i} style={[styles.alumniCard, styles.skeletonCard]}>
+          <View style={styles.skeletonAvatar} />
+          <View style={{ flex: 1 }}>
+            <View style={[styles.skeletonLine, { width: '55%' }]} />
+            <View style={[styles.skeletonLine, { width: '80%' }]} />
+            <View style={[styles.skeletonLine, { width: '40%' }]} />
           </View>
-          {selectedAlumni && (
-            <ScrollView style={styles.modalBody}>
-              <View style={styles.modalProfileHeader}>
-                <View style={styles.modalProfileImage}><Text style={styles.modalProfileInitial}>{selectedAlumni.name.charAt(0)}</Text></View>
-                <Text style={styles.modalAlumniName}>{selectedAlumni.name}</Text>
-                <Text style={styles.modalAlumniRole}>{selectedAlumni.currentRole}</Text>
-                <Text style={styles.modalAlumniCompany}>🏢 {selectedAlumni.company}</Text>
-                <Text style={styles.modalAlumniLocation}>📍 {selectedAlumni.location}</Text>
-              </View>
-              <View style={styles.modalSection}>
-                <Text style={styles.modalSectionTitle}>Batch</Text>
-                <Text style={styles.modalText}>Class of {selectedAlumni.batch}</Text>
-              </View>
-              <View style={styles.modalSection}>
-                <Text style={styles.modalSectionTitle}>Message to Students</Text>
-                <Text style={styles.modalMessage}>"{selectedAlumni.messageToStudents}"</Text>
-              </View>
-              <View style={styles.modalActions}>
-                <TouchableOpacity style={styles.modalActionButton} onPress={() => handleLinkedIn(selectedAlumni)}><Text style={styles.modalActionIcon}>💼</Text><Text style={styles.modalActionText}>LinkedIn</Text></TouchableOpacity>
-                <TouchableOpacity style={styles.modalActionButton} onPress={() => handleEmail(selectedAlumni)}><Text style={styles.modalActionIcon}>📧</Text><Text style={styles.modalActionText}>Email</Text></TouchableOpacity>
-              </View>
-            </ScrollView>
-          )}
         </View>
+      ))}
+    </View>
+  );
+
+  const renderFooter = () => (
+    <View style={styles.footer}>
+      <Text style={styles.footerText}>
+        Showing {filteredAlumni.length} of {ALUMNI_DATA.length} curated alumni profiles
+      </Text>
+      <Text style={styles.footerText}>🌿 Tech + climate · 500+ network strong</Text>
+    </View>
+  );
+
+  // -------------- Modals -----------------
+  const renderAlumniModal = () => {
+    if (!selectedAlumni) return null;
+    const a = selectedAlumni;
+    const c = SECTORS.find((s) => s.id === a.sector)!.color;
+    return (
+      <Modal
+        visible={showAlumniModal}
+        transparent
+        animationType="none"
+        onRequestClose={closeAlumni}
+      >
+        <Animated.View style={[styles.modalOverlay, { opacity: modalOpacity }]}>
+          <Pressable style={StyleSheet.absoluteFill} onPress={closeAlumni} />
+          <Animated.View
+            style={[
+              styles.modalContent,
+              {
+                transform: [{ scale: modalScale }],
+                opacity: modalOpacity,
+              },
+            ]}
+          >
+            <LinearGradient
+              colors={[c + '33', '#0A0F14']}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.modalHero}
+            >
+              <View style={styles.modalHeroRow}>
+                <View style={[styles.avatarHero, { backgroundColor: c + '55' }]}>
+                  <Text style={styles.avatarHeroText}>{a.name.charAt(0)}</Text>
+                </View>
+                <View style={{ flex: 1 }}>
+                  <Text style={styles.modalName}>{a.name}</Text>
+                  <Text style={styles.modalCurrent}>{a.currentRole}</Text>
+                  <Text style={styles.modalCompany}>@ {a.company}</Text>
+                  <Text style={styles.modalLoc}>
+                    📍 {a.location} · Class of {a.batch} · {a.experienceYears}y exp
+                  </Text>
+                  <View style={styles.modalBadgeRow}>
+                    {a.mentor && <Text style={styles.modalBadge}>🤝 Mentor</Text>}
+                    {a.featured && <Text style={styles.modalBadge}>⭐ Featured</Text>}
+                    <Text style={[styles.modalBadge, { backgroundColor: c + '33', borderColor: c }]}>
+                      {SECTORS.find((s) => s.id === a.sector)!.icon}{' '}
+                      {SECTORS.find((s) => s.id === a.sector)!.label}
+                    </Text>
+                  </View>
+                </View>
+              </View>
+              <TouchableOpacity
+                accessibilityLabel="Close profile"
+                onPress={closeAlumni}
+                style={styles.modalClose}
+              >
+                <Text style={styles.modalCloseText}>✕</Text>
+              </TouchableOpacity>
+            </LinearGradient>
+
+            <ScrollView
+              style={styles.modalScroll}
+              contentContainerStyle={styles.modalScrollContent}
+              showsVerticalScrollIndicator={false}
+            >
+              <View style={styles.modalSection}>
+                <Text style={styles.modalSectionTitle}>Message to students</Text>
+                <Text style={styles.modalSectionBody}>{a.messageToStudents}</Text>
+              </View>
+
+              {a.quote ? (
+                <View style={styles.modalSection}>
+                  <Text style={styles.modalSectionTitle}>Favourite line</Text>
+                  <View style={styles.modalQuoteBlock}>
+                    <Text style={styles.modalQuoteMark}>”</Text>
+                    <Text style={styles.modalQuote}>{a.quote}</Text>
+                  </View>
+                </View>
+              ) : null}
+
+              {a.skills.length > 0 ? (
+                <View style={styles.modalSection}>
+                  <Text style={styles.modalSectionTitle}>Skills</Text>
+                  <View style={styles.skillWrap}>
+                    {a.skills.map((s) => (
+                      <View key={s} style={[styles.skillChip, { borderColor: c }]}>
+                        <Text style={[styles.skillText, { color: c }]}>{s}</Text>
+                      </View>
+                    ))}
+                  </View>
+                </View>
+              ) : null}
+
+              {a.achievements.length > 0 ? (
+                <View style={styles.modalSection}>
+                  <Text style={styles.modalSectionTitle}>Achievements</Text>
+                  {a.achievements.map((ach) => (
+                    <View key={ach} style={styles.bullet}>
+                      <Text style={styles.bulletDot}>•</Text>
+                      <Text style={styles.bulletText}>{ach}</Text>
+                    </View>
+                  ))}
+                </View>
+              ) : null}
+
+              {a.timeline.length > 0 ? (
+                <View style={styles.modalSection}>
+                  <Text style={styles.modalSectionTitle}>Career timeline</Text>
+                  <View style={styles.timeline}>
+                    {a.timeline.map((t, idx) => (
+                      <View key={idx} style={styles.timelineRow}>
+                        <View style={styles.timelineLeftCol}>
+                          <Text style={styles.timelineYear}>{t.year}</Text>
+                          <View
+                            style={[
+                              styles.timelineDot,
+                              { backgroundColor: c },
+                              idx === 0 && styles.timelineDotFirst,
+                            ]}
+                          />
+                          {idx < a.timeline.length - 1 && (
+                            <View style={styles.timelineLine} />
+                          )}
+                        </View>
+                        <View style={styles.timelineRightCol}>
+                          <Text style={styles.timelineRole}>{t.role}</Text>
+                          <Text style={styles.timelineCompany}>{t.company}</Text>
+                        </View>
+                      </View>
+                    ))}
+                  </View>
+                </View>
+              ) : null}
+
+              {a.sustainabilityPledge ? (
+                <View style={styles.modalSection}>
+                  <Text style={styles.modalSectionTitle}>🌱 Sustainability pledge</Text>
+                  <Text style={styles.modalSectionBody}>{a.sustainabilityPledge}</Text>
+                </View>
+              ) : null}
+            </ScrollView>
+
+            <View style={styles.modalActionRow}>
+              <TouchableOpacity
+                onPress={() => handleLinkedIn(a)}
+                style={[styles.modalAction, { backgroundColor: '#0A66C2' }]}
+              >
+                <Text style={styles.modalActionText}>LinkedIn</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => handleEmail(a)}
+                style={[styles.modalAction, { backgroundColor: Colors.tech.neonBlue }]}
+              >
+                <Text style={styles.modalActionText}>Email</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => handleShare(a)}
+                style={[styles.modalAction, { backgroundColor: '#333' }]}
+              >
+                <Text style={styles.modalActionText}>Share</Text>
+              </TouchableOpacity>
+              {a.mentor && (
+                <TouchableOpacity
+                  onPress={() => handleMentorshipRequest(a)}
+                  style={[styles.modalAction, { backgroundColor: '#16A34A' }]}
+                >
+                  <Text style={styles.modalActionText}>Mentorship</Text>
+                </TouchableOpacity>
+              )}
+            </View>
+          </Animated.View>
+        </Animated.View>
+      </Modal>
+    );
+  };
+
+  const renderSortSheet = () => (
+    <Modal
+      visible={showSortMenu}
+      transparent
+      animationType="fade"
+      onRequestClose={() => setShowSortMenu(false)}
+    >
+      <Pressable style={styles.sheetBackdrop} onPress={() => setShowSortMenu(false)} />
+      <View style={styles.sheet}>
+        <Text style={styles.sheetTitle}>Sort alumni by</Text>
+        {SORT_OPTIONS.map((opt) => (
+          <TouchableOpacity
+            key={opt.key}
+            onPress={() => {
+              setSortKey(opt.key);
+              setShowSortMenu(false);
+            }}
+            style={styles.sheetRow}
+          >
+            <Text style={styles.sheetIcon}>{opt.icon}</Text>
+            <Text style={[styles.sheetLabel, sortKey === opt.key && styles.sheetLabelActive]}>
+              {opt.label}
+            </Text>
+            {sortKey === opt.key && <Text style={styles.sheetCheck}>✓</Text>}
+          </TouchableOpacity>
+        ))}
       </View>
     </Modal>
   );
 
-  return (
-    <View style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor={Colors.background.deepBlack} />
-      {renderHeader()}
-      {renderBatchTabs()}
-      <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={Colors.accent.softGold} />}>
-        {renderAlumniList()}
-      </ScrollView>
-      {renderAlumniModal()}
+  const renderCompanySheet = () => (
+    <Modal
+      visible={showCompanyMenu}
+      transparent
+      animationType="fade"
+      onRequestClose={() => setShowCompanyMenu(false)}
+    >
+      <Pressable style={styles.sheetBackdrop} onPress={() => setShowCompanyMenu(false)} />
+      <View style={[styles.sheet, styles.sheetTall]}>
+        <Text style={styles.sheetTitle}>Filter by company</Text>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <TouchableOpacity
+            onPress={() => {
+              setSelectedCompany('all');
+              setShowCompanyMenu(false);
+            }}
+            style={styles.sheetRow}
+          >
+            <Text style={[styles.sheetLabel, selectedCompany === 'all' && styles.sheetLabelActive]}>
+              All companies
+            </Text>
+            {selectedCompany === 'all' && <Text style={styles.sheetCheck}>✓</Text>}
+          </TouchableOpacity>
+          {uniqueCompanies.map((company) => (
+            <TouchableOpacity
+              key={company}
+              onPress={() => {
+                setSelectedCompany(company);
+                setShowCompanyMenu(false);
+              }}
+              style={styles.sheetRow}
+            >
+              <Text
+                style={[
+                  styles.sheetLabel,
+                  selectedCompany === company && styles.sheetLabelActive,
+                ]}
+              >
+                {company}
+              </Text>
+              {selectedCompany === company && <Text style={styles.sheetCheck}>✓</Text>}
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+      </View>
+    </Modal>
+  );
+
+  // -------------- Main render ------------
+  const renderFiresides = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🔥 Fireside recaps</Text>
+        <Text style={styles.sectionCaption}>Recent alumni conversations</Text>
+      </View>
+      {FIRESIDE_RECAPS.map((f) => (
+        <View key={f.id} style={[styles.firesideCard, { borderLeftColor: f.color }]}>
+          <View style={styles.firesideHeaderRow}>
+            <Text style={styles.firesideEmoji}>{f.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.firesideTitle} numberOfLines={2}>{f.title}</Text>
+              <Text style={styles.firesideMeta}>
+                {f.date} · {f.attendance} attended · host {f.host}
+              </Text>
+            </View>
+          </View>
+          <Text style={styles.firesideHighlight} numberOfLines={4}>{f.highlight}</Text>
+          <View style={styles.firesideQuoteBox}>
+            <Text style={styles.firesideQuote}>“{f.quote}”</Text>
+            <Text style={styles.firesideQuoteAuthor}>— {f.quoteAuthor}</Text>
+          </View>
+          <View style={styles.firesideGuestRow}>
+            {f.guests.map((g) => (
+              <View key={g} style={[styles.firesideGuestPill, { borderColor: f.color + '55' }]}>
+                <Text style={[styles.firesideGuestText, { color: f.color }]}>{g}</Text>
+              </View>
+            ))}
+          </View>
+        </View>
+      ))}
     </View>
+  );
+
+  const renderRelocationGrants = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🛟 Relocation grants</Text>
+        <Text style={styles.sectionCaption}>Alumni-funded · trust-based</Text>
+      </View>
+      {RELOCATION_GRANTS.map((g) => (
+        <View key={g.id} style={[styles.grantCard, { borderLeftColor: g.color }]}>
+          <View style={styles.grantHeaderRow}>
+            <Text style={styles.grantName}>{g.name}</Text>
+            <Text style={[styles.grantAmount, { color: g.color }]}>{g.amount}</Text>
+          </View>
+          <Text style={styles.grantUsedFor}>{g.usedFor}</Text>
+          <View style={styles.grantMetaRow}>
+            <Text style={styles.grantMetaLabel}>Eligibility</Text>
+            <Text style={styles.grantMeta}>{g.eligibility}</Text>
+          </View>
+          <View style={styles.grantFootRow}>
+            <Text style={styles.grantCadence}>{g.cadence}</Text>
+            <Text style={styles.grantDeadline}>Deadline: {g.deadline}</Text>
+          </View>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderAlumniPolls = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>📊 Alumni polls</Text>
+        <Text style={styles.sectionCaption}>Quarterly pulse</Text>
+      </View>
+      {ALUMNI_POLLS.map((p) => (
+        <View key={p.id} style={styles.pollCard}>
+          <View style={styles.pollHeaderRow}>
+            <Text style={styles.pollQuestion} numberOfLines={3}>{p.question}</Text>
+            <Text style={styles.pollTotal}>{p.total} voted · {p.finishedAt}</Text>
+          </View>
+          {p.answers.map((a) => (
+            <View key={a.label} style={styles.pollRow}>
+              <View style={styles.pollLabelRow}>
+                <Text style={styles.pollLabel} numberOfLines={2}>{a.label}</Text>
+                <Text style={[styles.pollPct, { color: a.color }]}>{a.pct}%</Text>
+              </View>
+              <View style={styles.pollTrack}>
+                <View
+                  style={[
+                    styles.pollFill,
+                    { width: `${a.pct}%`, backgroundColor: a.color },
+                  ]}
+                />
+              </View>
+            </View>
+          ))}
+          <Text style={styles.pollCommentary}>{p.commentary}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderPublications = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>📝 Publications + talks</Text>
+        <Text style={styles.sectionCaption}>What alumni put out this year</Text>
+      </View>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.publicationScroll}
+      >
+        {PUBLICATIONS.map((p) => (
+          <View key={p.id} style={[styles.pubCard, { borderLeftColor: p.color }]}>
+            <Text style={[styles.pubKind, { color: p.color }]}>{p.kind.toUpperCase()}</Text>
+            <Text style={styles.pubTitle} numberOfLines={3}>{p.title}</Text>
+            <Text style={styles.pubVenue} numberOfLines={2}>{p.venue}</Text>
+            <View style={styles.pubFootRow}>
+              <Text style={styles.pubAuthor}>{p.author}</Text>
+              <Text style={styles.pubYear}>{p.year}</Text>
+            </View>
+          </View>
+        ))}
+      </ScrollView>
+    </View>
+  );
+
+  // ------ Phase 3x deeper blocks ------
+  const renderLegacyProjects = () => (
+    <View style={[styles.sectionBlock, { paddingHorizontal: HORIZONTAL_PADDING }]}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🏛️ Legacy projects · still alive</Text>
+        <Text style={styles.sectionCaption}>{LEGACY_PROJECTS.length} threads</Text>
+      </View>
+      {LEGACY_PROJECTS.map((l) => (
+        <View key={l.id} style={[styles.lpRow, { borderLeftColor: l.color }]}>
+          <Text style={styles.lpEmoji}>{l.emoji}</Text>
+          <View style={{ flex: 1 }}>
+            <View style={styles.lpTopRow}>
+              <Text style={styles.lpTitle} numberOfLines={2}>{l.title}</Text>
+              <View
+                style={[
+                  styles.lpAlive,
+                  {
+                    backgroundColor: (l.stillAlive ? '#22C55E' : '#94A3B8') + '22',
+                    borderColor: (l.stillAlive ? '#22C55E' : '#94A3B8') + '66',
+                  },
+                ]}
+              >
+                <Text
+                  style={[
+                    styles.lpAliveText,
+                    { color: l.stillAlive ? '#22C55E' : '#94A3B8' },
+                  ]}
+                >
+                  {l.stillAlive ? 'in-use' : 'retired'}
+                </Text>
+              </View>
+            </View>
+            <Text style={styles.lpAlumnus} numberOfLines={1}>{l.alumnus}</Text>
+            <Text style={styles.lpNote} numberOfLines={2}>{l.useNote}</Text>
+          </View>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderAlumniAwards = () => (
+    <View style={[styles.sectionBlock, { paddingHorizontal: HORIZONTAL_PADDING }]}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🏆 Awards + honours</Text>
+        <Text style={styles.sectionCaption}>{ALUMNI_AWARDS.length} in the cabinet</Text>
+      </View>
+      {ALUMNI_AWARDS.map((a) => (
+        <View key={a.id} style={[styles.awCard, { borderLeftColor: a.color }]}>
+          <View style={styles.awTopRow}>
+            <Text style={styles.awEmoji}>{a.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.awAward} numberOfLines={2}>{a.award}</Text>
+              <Text style={styles.awBody} numberOfLines={1}>
+                {a.body} · {a.year}
+              </Text>
+            </View>
+          </View>
+          <Text style={[styles.awAlumnus, { color: a.color }]} numberOfLines={1}>{a.alumnus}</Text>
+          <Text style={styles.awNote} numberOfLines={3}>{a.note}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderAlumniVentures = () => (
+    <View style={styles.sectionBlock}>
+      <View style={[styles.sectionHeaderRow, { paddingHorizontal: HORIZONTAL_PADDING }]}>
+        <Text style={styles.sectionTitle}>🚀 Alumni ventures</Text>
+        <Text style={styles.sectionCaption}>{ALUMNI_VENTURES.length} active</Text>
+      </View>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={{ paddingHorizontal: HORIZONTAL_PADDING, gap: 10 }}
+      >
+        {ALUMNI_VENTURES.map((v) => (
+          <View
+            key={v.id}
+            style={[
+              styles.avnCard,
+              { borderColor: v.color + '55' },
+            ]}
+          >
+            <Text style={styles.avnEmoji}>{v.emoji}</Text>
+            <Text style={styles.avnCompany} numberOfLines={1}>{v.company}</Text>
+            <Text style={styles.avnFounder} numberOfLines={1}>{v.founder}</Text>
+            <View style={styles.avnMetaRow}>
+              <View
+                style={[
+                  styles.avnStagePill,
+                  { backgroundColor: v.color + '22', borderColor: v.color + '66' },
+                ]}
+              >
+                <Text style={[styles.avnStageText, { color: v.color }]}>{v.stage}</Text>
+              </View>
+              <Text style={styles.avnYear}>{v.year}</Text>
+            </View>
+            <Text style={styles.avnMission} numberOfLines={3}>{v.missionLine}</Text>
+            <Text style={styles.avnHiring} numberOfLines={2}>{v.hiringNote}</Text>
+          </View>
+        ))}
+      </ScrollView>
+    </View>
+  );
+
+  const renderReunions = () => (
+    <View style={[styles.sectionBlock, { paddingHorizontal: HORIZONTAL_PADDING }]}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🎊 Reunions · on the calendar</Text>
+        <Text style={styles.sectionCaption}>{REUNION_PLANS.length} gathers</Text>
+      </View>
+      {REUNION_PLANS.map((r) => {
+        const pct = r.seats > 0 ? Math.min(1, r.rsvped / r.seats) : 0;
+        return (
+          <View key={r.id} style={[styles.rpCard, { borderLeftColor: r.color }]}>
+            <View style={styles.rpTopRow}>
+              <Text style={styles.rpEmoji}>{r.emoji}</Text>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.rpTitle} numberOfLines={2}>{r.title}</Text>
+                <Text style={styles.rpDate} numberOfLines={1}>{r.date}</Text>
+              </View>
+            </View>
+            <Text style={styles.rpLocation} numberOfLines={1}>{r.location}</Text>
+            <View style={styles.rpBarBg}>
+              <View
+                style={[
+                  styles.rpBarFill,
+                  { width: `${Math.round(pct * 100)}%`, backgroundColor: r.color },
+                ]}
+              />
+            </View>
+            <Text style={styles.rpSeats}>
+              {r.rsvped} / {r.seats} rsvp'd · {Math.round((1 - pct) * 100)}% open
+            </Text>
+          </View>
+        );
+      })}
+    </View>
+  );
+
+  const renderFamilyHeritage = () => (
+    <View style={[styles.sectionBlock, { paddingHorizontal: HORIZONTAL_PADDING }]}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🫧 Family + mentor lineages</Text>
+        <Text style={styles.sectionCaption}>quiet ties</Text>
+      </View>
+      {FAMILY_HERITAGE.map((f) => (
+        <View key={f.id} style={[styles.fhRow, { borderLeftColor: f.color }]}>
+          <Text style={styles.fhEmoji}>{f.emoji}</Text>
+          <View style={{ flex: 1 }}>
+            <Text style={styles.fhAlumnus} numberOfLines={1}>{f.alumniName}</Text>
+            <Text style={styles.fhRelation} numberOfLines={1}>
+              {f.relation} · {f.relatedTo}
+            </Text>
+            <Text style={styles.fhNote} numberOfLines={2}>{f.note}</Text>
+          </View>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderStoryBeats = () => (
+    <View style={[styles.sectionBlock, { paddingHorizontal: HORIZONTAL_PADDING }]}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>📜 Story beats · a decade at a glance</Text>
+        <Text style={styles.sectionCaption}>{STORY_BEATS.length} moments</Text>
+      </View>
+      {STORY_BEATS.map((b) => (
+        <View key={b.id} style={[styles.sbRow, { borderLeftColor: b.color }]}>
+          <View style={styles.sbYearCol}>
+            <Text style={[styles.sbYear, { color: b.color }]}>{b.year}</Text>
+          </View>
+          <View style={{ flex: 1 }}>
+            <View style={styles.sbTopRow}>
+              <Text style={styles.sbEmoji}>{b.emoji}</Text>
+              <Text style={styles.sbAlumnus} numberOfLines={1}>{b.alumnusLine}</Text>
+            </View>
+            <Text style={styles.sbBeat} numberOfLines={2}>{b.beat}</Text>
+            <Text style={styles.sbDetail} numberOfLines={3}>{b.detail}</Text>
+          </View>
+        </View>
+      ))}
+    </View>
+  );
+
+  // ------ Phase 3ad blocks ------
+  const renderFirstJobs = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>💼 First jobs · honest numbers</Text>
+        <Text style={styles.sectionCaption}>{ALUMNI_FIRST_JOBS.length} stories</Text>
+      </View>
+      {ALUMNI_FIRST_JOBS.map((f) => (
+        <View key={f.id} style={[styles.afjCard, { borderLeftColor: f.color }]}>
+          <View style={styles.afjTopRow}>
+            <Text style={styles.afjEmoji}>{f.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.afjAlum} numberOfLines={1}>{f.alum} · {f.batch}</Text>
+              <Text style={styles.afjCompany} numberOfLines={1}>{f.company} · {f.role}</Text>
+            </View>
+            <Text style={[styles.afjPay, { color: f.color }]} numberOfLines={1}>{f.pay}</Text>
+          </View>
+          <Text style={styles.afjLesson} numberOfLines={3}>→ {f.lesson}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderAlumniKnowledge = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>📚 Alumni knowledge · bring it in</Text>
+        <Text style={styles.sectionCaption}>{ALUMNI_KNOWLEDGE.length} drops</Text>
+      </View>
+      {ALUMNI_KNOWLEDGE.map((k) => (
+        <View key={k.id} style={[styles.akCard, { borderLeftColor: k.color }]}>
+          <View style={styles.akTopRow}>
+            <Text style={styles.akEmoji}>{k.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.akTopic} numberOfLines={2}>{k.topic}</Text>
+              <Text style={styles.akAlum} numberOfLines={1}>{k.alum}</Text>
+            </View>
+            <View style={[styles.akFormatPill, { backgroundColor: k.color + '22', borderColor: k.color + '66' }]}>
+              <Text style={[styles.akFormatText, { color: k.color }]}>{k.format}</Text>
+            </View>
+          </View>
+          <Text style={styles.akWhere} numberOfLines={1}>📍 {k.where}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderAlumniCare = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🫶 Community care · we show up</Text>
+        <Text style={styles.sectionCaption}>{ALUMNI_CARE.length} initiatives</Text>
+      </View>
+      {ALUMNI_CARE.map((c) => (
+        <View key={c.id} style={[styles.acCard, { borderLeftColor: c.color }]}>
+          <View style={styles.acTopRow}>
+            <Text style={styles.acEmoji}>{c.emoji}</Text>
+            <Text style={styles.acName} numberOfLines={2}>{c.initiative}</Text>
+          </View>
+          <Text style={styles.acDetail} numberOfLines={3}>{c.details}</Text>
+          <View style={styles.acMetaRow}>
+            <Text style={styles.acMetaLabel}>led by · <Text style={styles.acMetaValue}>{c.lead}</Text></Text>
+            <Text style={[styles.acMetaLabel, { color: c.color }]}>{c.cadence}</Text>
+          </View>
+          <Text style={styles.acImpact} numberOfLines={2}>📈 {c.impact}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderLegacyLines = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🕰️ Legacy lines · years in words</Text>
+        <Text style={styles.sectionCaption}>{ALUMNI_LEGACY_LINES.length} years</Text>
+      </View>
+      {ALUMNI_LEGACY_LINES.map((l) => (
+        <View key={l.id} style={[styles.alRow, { borderLeftColor: l.color }]}>
+          <View style={[styles.alYearBadge, { borderColor: l.color }]}>
+            <Text style={[styles.alYear, { color: l.color }]}>{l.year}</Text>
+          </View>
+          <View style={{ flex: 1 }}>
+            <View style={styles.alTopRow}>
+              <Text style={styles.alEmoji}>{l.emoji}</Text>
+              <Text style={styles.alLine} numberOfLines={3}>{l.line}</Text>
+            </View>
+            <Text style={styles.alWho} numberOfLines={1}>— {l.who}</Text>
+          </View>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderCareerGrants = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🎟️ Career grants · alumni fund</Text>
+        <Text style={styles.sectionCaption}>{ALUMNI_CAREER_GRANTS.length} grants</Text>
+      </View>
+      {ALUMNI_CAREER_GRANTS.map((g) => (
+        <View key={g.id} style={[styles.acgCard, { borderLeftColor: g.color }]}>
+          <View style={styles.acgTopRow}>
+            <Text style={styles.acgEmoji}>{g.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.acgGrant} numberOfLines={2}>{g.grant}</Text>
+              <Text style={[styles.acgAmount, { color: g.color }]}>{g.amount}</Text>
+            </View>
+          </View>
+          <Text style={styles.acgCriteria} numberOfLines={3}>→ {g.criteria}</Text>
+          <Text style={styles.acgApply} numberOfLines={1}>apply · {g.applyBy}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderSignOffs = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🕊️ Sign-offs · what they said on the way out</Text>
+        <Text style={styles.sectionCaption}>{ALUMNI_SIGN_OFFS.length} quotes</Text>
+      </View>
+      {ALUMNI_SIGN_OFFS.map((q) => (
+        <View key={q.id} style={[styles.asoCard, { borderLeftColor: q.color }]}>
+          <Text style={[styles.asoQuoteMark, { color: q.color }]}>"</Text>
+          <Text style={styles.asoQuote} numberOfLines={4}>{q.quote}</Text>
+          <View style={styles.asoFooter}>
+            <Text style={styles.asoEmoji}>{q.emoji}</Text>
+            <Text style={styles.asoWho} numberOfLines={1}>— {q.who}</Text>
+          </View>
+        </View>
+      ))}
+    </View>
+  );
+
+  // ------ Phase 3ak: round 3 alumni blocks ------
+  const renderAlumniMentorPods = () => (
+    <View style={[styles.sectionBlock, { paddingHorizontal: HORIZONTAL_PADDING }]}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🧭 Mentor pods · apply · learn · pay it back</Text>
+        <Text style={styles.sectionCaption}>{ALUMNI_MENTOR_PODS.length} pods</Text>
+      </View>
+      {ALUMNI_MENTOR_PODS.map((p) => (
+        <View key={p.id} style={[styles.ampCard, { borderLeftColor: p.color }]}>
+          <View style={styles.ampTopRow}>
+            <Text style={styles.ampEmoji}>{p.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.ampName} numberOfLines={1}>{p.podName}</Text>
+              <Text style={[styles.ampMentor, { color: p.color }]}>{p.mentor}</Text>
+            </View>
+            <Text style={styles.ampSeats} numberOfLines={1}>{p.seats}</Text>
+          </View>
+          <Text style={styles.ampFocus} numberOfLines={3}>{p.focus}</Text>
+          <Text style={styles.ampCadence} numberOfLines={1}>📅 {p.meetingCadence}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderAlumniCheckpoints = () => (
+    <View style={[styles.sectionBlock, { paddingHorizontal: HORIZONTAL_PADDING }]}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🎯 Career checkpoints · the post-graduation path</Text>
+        <Text style={styles.sectionCaption}>{ALUMNI_CAREER_CHECKPOINTS.length} checkpoints</Text>
+      </View>
+      {ALUMNI_CAREER_CHECKPOINTS.map((c) => (
+        <View key={c.id} style={[styles.ackCard, { borderLeftColor: c.color }]}>
+          <View style={styles.ackTopRow}>
+            <Text style={styles.ackEmoji}>{c.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.ackYear} numberOfLines={1}>{c.year}</Text>
+              <Text style={[styles.ackName, { color: c.color }]}>{c.checkpoint}</Text>
+            </View>
+          </View>
+          <Text style={styles.ackPrompt} numberOfLines={3}>{c.prompt}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderAlumniReturnPrograms = () => (
+    <View style={[styles.sectionBlock, { paddingHorizontal: HORIZONTAL_PADDING }]}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🔁 Return programs · come back shapes</Text>
+        <Text style={styles.sectionCaption}>{ALUMNI_RETURN_PROGRAMS.length} programs</Text>
+      </View>
+      {ALUMNI_RETURN_PROGRAMS.map((r) => (
+        <View key={r.id} style={[styles.arpCard, { borderLeftColor: r.color }]}>
+          <View style={styles.arpTopRow}>
+            <Text style={styles.arpEmoji}>{r.emoji}</Text>
+            <Text style={styles.arpProgram} numberOfLines={2}>{r.program}</Text>
+          </View>
+          <Text style={styles.arpWho} numberOfLines={1}>who · {r.who}</Text>
+          <Text style={styles.arpCommit} numberOfLines={2}>commit · {r.commitment}</Text>
+          <Text style={styles.arpPayoff} numberOfLines={2}>payoff · {r.payoff}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderAlumniHonourList = () => (
+    <View style={[styles.sectionBlock, { paddingHorizontal: HORIZONTAL_PADDING }]}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🎖️ Honour list · the ones we bow to</Text>
+        <Text style={styles.sectionCaption}>{ALUMNI_HONOUR_LIST.length} honours</Text>
+      </View>
+      {ALUMNI_HONOUR_LIST.map((h) => (
+        <View key={h.id} style={[styles.ahlCard, { borderLeftColor: h.color }]}>
+          <View style={styles.ahlTopRow}>
+            <Text style={styles.ahlEmoji}>{h.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.ahlHonour} numberOfLines={1}>{h.honour}</Text>
+              <Text style={[styles.ahlRecipient, { color: h.color }]}>{h.recipient}</Text>
+            </View>
+            <Text style={styles.ahlYear} numberOfLines={1}>{h.year}</Text>
+          </View>
+          <Text style={styles.ahlCitation} numberOfLines={4}>{h.citation}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderAlumniLettersHome = () => (
+    <View style={[styles.sectionBlock, { paddingHorizontal: HORIZONTAL_PADDING }]}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>✉️ Letters home · on the wall</Text>
+        <Text style={styles.sectionCaption}>{ALUMNI_LETTERS_HOME.length} letters</Text>
+      </View>
+      {ALUMNI_LETTERS_HOME.map((l) => (
+        <View key={l.id} style={[styles.alhCard, { borderLeftColor: l.color }]}>
+          <Text style={[styles.alhEmoji, { color: l.color }]}>{l.emoji}</Text>
+          <Text style={styles.alhExcerpt} numberOfLines={5}>&quot;{l.excerpt}&quot;</Text>
+          <View style={styles.alhFooter}>
+            <Text style={[styles.alhWriter, { color: l.color }]}>— {l.writer}</Text>
+            <Text style={styles.alhWhen} numberOfLines={1}>{l.when}</Text>
+          </View>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderAlumniRegionCircles = () => (
+    <View style={[styles.sectionBlock, { paddingHorizontal: HORIZONTAL_PADDING }]}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🌍 Region circles · where the club still meets</Text>
+        <Text style={styles.sectionCaption}>{ALUMNI_REGION_CIRCLES.length} circles</Text>
+      </View>
+      {ALUMNI_REGION_CIRCLES.map((r) => (
+        <View key={r.id} style={[styles.arcCard, { borderLeftColor: r.color }]}>
+          <View style={styles.arcTopRow}>
+            <Text style={styles.arcEmoji}>{r.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.arcRegion} numberOfLines={1}>{r.region}</Text>
+              <Text style={[styles.arcAnchor, { color: r.color }]}>anchor · {r.anchor}</Text>
+            </View>
+          </View>
+          <Text style={styles.arcMeetups} numberOfLines={1}>🗓️ {r.meetups}</Text>
+          <Text style={styles.arcMembers} numberOfLines={1}>👥 {r.members}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderAlumniCraftArchives = () => (
+    <View style={[styles.sectionBlock, { paddingHorizontal: HORIZONTAL_PADDING }]}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🗄️ Craft archive · what we saved · what endures</Text>
+        <Text style={styles.sectionCaption}>{ALUMNI_CRAFT_ARCHIVES.length} archives</Text>
+      </View>
+      {ALUMNI_CRAFT_ARCHIVES.map((a) => (
+        <View key={a.id} style={[styles.acaCard, { borderLeftColor: a.color }]}>
+          <View style={styles.acaTopRow}>
+            <Text style={styles.acaEmoji}>{a.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.acaName} numberOfLines={1}>{a.archive}</Text>
+              <Text style={[styles.acaPeriod, { color: a.color }]}>{a.period}</Text>
+            </View>
+          </View>
+          <Text style={styles.acaKeeper} numberOfLines={1}>keeper · {a.keeper}</Text>
+          <Text style={styles.acaSize} numberOfLines={1}>size · {a.size}</Text>
+          <Text style={styles.acaStatus} numberOfLines={2}>{a.status}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  // ------ Phase 3aq: round 4 alumni blocks ------
+  const renderAlumniCareerLetters = () => (
+    <View style={[styles.sectionBlock, { paddingHorizontal: HORIZONTAL_PADDING }]}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>✉️ Career letters · what the first ten years felt like</Text>
+        <Text style={styles.sectionCaption}>{ALUMNI_CAREER_LETTERS.length} letters</Text>
+      </View>
+      {ALUMNI_CAREER_LETTERS.map((l) => (
+        <View key={l.id} style={[styles.aclCard, { borderLeftColor: l.color }]}>
+          <View style={styles.aclTopRow}>
+            <Text style={[styles.aclYear, { color: l.color }]}>{l.year}</Text>
+            <Text style={styles.aclEmoji}>{l.emoji}</Text>
+          </View>
+          <Text style={styles.aclExcerpt} numberOfLines={7}>&ldquo;{l.excerpt}&rdquo;</Text>
+          <Text style={styles.aclWriter} numberOfLines={1}>— {l.writer} · <Text style={styles.aclRole}>{l.role}</Text></Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderAlumniVillageFunds = () => (
+    <View style={[styles.sectionBlock, { paddingHorizontal: HORIZONTAL_PADDING }]}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🫱 Village funds · small pots · quick hands · no paperwork</Text>
+        <Text style={styles.sectionCaption}>{ALUMNI_VILLAGE_FUNDS.length} circles</Text>
+      </View>
+      {ALUMNI_VILLAGE_FUNDS.map((f) => (
+        <View key={f.id} style={[styles.avfCard, { borderLeftColor: f.color }]}>
+          <View style={styles.avfTopRow}>
+            <Text style={styles.avfEmoji}>{f.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.avfCircle} numberOfLines={1}>{f.circle}</Text>
+              <Text style={[styles.avfCorpus, { color: f.color }]}>{f.corpus}</Text>
+            </View>
+          </View>
+          <Text style={styles.avfPurpose} numberOfLines={3}>{f.purpose}</Text>
+          <Text style={styles.avfActive} numberOfLines={1}>active · {f.active}</Text>
+          <Text style={styles.avfSteward} numberOfLines={1}>steward · {f.steward}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderAlumniLineages = () => (
+    <View style={[styles.sectionBlock, { paddingHorizontal: HORIZONTAL_PADDING }]}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🪔 Lineages · who passed what to whom</Text>
+        <Text style={styles.sectionCaption}>{ALUMNI_LINEAGES.length} lineages</Text>
+      </View>
+      {ALUMNI_LINEAGES.map((l) => (
+        <View key={l.id} style={[styles.alnCard, { borderLeftColor: l.color }]}>
+          <View style={styles.alnTopRow}>
+            <Text style={styles.alnEmoji}>{l.emoji}</Text>
+            <Text style={styles.alnCraft} numberOfLines={1}>{l.craft}</Text>
+          </View>
+          <Text style={styles.alnFrom} numberOfLines={1}>from · {l.ancestor}</Text>
+          <Text style={[styles.alnTo, { color: l.color }]} numberOfLines={1}>to · {l.inheritor}</Text>
+          <Text style={styles.alnPassed} numberOfLines={3}>{l.whatPassed}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderAlumniAdvisoryTracks = () => (
+    <View style={[styles.sectionBlock, { paddingHorizontal: HORIZONTAL_PADDING }]}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🧭 Advisory tracks · how alumni show up for each other</Text>
+        <Text style={styles.sectionCaption}>{ALUMNI_ADVISORY_TRACKS.length} tracks</Text>
+      </View>
+      {ALUMNI_ADVISORY_TRACKS.map((a) => (
+        <View key={a.id} style={[styles.aatCard, { borderLeftColor: a.color }]}>
+          <View style={styles.aatTopRow}>
+            <Text style={styles.aatEmoji}>{a.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.aatTrack} numberOfLines={1}>{a.track}</Text>
+              <Text style={[styles.aatCadence, { color: a.color }]}>{a.cadence}</Text>
+            </View>
+          </View>
+          <Text style={styles.aatAudience} numberOfLines={2}>for · {a.audience}</Text>
+          <Text style={styles.aatFormat} numberOfLines={3}>format · {a.format}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  // ------ Phase 3aw: round 5 alumni blocks ------
+  const renderAlumniHomecomings = () => (
+    <View style={[styles.sectionBlock, { paddingHorizontal: HORIZONTAL_PADDING }]}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🎊 Homecomings · every two years · without fail</Text>
+        <Text style={styles.sectionCaption}>{ALUMNI_HOMECOMINGS.length} editions</Text>
+      </View>
+      {ALUMNI_HOMECOMINGS.map((h) => (
+        <View key={h.id} style={[styles.ahcCard, { borderLeftColor: h.color }]}>
+          <View style={styles.ahcTopRow}>
+            <Text style={styles.ahcEmoji}>{h.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.ahcYear} numberOfLines={1}>{h.year}</Text>
+              <Text style={[styles.ahcTheme, { color: h.color }]} numberOfLines={1}>{h.theme}</Text>
+            </View>
+          </View>
+          <Text style={styles.ahcAttended} numberOfLines={1}>attended · {h.attended}</Text>
+          <Text style={styles.ahcMoment} numberOfLines={3}>moment · {h.moment}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderAlumniTraditions = () => (
+    <View style={[styles.sectionBlock, { paddingHorizontal: HORIZONTAL_PADDING }]}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🪔 Traditions · small practices that refuse to fade</Text>
+        <Text style={styles.sectionCaption}>{ALUMNI_TRADITIONS.length} traditions</Text>
+      </View>
+      {ALUMNI_TRADITIONS.map((t) => (
+        <View key={t.id} style={[styles.atrCard, { borderLeftColor: t.color }]}>
+          <View style={styles.atrTopRow}>
+            <Text style={styles.atrEmoji}>{t.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.atrName} numberOfLines={1}>{t.name}</Text>
+              <Text style={[styles.atrOrigin, { color: t.color }]}>since {t.originYear}</Text>
+            </View>
+          </View>
+          <Text style={styles.atrPractice} numberOfLines={3}>{t.practice}</Text>
+          <Text style={styles.atrKeptBy} numberOfLines={1}>kept by · {t.keptBy}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderAlumniGrovePlots = () => (
+    <View style={[styles.sectionBlock, { paddingHorizontal: HORIZONTAL_PADDING }]}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🌳 Grove plots · the trees we planted together</Text>
+        <Text style={styles.sectionCaption}>{ALUMNI_GROVE_PLOTS.length} plots</Text>
+      </View>
+      {ALUMNI_GROVE_PLOTS.map((g) => (
+        <View key={g.id} style={[styles.agpCard, { borderLeftColor: g.color }]}>
+          <View style={styles.agpTopRow}>
+            <Text style={styles.agpEmoji}>{g.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.agpPlot} numberOfLines={1}>{g.plot}</Text>
+              <Text style={[styles.agpFounded, { color: g.color }]}>founded {g.founded}</Text>
+            </View>
+          </View>
+          <Text style={styles.agpSaplings} numberOfLines={2}>saplings · {g.saplings}</Text>
+          <Text style={styles.agpSteward} numberOfLines={1}>steward · {g.steward}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  // ------ Phase 3bc: round 6 alumni blocks ------
+  const renderAlumniChapterCities = () => (
+    <View style={[styles.sectionBlock, { paddingHorizontal: HORIZONTAL_PADDING }]}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🏙️ Chapter cities · where the alumni gather</Text>
+        <Text style={styles.sectionCaption}>{ALUMNI_CHAPTER_CITIES.length} chapters</Text>
+      </View>
+      {ALUMNI_CHAPTER_CITIES.map((c) => (
+        <View key={c.id} style={[styles.accCard, { borderLeftColor: c.color }]}>
+          <View style={styles.accTopRow}>
+            <Text style={styles.accEmoji}>{c.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.accCity} numberOfLines={1}>{c.city}</Text>
+              <Text style={[styles.accFounded, { color: c.color }]}>founded {c.founded}</Text>
+            </View>
+          </View>
+          <Text style={styles.accMembers} numberOfLines={1}>{c.members}</Text>
+          <Text style={styles.accRituals} numberOfLines={3}>rituals · {c.rituals}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderAlumniHelpLedger = () => (
+    <View style={[styles.sectionBlock, { paddingHorizontal: HORIZONTAL_PADDING }]}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🤝 Help ledger · alumni answering asks</Text>
+        <Text style={styles.sectionCaption}>{ALUMNI_HELP_LEDGER.length} asks</Text>
+      </View>
+      {ALUMNI_HELP_LEDGER.map((h) => (
+        <View key={h.id} style={[styles.ahxCard, { borderLeftColor: h.color }]}>
+          <View style={styles.ahxTopRow}>
+            <Text style={styles.ahxEmoji}>{h.emoji}</Text>
+            <Text style={styles.ahxAsk} numberOfLines={2}>ask · {h.ask}</Text>
+          </View>
+          <Text style={[styles.ahxOffered, { color: h.color }]} numberOfLines={2}>offered · {h.offered}</Text>
+          <Text style={styles.ahxWhen} numberOfLines={1}>when · {h.when}</Text>
+          <Text style={styles.ahxOutcome} numberOfLines={3}>{h.outcome}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderAlumniReunionFormats = () => (
+    <View style={[styles.sectionBlock, { paddingHorizontal: HORIZONTAL_PADDING }]}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🫱 Reunion formats · how we meet again</Text>
+        <Text style={styles.sectionCaption}>{ALUMNI_REUNION_FORMATS.length} formats</Text>
+      </View>
+      {ALUMNI_REUNION_FORMATS.map((r) => (
+        <View key={r.id} style={[styles.arfCard, { borderLeftColor: r.color }]}>
+          <View style={styles.arfTopRow}>
+            <Text style={styles.arfEmoji}>{r.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.arfFormat} numberOfLines={2}>{r.format}</Text>
+              <Text style={[styles.arfCadence, { color: r.color }]}>{r.cadence}</Text>
+            </View>
+          </View>
+          <Text style={styles.arfHighlights} numberOfLines={3}>highlights · {r.highlights}</Text>
+          <Text style={styles.arfKeeper} numberOfLines={1}>keeper · {r.keeper}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderAlumniLetterBox = () => (
+    <View style={[styles.sectionBlock, { paddingHorizontal: HORIZONTAL_PADDING }]}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>✉️ Letter box · what alumni leave behind</Text>
+        <Text style={styles.sectionCaption}>{ALUMNI_LETTER_BOX.length} letters</Text>
+      </View>
+      {ALUMNI_LETTER_BOX.map((l) => (
+        <View key={l.id} style={[styles.albCard, { borderLeftColor: l.color }]}>
+          <View style={styles.albTopRow}>
+            <Text style={styles.albEmoji}>{l.emoji}</Text>
+            <Text style={styles.albKind} numberOfLines={2}>{l.kind}</Text>
+          </View>
+          <Text style={[styles.albOpened, { color: l.color }]} numberOfLines={1}>opened · {l.opened}</Text>
+          <Text style={styles.albExcerpt} numberOfLines={4}>{l.excerpt}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderAlumniRemembered = () => (
+    <View style={[styles.sectionBlock, { paddingHorizontal: HORIZONTAL_PADDING }]}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🕯️ Remembered · alumni we keep close</Text>
+        <Text style={styles.sectionCaption}>{ALUMNI_REMEMBERED.length} markers</Text>
+      </View>
+      {ALUMNI_REMEMBERED.map((r) => (
+        <View key={r.id} style={[styles.arp2Card, { borderLeftColor: r.color }]}>
+          <View style={styles.arp2TopRow}>
+            <Text style={styles.arp2Emoji}>{r.emoji}</Text>
+            <Text style={styles.arp2Name} numberOfLines={1}>{r.name}</Text>
+          </View>
+          <Text style={[styles.arp2Marker, { color: r.color }]} numberOfLines={1}>marker · {r.marker}</Text>
+          <Text style={styles.arp2Visited} numberOfLines={1}>visited · {r.visitedBy}</Text>
+          <Text style={styles.arp2Note} numberOfLines={4}>{r.note}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const headerComponent = (
+    <View>
+      {renderHeader()}
+      {renderSectorRail()}
+      {renderBatchRail()}
+      {renderHallOfFame()}
+      {renderLegacyLines()}
+      {renderStoryBeats()}
+      {renderTestimonials()}
+      {renderFirstJobs()}
+      {renderTopCompanies()}
+      {renderAlumniVentures()}
+      {renderChapters()}
+      {renderMeetups()}
+      {renderReunions()}
+      {renderFiresides()}
+      {renderMentorBoard()}
+      {renderAdvisors()}
+      {renderFamilyHeritage()}
+      {renderAMA()}
+      {renderAlumniKnowledge()}
+      {renderMentorshipSlots()}
+      {renderCareerPivots()}
+      {renderCompanyReferrals()}
+      {renderCareerGrants()}
+      {renderRelocationGrants()}
+      {renderScholarships()}
+      {renderAlumniCare()}
+      {renderAlumniAwards()}
+      {renderLegacyProjects()}
+      {renderGivingLedger()}
+      {renderAlumniPolls()}
+      {renderDiaspora()}
+      {renderPublications()}
+      {renderPledges()}
+      {renderSignOffs()}
+      {renderAlumniMentorPods()}
+      {renderAlumniCheckpoints()}
+      {renderAlumniReturnPrograms()}
+      {renderAlumniHonourList()}
+      {renderAlumniLettersHome()}
+      {renderAlumniRegionCircles()}
+      {renderAlumniCraftArchives()}
+      {renderAlumniCareerLetters()}
+      {renderAlumniVillageFunds()}
+      {renderAlumniLineages()}
+      {renderAlumniAdvisoryTracks()}
+      {renderAlumniRemembered()}
+      {renderAlumniHomecomings()}
+      {renderAlumniTraditions()}
+      {renderAlumniGrovePlots()}
+      {renderAlumniChapterCities()}
+      {renderAlumniHelpLedger()}
+      {renderAlumniReunionFormats()}
+      {renderAlumniLetterBox()}
+      {renderAlumniListHeader()}
+    </View>
+  );
+
+  return (
+    <SafeAreaView style={styles.container} edges={['top']}>
+      <StatusBar
+        barStyle="light-content"
+        backgroundColor={Colors.background.deepBlack}
+        translucent={Platform.OS === 'android'}
+      />
+      {loading ? (
+        <ScrollView style={styles.scrollRoot}>
+          {renderHeader()}
+          {renderSkeletonList()}
+        </ScrollView>
+      ) : (
+        <FlatList
+          data={filteredAlumni}
+          keyExtractor={(item) => item.id}
+          renderItem={renderAlumniRow}
+          key={viewMode}
+          numColumns={viewMode === 'grid' ? 2 : 1}
+          columnWrapperStyle={viewMode === 'grid' ? styles.gridRow : undefined}
+          contentContainerStyle={styles.listContent}
+          ListHeaderComponent={headerComponent}
+          ListEmptyComponent={renderEmpty}
+          ListFooterComponent={renderFooter}
+          initialNumToRender={10}
+          windowSize={9}
+          removeClippedSubviews={Platform.OS === 'android'}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+              tintColor={Colors.tech.neonBlue}
+              colors={[Colors.tech.neonBlue]}
+            />
+          }
+        />
+      )}
+      {renderAlumniModal()}
+      {renderSortSheet()}
+      {renderCompanySheet()}
+    </SafeAreaView>
   );
 };
 
+// =====================================================
+// Styles
+// =====================================================
+
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: Colors.background.deepBlack },
-  scrollView: { flex: 1 },
-  scrollContent: { paddingBottom: 100, paddingHorizontal: 20 },
-  headerContainer: { marginBottom: 15 },
-  headerGradient: { paddingTop: Platform.OS === 'ios' ? 60 : 40, paddingBottom: 20, paddingHorizontal: 20 },
-  mainTitle: { fontSize: isSmallScreen ? 26 : 30, fontWeight: '700', color: Colors.text.primary },
-  subTitle: { fontSize: 14, color: Colors.text.secondary, marginTop: 4, marginBottom: 20 },
-  statsContainer: { flexDirection: 'row', justifyContent: 'space-around', backgroundColor: 'rgba(255,255,255,0.05)', borderRadius: 12, paddingVertical: 15, marginBottom: 20 },
-  statItem: { alignItems: 'center' },
-  statValue: { fontSize: isSmallScreen ? 22 : 26, fontWeight: '700', color: Colors.accent.softGold },
-  statLabel: { fontSize: 12, color: Colors.text.tertiary, marginTop: 4 },
-  statDivider: { width: 1, backgroundColor: Colors.text.muted, opacity: 0.3 },
-  searchBarContainer: { flexDirection: 'row', alignItems: 'center', backgroundColor: Colors.background.darkGreen, borderRadius: 12, paddingHorizontal: 15, paddingVertical: 10 },
-  searchIcon: { fontSize: 18, marginRight: 10 },
-  searchInput: { flex: 1, fontSize: 15, color: Colors.text.primary },
-  clearIcon: { fontSize: 16, color: Colors.text.secondary, padding: 5 },
-  batchContainer: { marginBottom: 20 },
-  batchScroll: { paddingHorizontal: 20 },
-  batchChip: { paddingHorizontal: 15, paddingVertical: 10, borderRadius: 20, backgroundColor: Colors.background.darkGreen, marginRight: 10 },
-  activeBatchChip: { backgroundColor: Colors.accent.softGold },
-  batchName: { fontSize: 13, fontWeight: '600', color: Colors.text.secondary },
-  activeBatchName: { color: Colors.background.deepBlack },
-  alumniListContainer: {},
-  alumniCardContainer: { marginBottom: 12 },
-  alumniCard: { flexDirection: 'row', alignItems: 'center', backgroundColor: Colors.background.darkGreen, borderRadius: 15, padding: 15 },
-  alumniImageContainer: { marginRight: 15 },
-  alumniImagePlaceholder: { width: 55, height: 55, borderRadius: 28, backgroundColor: Colors.primary.deepGreen, justifyContent: 'center', alignItems: 'center' },
-  alumniInitial: { fontSize: 22, fontWeight: '700', color: Colors.text.primary },
-  alumniInfo: { flex: 1 },
-  alumniName: { fontSize: 16, fontWeight: '600', color: Colors.text.primary },
-  alumniRole: { fontSize: 13, color: Colors.text.secondary, marginTop: 3 },
-  alumniBatch: { fontSize: 12, color: Colors.text.tertiary, marginTop: 3 },
-  alumniArrow: { fontSize: 24, color: Colors.text.tertiary },
-  emptyState: { alignItems: 'center', paddingVertical: 40 },
-  emptyIcon: { fontSize: 50, marginBottom: 10 },
-  emptyTitle: { fontSize: 18, fontWeight: '600', color: Colors.text.primary },
-  modalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.85)', justifyContent: 'flex-end' },
-  modalContent: { backgroundColor: Colors.background.darkGreen, borderTopLeftRadius: 25, borderTopRightRadius: 25, maxHeight: SCREEN_HEIGHT * 0.85 },
-  modalHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 20, borderBottomWidth: 1, borderBottomColor: Colors.text.muted },
-  modalTitle: { fontSize: 18, fontWeight: '700', color: Colors.text.primary },
-  modalCloseButton: { width: 35, height: 35, borderRadius: 18, backgroundColor: Colors.background.deepBlack, justifyContent: 'center', alignItems: 'center' },
-  modalCloseText: { fontSize: 18, color: Colors.text.secondary },
-  modalBody: { padding: 20 },
-  modalProfileHeader: { alignItems: 'center', marginBottom: 20 },
-  modalProfileImage: { width: 80, height: 80, borderRadius: 40, backgroundColor: Colors.primary.deepGreen, justifyContent: 'center', alignItems: 'center', marginBottom: 15 },
-  modalProfileInitial: { fontSize: 32, fontWeight: '700', color: Colors.text.primary },
-  modalAlumniName: { fontSize: 22, fontWeight: '700', color: Colors.text.primary, marginBottom: 5 },
-  modalAlumniRole: { fontSize: 15, color: Colors.text.secondary, marginBottom: 3 },
-  modalAlumniCompany: { fontSize: 14, color: Colors.accent.softGold, marginBottom: 3 },
-  modalAlumniLocation: { fontSize: 13, color: Colors.text.tertiary },
-  modalSection: { marginBottom: 20 },
-  modalSectionTitle: { fontSize: 16, fontWeight: '700', color: Colors.text.primary, marginBottom: 8 },
-  modalText: { fontSize: 14, color: Colors.text.secondary },
-  modalMessage: { fontSize: 14, color: Colors.text.secondary, fontStyle: 'italic', lineHeight: 22 },
-  modalActions: { flexDirection: 'row', justifyContent: 'space-around', marginBottom: 30 },
-  modalActionButton: { alignItems: 'center', backgroundColor: Colors.background.deepBlack, borderRadius: 12, padding: 15, width: 100 },
-  modalActionIcon: { fontSize: 24, marginBottom: 5 },
-  modalActionText: { fontSize: 12, color: Colors.text.secondary },
+  scrollRoot: { flex: 1 },
+  listContent: { paddingBottom: 80 },
+
+  // Header
+  headerContainer: { overflow: 'hidden', marginBottom: 4 },
+  headerGradient: {
+    paddingTop: Platform.OS === 'ios' ? 16 : 28,
+    paddingBottom: 20,
+    paddingHorizontal: HORIZONTAL_PADDING,
+    borderBottomLeftRadius: 28,
+    borderBottomRightRadius: 28,
+  },
+  headerTopRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    justifyContent: 'space-between',
+    marginBottom: 14,
+  },
+  headerLeadBlock: { flex: 1, paddingRight: 10 },
+  headerEyebrow: {
+    fontSize: 12,
+    color: Colors.accent.softGold,
+    fontWeight: '700',
+    letterSpacing: 1.1,
+    marginBottom: 4,
+  },
+  headerTitle: {
+    fontSize: IS_SMALL ? 26 : 30,
+    color: Colors.text.primary,
+    fontWeight: '800',
+    marginBottom: 6,
+  },
+  headerSubtitle: {
+    fontSize: 13,
+    color: Colors.text.secondary,
+    lineHeight: 18,
+  },
+  headerControls: { flexDirection: 'row', alignItems: 'center' },
+  headerIconBtn: {
+    width: 40,
+    height: 40,
+    borderRadius: 12,
+    backgroundColor: '#ffffff12',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginLeft: 8,
+    borderWidth: 1,
+    borderColor: '#ffffff22',
+  },
+  headerIcon: { fontSize: 18, color: Colors.text.primary },
+
+  // Stats
+  statsRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#ffffff0A',
+    borderRadius: 18,
+    paddingVertical: 12,
+    paddingHorizontal: 6,
+    marginBottom: 12,
+    borderWidth: 1,
+    borderColor: '#ffffff1A',
+  },
+  statCell: { flex: 1, alignItems: 'center' },
+  statDivider: { width: 1, height: 28, backgroundColor: '#ffffff1F' },
+  statValue: { fontSize: IS_SMALL ? 15 : 17, fontWeight: '800', color: Colors.text.primary },
+  statLabel: { fontSize: 10, color: Colors.text.secondary, marginTop: 2 },
+
+  // Search bar
+  searchBar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#ffffff12',
+    borderRadius: 14,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    marginBottom: 12,
+    borderWidth: 1,
+    borderColor: '#ffffff22',
+  },
+  searchIcon: { fontSize: 16, marginRight: 8 },
+  searchInput: {
+    flex: 1,
+    color: Colors.text.primary,
+    fontSize: 14,
+    padding: 0,
+  },
+  clearIcon: { fontSize: 14, color: Colors.text.muted, paddingHorizontal: 6 },
+
+  // Chips
+  quickFilterRow: { flexDirection: 'row', flexWrap: 'wrap' },
+  chip: {
+    backgroundColor: '#ffffff0F',
+    borderWidth: 1,
+    borderColor: '#ffffff22',
+    paddingHorizontal: 12,
+    paddingVertical: 7,
+    borderRadius: 20,
+    marginRight: 8,
+    marginBottom: 8,
+    maxWidth: 180,
+  },
+  chipActive: { borderColor: Colors.tech.neonBlue, backgroundColor: Colors.tech.neonBlue + '22' },
+  chipText: { color: Colors.text.secondary, fontSize: 12, fontWeight: '600' },
+  chipTextActive: { color: Colors.tech.neonBlue },
+  chipReset: {
+    paddingHorizontal: 12,
+    paddingVertical: 7,
+    borderRadius: 20,
+    marginRight: 8,
+    marginBottom: 8,
+    backgroundColor: '#4A1A1A',
+  },
+  chipResetText: { color: '#FBA5A5', fontSize: 12, fontWeight: '700' },
+
+  // Sector rail
+  sectorScroll: { paddingHorizontal: HORIZONTAL_PADDING, paddingTop: 14, paddingBottom: 6 },
+  sectorChip: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#ffffff0A',
+    borderWidth: 1,
+    borderColor: '#ffffff22',
+    borderRadius: 999,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    marginRight: 8,
+  },
+  sectorIcon: { fontSize: 14, marginRight: 6 },
+  sectorLabel: { color: Colors.text.secondary, fontSize: 12, fontWeight: '600' },
+
+  // Batch rail
+  batchScroll: { paddingHorizontal: HORIZONTAL_PADDING, paddingTop: 10, paddingBottom: 4 },
+  batchChip: {
+    backgroundColor: '#ffffff0A',
+    borderRadius: 12,
+    paddingVertical: 6,
+    paddingHorizontal: 14,
+    marginRight: 8,
+    borderWidth: 1,
+    borderColor: '#ffffff1A',
+  },
+  batchChipActive: {
+    backgroundColor: Colors.accent.softGold + '33',
+    borderColor: Colors.accent.softGold,
+  },
+  batchText: { color: Colors.text.secondary, fontSize: 13, fontWeight: '600' },
+  batchTextActive: { color: Colors.accent.softGold, fontWeight: '800' },
+
+  // Section blocks
+  sectionBlock: { paddingTop: 18, paddingBottom: 4 },
+  sectionHeaderRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
+    paddingHorizontal: HORIZONTAL_PADDING,
+    marginBottom: 10,
+  },
+  sectionTitle: {
+    color: Colors.text.primary,
+    fontSize: 16,
+    fontWeight: '800',
+    letterSpacing: 0.3,
+  },
+  sectionCaption: { color: Colors.text.muted, fontSize: 12 },
+
+  // Hall of fame
+  hofScroll: { paddingHorizontal: HORIZONTAL_PADDING, paddingRight: HORIZONTAL_PADDING * 2 },
+  hofCard: {
+    width: IS_TABLET ? 320 : SCREEN_WIDTH * 0.78,
+    marginRight: 12,
+    borderRadius: CARD_RADIUS,
+    overflow: 'hidden',
+  },
+  hofGradient: {
+    padding: 16,
+    borderRadius: CARD_RADIUS,
+    minHeight: 180,
+    borderWidth: 1,
+    borderColor: '#ffffff12',
+  },
+  hofTopRow: { flexDirection: 'row', alignItems: 'center', marginBottom: 10 },
+  avatar: {
+    width: AVATAR_SIZE,
+    height: AVATAR_SIZE,
+    borderRadius: AVATAR_SIZE / 2,
+    marginRight: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: '#ffffff22',
+  },
+  avatarText: { color: Colors.text.primary, fontSize: 22, fontWeight: '800' },
+  hofName: { color: Colors.text.primary, fontSize: 16, fontWeight: '800' },
+  hofRole: { color: Colors.text.secondary, fontSize: 13, marginTop: 2 },
+  hofCompany: { color: Colors.text.muted, fontSize: 12, marginTop: 2 },
+  hofQuote: {
+    color: Colors.text.primary,
+    fontSize: 13,
+    fontStyle: 'italic',
+    lineHeight: 18,
+    marginTop: 6,
+    marginBottom: 8,
+  },
+  hofFooter: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 6,
+  },
+  hofBadge: {
+    color: '#4ADE80',
+    fontSize: 11,
+    fontWeight: '700',
+    backgroundColor: '#4ADE8022',
+    paddingVertical: 2,
+    paddingHorizontal: 6,
+    borderRadius: 8,
+  },
+  hofLoc: { color: Colors.text.muted, fontSize: 11 },
+
+  // Testimonials
+  testimonialScroll: { paddingHorizontal: HORIZONTAL_PADDING, paddingRight: HORIZONTAL_PADDING * 2 },
+  testimonialCard: {
+    width: IS_TABLET ? 360 : SCREEN_WIDTH * 0.76,
+    marginRight: 12,
+    borderRadius: CARD_RADIUS,
+    overflow: 'hidden',
+  },
+  testimonialGradient: {
+    padding: 16,
+    borderRadius: CARD_RADIUS,
+    minHeight: 180,
+    borderWidth: 1,
+    borderColor: '#ffffff12',
+  },
+  testimonialQuoteMark: {
+    color: Colors.accent.softGold,
+    fontSize: 42,
+    fontWeight: '900',
+    marginTop: -6,
+  },
+  testimonialQuote: {
+    color: Colors.text.primary,
+    fontSize: 14,
+    lineHeight: 20,
+    fontStyle: 'italic',
+  },
+  testimonialAuthorRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 14,
+  },
+  smallAvatar: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    marginRight: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: '#ffffff22',
+  },
+  smallAvatarText: { color: Colors.text.primary, fontWeight: '800' },
+  testimonialAuthor: { color: Colors.text.primary, fontSize: 13, fontWeight: '700' },
+  testimonialRole: { color: Colors.text.muted, fontSize: 11, marginTop: 2 },
+
+  // Top companies
+  companyGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    paddingHorizontal: HORIZONTAL_PADDING,
+  },
+  companyPill: {
+    backgroundColor: '#ffffff0A',
+    borderColor: '#ffffff22',
+    borderWidth: 1,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderRadius: 14,
+    marginRight: 8,
+    marginBottom: 8,
+    maxWidth: '48%',
+  },
+  companyName: { color: Colors.text.primary, fontSize: 13, fontWeight: '700' },
+  companyCount: { color: Colors.text.muted, fontSize: 11, marginTop: 2 },
+
+  // Meetups
+  meetupScroll: { paddingHorizontal: HORIZONTAL_PADDING, paddingRight: HORIZONTAL_PADDING * 2 },
+  meetupCard: {
+    width: IS_TABLET ? 340 : SCREEN_WIDTH * 0.78,
+    marginRight: 12,
+    borderRadius: CARD_RADIUS,
+    overflow: 'hidden',
+  },
+  meetupGradient: {
+    padding: 16,
+    borderRadius: CARD_RADIUS,
+    minHeight: 220,
+    borderWidth: 1,
+    borderColor: '#ffffff12',
+  },
+  meetupBadge: {
+    alignSelf: 'flex-start',
+    color: Colors.tech.neonBlue,
+    backgroundColor: Colors.tech.neonBlue + '22',
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 10,
+    fontSize: 11,
+    fontWeight: '700',
+    marginBottom: 8,
+  },
+  meetupTitle: { color: Colors.text.primary, fontSize: 15, fontWeight: '800' },
+  meetupMeta: { color: Colors.text.muted, fontSize: 12, marginTop: 2 },
+  meetupDescription: { color: Colors.text.secondary, fontSize: 12, marginTop: 8, lineHeight: 18 },
+  meetupBar: {
+    height: 6,
+    borderRadius: 4,
+    backgroundColor: '#ffffff18',
+    marginTop: 10,
+    overflow: 'hidden',
+  },
+  meetupBarFill: { height: 6, backgroundColor: Colors.tech.neonBlue },
+  meetupCapacity: { color: Colors.text.muted, fontSize: 11, marginTop: 4 },
+  meetupTagRow: { flexDirection: 'row', flexWrap: 'wrap', marginTop: 8 },
+  meetupTag: {
+    backgroundColor: '#ffffff12',
+    borderRadius: 8,
+    paddingVertical: 3,
+    paddingHorizontal: 8,
+    marginRight: 6,
+    marginBottom: 4,
+  },
+  meetupTagText: { color: Colors.text.secondary, fontSize: 10 },
+
+  // Mentorship list
+  mentorshipList: { paddingHorizontal: HORIZONTAL_PADDING },
+  mentorshipItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ffffff0F',
+  },
+  mentorshipDot: { width: 10, height: 10, borderRadius: 5, marginRight: 12 },
+  mentorshipTopic: { color: Colors.text.primary, fontSize: 14, fontWeight: '700' },
+  mentorshipMeta: { color: Colors.text.secondary, fontSize: 12, marginTop: 2 },
+  mentorshipFormat: { color: Colors.text.muted, fontSize: 11, marginTop: 2 },
+  mentorshipArrow: { color: Colors.text.muted, fontSize: 22, marginLeft: 8 },
+
+  // Pledges
+  pledgeItem: {
+    flexDirection: 'row',
+    paddingVertical: 10,
+    paddingHorizontal: HORIZONTAL_PADDING,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ffffff0F',
+  },
+  pledgeLeaf: { fontSize: 22, marginRight: 10 },
+  pledgeAuthor: { color: Colors.text.primary, fontSize: 13, fontWeight: '700' },
+  pledgeText: { color: Colors.text.secondary, fontSize: 12, marginTop: 3, lineHeight: 18 },
+
+  // Alumni list
+  listHeaderRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: HORIZONTAL_PADDING,
+    paddingTop: 18,
+    paddingBottom: 6,
+  },
+  listHeaderTitle: { color: Colors.text.primary, fontSize: 14, fontWeight: '700', flex: 1 },
+  listHeaderReset: { color: '#FBA5A5', fontSize: 12, fontWeight: '700' },
+
+  alumniCard: {
+    paddingHorizontal: HORIZONTAL_PADDING,
+    marginTop: 8,
+  },
+  alumniInner: { borderRadius: CARD_RADIUS, overflow: 'hidden' },
+  alumniGradient: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 14,
+    borderRadius: CARD_RADIUS,
+    borderWidth: 1,
+    borderColor: '#ffffff12',
+  },
+  alumniMeta: { flex: 1, paddingRight: 10 },
+  alumniMetaRow: { flexDirection: 'row', alignItems: 'center' },
+  alumniName: { color: Colors.text.primary, fontSize: 15, fontWeight: '800' },
+  featuredPill: { marginLeft: 6, fontSize: 13 },
+  mentorPill: { marginLeft: 4, fontSize: 13 },
+  alumniRole: { color: Colors.text.secondary, fontSize: 13, marginTop: 2 },
+  alumniCompany: { color: Colors.text.primary, fontSize: 12, marginTop: 2 },
+  alumniLoc: { color: Colors.text.muted, fontSize: 11, marginTop: 2 },
+  alumniArrow: { color: Colors.text.muted, fontSize: 22 },
+
+  // Grid
+  gridRow: { justifyContent: 'space-between', paddingHorizontal: HORIZONTAL_PADDING },
+  gridItem: {
+    width: (SCREEN_WIDTH - HORIZONTAL_PADDING * 2 - 10) / 2,
+    marginTop: 10,
+  },
+  gridInner: { borderRadius: CARD_RADIUS, overflow: 'hidden' },
+  gridGradient: {
+    padding: 14,
+    borderRadius: CARD_RADIUS,
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#ffffff12',
+  },
+  avatarLarge: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 10,
+    borderWidth: 1,
+    borderColor: '#ffffff22',
+  },
+  avatarLargeText: { color: Colors.text.primary, fontSize: 26, fontWeight: '800' },
+  gridName: { color: Colors.text.primary, fontSize: 13, fontWeight: '800' },
+  gridRole: { color: Colors.text.secondary, fontSize: 11, marginTop: 2, textAlign: 'center' },
+  gridCompany: { color: Colors.text.muted, fontSize: 11, marginTop: 2 },
+  gridBadges: { flexDirection: 'row', marginTop: 6 },
+  gridBadge: { fontSize: 13, marginHorizontal: 2 },
+
+  // Empty
+  emptyState: { alignItems: 'center', paddingVertical: 40, paddingHorizontal: 20 },
+  emptyIcon: { fontSize: 44, marginBottom: 10 },
+  emptyTitle: { color: Colors.text.primary, fontSize: 16, fontWeight: '700', marginBottom: 4 },
+  emptySubtitle: { color: Colors.text.muted, fontSize: 13, textAlign: 'center', marginBottom: 14 },
+  emptyButton: {
+    backgroundColor: Colors.tech.neonBlue,
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    borderRadius: 14,
+  },
+  emptyButtonText: { color: '#000', fontWeight: '800' },
+
+  // Skeleton
+  skeletonCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: HORIZONTAL_PADDING,
+    paddingVertical: 12,
+  },
+  skeletonAvatar: {
+    width: AVATAR_SIZE,
+    height: AVATAR_SIZE,
+    borderRadius: AVATAR_SIZE / 2,
+    backgroundColor: '#ffffff15',
+    marginRight: 12,
+  },
+  skeletonLine: {
+    height: 10,
+    borderRadius: 5,
+    backgroundColor: '#ffffff12',
+    marginVertical: 4,
+  },
+
+  // Footer
+  footer: { alignItems: 'center', paddingTop: 18, paddingBottom: 30 },
+  footerText: { color: Colors.text.muted, fontSize: 11, marginVertical: 2 },
+
+  // Modal
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: '#000000CC',
+    justifyContent: 'flex-end',
+  },
+  modalContent: {
+    maxHeight: SCREEN_HEIGHT * 0.92,
+    backgroundColor: '#0A0F14',
+    borderTopLeftRadius: 32,
+    borderTopRightRadius: 32,
+    overflow: 'hidden',
+  },
+  modalHero: {
+    padding: 18,
+    paddingTop: 22,
+    borderTopLeftRadius: 32,
+    borderTopRightRadius: 32,
+  },
+  modalHeroRow: { flexDirection: 'row', alignItems: 'center' },
+  avatarHero: {
+    width: 76,
+    height: 76,
+    borderRadius: 38,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 12,
+    borderWidth: 1,
+    borderColor: '#ffffff33',
+  },
+  avatarHeroText: { color: Colors.text.primary, fontSize: 30, fontWeight: '900' },
+  modalName: { color: Colors.text.primary, fontSize: 20, fontWeight: '800' },
+  modalCurrent: { color: Colors.text.primary, fontSize: 14, marginTop: 2 },
+  modalCompany: { color: Colors.text.secondary, fontSize: 13, marginTop: 2 },
+  modalLoc: { color: Colors.text.muted, fontSize: 11, marginTop: 4 },
+  modalBadgeRow: { flexDirection: 'row', flexWrap: 'wrap', marginTop: 10 },
+  modalBadge: {
+    color: Colors.text.primary,
+    fontSize: 10,
+    fontWeight: '700',
+    backgroundColor: '#ffffff14',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 8,
+    marginRight: 6,
+    marginBottom: 4,
+    borderWidth: 1,
+    borderColor: '#ffffff22',
+  },
+  modalClose: {
+    position: 'absolute',
+    top: 14,
+    right: 14,
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: '#00000088',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  modalCloseText: { color: Colors.text.primary, fontSize: 16 },
+
+  modalScroll: { flexGrow: 0 },
+  modalScrollContent: { padding: 16, paddingBottom: 24 },
+  modalSection: { marginBottom: 18 },
+  modalSectionTitle: {
+    color: Colors.text.primary,
+    fontSize: 13,
+    fontWeight: '800',
+    letterSpacing: 0.4,
+    marginBottom: 6,
+  },
+  modalSectionBody: { color: Colors.text.secondary, fontSize: 13, lineHeight: 20 },
+  modalQuoteBlock: {
+    padding: 12,
+    backgroundColor: '#ffffff08',
+    borderLeftWidth: 3,
+    borderLeftColor: Colors.accent.softGold,
+    borderRadius: 10,
+  },
+  modalQuoteMark: {
+    color: Colors.accent.softGold,
+    fontSize: 30,
+    fontWeight: '900',
+    marginTop: -8,
+  },
+  modalQuote: { color: Colors.text.primary, fontSize: 13, fontStyle: 'italic', lineHeight: 20 },
+
+  skillWrap: { flexDirection: 'row', flexWrap: 'wrap' },
+  skillChip: {
+    borderWidth: 1,
+    borderRadius: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    marginRight: 6,
+    marginBottom: 6,
+  },
+  skillText: { fontSize: 11, fontWeight: '700' },
+
+  bullet: { flexDirection: 'row', alignItems: 'flex-start', marginBottom: 4 },
+  bulletDot: { color: Colors.accent.softGold, marginRight: 6, fontSize: 14 },
+  bulletText: { color: Colors.text.secondary, fontSize: 13, lineHeight: 20, flex: 1 },
+
+  timeline: { marginTop: 4 },
+  timelineRow: { flexDirection: 'row', marginBottom: 12 },
+  timelineLeftCol: { width: 70, alignItems: 'center' },
+  timelineYear: { color: Colors.text.muted, fontSize: 11, marginBottom: 4 },
+  timelineDot: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    borderWidth: 2,
+    borderColor: '#ffffff44',
+  },
+  timelineDotFirst: { borderColor: Colors.accent.softGold },
+  timelineLine: { flex: 1, width: 2, backgroundColor: '#ffffff22', marginTop: 2 },
+  timelineRightCol: { flex: 1, paddingLeft: 10 },
+  timelineRole: { color: Colors.text.primary, fontSize: 13, fontWeight: '700' },
+  timelineCompany: { color: Colors.text.muted, fontSize: 12 },
+
+  modalActionRow: {
+    flexDirection: 'row',
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    borderTopWidth: 1,
+    borderTopColor: '#ffffff18',
+    flexWrap: 'wrap',
+  },
+  modalAction: {
+    paddingVertical: 10,
+    paddingHorizontal: 14,
+    borderRadius: 12,
+    marginRight: 8,
+    marginBottom: 6,
+  },
+  modalActionText: { color: '#fff', fontSize: 13, fontWeight: '800' },
+
+  // Sheets
+  sheetBackdrop: { flex: 1, backgroundColor: '#000000AA' },
+  sheet: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: '#0A0F14',
+    borderTopLeftRadius: 28,
+    borderTopRightRadius: 28,
+    padding: 18,
+    borderTopWidth: 1,
+    borderColor: '#ffffff18',
+  },
+  sheetTall: { maxHeight: SCREEN_HEIGHT * 0.7 },
+  sheetTitle: { color: Colors.text.primary, fontSize: 15, fontWeight: '800', marginBottom: 10 },
+  sheetRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ffffff0F',
+  },
+  sheetIcon: { fontSize: 16, marginRight: 10 },
+  sheetLabel: { flex: 1, color: Colors.text.secondary, fontSize: 13 },
+  sheetLabelActive: { color: Colors.tech.neonBlue, fontWeight: '800' },
+  sheetCheck: { color: Colors.tech.neonBlue, fontSize: 16, fontWeight: '800' },
+
+  // Chapters / city hubs
+  chaptersScroll: { paddingLeft: HORIZONTAL_PADDING, paddingRight: 10, paddingBottom: 6 },
+  chapterCard: {
+    width: IS_SMALL ? 240 : 270,
+    marginRight: 12,
+  },
+  chapterGradient: {
+    borderRadius: 18,
+    padding: 14,
+    borderWidth: 1,
+    borderColor: '#ffffff18',
+    minHeight: 340,
+  },
+  chapterTopRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  chapterEmoji: { fontSize: 26 },
+  chapterPill: {
+    backgroundColor: '#ffffff14',
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 10,
+  },
+  chapterPillText: { color: Colors.text.primary, fontSize: 10, fontWeight: '800' },
+  chapterCity: { color: Colors.text.primary, fontSize: 18, fontWeight: '900', marginTop: 10 },
+  chapterCountry: { color: Colors.text.muted, fontSize: 11, marginTop: 2 },
+  chapterDivider: {
+    height: 1,
+    backgroundColor: '#ffffff12',
+    marginVertical: 10,
+  },
+  chapterMetaLabel: {
+    color: Colors.text.muted,
+    fontSize: 9,
+    fontWeight: '800',
+    textTransform: 'uppercase',
+    letterSpacing: 1,
+    marginTop: 4,
+  },
+  chapterMetaValue: { color: Colors.text.secondary, fontSize: 11, marginTop: 2, lineHeight: 15 },
+  chapterAnchor: { color: Colors.text.secondary, fontSize: 11, marginTop: 2 },
+  chapterFootRow: { marginTop: 10 },
+  chapterMembers: { fontSize: 12, fontWeight: '800' },
+  chapterVibe: { color: Colors.text.secondary, fontSize: 10.5, marginTop: 6, lineHeight: 14, fontStyle: 'italic' },
+
+  // Career pivots
+  pivotCard: {
+    marginHorizontal: HORIZONTAL_PADDING,
+    marginBottom: 10,
+    padding: 14,
+    borderRadius: 16,
+    backgroundColor: '#0D141B',
+    borderLeftWidth: 3,
+  },
+  pivotTopRow: { flexDirection: 'row', alignItems: 'center' },
+  pivotIconWrap: {
+    width: 40,
+    height: 40,
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 10,
+  },
+  pivotIcon: { fontSize: 20 },
+  pivotArrowRow: { color: Colors.text.primary, fontSize: 13, fontWeight: '800' },
+  pivotFrom: { color: Colors.text.muted, fontSize: 12 },
+  pivotArrow: { color: Colors.text.muted, fontSize: 12 },
+  pivotTo: { fontSize: 13, fontWeight: '900' },
+  pivotYear: { color: Colors.accent.softGold, fontSize: 10, fontWeight: '700', marginTop: 2 },
+  pivotStory: { color: Colors.text.secondary, fontSize: 12, marginTop: 10, lineHeight: 17 },
+  pivotTakeawayRow: {
+    marginTop: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    borderRadius: 10,
+  },
+  pivotTakeawayLabel: {
+    color: Colors.text.muted,
+    fontSize: 9,
+    fontWeight: '800',
+    textTransform: 'uppercase',
+    letterSpacing: 1,
+  },
+  pivotTakeaway: { color: Colors.text.primary, fontSize: 12, marginTop: 3, fontStyle: 'italic' },
+
+  // Mentor board
+  boardGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    paddingHorizontal: HORIZONTAL_PADDING - 4,
+  },
+  boardCard: {
+    width: IS_TABLET ? '33.333%' : '50%',
+    padding: 4,
+  },
+  boardGradient: {
+    borderRadius: 16,
+    padding: 12,
+    borderWidth: 1,
+    borderColor: '#ffffff14',
+    minHeight: 220,
+  },
+  boardHeaderRow: { flexDirection: 'row', alignItems: 'center' },
+  boardDot: { width: 8, height: 8, borderRadius: 4, marginRight: 8 },
+  boardDomain: {
+    color: Colors.text.muted,
+    fontSize: 10,
+    fontWeight: '800',
+    textTransform: 'uppercase',
+    letterSpacing: 1,
+  },
+  boardName: { color: Colors.text.primary, fontSize: 14, fontWeight: '900', marginTop: 8 },
+  boardRole: { color: Colors.text.secondary, fontSize: 11, marginTop: 2 },
+  boardOffice: { color: Colors.text.muted, fontSize: 10, marginTop: 8 },
+  boardFocus: { color: Colors.text.secondary, fontSize: 11, marginTop: 6, lineHeight: 15 },
+  boardHoursRow: { marginTop: 10, alignItems: 'flex-start' },
+  boardHoursPill: {
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 10,
+  },
+  boardHoursText: { fontSize: 10, fontWeight: '800' },
+
+  // Fireside recaps
+  firesideCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 14,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  firesideHeaderRow: { flexDirection: 'row', alignItems: 'flex-start' },
+  firesideEmoji: { fontSize: 20, marginRight: 10, marginTop: 2 },
+  firesideTitle: { color: Colors.text.primary, fontSize: 14, fontWeight: '800', lineHeight: 18 },
+  firesideMeta: { color: Colors.text.muted, fontSize: 11, marginTop: 3 },
+  firesideHighlight: {
+    color: Colors.text.secondary,
+    fontSize: 12,
+    lineHeight: 17,
+    marginTop: 10,
+  },
+  firesideQuoteBox: {
+    backgroundColor: 'rgba(255,255,255,0.03)',
+    borderRadius: 10,
+    padding: 10,
+    marginTop: 10,
+  },
+  firesideQuote: {
+    color: Colors.text.primary,
+    fontSize: 12,
+    lineHeight: 17,
+    fontStyle: 'italic',
+  },
+  firesideQuoteAuthor: {
+    color: Colors.text.muted,
+    fontSize: 11,
+    marginTop: 4,
+    fontWeight: '700',
+  },
+  firesideGuestRow: { flexDirection: 'row', flexWrap: 'wrap', marginTop: 10 },
+  firesideGuestPill: {
+    borderWidth: 1,
+    borderRadius: 999,
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    marginRight: 6,
+    marginBottom: 6,
+  },
+  firesideGuestText: { fontSize: 10, fontWeight: '800' },
+
+  // Relocation grants
+  grantCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 14,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  grantHeaderRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  grantName: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', flex: 1 },
+  grantAmount: { fontSize: 14, fontWeight: '900', marginLeft: 8 },
+  grantUsedFor: {
+    color: Colors.text.secondary,
+    fontSize: 12,
+    lineHeight: 16,
+    marginTop: 6,
+  },
+  grantMetaRow: { marginTop: 8 },
+  grantMetaLabel: {
+    color: Colors.tech.neonBlue,
+    fontSize: 9,
+    fontWeight: '800',
+    letterSpacing: 1,
+  },
+  grantMeta: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 2 },
+  grantFootRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  grantCadence: { color: Colors.text.primary, fontSize: 11, fontWeight: '800' },
+  grantDeadline: { color: Colors.text.muted, fontSize: 10 },
+
+  // Polls
+  pollCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 14,
+    marginBottom: 12,
+  },
+  pollHeaderRow: { marginBottom: 10 },
+  pollQuestion: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', lineHeight: 17 },
+  pollTotal: { color: Colors.text.muted, fontSize: 10, marginTop: 4 },
+  pollRow: { marginBottom: 8 },
+  pollLabelRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  pollLabel: { color: Colors.text.secondary, fontSize: 11, flex: 1, marginRight: 8 },
+  pollPct: { fontSize: 11, fontWeight: '800' },
+  pollTrack: {
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: 'rgba(255,255,255,0.06)',
+    marginTop: 4,
+    overflow: 'hidden',
+  },
+  pollFill: { height: '100%', borderRadius: 3 },
+  pollCommentary: {
+    color: Colors.text.muted,
+    fontSize: 11,
+    lineHeight: 15,
+    marginTop: 10,
+    fontStyle: 'italic',
+  },
+
+  // Publications
+  publicationScroll: { paddingHorizontal: 2, paddingBottom: 6 },
+  pubCard: {
+    width: 200,
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginRight: 10,
+    borderLeftWidth: 3,
+  },
+  pubKind: { fontSize: 9, fontWeight: '800', letterSpacing: 1.2 },
+  pubTitle: {
+    color: Colors.text.primary,
+    fontSize: 12,
+    fontWeight: '800',
+    lineHeight: 16,
+    marginTop: 6,
+    minHeight: 48,
+  },
+  pubVenue: { color: Colors.text.secondary, fontSize: 11, marginTop: 6 },
+  pubFootRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 8,
+  },
+  pubAuthor: { color: Colors.text.primary, fontSize: 10, fontWeight: '800' },
+  pubYear: { color: Colors.text.muted, fontSize: 10 },
+
+  // Scholarships
+  schCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 14,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  schTopRow: { flexDirection: 'row', alignItems: 'flex-start' },
+  schEmoji: { fontSize: 24, marginRight: 10, marginTop: 2 },
+  schName: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', lineHeight: 17 },
+  schFunded: { color: Colors.text.muted, fontSize: 11, marginTop: 3 },
+  schAmount: { fontSize: 16, fontWeight: '900', marginLeft: 8 },
+  schMetaRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 10,
+    paddingTop: 8,
+    borderTopWidth: 1,
+    borderColor: 'rgba(255,255,255,0.05)',
+  },
+  schMetaText: { color: Colors.text.secondary, fontSize: 11, fontWeight: '600' },
+  schNote: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8 },
+
+  // Advisors
+  advCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  advTopRow: { flexDirection: 'row', alignItems: 'center' },
+  advEmoji: { fontSize: 22, marginRight: 10 },
+  advName: { color: Colors.text.primary, fontSize: 13, fontWeight: '800' },
+  advSpec: { color: Colors.text.secondary, fontSize: 11, marginTop: 2 },
+  advPill: { paddingHorizontal: 8, paddingVertical: 3, borderRadius: 999, marginLeft: 8 },
+  advPillText: { fontSize: 9, fontWeight: '900', letterSpacing: 1, textTransform: 'uppercase' },
+  advStatRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 8,
+    paddingTop: 6,
+    borderTopWidth: 1,
+    borderColor: 'rgba(255,255,255,0.05)',
+  },
+  advStatText: { color: Colors.text.muted, fontSize: 10 },
+  advNote: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 6 },
+
+  // Diaspora
+  diasporaScroll: { paddingRight: HORIZONTAL_PADDING },
+  diasporaCard: {
+    width: 140,
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginRight: 10,
+    borderWidth: 1,
+  },
+  diasporaFlagRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  diasporaFlag: { fontSize: 26 },
+  diasporaCount: { fontSize: 18, fontWeight: '900' },
+  diasporaCity: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', marginTop: 8 },
+  diasporaCountry: { color: Colors.text.muted, fontSize: 10, marginTop: 2 },
+  diasporaMeet: { color: Colors.text.secondary, fontSize: 10, lineHeight: 13, marginTop: 6 },
+  diasporaLead: { color: Colors.text.muted, fontSize: 10, marginTop: 6, fontStyle: 'italic' },
+
+  // AMA
+  amaCard: {
+    flexDirection: 'row',
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginBottom: 8,
+    borderLeftWidth: 3,
+  },
+  amaEmoji: { fontSize: 22, marginRight: 10, marginTop: 2 },
+  amaTopRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  amaName: { color: Colors.text.primary, fontSize: 13, fontWeight: '800' },
+  amaMode: { fontSize: 10, fontWeight: '900', letterSpacing: 1, textTransform: 'uppercase' },
+  amaTopic: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4 },
+  amaFootRow: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 6 },
+  amaDate: { color: Colors.tech.neonBlue, fontSize: 10, fontWeight: '700' },
+  amaQCount: { color: Colors.text.muted, fontSize: 10 },
+
+  // Giving ledger
+  gvRow: {
+    flexDirection: 'row',
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginBottom: 8,
+    borderLeftWidth: 3,
+  },
+  gvEmoji: { fontSize: 22, marginRight: 10, marginTop: 2 },
+  gvTopRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  gvSource: { color: Colors.text.primary, fontSize: 12, fontWeight: '800', flex: 1 },
+  gvAmount: { fontSize: 14, fontWeight: '900', marginLeft: 8 },
+  gvUsed: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4 },
+  gvMeta: { color: Colors.text.muted, fontSize: 10, marginTop: 4, fontStyle: 'italic' },
+
+  // Company referrals
+  crCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  crTopRow: { flexDirection: 'row', alignItems: 'flex-start' },
+  crEmoji: { fontSize: 22, marginRight: 10, marginTop: 2 },
+  crCoRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  crCo: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', flex: 1 },
+  crRoles: { fontSize: 16, fontWeight: '900', marginLeft: 8 },
+  crLead: { color: Colors.text.muted, fontSize: 11, marginTop: 2 },
+  crMetaRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 8,
+    paddingTop: 6,
+    borderTopWidth: 1,
+    borderColor: 'rgba(255,255,255,0.05)',
+  },
+  crType: { color: Colors.text.secondary, fontSize: 10, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 1 },
+  crUpdated: { color: Colors.text.muted, fontSize: 10 },
+  crNote: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 6 },
+
+  // --- Phase 3x: legacy projects ---
+  lpRow: {
+    flexDirection: 'row',
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginBottom: 8,
+    borderLeftWidth: 3,
+  },
+  lpEmoji: { fontSize: 22, marginRight: 10, marginTop: 2 },
+  lpTopRow: { flexDirection: 'row', alignItems: 'center' },
+  lpTitle: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', flex: 1, lineHeight: 17 },
+  lpAlive: {
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: 999,
+    borderWidth: 1,
+    marginLeft: 8,
+  },
+  lpAliveText: { fontSize: 9, fontWeight: '900', letterSpacing: 1, textTransform: 'uppercase' },
+  lpAlumnus: { color: Colors.tech.neonBlue, fontSize: 11, fontWeight: '700', marginTop: 4 },
+  lpNote: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4 },
+
+  // --- Phase 3x: alumni awards ---
+  awCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  awTopRow: { flexDirection: 'row', alignItems: 'flex-start' },
+  awEmoji: { fontSize: 24, marginRight: 10, marginTop: 2 },
+  awAward: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', lineHeight: 17 },
+  awBody: { color: Colors.text.muted, fontSize: 11, marginTop: 3, fontStyle: 'italic' },
+  awAlumnus: { fontSize: 12, fontWeight: '800', marginTop: 6, paddingLeft: 34 },
+  awNote: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 34 },
+
+  // --- Phase 3x: alumni ventures ---
+  avnCard: {
+    width: 220,
+    backgroundColor: '#0D141B',
+    borderRadius: 16,
+    padding: 14,
+    borderWidth: 1,
+  },
+  avnEmoji: { fontSize: 28 },
+  avnCompany: { color: Colors.text.primary, fontSize: 14, fontWeight: '800', marginTop: 6 },
+  avnFounder: { color: Colors.text.muted, fontSize: 11, marginTop: 2, fontStyle: 'italic' },
+  avnMetaRow: { flexDirection: 'row', alignItems: 'center', marginTop: 8, gap: 8 },
+  avnStagePill: {
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: 999,
+    borderWidth: 1,
+  },
+  avnStageText: { fontSize: 9, fontWeight: '900', letterSpacing: 1, textTransform: 'uppercase' },
+  avnYear: { color: Colors.text.muted, fontSize: 10 },
+  avnMission: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8 },
+  avnHiring: { color: Colors.accent.softGold, fontSize: 11, marginTop: 6, fontStyle: 'italic' },
+
+  // --- Phase 3x: reunions ---
+  rpCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  rpTopRow: { flexDirection: 'row', alignItems: 'center' },
+  rpEmoji: { fontSize: 24, marginRight: 10 },
+  rpTitle: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', lineHeight: 17 },
+  rpDate: { color: Colors.text.muted, fontSize: 11, marginTop: 2 },
+  rpLocation: { color: Colors.text.secondary, fontSize: 11, marginTop: 6, paddingLeft: 34 },
+  rpBarBg: {
+    height: 4,
+    borderRadius: 2,
+    backgroundColor: 'rgba(255,255,255,0.06)',
+    marginTop: 10,
+    overflow: 'hidden',
+  },
+  rpBarFill: { height: 4, borderRadius: 2 },
+  rpSeats: { color: Colors.text.muted, fontSize: 10, marginTop: 6 },
+
+  // --- Phase 3x: family heritage ---
+  fhRow: {
+    flexDirection: 'row',
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginBottom: 8,
+    borderLeftWidth: 3,
+  },
+  fhEmoji: { fontSize: 22, marginRight: 10, marginTop: 2 },
+  fhAlumnus: { color: Colors.text.primary, fontSize: 13, fontWeight: '800' },
+  fhRelation: { color: Colors.tech.neonBlue, fontSize: 11, fontWeight: '700', marginTop: 2 },
+  fhNote: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4 },
+
+  // --- Phase 3x: story beats ---
+  sbRow: {
+    flexDirection: 'row',
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginBottom: 8,
+    borderLeftWidth: 3,
+  },
+  sbYearCol: { width: 52, marginRight: 10 },
+  sbYear: { fontSize: 13, fontWeight: '900', letterSpacing: 0.5 },
+  sbTopRow: { flexDirection: 'row', alignItems: 'center' },
+  sbEmoji: { fontSize: 18, marginRight: 6 },
+  sbAlumnus: { color: Colors.text.muted, fontSize: 11, fontWeight: '700', flex: 1 },
+  sbBeat: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', lineHeight: 17, marginTop: 4 },
+  sbDetail: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4 },
+
+  // --- Phase 3ad: first jobs ---
+  afjCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginHorizontal: HORIZONTAL_PADDING,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  afjTopRow: { flexDirection: 'row', alignItems: 'center' },
+  afjEmoji: { fontSize: 22, marginRight: 10 },
+  afjAlum: { color: Colors.text.primary, fontSize: 13, fontWeight: '800' },
+  afjCompany: { color: Colors.text.muted, fontSize: 11, marginTop: 2 },
+  afjPay: { fontSize: 12, fontWeight: '900', marginLeft: 8 },
+  afjLesson: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8, paddingLeft: 32, fontStyle: 'italic' },
+
+  // --- Phase 3ad: knowledge ---
+  akCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginHorizontal: HORIZONTAL_PADDING,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  akTopRow: { flexDirection: 'row', alignItems: 'center' },
+  akEmoji: { fontSize: 22, marginRight: 10 },
+  akTopic: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', lineHeight: 17 },
+  akAlum: { color: Colors.tech.neonBlue, fontSize: 11, fontWeight: '700', marginTop: 2 },
+  akFormatPill: {
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 999,
+    borderWidth: 1,
+    marginLeft: 8,
+  },
+  akFormatText: { fontSize: 9, fontWeight: '900', letterSpacing: 1, textTransform: 'uppercase' },
+  akWhere: { color: Colors.text.secondary, fontSize: 11, marginTop: 8, paddingLeft: 32 },
+
+  // --- Phase 3ad: community care ---
+  acCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginHorizontal: HORIZONTAL_PADDING,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  acTopRow: { flexDirection: 'row', alignItems: 'center' },
+  acEmoji: { fontSize: 22, marginRight: 10 },
+  acName: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', flex: 1, lineHeight: 17 },
+  acDetail: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 6, paddingLeft: 32 },
+  acMetaRow: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 8, paddingLeft: 32 },
+  acMetaLabel: { color: Colors.text.muted, fontSize: 10 },
+  acMetaValue: { color: Colors.text.primary, fontSize: 11, fontWeight: '800' },
+  acImpact: { color: Colors.accent.softGold, fontSize: 11, lineHeight: 15, marginTop: 6, paddingLeft: 32, fontStyle: 'italic' },
+
+  // --- Phase 3ad: legacy lines ---
+  alRow: {
+    flexDirection: 'row',
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginHorizontal: HORIZONTAL_PADDING,
+    marginBottom: 8,
+    borderLeftWidth: 3,
+  },
+  alYearBadge: {
+    width: 56,
+    height: 56,
+    borderRadius: 12,
+    borderWidth: 2,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 12,
+  },
+  alYear: { fontSize: 14, fontWeight: '900', letterSpacing: 0.5 },
+  alTopRow: { flexDirection: 'row', alignItems: 'flex-start' },
+  alEmoji: { fontSize: 18, marginRight: 6, marginTop: 2 },
+  alLine: { color: Colors.text.primary, fontSize: 13, fontWeight: '700', flex: 1, lineHeight: 17, fontStyle: 'italic' },
+  alWho: { color: Colors.text.muted, fontSize: 11, marginTop: 6, paddingLeft: 24 },
+
+  // --- Phase 3ad: career grants ---
+  acgCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 12,
+    marginHorizontal: HORIZONTAL_PADDING,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  acgTopRow: { flexDirection: 'row', alignItems: 'center' },
+  acgEmoji: { fontSize: 22, marginRight: 10 },
+  acgGrant: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', lineHeight: 17 },
+  acgAmount: { fontSize: 12, fontWeight: '900', marginTop: 2 },
+  acgCriteria: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 6, paddingLeft: 32 },
+  acgApply: { color: Colors.text.muted, fontSize: 10, marginTop: 4, paddingLeft: 32, fontWeight: '700', letterSpacing: 0.5 },
+
+  // --- Phase 3ad: sign-offs ---
+  asoCard: {
+    backgroundColor: '#0D141B',
+    borderRadius: 14,
+    padding: 14,
+    marginHorizontal: HORIZONTAL_PADDING,
+    marginBottom: 10,
+    borderLeftWidth: 3,
+  },
+  asoQuoteMark: { fontSize: 28, fontWeight: '900', lineHeight: 28 },
+  asoQuote: { color: Colors.text.primary, fontSize: 13, lineHeight: 19, fontStyle: 'italic', marginTop: 4 },
+  asoFooter: { flexDirection: 'row', alignItems: 'center', marginTop: 10 },
+  asoEmoji: { fontSize: 16, marginRight: 6 },
+  asoWho: { color: Colors.text.muted, fontSize: 11, fontWeight: '700' },
+
+  // --- Phase 3ak: mentor pods ---
+  ampCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginBottom: 10, borderLeftWidth: 3 },
+  ampTopRow: { flexDirection: 'row', alignItems: 'center' },
+  ampEmoji: { fontSize: 22, marginRight: 10 },
+  ampName: { color: Colors.text.primary, fontSize: 13, fontWeight: '900' },
+  ampMentor: { fontSize: 11, fontWeight: '700', marginTop: 2 },
+  ampSeats: { color: Colors.accent.softGold, fontSize: 10, fontWeight: '900', letterSpacing: 0.5, marginLeft: 8 },
+  ampFocus: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8, paddingLeft: 32 },
+  ampCadence: { color: Colors.text.muted, fontSize: 11, marginTop: 4, paddingLeft: 32 },
+
+  // --- Phase 3ak: checkpoints ---
+  ackCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginBottom: 10, borderLeftWidth: 3 },
+  ackTopRow: { flexDirection: 'row', alignItems: 'center' },
+  ackEmoji: { fontSize: 22, marginRight: 10 },
+  ackYear: { color: Colors.text.muted, fontSize: 10, fontWeight: '900', letterSpacing: 1, textTransform: 'uppercase' },
+  ackName: { fontSize: 13, fontWeight: '800', marginTop: 2 },
+  ackPrompt: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8, paddingLeft: 32 },
+
+  // --- Phase 3ak: return programs ---
+  arpCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginBottom: 10, borderLeftWidth: 3 },
+  arpTopRow: { flexDirection: 'row', alignItems: 'center' },
+  arpEmoji: { fontSize: 22, marginRight: 10 },
+  arpProgram: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', flex: 1, lineHeight: 17 },
+  arpWho: { color: Colors.text.muted, fontSize: 11, marginTop: 8, paddingLeft: 32 },
+  arpCommit: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 3, paddingLeft: 32 },
+  arpPayoff: { color: Colors.accent.softGold, fontSize: 11, lineHeight: 15, marginTop: 3, paddingLeft: 32, fontStyle: 'italic' },
+
+  // --- Phase 3ak: honour list ---
+  ahlCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginBottom: 10, borderLeftWidth: 3 },
+  ahlTopRow: { flexDirection: 'row', alignItems: 'center' },
+  ahlEmoji: { fontSize: 22, marginRight: 10 },
+  ahlHonour: { color: Colors.text.primary, fontSize: 13, fontWeight: '900' },
+  ahlRecipient: { fontSize: 11, fontWeight: '700', marginTop: 2 },
+  ahlYear: { color: Colors.text.muted, fontSize: 11, fontWeight: '700', marginLeft: 8 },
+  ahlCitation: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8, paddingLeft: 32 },
+
+  // --- Phase 3ak: letters home ---
+  alhCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 14, marginBottom: 10, borderLeftWidth: 3 },
+  alhEmoji: { fontSize: 24, marginBottom: 8 },
+  alhExcerpt: { color: Colors.text.primary, fontSize: 13, lineHeight: 18, fontStyle: 'italic' },
+  alhFooter: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 },
+  alhWriter: { fontSize: 11, fontWeight: '800' },
+  alhWhen: { color: Colors.text.muted, fontSize: 10, fontStyle: 'italic' },
+
+  // --- Phase 3ak: region circles ---
+  arcCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginBottom: 10, borderLeftWidth: 3 },
+  arcTopRow: { flexDirection: 'row', alignItems: 'center' },
+  arcEmoji: { fontSize: 22, marginRight: 10 },
+  arcRegion: { color: Colors.text.primary, fontSize: 13, fontWeight: '900' },
+  arcAnchor: { fontSize: 11, fontWeight: '700', marginTop: 2 },
+  arcMeetups: { color: Colors.text.secondary, fontSize: 11, marginTop: 8, paddingLeft: 32 },
+  arcMembers: { color: Colors.text.muted, fontSize: 11, marginTop: 2, paddingLeft: 32 },
+
+  // --- Phase 3ak: craft archives ---
+  acaCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginBottom: 10, borderLeftWidth: 3 },
+  acaTopRow: { flexDirection: 'row', alignItems: 'center' },
+  acaEmoji: { fontSize: 22, marginRight: 10 },
+  acaName: { color: Colors.text.primary, fontSize: 13, fontWeight: '800' },
+  acaPeriod: { fontSize: 10, fontWeight: '900', letterSpacing: 1, marginTop: 2 },
+  acaKeeper: { color: Colors.text.muted, fontSize: 11, marginTop: 8, paddingLeft: 32 },
+  acaSize: { color: Colors.text.secondary, fontSize: 11, marginTop: 2, paddingLeft: 32 },
+  acaStatus: { color: Colors.accent.softGold, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32, fontStyle: 'italic' },
+
+  // --- Phase 3aq: career letters ---
+  aclCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 14, marginBottom: 10, borderLeftWidth: 3 },
+  aclTopRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+  aclYear: { fontSize: 14, fontWeight: '900', letterSpacing: 1 },
+  aclEmoji: { fontSize: 22 },
+  aclExcerpt: { color: Colors.text.primary, fontSize: 13, lineHeight: 19, marginTop: 10, fontStyle: 'italic' },
+  aclWriter: { color: Colors.accent.softGold, fontSize: 11, marginTop: 8, fontWeight: '800' },
+  aclRole: { color: Colors.text.muted, fontWeight: '600' },
+
+  // --- Phase 3aq: village funds ---
+  avfCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginBottom: 10, borderLeftWidth: 3 },
+  avfTopRow: { flexDirection: 'row', alignItems: 'center' },
+  avfEmoji: { fontSize: 22, marginRight: 10 },
+  avfCircle: { color: Colors.text.primary, fontSize: 13, fontWeight: '900' },
+  avfCorpus: { fontSize: 11, fontWeight: '800', marginTop: 2 },
+  avfPurpose: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8, paddingLeft: 32 },
+  avfActive: { color: Colors.accent.softGold, fontSize: 11, marginTop: 3, paddingLeft: 32, fontWeight: '700' },
+  avfSteward: { color: Colors.text.muted, fontSize: 11, marginTop: 3, paddingLeft: 32, fontStyle: 'italic' },
+
+  // --- Phase 3aq: lineages ---
+  alnCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginBottom: 10, borderLeftWidth: 3 },
+  alnTopRow: { flexDirection: 'row', alignItems: 'center' },
+  alnEmoji: { fontSize: 22, marginRight: 10 },
+  alnCraft: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', flex: 1 },
+  alnFrom: { color: Colors.text.muted, fontSize: 11, marginTop: 8, paddingLeft: 32 },
+  alnTo: { fontSize: 11, marginTop: 3, paddingLeft: 32, fontWeight: '800' },
+  alnPassed: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 6, paddingLeft: 32, fontStyle: 'italic' },
+
+  // --- Phase 3aq: advisory tracks ---
+  aatCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginBottom: 10, borderLeftWidth: 3 },
+  aatTopRow: { flexDirection: 'row', alignItems: 'center' },
+  aatEmoji: { fontSize: 22, marginRight: 10 },
+  aatTrack: { color: Colors.text.primary, fontSize: 13, fontWeight: '900' },
+  aatCadence: { fontSize: 11, fontWeight: '700', marginTop: 2 },
+  aatAudience: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8, paddingLeft: 32 },
+  aatFormat: { color: Colors.text.muted, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32 },
+
+  // --- Phase 3aq: remembered ---
+  arp2Card: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginBottom: 10, borderLeftWidth: 3 },
+  arp2TopRow: { flexDirection: 'row', alignItems: 'center' },
+  arp2Emoji: { fontSize: 22, marginRight: 10 },
+  arp2Name: { color: Colors.text.primary, fontSize: 13, fontWeight: '900', flex: 1 },
+  arp2Marker: { fontSize: 11, fontWeight: '700', marginTop: 8, paddingLeft: 32 },
+  arp2Visited: { color: Colors.text.muted, fontSize: 11, marginTop: 3, paddingLeft: 32 },
+  arp2Note: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 6, paddingLeft: 32, fontStyle: 'italic' },
+
+  // --- Phase 3aw: homecomings ---
+  ahcCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginBottom: 10, borderLeftWidth: 3 },
+  ahcTopRow: { flexDirection: 'row', alignItems: 'center' },
+  ahcEmoji: { fontSize: 22, marginRight: 10 },
+  ahcYear: { color: Colors.text.primary, fontSize: 13, fontWeight: '900' },
+  ahcTheme: { fontSize: 11, fontWeight: '700', marginTop: 2 },
+  ahcAttended: { color: Colors.text.muted, fontSize: 11, marginTop: 8, paddingLeft: 32 },
+  ahcMoment: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32, fontStyle: 'italic' },
+
+  // --- Phase 3aw: traditions ---
+  atrCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginBottom: 10, borderLeftWidth: 3 },
+  atrTopRow: { flexDirection: 'row', alignItems: 'center' },
+  atrEmoji: { fontSize: 22, marginRight: 10 },
+  atrName: { color: Colors.text.primary, fontSize: 13, fontWeight: '900' },
+  atrOrigin: { fontSize: 11, fontWeight: '700', marginTop: 2 },
+  atrPractice: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8, paddingLeft: 32 },
+  atrKeptBy: { color: Colors.text.muted, fontSize: 11, marginTop: 4, paddingLeft: 32 },
+
+  // --- Phase 3aw: grove plots ---
+  agpCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginBottom: 10, borderLeftWidth: 3 },
+  agpTopRow: { flexDirection: 'row', alignItems: 'center' },
+  agpEmoji: { fontSize: 22, marginRight: 10 },
+  agpPlot: { color: Colors.text.primary, fontSize: 13, fontWeight: '900' },
+  agpFounded: { fontSize: 11, fontWeight: '700', marginTop: 2 },
+  agpSaplings: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8, paddingLeft: 32 },
+  agpSteward: { color: Colors.text.muted, fontSize: 11, marginTop: 4, paddingLeft: 32 },
+
+  // --- Phase 3bc: chapter cities ---
+  accCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginBottom: 10, borderLeftWidth: 3 },
+  accTopRow: { flexDirection: 'row', alignItems: 'center' },
+  accEmoji: { fontSize: 22, marginRight: 10 },
+  accCity: { color: Colors.text.primary, fontSize: 13, fontWeight: '900' },
+  accFounded: { fontSize: 11, fontWeight: '700', marginTop: 2 },
+  accMembers: { color: Colors.text.muted, fontSize: 11, marginTop: 8, paddingLeft: 32 },
+  accRituals: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32 },
+
+  // --- Phase 3bc: help ledger ---
+  ahxCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginBottom: 10, borderLeftWidth: 3 },
+  ahxTopRow: { flexDirection: 'row', alignItems: 'center' },
+  ahxEmoji: { fontSize: 22, marginRight: 10 },
+  ahxAsk: { color: Colors.text.primary, fontSize: 13, fontWeight: '900', flex: 1, lineHeight: 17 },
+  ahxOffered: { fontSize: 11, fontWeight: '700', marginTop: 8, paddingLeft: 32, lineHeight: 15 },
+  ahxWhen: { color: Colors.text.muted, fontSize: 11, marginTop: 4, paddingLeft: 32 },
+  ahxOutcome: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32 },
+
+  // --- Phase 3bc: reunion formats ---
+  arfCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginBottom: 10, borderLeftWidth: 3 },
+  arfTopRow: { flexDirection: 'row', alignItems: 'center' },
+  arfEmoji: { fontSize: 22, marginRight: 10 },
+  arfFormat: { color: Colors.text.primary, fontSize: 13, fontWeight: '900', lineHeight: 17 },
+  arfCadence: { fontSize: 11, fontWeight: '700', marginTop: 2 },
+  arfHighlights: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8, paddingLeft: 32 },
+  arfKeeper: { color: Colors.text.muted, fontSize: 11, marginTop: 4, paddingLeft: 32 },
+
+  // --- Phase 3bc: letter box ---
+  albCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginBottom: 10, borderLeftWidth: 3 },
+  albTopRow: { flexDirection: 'row', alignItems: 'center' },
+  albEmoji: { fontSize: 22, marginRight: 10 },
+  albKind: { color: Colors.text.primary, fontSize: 13, fontWeight: '900', flex: 1, lineHeight: 17 },
+  albOpened: { fontSize: 11, fontWeight: '700', marginTop: 8, paddingLeft: 32 },
+  albExcerpt: { color: Colors.text.secondary, fontSize: 11, lineHeight: 16, marginTop: 4, paddingLeft: 32, fontStyle: 'italic' },
 });
 
 export default AlumniScreen;

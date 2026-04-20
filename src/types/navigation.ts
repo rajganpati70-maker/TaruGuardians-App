@@ -2,6 +2,7 @@
 // ULTRA PREMIUM TYPES DEFINITIONS
 // =====================================================
 
+import { Animated } from 'react-native';
 import { NavigatorScreenParams } from '@react-navigation/native';
 
 // =====================================================
@@ -82,6 +83,11 @@ export interface TeamMember {
     linkedin?: string;
     instagram?: string;
     twitter?: string;
+    behance?: string;
+    github?: string;
+    dribbble?: string;
+    youtube?: string;
+    portfolio?: string;
   };
   achievements: string[];
   projects: Project[];

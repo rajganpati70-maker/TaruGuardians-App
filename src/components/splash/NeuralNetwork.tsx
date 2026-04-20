@@ -188,7 +188,7 @@ const NeuralNetwork: React.FC<NeuralNetworkProps> = ({ active = true }) => {
       connectionsRef.current = [];
       for (let i = 0; i < nodesRef.current.length; i++) {
         for (let j = i + 1; j < nodesRef.current.length; j++) {
-          if (Math.random() < AnimationConfig.neural.connectionChance) {
+          if (Math.random() < 0.35) {
             connectionsRef.current.push({
               startX: nodesRef.current[i].x,
               startY: nodesRef.current[i].y,

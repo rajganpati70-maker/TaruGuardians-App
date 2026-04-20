@@ -213,4 +213,5 @@ const styles = StyleSheet.create({
   },
 });
 
+export { AppNavigator };
 export default AppNavigator;

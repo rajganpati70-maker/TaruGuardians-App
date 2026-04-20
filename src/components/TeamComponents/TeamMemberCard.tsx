@@ -12,6 +12,7 @@ import {
   Pressable,
   Image,
   Dimensions,
+  Easing,
 } from 'react-native';
 import { Colors } from '../../constants/colors';
 import { TeamMember } from '../../constants/teamData';
@@ -98,7 +99,7 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
         Animated.timing(translateYAnim, {
           toValue: 0,
           duration: 500,
-          easing: Animated.utils.Easing.bezier(0.25, 0.1, 0.25, 1),
+          easing: Easing.bezier(0.25, 0.1, 0.25, 1),
           useNativeDriver: true,
         }),
         Animated.timing(rotateAnim, {
