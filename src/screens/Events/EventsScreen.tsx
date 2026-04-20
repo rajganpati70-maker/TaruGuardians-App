@@ -1833,6 +1833,115 @@ const EVENT_ACCESSIBILITY_PROMISES: EventAccessibilityPromise[] = [
   { id: 'eap-7', promise: 'No flash · no sudden sound',                                                                                 mechanism: 'Lighting designer briefed · sound lead briefed · warnings before transitions.',                                                                                           signage: 'Announced at open · in programme · visible during show.',                                                                                                      owner: 'AV lead + host',                                                                                           color: '#EF4444', emoji: '🔇' },
 ];
 
+// =====================================================
+// Phase 3be: deeper events structures — round 6
+// =====================================================
+
+interface EventSpeakerBio {
+  id: string;
+  name: string;
+  craft: string;
+  note: string;
+  signature: string;
+  color: string;
+  emoji: string;
+}
+
+const EVENT_SPEAKER_BIOS: EventSpeakerBio[] = [
+  { id: 'esb-1', name: 'Meera Raghavan · forest technologist',         craft: 'Satellite + soil · 12 years in canopy mapping.',                       note: 'Runs a lab in the hills · teaches drone mapping to tribal collectives.',                 signature: 'Reads weather from bird calls · never brings slides to a workshop.',                   color: '#00D4FF', emoji: '🛰️' },
+  { id: 'esb-2', name: 'Tanvir Aslam · soundscape artist',                           craft: 'Field recordings · ambient compositions · 9 years.',                                   note: 'Lost hearing in one ear · composes for the remaining one · says it sharpens him.',                          signature: 'Carries a tiny zoom recorder everywhere · records opening of every door.',                                       color: '#F59E0B', emoji: '🎧' },
+  { id: 'esb-3', name: 'Divya Kulkarni · community organiser',                                   craft: 'Youth councils · circle practice · 15 years.',                                                 note: 'Grew up in a slum relocation colony · now advises three state governments.',                                             signature: 'Opens every session with 30 seconds of silence · no exceptions.',                                                       color: '#F472B6', emoji: '🫶' },
+  { id: 'esb-4', name: 'Harpreet Singh · open-source architect',                                             craft: 'Civic tech · distributed systems · 18 years.',                                                             note: 'Ex-principal engineer · now runs a tiny non-profit from a Dharamshala porch.',                                                       signature: 'Laptop is covered in stickers from long-dead protocols · proud of it.',                                                               color: '#A78BFA', emoji: '💾' },
+  { id: 'esb-5', name: 'Anaya Bhattacharya · youth poet',                                                                 craft: 'Spoken word · mother-tongue translations · 6 years.',                                                                     note: 'Writes in Bangla + English · performs at protests · refuses corporate gigs.',                                                                 signature: 'Never reads from paper on stage · only speaks what she has memorised.',                                                                           color: '#22C55E', emoji: '✒️' },
+  { id: 'esb-6', name: 'Gopal Singh Rawat · elder knowledge holder',                                                                           craft: 'Water traditions · seed libraries · 40 years.',                                                                                     note: 'Knows names for 90 local trees · last of his village to remember all of them.',                                                                             signature: 'Arrives early · sits outside · accepts only hand-written invitations.',                                                                                       color: '#FFD166', emoji: '🌾' },
+  { id: 'esb-7', name: 'Priya Menon · climate journalist',                                                                                       craft: 'Investigative reporting · public interest · 11 years.',                                                                                                 note: 'Broke three major stories on river pollution · teaches stringers across five states.',                                                                                       signature: 'Keeps a paper notebook · refuses notes apps · argues the physical act matters.',                                                                                                   color: '#EF4444', emoji: '📰' },
+  { id: 'esb-8', name: 'Kabir Oraon · bamboo builder',                                                                                                     craft: 'Natural buildings · earthen finishes · 14 years.',                                                                                                             note: 'Trained in Arunachal · now designs learning shelters across tribal belts in 4 states.',                                                                                                     signature: 'Shoes off before every talk · audience often follows · room shifts gently.',                                                                                                                     color: '#FB923C', emoji: '🎋' },
+];
+
+interface EventVenueMap {
+  id: string;
+  zone: string;
+  purpose: string;
+  nearest: string;
+  accessNote: string;
+  color: string;
+  emoji: string;
+}
+
+const EVENT_VENUE_MAPS: EventVenueMap[] = [
+  { id: 'evm-1', zone: 'Zone A · main stage',                   purpose: 'Keynotes · talks · performances · 400 seats · centre of the hall.',                 nearest: 'Entry 2 · 35 steps · step-free · water station adjacent.',                   accessNote: 'Aisle seats reserved · captioner booth at back-left · ramp on right.',                         color: '#00D4FF', emoji: '🎤' },
+  { id: 'evm-2', zone: 'Zone B · workshop rooms',                               purpose: '4 rooms · 30 seats each · for hands-on sessions.',                                   nearest: 'Corridor from Entry 1 · 60 steps · lift available.',                                     accessNote: 'One room kept flat · no tables · floor cushions · for movement work.',                                         color: '#F59E0B', emoji: '🛠️' },
+  { id: 'evm-3', zone: 'Zone C · forest lab',                                             purpose: 'Outdoor tents · live demos · soil + seed tables.',                                                   nearest: 'Open courtyard · exit door 3 · lawn with pathway.',                                                 accessNote: 'Firm pathway laid · no gravel · shaded seating · tap point near.',                                                         color: '#F472B6', emoji: '🌳' },
+  { id: 'evm-4', zone: 'Zone D · food street',                                                         purpose: '6 stalls · 3 vegan · 3 regional · open kitchens.',                                                               nearest: 'Side corridor to Entry 2 · 45 steps.',                                                             accessNote: 'Tables at two heights · cards for allergens · staff trained in dietary cross-check.',                                                     color: '#A78BFA', emoji: '🍲' },
+  { id: 'evm-5', zone: 'Zone E · quiet room',                                                                     purpose: 'Low-light retreat · soft seating · no phones.',                                                                         nearest: 'Away from main flow · behind stage · guided by volunteer.',                                                                 accessNote: 'Step-free · signage in 3 languages · one attendant sits quietly through day.',                                                                   color: '#22C55E', emoji: '🤫' },
+  { id: 'evm-6', zone: 'Zone F · registration + help',                                                                                 purpose: 'Check-in · lanyards · sensory bags · lost + found · help desk.',                                                                                     nearest: 'Entry 1 · visible from street · first stop for everyone.',                                                                             accessNote: 'Two counters · one at wheelchair height · volunteer buddies on call.',                                                                                   color: '#FFD166', emoji: '🎫' },
+  { id: 'evm-7', zone: 'Zone G · volunteer base',                                                                                                 purpose: 'Crew room · briefs · radios · snacks · shifts board.',                                                                                                             nearest: 'Behind stage · staff-only corridor · badge required.',                                                                                                     accessNote: 'Rest mats on floor · charging points · first-aid visible · water always out.',                                                                                                                 color: '#EF4444', emoji: '🎒' },
+  { id: 'evm-8', zone: 'Zone H · family corner',                                                                                                                 purpose: 'Kids · strollers · nursing space · quiet toys · caregiver rest.',                                                                                                                         nearest: 'Near Zone E · shared corridor · clear signage.',                                                                                                                             accessNote: 'Changing table · privacy curtain · low-stimulus lighting · one trained volunteer.',                                                                                                                             color: '#FB923C', emoji: '👶' },
+];
+
+interface EventSponsorshipTier {
+  id: string;
+  tier: string;
+  price: string;
+  includes: string;
+  limit: string;
+  color: string;
+  emoji: string;
+}
+
+const EVENT_SPONSORSHIP_TIERS: EventSponsorshipTier[] = [
+  { id: 'est-1', tier: 'Friend · community-scale',                 price: '₹25,000 · any small business · alumni-owned welcome.',                       includes: 'Name on programme · 2 passes · shout-out in opening circle.',                         limit: 'Open roster · no cap · we want many friends · not few big names.',                   color: '#00D4FF', emoji: '🫂' },
+  { id: 'est-2', tier: 'Grove · mid-tier',                                       price: '₹1,00,000 · regional firms · causes we respect.',                                         includes: 'Logo on stage wall · 10 passes · workshop slot · mention in closing.',                               limit: 'Max 8 partners · chosen by values alignment · not first-come.',                                     color: '#F59E0B', emoji: '🌳' },
+  { id: 'est-3', tier: 'Canopy · anchor partner',                                                 price: '₹5,00,000 · long-term commitment · 3-year minimum.',                                                     includes: 'Named anchor · keynote intro · programme dedication · 30 passes.',                                                 limit: 'Single partner · rotates yearly · alignment panel decides.',                                                     color: '#F472B6', emoji: '🌲' },
+  { id: 'est-4', tier: 'In-kind · materials',                                                               price: 'No cash · supplies instead · from paper to paint to power.',                                                               includes: 'Credit plaque on supplies table · thanks in programme.',                                                       limit: 'Open · logged publicly · audited · no quid pro quo beyond plaque.',                                                             color: '#A78BFA', emoji: '📦' },
+  { id: 'est-5', tier: 'Skill · volunteers from a firm',                                                                         price: 'No cash · employees volunteer · with paid leave from their employer.',                                                                     includes: 'Team photo · certificate · programme credit · learning report sent.',                                                                           limit: 'Up to 3 firms · pre-booked · training 2 weeks before event.',                                                                           color: '#22C55E', emoji: '🙋' },
+  { id: 'est-6', tier: 'Ticket-match · audience subsidy',                                                                                       price: 'Matches a percentage of audience tickets · funds bursaries.',                                                                                 includes: 'Named on bursary page · thank-you email to learners funded.',                                                                                     limit: 'Max 2 sponsors · capped at 50% of ticket pool.',                                                                                             color: '#FFD166', emoji: '🎟️' },
+  { id: 'est-7', tier: 'Travel · bursary covers',                                                                                                 price: 'Underwrites travel for rural learners · per-head basis.',                                                                                                     includes: 'Learner testimonial (optional · consent-first) · credit in programme.',                                                                                             limit: 'Open · capped by budget · not by partner count.',                                                                                                     color: '#EF4444', emoji: '🚌' },
+  { id: 'est-8', tier: 'Quiet partner · no credit asked',                                                                                                             price: 'Funds go to line items the partner will not be named for.',                                                                                                                     includes: 'Private thank-you letter · annual statement · nothing public.',                                                                                                                     limit: 'Accepted gladly · rare · kept in a separate ledger.',                                                                                                                             color: '#FB923C', emoji: '🤫' },
+];
+
+interface EventDayOfRunsheet {
+  id: string;
+  time: string;
+  cue: string;
+  owner: string;
+  backup: string;
+  color: string;
+  emoji: string;
+}
+
+const EVENT_DAY_OF_RUNSHEETS: EventDayOfRunsheet[] = [
+  { id: 'edr-1', time: '05:30 · doors to crew',                       cue: 'Crew briefing circle · breathing · roles read aloud · radios tested.',                         owner: 'Stage manager',                       backup: 'Ops lead takes over on radio if SM is pulled to stage.',                       color: '#00D4FF', emoji: '⏰' },
+  { id: 'edr-2', time: '07:00 · audience gates',                                     cue: 'First audience in · volunteer greeters at door · music softly up.',                                   owner: 'Volunteer coordinator',                                 backup: 'Deputy volunteer lead runs gate · SM monitors flow on CCTV.',                                     color: '#F59E0B', emoji: '🚪' },
+  { id: 'edr-3', time: '09:00 · opening circle',                                               cue: 'All lights down · single spotlight · 90 seconds of silence · then host.',                                                 owner: 'Host of the day',                                                 backup: 'Second host reads the opening if main host is delayed.',                                                     color: '#F472B6', emoji: '🕯️' },
+  { id: 'edr-4', time: '11:30 · snack + shift',                                                             cue: 'Volunteer shift change · snacks passed · new pods briefed · old pods rest.',                                                                 owner: 'Volunteer coordinator',                                                             backup: 'Wellness lead stages snack table if coordinator is held up.',                                                                             color: '#A78BFA', emoji: '🫒' },
+  { id: 'edr-5', time: '13:00 · main keynote',                                                                           cue: 'Stage reset · captioner active · AV check complete · host intros keynote.',                                                                                     owner: 'Stage manager',                                                                                 backup: 'AV lead runs cues · SM takes stage-right handoffs for safety.',                                                                                   color: '#22C55E', emoji: '🎤' },
+  { id: 'edr-6', time: '15:30 · break + photos',                                                                                       cue: 'Audience break · official photographer on shoulder of host · consent badges respected.',                                                                                               owner: 'Host of the day',                                                                                     backup: 'Second photographer covers candid · avoids no-photo badges carefully.',                                                                                             color: '#FFD166', emoji: '📸' },
+  { id: 'edr-7', time: '18:00 · closing circle',                                                                                                 cue: 'All speakers on stage · one sentence each · host reads final line · lights slow up.',                                                                                                             owner: 'Host of the day',                                                                                                     backup: 'SM calls cue for lights · AV lead handles sound fade-in carefully.',                                                                                                               color: '#EF4444', emoji: '🤝' },
+  { id: 'edr-8', time: '20:30 · vendor clear',                                                                                                             cue: 'Stalls pack · waste sorted · no burnt bulbs left · volunteers swept last.',                                                                                                                     owner: 'Ops lead',                                                                                                                 backup: 'Vendor liaison runs checklist · SM does final walk-through alone.',                                                                                                                                 color: '#FB923C', emoji: '🧹' },
+];
+
+interface EventWeatherContingency {
+  id: string;
+  trigger: string;
+  plan: string;
+  threshold: string;
+  comms: string;
+  color: string;
+  emoji: string;
+}
+
+const EVENT_WEATHER_CONTINGENCIES: EventWeatherContingency[] = [
+  { id: 'ewc-1', trigger: 'Heavy rain · 30mm+ in an hour',                       plan: 'Move Zone C under canopy · pause outdoor demos · tea rolled in.',                     threshold: 'Auto-trigger if IMD yellow alert fires within 6h of event.',                       comms: 'Audience SMS · volunteer radio · stage mic announcement · programme slip reprint.',                       color: '#00D4FF', emoji: '🌧️' },
+  { id: 'ewc-2', trigger: 'Heat · 39°C+ forecast',                                 plan: 'Shift outdoor blocks to morning · add mist fans · extend breaks by 10 min.',                                     threshold: 'If previous 3 days have crossed 38°C · apply without waiting.',                                   comms: 'Registration email 48h before · signage on arrival · hydration stations doubled.',                                         color: '#F59E0B', emoji: '☀️' },
+  { id: 'ewc-3', trigger: 'Cold snap · below 8°C at dawn',                                             plan: 'Warm drinks from 6 AM · blankets at registration · delay outdoor walks by 60 min.',                                                     threshold: 'If forecast low is under 10°C · kick in the night before.',                                                   comms: 'SMS + social post · reminder at check-in · signage at Zone C.',                                                           color: '#F472B6', emoji: '❄️' },
+  { id: 'ewc-4', trigger: 'Lightning within 15 km',                                                               plan: 'All outdoor activities paused · crowd moved indoors · 30-min minimum hold.',                                                                 threshold: 'Instant · based on NASA + IMD feed · no human override down.',                                                                 comms: 'All channels · stage cut-off · calm script read twice · lights held.',                                                                       color: '#A78BFA', emoji: '⚡' },
+  { id: 'ewc-5', trigger: 'Smog · AQI above 300',                                                                             plan: 'Mask station opens · outdoor sessions moved indoor · purifiers run in Zone B.',                                                                                     threshold: 'Kicks in at 250 AQI · confirmed by 2 stations within 5 km.',                                                                               comms: 'SMS at T-12h · at gate · mentioned in opening circle · signage on masks.',                                                                                   color: '#22C55E', emoji: '😷' },
+  { id: 'ewc-6', trigger: 'Wind · gusts over 50 km/h',                                                                                       plan: 'Lightweight structures dropped · banners furled · tables weighted or stowed.',                                                                                                 threshold: 'Gust forecast checked every 2h · plan kicks at 40 km/h sustained.',                                                                                     comms: 'Radio to ops · signage held with sandbags · audience advised inside.',                                                                                                 color: '#FFD166', emoji: '🌬️' },
+  { id: 'ewc-7', trigger: 'Flooding · waterlogged approaches',                                                                                                   plan: 'Shuttle from the nearest metro · volunteer greeters at 2 drop points.',                                                                                                                 threshold: 'Any main-road waterlogging within 1 km of venue · go early.',                                                                                                             comms: 'Partnership with local radio · map updates · helpline kept live through day.',                                                                                                                         color: '#EF4444', emoji: '🌊' },
+  { id: 'ewc-8', trigger: 'Clear + mild · bonus plan',                                                                                                                   plan: 'Add 30 min of outdoor circle · invite silent walk through garden · unhurried.',                                                                                                                             threshold: 'If forecast is 24–28°C · humidity under 60% · winds soft.',                                                                                                                                 comms: 'Mentioned at opening · volunteers gently ushering · photographers stand back.',                                                                                                                                     color: '#FB923C', emoji: '🌤️' },
+];
+
 const EventsScreen: React.FC = () => {
   // State
   const [activeTab, setActiveTab] = useState<'upcoming' | 'past'>('upcoming');
@@ -4467,6 +4576,107 @@ const EventsScreen: React.FC = () => {
     </View>
   );
 
+  // ------ Phase 3be: round 6 events blocks ------
+  const renderEventSpeakerBios = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🎙️ Speaker bios · who they are off-stage</Text>
+        <Text style={styles.sectionCaption}>{EVENT_SPEAKER_BIOS.length} voices</Text>
+      </View>
+      {EVENT_SPEAKER_BIOS.map((s) => (
+        <View key={s.id} style={[styles.esbCard, { borderLeftColor: s.color }]}>
+          <View style={styles.esbTopRow}>
+            <Text style={styles.esbEmoji}>{s.emoji}</Text>
+            <Text style={styles.esbName} numberOfLines={2}>{s.name}</Text>
+          </View>
+          <Text style={[styles.esbCraft, { color: s.color }]} numberOfLines={2}>craft · {s.craft}</Text>
+          <Text style={styles.esbNote} numberOfLines={3}>{s.note}</Text>
+          <Text style={styles.esbSignature} numberOfLines={2}>signature · {s.signature}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderEventVenueMaps = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🗺️ Venue map · zones + access notes</Text>
+        <Text style={styles.sectionCaption}>{EVENT_VENUE_MAPS.length} zones</Text>
+      </View>
+      {EVENT_VENUE_MAPS.map((z) => (
+        <View key={z.id} style={[styles.evmCard, { borderLeftColor: z.color }]}>
+          <View style={styles.evmTopRow}>
+            <Text style={styles.evmEmoji}>{z.emoji}</Text>
+            <Text style={styles.evmZone} numberOfLines={1}>{z.zone}</Text>
+          </View>
+          <Text style={[styles.evmPurpose, { color: z.color }]} numberOfLines={2}>{z.purpose}</Text>
+          <Text style={styles.evmNearest} numberOfLines={2}>nearest · {z.nearest}</Text>
+          <Text style={styles.evmAccess} numberOfLines={3}>access · {z.accessNote}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderEventSponsorshipTiers = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🤝 Sponsorship tiers · how we take help</Text>
+        <Text style={styles.sectionCaption}>{EVENT_SPONSORSHIP_TIERS.length} tiers</Text>
+      </View>
+      {EVENT_SPONSORSHIP_TIERS.map((t) => (
+        <View key={t.id} style={[styles.estCard, { borderLeftColor: t.color }]}>
+          <View style={styles.estTopRow}>
+            <Text style={styles.estEmoji}>{t.emoji}</Text>
+            <Text style={styles.estTier} numberOfLines={1}>{t.tier}</Text>
+          </View>
+          <Text style={[styles.estPrice, { color: t.color }]} numberOfLines={2}>{t.price}</Text>
+          <Text style={styles.estIncludes} numberOfLines={3}>includes · {t.includes}</Text>
+          <Text style={styles.estLimit} numberOfLines={2}>limit · {t.limit}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderEventDayOfRunsheets = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>⏱️ Day-of run-sheet · cue by cue</Text>
+        <Text style={styles.sectionCaption}>{EVENT_DAY_OF_RUNSHEETS.length} cues</Text>
+      </View>
+      {EVENT_DAY_OF_RUNSHEETS.map((r) => (
+        <View key={r.id} style={[styles.edrCard, { borderLeftColor: r.color }]}>
+          <View style={styles.edrTopRow}>
+            <Text style={styles.edrEmoji}>{r.emoji}</Text>
+            <Text style={styles.edrTime} numberOfLines={1}>{r.time}</Text>
+          </View>
+          <Text style={[styles.edrCue, { color: r.color }]} numberOfLines={3}>{r.cue}</Text>
+          <Text style={styles.edrOwner} numberOfLines={1}>owner · {r.owner}</Text>
+          <Text style={styles.edrBackup} numberOfLines={2}>backup · {r.backup}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderEventWeatherContingencies = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🌦️ Weather contingencies · if the sky turns</Text>
+        <Text style={styles.sectionCaption}>{EVENT_WEATHER_CONTINGENCIES.length} plans</Text>
+      </View>
+      {EVENT_WEATHER_CONTINGENCIES.map((w) => (
+        <View key={w.id} style={[styles.ewcCard, { borderLeftColor: w.color }]}>
+          <View style={styles.ewcTopRow}>
+            <Text style={styles.ewcEmoji}>{w.emoji}</Text>
+            <Text style={styles.ewcTrigger} numberOfLines={2}>{w.trigger}</Text>
+          </View>
+          <Text style={[styles.ewcPlan, { color: w.color }]} numberOfLines={3}>plan · {w.plan}</Text>
+          <Text style={styles.ewcThreshold} numberOfLines={2}>threshold · {w.threshold}</Text>
+          <Text style={styles.ewcComms} numberOfLines={2}>comms · {w.comms}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
   const renderExtrasFooter = () => (
     <View>
       {renderAccessGuides()}
@@ -4525,6 +4735,11 @@ const EventsScreen: React.FC = () => {
       {renderEventMorningBriefs()}
       {renderEventRecoveryWeek()}
       {renderEventAccessibilityPromises()}
+      {renderEventSpeakerBios()}
+      {renderEventVenueMaps()}
+      {renderEventSponsorshipTiers()}
+      {renderEventDayOfRunsheets()}
+      {renderEventWeatherContingencies()}
       <View style={styles.footerBand}>
         <Text style={styles.footerLine}>
           Built with saplings, scripts + slow weekends.
@@ -7235,6 +7450,51 @@ const styles = StyleSheet.create({
   eapMechanism: { fontSize: 11, fontWeight: '700', marginTop: 8, paddingLeft: 32, lineHeight: 15 },
   eapSignage: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32 },
   eapOwner: { color: Colors.text.muted, fontSize: 11, marginTop: 4, paddingLeft: 32 },
+
+  // --- Phase 3be: speaker bios ---
+  esbCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  esbTopRow: { flexDirection: 'row', alignItems: 'center' },
+  esbEmoji: { fontSize: 22, marginRight: 10 },
+  esbName: { color: Colors.text.primary, fontSize: 13, fontWeight: '900', flex: 1, lineHeight: 17 },
+  esbCraft: { fontSize: 11, fontWeight: '700', marginTop: 8, paddingLeft: 32, lineHeight: 15 },
+  esbNote: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32 },
+  esbSignature: { color: Colors.accent.softGold, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32, fontStyle: 'italic' },
+
+  // --- Phase 3be: venue maps ---
+  evmCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  evmTopRow: { flexDirection: 'row', alignItems: 'center' },
+  evmEmoji: { fontSize: 22, marginRight: 10 },
+  evmZone: { color: Colors.text.primary, fontSize: 13, fontWeight: '900', flex: 1 },
+  evmPurpose: { fontSize: 11, fontWeight: '700', marginTop: 8, paddingLeft: 32, lineHeight: 15 },
+  evmNearest: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32 },
+  evmAccess: { color: Colors.text.muted, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32 },
+
+  // --- Phase 3be: sponsorship tiers ---
+  estCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  estTopRow: { flexDirection: 'row', alignItems: 'center' },
+  estEmoji: { fontSize: 22, marginRight: 10 },
+  estTier: { color: Colors.text.primary, fontSize: 13, fontWeight: '900', flex: 1 },
+  estPrice: { fontSize: 11, fontWeight: '700', marginTop: 8, paddingLeft: 32, lineHeight: 15 },
+  estIncludes: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32 },
+  estLimit: { color: Colors.text.muted, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32, fontStyle: 'italic' },
+
+  // --- Phase 3be: day-of runsheet ---
+  edrCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  edrTopRow: { flexDirection: 'row', alignItems: 'center' },
+  edrEmoji: { fontSize: 22, marginRight: 10 },
+  edrTime: { color: Colors.text.primary, fontSize: 13, fontWeight: '900', flex: 1 },
+  edrCue: { fontSize: 11, fontWeight: '700', marginTop: 8, paddingLeft: 32, lineHeight: 15 },
+  edrOwner: { color: Colors.text.secondary, fontSize: 11, marginTop: 4, paddingLeft: 32 },
+  edrBackup: { color: Colors.text.muted, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32 },
+
+  // --- Phase 3be: weather contingencies ---
+  ewcCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  ewcTopRow: { flexDirection: 'row', alignItems: 'center' },
+  ewcEmoji: { fontSize: 22, marginRight: 10 },
+  ewcTrigger: { color: Colors.text.primary, fontSize: 13, fontWeight: '900', flex: 1, lineHeight: 17 },
+  ewcPlan: { fontSize: 11, fontWeight: '700', marginTop: 8, paddingLeft: 32, lineHeight: 15 },
+  ewcThreshold: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32 },
+  ewcComms: { color: Colors.text.muted, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32 },
 });
 
 export default EventsScreen;
