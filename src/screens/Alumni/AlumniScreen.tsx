@@ -2383,6 +2383,93 @@ const ALUMNI_GROVE_PLOTS: AlumniGrovePlot[] = [
   { id: 'agp-7', plot: 'Global grove · corners of world',                                                                                                      founded: '2022',                                                                                                                                           saplings: '200+ · planted by alumni wherever they went · shared photos',                                                                                                                             steward: 'Global alumni chapter · leads',                                                                                                                     color: '#FFD166', emoji: '🌍' },
 ];
 
+// =====================================================
+// Phase 3bc: deeper alumni structures — round 6
+// =====================================================
+
+interface AlumniChapterCity {
+  id: string;
+  city: string;
+  founded: string;
+  members: string;
+  rituals: string;
+  color: string;
+  emoji: string;
+}
+
+const ALUMNI_CHAPTER_CITIES: AlumniChapterCity[] = [
+  { id: 'acc-1', city: 'Bengaluru chapter',            founded: '2007',                members: '160+ active alumni',                    rituals: 'Monthly chai + code · Cubbon park walk · annual homecoming drive.',                   color: '#00D4FF', emoji: '🧑‍💻' },
+  { id: 'acc-2', city: 'Delhi NCR chapter',                       founded: '2009',                             members: '120+ active alumni',                                rituals: 'Quarterly bookshop meet · India Habitat film screen · Holi chai picnic.',                                           color: '#F59E0B', emoji: '🏛️' },
+  { id: 'acc-3', city: 'Mumbai chapter',                                      founded: '2011',                                          members: '95+ active alumni',                                                  rituals: 'Bandra bandstand walk · annual print-zine issue · monsoon poetry night.',                                                   color: '#F472B6', emoji: '🌊' },
+  { id: 'acc-4', city: 'Hyderabad chapter',                                                  founded: '2014',                                                     members: '70+ active alumni',                                                                 rituals: 'Shamshabad film shoot · Mozamjahi market crawl · alumni biryani fund.',                                                                     color: '#A78BFA', emoji: '🍛' },
+  { id: 'acc-5', city: 'Pune chapter',                                                                  founded: '2015',                                                                   members: '60+ active alumni',                                                                                  rituals: 'Law college hill walks · FC Road reading circle · yearly co-work sprint.',                                                                            color: '#22C55E', emoji: '📚' },
+  { id: 'acc-6', city: 'Chennai chapter',                                                                              founded: '2017',                                                                                members: '55+ active alumni',                                                                                                 rituals: 'Marina beach cleanup · alumni photo-walk · annual tech-expo stand.',                                                                                            color: '#FFD166', emoji: '🏖️' },
+  { id: 'acc-7', city: 'Kolkata chapter',                                                                                         founded: '2019',                                                                                                     members: '40+ active alumni',                                                                                                                   rituals: 'Coffee-house addas · book-launch nights · annual Durga pandal crawl.',                                                                                                    color: '#EF4444', emoji: '🎭' },
+  { id: 'acc-8', city: 'Global chapter',                                                                                                     founded: '2021',                                                                                                                       members: '180+ active alumni',                                                                                                                                   rituals: 'Monthly online coffee · yearly video yearbook · co-signed open letters.',                                                                                                                  color: '#16A34A', emoji: '🌍' },
+];
+
+interface AlumniHelpLedger {
+  id: string;
+  ask: string;
+  offered: string;
+  when: string;
+  outcome: string;
+  color: string;
+  emoji: string;
+}
+
+const ALUMNI_HELP_LEDGER: AlumniHelpLedger[] = [
+  { id: 'ahl-1', ask: 'First-job review for 5 freshers',                   offered: 'Priya N. (alumna · 2004 batch)',               when: '2024 · March',                                outcome: '5 offers · 3 accepted · mock-interview deck published by PR wing.',                        color: '#00D4FF', emoji: '📞' },
+  { id: 'ahl-2', ask: 'Mental-health panel for exam month',                            offered: 'Meera K. (alumna · 2010 batch · clinical psych)',                       when: '2024 · October',                                                   outcome: 'Panel reached 200+ students · wellness helpline booklet printed and distributed.',                                   color: '#22C55E', emoji: '🌱' },
+  { id: 'ahl-3', ask: 'Portfolio review for design cohort',                                           offered: 'Kabir V. (alum · 2012 batch · senior designer)',                                                when: '2025 · January',                                                                     outcome: '9 portfolios reviewed · 3 seniors shortlisted by agency · portfolio template v3 published.',                                     color: '#F472B6', emoji: '🎨' },
+  { id: 'ahl-4', ask: 'Setup session on fellowship applications',                                                       offered: 'Tanvi P. (alumna · 2009 batch · Rhodes scholar)',                                                       when: '2025 · February',                                                                                      outcome: '4 strong apps · 2 advanced to interview round · process doc archived.',                                                             color: '#F59E0B', emoji: '🎓' },
+  { id: 'ahl-5', ask: 'Legal help for campus safety policy',                                                                        offered: 'Rohan S. (alum · 2008 batch · lawyer at NLS)',                                                                         when: '2024 · August',                                                                                                       outcome: 'Policy draft revised · campus safety manual published · adopted into student charter.',                                                            color: '#EF4444', emoji: '⚖️' },
+  { id: 'ahl-6', ask: 'Startup legal setup review',                                                                                                offered: 'Nidhi B. (alumna · 2013 batch · VC operator)',                                                                                                        when: '2025 · March',                                                                                                                                 outcome: '3 alumni startups · cap tables reviewed · advisory notes now stored in alumni vault.',                                                                         color: '#A78BFA', emoji: '💼' },
+  { id: 'ahl-7', ask: 'Photo-scholarship mentor for 4 juniors',                                                                                                          offered: 'Iman R. (alum · 2011 batch · documentary photographer)',                                                                                                                             when: '2025 · May',                                                                                                                                                                  outcome: 'All 4 landed paid mentorships · one won national award · mentorship model open-sourced.',                                                                                         color: '#22C55E', emoji: '📷' },
+  { id: 'ahl-8', ask: 'Community care fund for members in crisis',                                                                                                                     offered: 'Global chapter · collective contribution',                                                                                                                                                when: '2024–25 · ongoing',                                                                                                                                                                            outcome: '₹3.4L disbursed · 7 members supported · process is anonymous, fast and quiet.',                                                                                                          color: '#FFD166', emoji: '🫶' },
+];
+
+interface AlumniReunionFormat {
+  id: string;
+  format: string;
+  cadence: string;
+  highlights: string;
+  keeper: string;
+  color: string;
+  emoji: string;
+}
+
+const ALUMNI_REUNION_FORMATS: AlumniReunionFormat[] = [
+  { id: 'arf-1', format: 'Year-end bonfire · on-campus',                    cadence: 'Annual · December',                  highlights: 'Letters read aloud · sealed envelopes opened · gratitude circle · slow midnight tea.',                    keeper: 'Council chair + alumni liaison',                   color: '#EF4444', emoji: '🔥' },
+  { id: 'arf-2', format: 'Milestone homecoming · 10/20/25-yr batches',                             cadence: 'Each decade mark',                                   highlights: 'Campus tour · classroom sit-in · grove visit · batch plants new sapling.',                                            keeper: 'Alumni liaison + outgoing chair',                                   color: '#22C55E', emoji: '🌳' },
+  { id: 'arf-3', format: 'Chapter city meetups',                                               cadence: 'Quarterly · per city',                                                 highlights: 'Local venue · 20–60 alumni · one story each · one alumni-led mini workshop.',                                                      keeper: 'City chapter lead',                                                      color: '#00D4FF', emoji: '🏙️' },
+  { id: 'arf-4', format: 'Online yearbook release',                                                           cadence: 'Annual · August',                                                              highlights: '8-page yearbook · alumni essays · photos · numbers · sent to all alumni PDF + print-to-order.',                                                keeper: 'Content wing + alumni liaison',                                                                color: '#F59E0B', emoji: '📰' },
+  { id: 'arf-5', format: 'Career panels for students',                                                                         cadence: 'Bi-annual',                                                                                   highlights: '5 alumni across 5 paths · 30-min panel · 30-min 1:1 · students leave with notes.',                                                                      keeper: 'Alumni liaison + student council',                                                                         color: '#F472B6', emoji: '🎤' },
+  { id: 'arf-6', format: 'Global summit · online',                                                                                         cadence: 'Bi-annual',                                                                                                         highlights: '6-hour conference · keynote · lightning talks · breakout rooms · time zones welcomed.',                                                                                keeper: 'Global chapter + PR wing',                                                                                             color: '#A78BFA', emoji: '🌐' },
+  { id: 'arf-7', format: 'Memorial visits',                                                                                                             cadence: 'Annual · when needed',                                                                                                                 highlights: 'Sapling planting for remembered alumni · names read aloud · silence · tea.',                                                                                                          keeper: 'Archive keeper + council chair',                                                                                                             color: '#FFD166', emoji: '🕯️' },
+  { id: 'arf-8', format: 'Slow returns · any time',                                                                                                                  cadence: 'Always open',                                                                                                                                           highlights: 'Any alum may return to campus any day · steel mug waits · chair waits · no RSVP.',                                                                                                                 keeper: 'Whoever is there',                                                                                                                              color: '#16A34A', emoji: '🫖' },
+];
+
+interface AlumniLetterBox {
+  id: string;
+  kind: string;
+  opened: string;
+  excerpt: string;
+  color: string;
+  emoji: string;
+}
+
+const ALUMNI_LETTER_BOX: AlumniLetterBox[] = [
+  { id: 'alb-1', kind: 'Sealed-intentions letter',            opened: '2024 · December · 10-yr mark',          excerpt: '"I hoped to make one piece of work that someone quoted years later. I did. It was small. It was enough."',        color: '#22C55E', emoji: '🔏' },
+  { id: 'alb-2', kind: 'Letter-to-your-future-self',                       opened: '2025 · February · 5-yr mark',                         excerpt: '"Be gentler with your drafts. Writers are not timelines. The voice you are finding will keep finding you."',                               color: '#F59E0B', emoji: '📜' },
+  { id: 'alb-3', kind: 'Mentor-thanks letter',                                         opened: '2024 · June · at homecoming',                                          excerpt: '"You let me redo the pitch eight times. I still hear your line: clarity is care. I pass it on weekly."',                                            color: '#F472B6', emoji: '🙏' },
+  { id: 'alb-4', kind: 'Farewell bonfire letter',                                                       opened: '2024 · December · bonfire',                                                               excerpt: '"I am leaving but I am not leaving. The grove is my second address. My tree is labelled. I\'ll water it when I pass."',                                color: '#EF4444', emoji: '🔥' },
+  { id: 'alb-5', kind: 'Letter from alumni to first-years',                                                                    opened: '2025 · August · induction',                                                                                   excerpt: '"Start a habit of writing two sentences a day. At the end of year one you will be a person I wish I had been."',                                    color: '#00D4FF', emoji: '🪶' },
+  { id: 'alb-6', kind: 'Public letter · open online',                                                                                         opened: '2025 · June · after controversy',                                                                                                      excerpt: '"We were kinder than we needed to be. We are harder on ourselves than we deserve. We keep showing up."',                                                         color: '#A78BFA', emoji: '📬' },
+  { id: 'alb-7', kind: 'Letter to campus safety staff',                                                                                                    opened: '2025 · January · annual thanks',                                                                                                                     excerpt: '"You are the first face we see at 9 PM. You remember our names. You let us lock up. Thank you a hundred times."',                                            color: '#FFD166', emoji: '✉️' },
+  { id: 'alb-8', kind: 'Letter sealed for 25-yr reunion',                                                                                                                 opened: '2026 · December · projected',                                                                                                                                            excerpt: '"[to be opened] Dear future self · I am writing this in the noise of now · so that you can read it in the quiet of later."',                                                                            color: '#16A34A', emoji: '🕰️' },
+];
+
 const AlumniScreen: React.FC = () => {
   // -------------- State ------------------
   const [selectedBatch, setSelectedBatch] = useState<'all' | string>('all');
@@ -4541,6 +4628,90 @@ const AlumniScreen: React.FC = () => {
     </View>
   );
 
+  // ------ Phase 3bc: round 6 alumni blocks ------
+  const renderAlumniChapterCities = () => (
+    <View style={[styles.sectionBlock, { paddingHorizontal: HORIZONTAL_PADDING }]}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🏙️ Chapter cities · where the alumni gather</Text>
+        <Text style={styles.sectionCaption}>{ALUMNI_CHAPTER_CITIES.length} chapters</Text>
+      </View>
+      {ALUMNI_CHAPTER_CITIES.map((c) => (
+        <View key={c.id} style={[styles.accCard, { borderLeftColor: c.color }]}>
+          <View style={styles.accTopRow}>
+            <Text style={styles.accEmoji}>{c.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.accCity} numberOfLines={1}>{c.city}</Text>
+              <Text style={[styles.accFounded, { color: c.color }]}>founded {c.founded}</Text>
+            </View>
+          </View>
+          <Text style={styles.accMembers} numberOfLines={1}>{c.members}</Text>
+          <Text style={styles.accRituals} numberOfLines={3}>rituals · {c.rituals}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderAlumniHelpLedger = () => (
+    <View style={[styles.sectionBlock, { paddingHorizontal: HORIZONTAL_PADDING }]}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🤝 Help ledger · alumni answering asks</Text>
+        <Text style={styles.sectionCaption}>{ALUMNI_HELP_LEDGER.length} asks</Text>
+      </View>
+      {ALUMNI_HELP_LEDGER.map((h) => (
+        <View key={h.id} style={[styles.ahxCard, { borderLeftColor: h.color }]}>
+          <View style={styles.ahxTopRow}>
+            <Text style={styles.ahxEmoji}>{h.emoji}</Text>
+            <Text style={styles.ahxAsk} numberOfLines={2}>ask · {h.ask}</Text>
+          </View>
+          <Text style={[styles.ahxOffered, { color: h.color }]} numberOfLines={2}>offered · {h.offered}</Text>
+          <Text style={styles.ahxWhen} numberOfLines={1}>when · {h.when}</Text>
+          <Text style={styles.ahxOutcome} numberOfLines={3}>{h.outcome}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderAlumniReunionFormats = () => (
+    <View style={[styles.sectionBlock, { paddingHorizontal: HORIZONTAL_PADDING }]}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🫱 Reunion formats · how we meet again</Text>
+        <Text style={styles.sectionCaption}>{ALUMNI_REUNION_FORMATS.length} formats</Text>
+      </View>
+      {ALUMNI_REUNION_FORMATS.map((r) => (
+        <View key={r.id} style={[styles.arfCard, { borderLeftColor: r.color }]}>
+          <View style={styles.arfTopRow}>
+            <Text style={styles.arfEmoji}>{r.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.arfFormat} numberOfLines={2}>{r.format}</Text>
+              <Text style={[styles.arfCadence, { color: r.color }]}>{r.cadence}</Text>
+            </View>
+          </View>
+          <Text style={styles.arfHighlights} numberOfLines={3}>highlights · {r.highlights}</Text>
+          <Text style={styles.arfKeeper} numberOfLines={1}>keeper · {r.keeper}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderAlumniLetterBox = () => (
+    <View style={[styles.sectionBlock, { paddingHorizontal: HORIZONTAL_PADDING }]}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>✉️ Letter box · what alumni leave behind</Text>
+        <Text style={styles.sectionCaption}>{ALUMNI_LETTER_BOX.length} letters</Text>
+      </View>
+      {ALUMNI_LETTER_BOX.map((l) => (
+        <View key={l.id} style={[styles.albCard, { borderLeftColor: l.color }]}>
+          <View style={styles.albTopRow}>
+            <Text style={styles.albEmoji}>{l.emoji}</Text>
+            <Text style={styles.albKind} numberOfLines={2}>{l.kind}</Text>
+          </View>
+          <Text style={[styles.albOpened, { color: l.color }]} numberOfLines={1}>opened · {l.opened}</Text>
+          <Text style={styles.albExcerpt} numberOfLines={4}>{l.excerpt}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
   const renderAlumniRemembered = () => (
     <View style={[styles.sectionBlock, { paddingHorizontal: HORIZONTAL_PADDING }]}>
       <View style={styles.sectionHeaderRow}>
@@ -4612,6 +4783,10 @@ const AlumniScreen: React.FC = () => {
       {renderAlumniHomecomings()}
       {renderAlumniTraditions()}
       {renderAlumniGrovePlots()}
+      {renderAlumniChapterCities()}
+      {renderAlumniHelpLedger()}
+      {renderAlumniReunionFormats()}
+      {renderAlumniLetterBox()}
       {renderAlumniListHeader()}
     </View>
   );
@@ -6053,6 +6228,41 @@ const styles = StyleSheet.create({
   agpFounded: { fontSize: 11, fontWeight: '700', marginTop: 2 },
   agpSaplings: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8, paddingLeft: 32 },
   agpSteward: { color: Colors.text.muted, fontSize: 11, marginTop: 4, paddingLeft: 32 },
+
+  // --- Phase 3bc: chapter cities ---
+  accCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginBottom: 10, borderLeftWidth: 3 },
+  accTopRow: { flexDirection: 'row', alignItems: 'center' },
+  accEmoji: { fontSize: 22, marginRight: 10 },
+  accCity: { color: Colors.text.primary, fontSize: 13, fontWeight: '900' },
+  accFounded: { fontSize: 11, fontWeight: '700', marginTop: 2 },
+  accMembers: { color: Colors.text.muted, fontSize: 11, marginTop: 8, paddingLeft: 32 },
+  accRituals: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32 },
+
+  // --- Phase 3bc: help ledger ---
+  ahxCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginBottom: 10, borderLeftWidth: 3 },
+  ahxTopRow: { flexDirection: 'row', alignItems: 'center' },
+  ahxEmoji: { fontSize: 22, marginRight: 10 },
+  ahxAsk: { color: Colors.text.primary, fontSize: 13, fontWeight: '900', flex: 1, lineHeight: 17 },
+  ahxOffered: { fontSize: 11, fontWeight: '700', marginTop: 8, paddingLeft: 32, lineHeight: 15 },
+  ahxWhen: { color: Colors.text.muted, fontSize: 11, marginTop: 4, paddingLeft: 32 },
+  ahxOutcome: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32 },
+
+  // --- Phase 3bc: reunion formats ---
+  arfCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginBottom: 10, borderLeftWidth: 3 },
+  arfTopRow: { flexDirection: 'row', alignItems: 'center' },
+  arfEmoji: { fontSize: 22, marginRight: 10 },
+  arfFormat: { color: Colors.text.primary, fontSize: 13, fontWeight: '900', lineHeight: 17 },
+  arfCadence: { fontSize: 11, fontWeight: '700', marginTop: 2 },
+  arfHighlights: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8, paddingLeft: 32 },
+  arfKeeper: { color: Colors.text.muted, fontSize: 11, marginTop: 4, paddingLeft: 32 },
+
+  // --- Phase 3bc: letter box ---
+  albCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 12, marginBottom: 10, borderLeftWidth: 3 },
+  albTopRow: { flexDirection: 'row', alignItems: 'center' },
+  albEmoji: { fontSize: 22, marginRight: 10 },
+  albKind: { color: Colors.text.primary, fontSize: 13, fontWeight: '900', flex: 1, lineHeight: 17 },
+  albOpened: { fontSize: 11, fontWeight: '700', marginTop: 8, paddingLeft: 32 },
+  albExcerpt: { color: Colors.text.secondary, fontSize: 11, lineHeight: 16, marginTop: 4, paddingLeft: 32, fontStyle: 'italic' },
 });
 
 export default AlumniScreen;
