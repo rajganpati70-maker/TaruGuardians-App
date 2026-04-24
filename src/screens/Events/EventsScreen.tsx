@@ -1833,6 +1833,116 @@ const EVENT_ACCESSIBILITY_PROMISES: EventAccessibilityPromise[] = [
   { id: 'eap-7', promise: 'No flash · no sudden sound',                                                                                 mechanism: 'Lighting designer briefed · sound lead briefed · warnings before transitions.',                                                                                           signage: 'Announced at open · in programme · visible during show.',                                                                                                      owner: 'AV lead + host',                                                                                           color: '#EF4444', emoji: '🔇' },
 ];
 
+// =====================================================
+// PHASE 3be: EVENTS ROUND 6 · speaker bios, venue maps,
+// sponsorship tiers, day-of runsheet, weather contingency
+// =====================================================
+
+interface EventSpeakerBio {
+  id: string;
+  name: string;
+  role: string;
+  bio: string;
+  hometown: string;
+  color: string;
+  emoji: string;
+}
+
+const EVENT_SPEAKER_BIOS: EventSpeakerBio[] = [
+  { id: 'esb-1', name: 'Dr. Anaya Raghavan',        role: 'Restoration ecologist · keynote',              bio: 'Thirty years planting native groves · writes in the margins of field guides · keeps a seed box on her desk.',              hometown: 'Coonoor · Nilgiris',               color: '#00D4FF', emoji: '🌱' },
+  { id: 'esb-2', name: 'Kabir Anwar',               role: 'Civic technologist · workshop lead',                    bio: 'Builds tools for gram panchayats · refuses shiny demos · believes in paper trails before pixels.',                       hometown: 'Pune · Maharashtra',                        color: '#F59E0B', emoji: '🛠️' },
+  { id: 'esb-3', name: 'Meera Thaker',              role: 'Youth organiser · fireside host',                                bio: 'Ran her first cleanup at 13 · now runs a 400-person volunteer circle · still writes every agenda by hand.',                              hometown: 'Kochi · Kerala',                                    color: '#F472B6', emoji: '✍️' },
+  { id: 'esb-4', name: 'Arjun Tashi',               role: 'Himalayan trail warden · guide',                                            bio: 'Walks 1800 km every year · knows every dhaba owner from Manali to Tawang · sings at camp.',                                          hometown: 'Dharamshala · Himachal',                                             color: '#A78BFA', emoji: '🏔️' },
+  { id: 'esb-5', name: 'Radha Fernandes',           role: 'Solar engineer · panel demo',                                                           bio: 'Designs off-grid rigs for island villages · keeps spare spanners in her laptop bag · no plan B.',                                                  hometown: 'Panjim · Goa',                                                                color: '#22C55E', emoji: '☀️' },
+  { id: 'esb-6', name: 'Iqbal Nair',                role: 'Freshwater biologist · closing talk',                                                                bio: 'Ninety peer-reviewed papers · still introduces himself as a student · favourite tool is a plankton net.',                                                             hometown: 'Thiruvananthapuram · Kerala',                                                    color: '#FFD166', emoji: '🐟' },
+  { id: 'esb-7', name: 'Tanvi Sidhu',               role: 'Documentary editor · film panel',                                                                             bio: 'Cuts four feature docs a year · edits on a 12-inch laptop · argues with sound designers, loses gracefully.',                                                                     hometown: 'Chandigarh · Punjab',                                                                       color: '#EF4444', emoji: '🎬' },
+  { id: 'esb-8', name: 'Soham Bhattacharya',        role: 'Policy researcher · panel moderator',                                                                                          bio: 'Reads every state budget cover to cover · quotes footnotes over anecdotes · his coffee goes cold by the 2nd question.',                                                                                hometown: 'Kolkata · West Bengal',                                                                                     color: '#34D399', emoji: '📑' },
+];
+
+interface EventVenueMap {
+  id: string;
+  zone: string;
+  landmark: string;
+  tip: string;
+  walkMinutes: string;
+  color: string;
+  emoji: string;
+}
+
+const EVENT_VENUE_MAPS: EventVenueMap[] = [
+  { id: 'evm-1', zone: 'Gate A · entry',                   landmark: 'Neem tree + bougainvillea arch',                 tip: 'Badge pickup on the left · water refill on the right · queue starts at the arch.',               walkMinutes: '0 min · you are here',                     color: '#00D4FF', emoji: '🚪' },
+  { id: 'evm-2', zone: 'Main lawn · keynote',                        landmark: 'White canopy · 40 m pole',                              tip: 'Wheelchair path hugs the left hedge · shaded seats are closest to the amp stack.',                        walkMinutes: '4 min from Gate A',                                 color: '#F59E0B', emoji: '⛺' },
+  { id: 'evm-3', zone: 'Workshop barn',                                      landmark: 'Red barn · solar panels on roof',                                       tip: 'Tool room is at the back · chargers by the window · ask at the desk for ear defenders.',                                  walkMinutes: '6 min from main lawn',                                        color: '#F472B6', emoji: '🏚️' },
+  { id: 'evm-4', zone: 'Food court',                                                 landmark: 'Cluster of 9 kitchens · banyan tree in centre',                                            tip: 'Allergens on every sign · water bottles refilled at banyan fountain · compost bins ring the tree.',                                  walkMinutes: '5 min from barn',                                                     color: '#A78BFA', emoji: '🍱' },
+  { id: 'evm-5', zone: 'Quiet meadow',                                                          landmark: 'Stone benches + wildflower patch',                                                        tip: 'No music · no speeches · blankets in a basket at the path entry · return after use.',                                           walkMinutes: '7 min from food court',                                                              color: '#22C55E', emoji: '🌼' },
+  { id: 'evm-6', zone: 'Medical tent',                                                                    landmark: 'White tent · green cross flag',                                                                      tip: 'Two medics · always staffed · stretchers + wheelchairs behind the canvas · ambulance path is marked red.',                                                    walkMinutes: '3 min from main lawn',                                                                         color: '#FFD166', emoji: '⛑️' },
+  { id: 'evm-7', zone: 'Stargazing deck',                                                                              landmark: 'Wooden platform · dark-sky lamps',                                                                                 tip: 'Lamps dim after 8 PM · telescopes arrive at dusk · bring a blanket · no white torches.',                                                                walkMinutes: '9 min from quiet meadow',                                                                                  color: '#EF4444', emoji: '🔭' },
+  { id: 'evm-8', zone: 'Gate C · exit',                                                                                         landmark: 'Small gate behind the stage',                                                                                                tip: 'Shortcut to the bus bay · opens only after the last session · staff will direct lost guests.',                                                                                  walkMinutes: '10 min from keynote',                                                                                            color: '#34D399', emoji: '🚏' },
+];
+
+interface EventSponsorshipTier {
+  id: string;
+  tier: string;
+  price: string;
+  perks: string;
+  slots: string;
+  color: string;
+  emoji: string;
+}
+
+const EVENT_SPONSORSHIP_TIERS: EventSponsorshipTier[] = [
+  { id: 'est-1', tier: 'Sapling · community friend',              price: '₹10,000 · full waiver for non-profits',              perks: 'Name in programme · thank-you at open · 2 guest passes · tree planted in your name.',              slots: '8 slots · first come',                                   color: '#00D4FF', emoji: '🌱' },
+  { id: 'est-2', tier: 'Grove · local partner',                             price: '₹40,000',                                                      perks: 'Booth on main lawn · 1 workshop slot · logo on every backdrop · 6 guest passes + tree cluster.',                            slots: '5 slots',                                                          color: '#F59E0B', emoji: '🌳' },
+  { id: 'est-3', tier: 'Canopy · regional backer',                                     price: '₹1,00,000',                                                                  perks: 'Stage mention at every session · curated panel · 15 passes · naming rights on one nursery plot.',                                    slots: '3 slots',                                                                     color: '#F472B6', emoji: '🏞️' },
+  { id: 'est-4', tier: 'Horizon · national supporter',                                              price: '₹3,00,000',                                                                                  perks: 'Co-branded keynote · dinner with speakers · curated field visit · 40 passes · 50 saplings gifted.',                                             slots: '2 slots · limited',                                                                              color: '#A78BFA', emoji: '🌄' },
+  { id: 'est-5', tier: 'Confluence · presenting partner',                                                       price: '₹7,50,000',                                                                                                perks: 'Top billing · stage share at open · bespoke microsite · 80 passes · 150 saplings in a grove.',                                                              slots: '1 slot',                                                                                                  color: '#22C55E', emoji: '🌊' },
+  { id: 'est-6', tier: 'In-kind · service partner',                                                                  price: 'Value-matched',                                                                                                             perks: 'Category exclusivity for one year · name woven into thank-yous · booth + mention · 10 passes.',                                                                      slots: '6 slots',                                                                                                            color: '#FFD166', emoji: '🤝' },
+  { id: 'est-7', tier: 'Media · amplifier',                                                                                      price: 'Content-matched',                                                                                                                       perks: 'First interview rights · backstage access · logo in every social card · 12 passes.',                                                                                            slots: '4 slots',                                                                                                                          color: '#EF4444', emoji: '📡' },
+  { id: 'est-8', tier: 'Alumni · homecoming',                                                                                              price: '₹25,000 · alumni only',                                                                                                                                  perks: 'Reserved seating · memory-wall plaque · 3 passes + kids free · alumni-only breakfast.',                                                                                                      slots: '10 slots',                                                                                                                                    color: '#34D399', emoji: '🏡' },
+];
+
+interface EventDayOfRunsheet {
+  id: string;
+  time: string;
+  who: string;
+  action: string;
+  handoff: string;
+  color: string;
+  emoji: string;
+}
+
+const EVENT_DAY_OF_RUNSHEET: EventDayOfRunsheet[] = [
+  { id: 'edr-1', time: '05:30 · core crew',                         who: 'Stage manager + 2 leads',                         action: 'Walk the venue · check water points · test the backup generator for 3 minutes.',                              handoff: 'Hand off checklist to volunteer coordinator · ribbon tied on completed posts.',               color: '#00D4FF', emoji: '🚶' },
+  { id: 'edr-2', time: '06:45 · volunteers arrive',                           who: 'Volunteer coordinator · 25 volunteers',                                     action: 'Badge up · pair into buddies · 12 min walk-through · questions answered in full.',                                       handoff: 'Pods report ready to stage manager · no grey areas.',                                                  color: '#F59E0B', emoji: '🎽' },
+  { id: 'edr-3', time: '08:00 · gates open',                                             who: 'Gate A team · 6 people',                                                       action: 'Badge scans · bag checks · sensory kits ready · water bottles topped up.',                                               handoff: 'First 100 guests = full dry run · radio update every 15 min.',                                                color: '#F472B6', emoji: '🚪' },
+  { id: 'edr-4', time: '09:30 · keynote',                                                            who: 'Host + AV + captioner',                                                                             action: 'Welcome · land acknowledgement · keynote · 3 min buffer on either side · captions live.',                                                          handoff: 'Session handoff to workshop barn at 10:35 · no overflow.',                                                                       color: '#A78BFA', emoji: '🎙️' },
+  { id: 'edr-5', time: '12:30 · food court',                                                                       who: 'F&B lead · 10 volunteers',                                                                                         action: 'Stagger lunch · longest queue 6 min · compost bins swapped · allergen cards verified.',                                                                       handoff: 'Photo log sent to ops lead · refill schedule noted.',                                                                                    color: '#22C55E', emoji: '🍱' },
+  { id: 'edr-6', time: '15:45 · workshops · slot 2',                                                                                  who: 'Workshop leads · 4 tracks',                                                                                                                action: 'Live mic checks · ear defenders handed out · tool returns logged · kids track has 2 adults.',                                                                                     handoff: 'Evaluation cards collected at door · handed to research lead.',                                                                                          color: '#FFD166', emoji: '🛠️' },
+  { id: 'edr-7', time: '18:00 · closing circle',                                                                                                  who: 'All crew + all guests',                                                                                                                                        action: 'Stage share · one sentence each · thank-yous · music · 22 minutes · no phones.',                                                                                                                        handoff: 'Stage manager signs off · lighting crew takes over.',                                                                                                                        color: '#EF4444', emoji: '🌇' },
+  { id: 'edr-8', time: '21:00 · wrap',                                                                                                                            who: 'Core crew · 8 people',                                                                                                                                                                    action: 'Gate locked · LEDs powered down · waste sorted · receipts handed to finance · short debrief.',                                                                                                                            handoff: 'Keys + radios returned · voice-note recorded for day +1 brief.',                                                                                                                                               color: '#34D399', emoji: '🔒' },
+];
+
+interface EventWeatherContingency {
+  id: string;
+  scenario: string;
+  trigger: string;
+  response: string;
+  fallback: string;
+  color: string;
+  emoji: string;
+}
+
+const EVENT_WEATHER_CONTINGENCIES: EventWeatherContingency[] = [
+  { id: 'ewc-1', scenario: 'Heavy rain · 60%+ chance',                  trigger: 'Confirmed by 2 sources · 36 hours out',                    response: 'Open the barn · tent-extend the main lawn · reroute food court under canvas.',                   fallback: 'If it crosses 80 mm in 6h · move keynote to afternoon · shorten by 20 min.',                      color: '#00D4FF', emoji: '🌧️' },
+  { id: 'ewc-2', scenario: 'Storm warning · wind 50+ kmph',                           trigger: 'IMD alert or district circular',                                               response: 'Stage cover goes down · loose signage stored · tree health walk done by 2 volunteers.',                                  fallback: 'If alert upgrades · session pauses · guests moved to the barn · radio updates every 10 min.',                                         color: '#F59E0B', emoji: '🌪️' },
+  { id: 'ewc-3', scenario: 'Heatwave · 40°C+',                                                    trigger: 'Forecast 2 days out · confirmed day-of',                                                            response: 'ORS stations at 5 points · shaded queues · session timings pulled 30 min earlier.',                                              fallback: 'If anyone shows heat stress · shift to medical tent · short break announced live.',                                                        color: '#F472B6', emoji: '🌡️' },
+  { id: 'ewc-4', scenario: 'Air quality · AQI 180+',                                                                 trigger: 'SAFAR / CPCB reading before dawn',                                                                                response: 'N95 masks at gate · outdoor workouts moved indoors · sensory bags stocked with extra masks.',                                                    fallback: 'If AQI crosses 250 · outdoor sessions cancelled · guests called with alternative plan.',                                                                  color: '#A78BFA', emoji: '😷' },
+  { id: 'ewc-5', scenario: 'Thunder · lightning within 8 km',                                                                              trigger: 'Lightning tracker ping · 2 confirms',                                                                                                      response: 'Outdoor pauses · 30-minute wait clock · venue lit · hot tea served · calm announcement.',                                                                  fallback: 'If strikes continue past 45 min · session postponed · livestream kicks in · guests guided indoors.',                                                                                   color: '#22C55E', emoji: '⚡' },
+  { id: 'ewc-6', scenario: 'Cold snap · sub-5°C',                                                                                          trigger: 'Dusk temperatures below 5 · kids attendance flagged',                                                                                                               response: 'Blankets at quiet meadow · soup station at food court · bonfire with safety ring lit at 7 PM.',                                                                                    fallback: 'If temp dips below 2 · close stargazing deck · parents called before evening session.',                                                                                                color: '#FFD166', emoji: '🧣' },
+  { id: 'ewc-7', scenario: 'Smoke · wildfire haze',                                                                                                       trigger: 'Ridge visibility under 500 m',                                                                                                                                 response: 'Sessions moved to indoor barn · outdoor food halted · pregnant + child guests escorted first.',                                                                                                     fallback: 'If smoke worsens · event pauses · safe-room protocol · coaches called for early pickup.',                                                                                                             color: '#EF4444', emoji: '🌫️' },
+  { id: 'ewc-8', scenario: 'Power outage · grid failure',                                                                                                                 trigger: 'Loss of supply over 3 minutes',                                                                                                                                                          response: 'Generator kicks in · solar inverter covers mics + lights · AV lead announces in 90 seconds.',                                                                                                                                fallback: 'If outage crosses 20 min · acoustic mode · hand-written signs · session tightens by 15 min.',                                                                                                                                      color: '#34D399', emoji: '🔌' },
+];
+
 const EventsScreen: React.FC = () => {
   // State
   const [activeTab, setActiveTab] = useState<'upcoming' | 'past'>('upcoming');
@@ -4467,6 +4577,117 @@ const EventsScreen: React.FC = () => {
     </View>
   );
 
+  // ------ Phase 3be: round 6 events blocks ------
+  const renderEventSpeakerBios = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🎙️ Speaker bios · the humans behind the keynotes</Text>
+        <Text style={styles.sectionCaption}>{EVENT_SPEAKER_BIOS.length} voices</Text>
+      </View>
+      {EVENT_SPEAKER_BIOS.map((s) => (
+        <View key={s.id} style={[styles.esbCard, { borderLeftColor: s.color }]}>
+          <View style={styles.esbTopRow}>
+            <Text style={styles.esbEmoji}>{s.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.esbName} numberOfLines={1}>{s.name}</Text>
+              <Text style={[styles.esbRole, { color: s.color }]} numberOfLines={1}>{s.role}</Text>
+            </View>
+          </View>
+          <Text style={styles.esbBio} numberOfLines={3}>{s.bio}</Text>
+          <Text style={styles.esbHometown} numberOfLines={1}>from · {s.hometown}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderEventVenueMaps = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🗺️ Venue map · landmark by landmark</Text>
+        <Text style={styles.sectionCaption}>{EVENT_VENUE_MAPS.length} zones</Text>
+      </View>
+      {EVENT_VENUE_MAPS.map((v) => (
+        <View key={v.id} style={[styles.evmCard, { borderLeftColor: v.color }]}>
+          <View style={styles.evmTopRow}>
+            <Text style={styles.evmEmoji}>{v.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.evmZone} numberOfLines={1}>{v.zone}</Text>
+              <Text style={[styles.evmLandmark, { color: v.color }]} numberOfLines={2}>{v.landmark}</Text>
+            </View>
+          </View>
+          <Text style={styles.evmTip} numberOfLines={3}>tip · {v.tip}</Text>
+          <Text style={styles.evmWalk} numberOfLines={1}>walk · {v.walkMinutes}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderEventSponsorshipTiers = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>🤝 Sponsorship tiers · how partners plant with us</Text>
+        <Text style={styles.sectionCaption}>{EVENT_SPONSORSHIP_TIERS.length} tiers</Text>
+      </View>
+      {EVENT_SPONSORSHIP_TIERS.map((t) => (
+        <View key={t.id} style={[styles.estCard, { borderLeftColor: t.color }]}>
+          <View style={styles.estTopRow}>
+            <Text style={styles.estEmoji}>{t.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.estTier} numberOfLines={1}>{t.tier}</Text>
+              <Text style={[styles.estPrice, { color: t.color }]} numberOfLines={1}>{t.price}</Text>
+            </View>
+          </View>
+          <Text style={styles.estPerks} numberOfLines={3}>perks · {t.perks}</Text>
+          <Text style={styles.estSlots} numberOfLines={1}>slots · {t.slots}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderEventDayOfRunsheet = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>📋 Day-of runsheet · minute by minute</Text>
+        <Text style={styles.sectionCaption}>{EVENT_DAY_OF_RUNSHEET.length} rows</Text>
+      </View>
+      {EVENT_DAY_OF_RUNSHEET.map((r) => (
+        <View key={r.id} style={[styles.edrCard, { borderLeftColor: r.color }]}>
+          <View style={styles.edrTopRow}>
+            <Text style={styles.edrEmoji}>{r.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.edrTime} numberOfLines={1}>{r.time}</Text>
+              <Text style={[styles.edrWho, { color: r.color }]} numberOfLines={1}>{r.who}</Text>
+            </View>
+          </View>
+          <Text style={styles.edrAction} numberOfLines={3}>action · {r.action}</Text>
+          <Text style={styles.edrHandoff} numberOfLines={2}>handoff · {r.handoff}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
+  const renderEventWeatherContingencies = () => (
+    <View style={styles.sectionBlock}>
+      <View style={styles.sectionHeaderRow}>
+        <Text style={styles.sectionTitle}>⛅ Weather contingency · what we do when the sky turns</Text>
+        <Text style={styles.sectionCaption}>{EVENT_WEATHER_CONTINGENCIES.length} scenarios</Text>
+      </View>
+      {EVENT_WEATHER_CONTINGENCIES.map((w) => (
+        <View key={w.id} style={[styles.ewcCard, { borderLeftColor: w.color }]}>
+          <View style={styles.ewcTopRow}>
+            <Text style={styles.ewcEmoji}>{w.emoji}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.ewcScenario} numberOfLines={1}>{w.scenario}</Text>
+              <Text style={[styles.ewcTrigger, { color: w.color }]} numberOfLines={2}>trigger · {w.trigger}</Text>
+            </View>
+          </View>
+          <Text style={styles.ewcResponse} numberOfLines={3}>response · {w.response}</Text>
+          <Text style={styles.ewcFallback} numberOfLines={3}>fallback · {w.fallback}</Text>
+        </View>
+      ))}
+    </View>
+  );
+
   const renderExtrasFooter = () => (
     <View>
       {renderAccessGuides()}
@@ -4525,6 +4746,11 @@ const EventsScreen: React.FC = () => {
       {renderEventMorningBriefs()}
       {renderEventRecoveryWeek()}
       {renderEventAccessibilityPromises()}
+      {renderEventSpeakerBios()}
+      {renderEventVenueMaps()}
+      {renderEventSponsorshipTiers()}
+      {renderEventDayOfRunsheet()}
+      {renderEventWeatherContingencies()}
       <View style={styles.footerBand}>
         <Text style={styles.footerLine}>
           Built with saplings, scripts + slow weekends.
@@ -7235,6 +7461,51 @@ const styles = StyleSheet.create({
   eapMechanism: { fontSize: 11, fontWeight: '700', marginTop: 8, paddingLeft: 32, lineHeight: 15 },
   eapSignage: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32 },
   eapOwner: { color: Colors.text.muted, fontSize: 11, marginTop: 4, paddingLeft: 32 },
+
+  // --- Phase 3be: speaker bios ---
+  esbCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 13, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  esbTopRow: { flexDirection: 'row', alignItems: 'center' },
+  esbEmoji: { fontSize: 22, marginRight: 10 },
+  esbName: { color: Colors.text.primary, fontSize: 13, fontWeight: '900' },
+  esbRole: { fontSize: 11, fontWeight: '700', marginTop: 2 },
+  esbBio: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8, paddingLeft: 32 },
+  esbHometown: { color: Colors.accent.softGold, fontSize: 11, marginTop: 4, paddingLeft: 32, fontStyle: 'italic' },
+
+  // --- Phase 3be: venue maps ---
+  evmCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 13, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  evmTopRow: { flexDirection: 'row', alignItems: 'flex-start' },
+  evmEmoji: { fontSize: 22, marginRight: 10, marginTop: 2 },
+  evmZone: { color: Colors.text.primary, fontSize: 13, fontWeight: '900' },
+  evmLandmark: { fontSize: 11, fontWeight: '700', marginTop: 2, lineHeight: 15 },
+  evmTip: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8, paddingLeft: 32 },
+  evmWalk: { color: Colors.text.muted, fontSize: 11, marginTop: 4, paddingLeft: 32 },
+
+  // --- Phase 3be: sponsorship tiers ---
+  estCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 13, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  estTopRow: { flexDirection: 'row', alignItems: 'center' },
+  estEmoji: { fontSize: 22, marginRight: 10 },
+  estTier: { color: Colors.text.primary, fontSize: 13, fontWeight: '900' },
+  estPrice: { fontSize: 11, fontWeight: '700', marginTop: 2 },
+  estPerks: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8, paddingLeft: 32 },
+  estSlots: { color: Colors.text.muted, fontSize: 11, marginTop: 4, paddingLeft: 32 },
+
+  // --- Phase 3be: day-of runsheet ---
+  edrCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 13, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  edrTopRow: { flexDirection: 'row', alignItems: 'center' },
+  edrEmoji: { fontSize: 22, marginRight: 10 },
+  edrTime: { color: Colors.text.primary, fontSize: 13, fontWeight: '900' },
+  edrWho: { fontSize: 11, fontWeight: '700', marginTop: 2 },
+  edrAction: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8, paddingLeft: 32 },
+  edrHandoff: { color: Colors.text.muted, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32, fontStyle: 'italic' },
+
+  // --- Phase 3be: weather contingencies ---
+  ewcCard: { backgroundColor: '#0D141B', borderRadius: 14, padding: 14, marginHorizontal: HORIZONTAL_PADDING, marginBottom: 10, borderLeftWidth: 3 },
+  ewcTopRow: { flexDirection: 'row', alignItems: 'flex-start' },
+  ewcEmoji: { fontSize: 22, marginRight: 10, marginTop: 2 },
+  ewcScenario: { color: Colors.text.primary, fontSize: 13, fontWeight: '900' },
+  ewcTrigger: { fontSize: 11, fontWeight: '700', marginTop: 2, lineHeight: 15 },
+  ewcResponse: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 8, paddingLeft: 32 },
+  ewcFallback: { color: Colors.tech.neonBlue, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32 },
 });
 
 export default EventsScreen;
