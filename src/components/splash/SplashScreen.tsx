@@ -1636,19 +1636,31 @@ const DataStreamLayer: React.FC = () => {
 const GlitchFlash: React.FC = () => {
   const opacity = useRef(new Animated.Value(0)).current;
   const translateX = useRef(new Animated.Value(0)).current;
+  const scaleY = useRef(new Animated.Value(1)).current;
 
   useEffect(() => {
     const glitch = () => {
-      const delay = randInt(1800, 4500);
+      const delay = randInt(200, 900);
       setTimeout(() => {
+        const color = pick(['#00e5ff', '#d4ff00', '#ffffff', '#ff6d00']);
         Animated.sequence([
           Animated.parallel([
-            Animated.timing(opacity, { toValue: rand(0.04, 0.09), duration: 40, useNativeDriver: true }),
-            Animated.timing(translateX, { toValue: rand(-8, 8), duration: 40, useNativeDriver: true }),
+            Animated.timing(opacity, { toValue: rand(0.06, 0.18), duration: 25, useNativeDriver: true }),
+            Animated.timing(translateX, { toValue: rand(-14, 14), duration: 25, useNativeDriver: true }),
+            Animated.timing(scaleY, { toValue: rand(0.95, 1.05), duration: 25, useNativeDriver: true }),
           ]),
           Animated.parallel([
-            Animated.timing(opacity, { toValue: 0, duration: 40, useNativeDriver: true }),
-            Animated.timing(translateX, { toValue: 0, duration: 40, useNativeDriver: true }),
+            Animated.timing(opacity, { toValue: rand(0.02, 0.08), duration: 30, useNativeDriver: true }),
+            Animated.timing(translateX, { toValue: rand(-6, 6), duration: 30, useNativeDriver: true }),
+          ]),
+          Animated.parallel([
+            Animated.timing(opacity, { toValue: rand(0.08, 0.2), duration: 20, useNativeDriver: true }),
+            Animated.timing(translateX, { toValue: rand(-10, 10), duration: 20, useNativeDriver: true }),
+          ]),
+          Animated.parallel([
+            Animated.timing(opacity, { toValue: 0, duration: 35, useNativeDriver: true }),
+            Animated.timing(translateX, { toValue: 0, duration: 35, useNativeDriver: true }),
+            Animated.timing(scaleY, { toValue: 1, duration: 35, useNativeDriver: true }),
           ]),
         ]).start(() => glitch());
       }, delay);
@@ -1663,11 +1675,132 @@ const GlitchFlash: React.FC = () => {
         {
           backgroundColor: C.cyanBright,
           opacity,
-          transform: [{ translateX }],
+          transform: [{ translateX }, { scaleY }],
         },
       ]}
       pointerEvents="none"
     />
+  );
+};
+
+// ─────────────────────────────────────────────
+// SCREEN EDGE PULSE — neon borders that surge
+// ─────────────────────────────────────────────
+
+const ScreenEdgePulse: React.FC = () => {
+  const top = useRef(new Animated.Value(0)).current;
+  const right = useRef(new Animated.Value(0)).current;
+  const bottom = useRef(new Animated.Value(0)).current;
+  const left = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    const pulse = (anim: Animated.Value, d: number) => {
+      Animated.loop(
+        Animated.sequence([
+          Animated.delay(d),
+          Animated.timing(anim, { toValue: rand(0.4, 1), duration: randInt(80, 180), useNativeDriver: true }),
+          Animated.timing(anim, { toValue: rand(0.05, 0.2), duration: randInt(60, 160), useNativeDriver: true }),
+          Animated.timing(anim, { toValue: rand(0.6, 1), duration: randInt(60, 130), useNativeDriver: true }),
+          Animated.timing(anim, { toValue: 0, duration: randInt(200, 500), useNativeDriver: true }),
+          Animated.delay(randInt(300, 1200)),
+        ])
+      ).start();
+    };
+    pulse(top, 0);
+    pulse(right, 200);
+    pulse(bottom, 500);
+    pulse(left, 350);
+  }, []);
+
+  const edgeColor = '#00e5ff';
+  const borderW = 2;
+
+  return (
+    <View style={StyleSheet.absoluteFillObject} pointerEvents="none">
+      <Animated.View style={{ position: 'absolute', top: 0, left: 0, right: 0, height: borderW, backgroundColor: edgeColor, opacity: top }} />
+      <Animated.View style={{ position: 'absolute', top: 0, right: 0, bottom: 0, width: borderW, backgroundColor: '#d4ff00', opacity: right }} />
+      <Animated.View style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: borderW, backgroundColor: edgeColor, opacity: bottom }} />
+      <Animated.View style={{ position: 'absolute', top: 0, left: 0, bottom: 0, width: borderW, backgroundColor: '#d4ff00', opacity: left }} />
+      {/* Corner sparks */}
+      <Animated.View style={{ position: 'absolute', top: 0, left: 0, width: 12, height: 12, backgroundColor: '#ffffff', opacity: Animated.multiply(top, left) }} />
+      <Animated.View style={{ position: 'absolute', top: 0, right: 0, width: 12, height: 12, backgroundColor: '#ffffff', opacity: Animated.multiply(top, right) }} />
+      <Animated.View style={{ position: 'absolute', bottom: 0, left: 0, width: 12, height: 12, backgroundColor: '#ffffff', opacity: Animated.multiply(bottom, left) }} />
+      <Animated.View style={{ position: 'absolute', bottom: 0, right: 0, width: 12, height: 12, backgroundColor: '#ffffff', opacity: Animated.multiply(bottom, right) }} />
+    </View>
+  );
+};
+
+// ─────────────────────────────────────────────
+// ENERGY VORTEX — rotating corona behind logo
+// ─────────────────────────────────────────────
+
+const EnergyVortex: React.FC = () => {
+  const rot1 = useRef(new Animated.Value(0)).current;
+  const rot2 = useRef(new Animated.Value(0)).current;
+  const rot3 = useRef(new Animated.Value(0)).current;
+  const pulse = useRef(new Animated.Value(0.6)).current;
+
+  useEffect(() => {
+    Animated.loop(Animated.timing(rot1, { toValue: 1, duration: 3200, easing: Easing.linear, useNativeDriver: true })).start();
+    Animated.loop(Animated.timing(rot2, { toValue: 1, duration: 2100, easing: Easing.linear, useNativeDriver: true })).start();
+    Animated.loop(Animated.timing(rot3, { toValue: -1, duration: 4500, easing: Easing.linear, useNativeDriver: true })).start();
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(pulse, { toValue: 1, duration: 600, easing: ease.inOut, useNativeDriver: true }),
+        Animated.timing(pulse, { toValue: 0.5, duration: 600, easing: ease.inOut, useNativeDriver: true }),
+      ])
+    ).start();
+  }, []);
+
+  const spin1 = rot1.interpolate({ inputRange: [0, 1], outputRange: ['0deg', '360deg'] });
+  const spin2 = rot2.interpolate({ inputRange: [0, 1], outputRange: ['0deg', '360deg'] });
+  const spin3 = rot3.interpolate({ inputRange: [-1, 0], outputRange: ['-360deg', '0deg'] });
+
+  const cx = W / 2;
+  const cy = LOGO_CY;
+  const r = LOGO_SIZE * 0.62;
+
+  return (
+    <View style={[StyleSheet.absoluteFillObject, { alignItems: 'center' }]} pointerEvents="none">
+      {/* Ring 1 — dashed arc CW */}
+      <Animated.View style={{
+        position: 'absolute',
+        top: cy - r,
+        width: r * 2, height: r * 2,
+        borderRadius: r,
+        borderWidth: 1.5,
+        borderColor: '#00e5ff',
+        borderStyle: 'dashed',
+        opacity: pulse,
+        transform: [{ rotate: spin1 }],
+      }} />
+      {/* Ring 2 — solid arc CCW faster */}
+      <Animated.View style={{
+        position: 'absolute',
+        top: cy - r * 1.18,
+        width: r * 2.36, height: r * 2.36,
+        borderRadius: r * 1.18,
+        borderWidth: 1,
+        borderColor: '#d4ff00',
+        borderTopColor: 'transparent',
+        borderRightColor: 'transparent',
+        opacity: Animated.multiply(pulse, new Animated.Value(0.7)),
+        transform: [{ rotate: spin2 }],
+      }} />
+      {/* Ring 3 — outer glow ring */}
+      <Animated.View style={{
+        position: 'absolute',
+        top: cy - r * 1.38,
+        width: r * 2.76, height: r * 2.76,
+        borderRadius: r * 1.38,
+        borderWidth: 2,
+        borderColor: 'rgba(0,230,118,0.3)',
+        borderBottomColor: 'transparent',
+        borderLeftColor: 'transparent',
+        opacity: pulse,
+        transform: [{ rotate: spin3 }],
+      }} />
+    </View>
   );
 };
 
@@ -1711,14 +1844,14 @@ const SplashScreen: React.FC<SplashScreenProps> = ({
   const progressAnim = useRef(new Animated.Value(0)).current;
   const stageTextAnim = useRef(new Animated.Value(0)).current;
 
-  // ── Layer anims ──────────────────────────────
+  // ── Layer anims — all start at FULL visibility ──
   const rootOpacity = useRef(new Animated.Value(1)).current;
-  const bgOpacity = useRef(new Animated.Value(0)).current;
-  const hexOpacity = useRef(new Animated.Value(0)).current;
-  const circuitOpacity = useRef(new Animated.Value(0)).current;
-  const matrixOpacity = useRef(new Animated.Value(0)).current;
-  const footerOpacity = useRef(new Animated.Value(0)).current;
-  const skipOpacity = useRef(new Animated.Value(0)).current;
+  const bgOpacity = useRef(new Animated.Value(1)).current;
+  const hexOpacity = useRef(new Animated.Value(1)).current;
+  const circuitOpacity = useRef(new Animated.Value(1)).current;
+  const matrixOpacity = useRef(new Animated.Value(1)).current;
+  const footerOpacity = useRef(new Animated.Value(1)).current;
+  const skipOpacity = useRef(new Animated.Value(1)).current;
 
   // ── Logo & text ──────────────────────────────
   const logoRevealAnim = useRef(new Animated.Value(0)).current;
@@ -1745,7 +1878,7 @@ const SplashScreen: React.FC<SplashScreenProps> = ({
     finish();
   }, [finish]);
 
-  // ── Main timeline ────────────────────────────
+  // ── Main timeline — EVERYTHING fires from frame 0 ──
 
   useEffect(() => {
     const timers: ReturnType<typeof setTimeout>[] = [];
@@ -1754,106 +1887,43 @@ const SplashScreen: React.FC<SplashScreenProps> = ({
       timers.push(id);
     };
 
-    // ── 0 ms: Background fade in ──
-    Animated.timing(bgOpacity, {
-      toValue: 1,
-      duration: 500,
-      easing: ease.out,
-      useNativeDriver: true,
-    }).start();
+    // ── IMMEDIATE: Short circuit ON from first frame ──
+    statsAnim.setValue(1);
 
-    // ── 300 ms: Hex grid ──
+    // ── 300 ms: Logo springs in ──
     t(300, () => {
-      Animated.timing(hexOpacity, {
-        toValue: 1,
-        duration: 800,
-        easing: ease.out,
-        useNativeDriver: true,
-      }).start();
-    });
-
-    // ── 400 ms: Footer + skip ──
-    t(400, () => {
-      Animated.parallel([
-        Animated.timing(footerOpacity, {
-          toValue: 1,
-          duration: 700,
-          easing: ease.out,
-          useNativeDriver: true,
-        }),
-        Animated.timing(skipOpacity, {
-          toValue: 1,
-          duration: 500,
-          easing: ease.out,
-          useNativeDriver: true,
-        }),
-      ]).start();
-    });
-
-    // ── 600 ms: Circuit lines ──
-    t(600, () => {
-      Animated.timing(circuitOpacity, {
-        toValue: 0.8,
-        duration: 600,
-        easing: ease.out,
-        useNativeDriver: true,
-      }).start();
-    });
-
-    // ── 1 000 ms: Matrix rain ──
-    t(T.matrixStart, () => {
-      Animated.timing(matrixOpacity, {
-        toValue: 1,
-        duration: 500,
-        easing: ease.out,
-        useNativeDriver: true,
-      }).start();
-    });
-
-    // ── 1 600 ms: Logo reveal ──
-    t(T.logoRevealStart, () => {
       Animated.timing(logoRevealAnim, {
         toValue: 1,
-        duration: T.logoRevealDur,
+        duration: 600,
         easing: ease.spring,
         useNativeDriver: true,
       }).start();
     });
 
-    // ── 2 600 ms: Title ──
-    t(T.titleRevealStart, () => {
-      Animated.stagger(180, [
+    // ── 900 ms: Title ──
+    t(900, () => {
+      Animated.stagger(140, [
         Animated.timing(titleAnim, {
           toValue: 1,
-          duration: 550,
+          duration: 400,
           easing: ease.out,
           useNativeDriver: true,
         }),
         Animated.timing(subtitleAnim, {
           toValue: 1,
-          duration: 450,
+          duration: 320,
           easing: ease.out,
           useNativeDriver: true,
         }),
       ]).start();
     });
 
-    // ── 4 200 ms: "Turn Passion Into Purpose" ──
-    t(T.passionStart, () => {
+    // ── 1 800 ms: "Turn Passion Into Purpose" ──
+    t(1800, () => {
       Animated.timing(passionAnim, {
         toValue: 1,
-        duration: T.passionDur,
+        duration: 900,
         easing: ease.spring,
-        useNativeDriver: true,
-      }).start();
-    });
-
-    // ── 4 800 ms: Short circuit overload ──
-    t(T.statsStart, () => {
-      Animated.timing(statsAnim, {
-        toValue: 1,
-        duration: 400,
-        easing: ease.out,
         useNativeDriver: true,
       }).start();
     });
@@ -1873,7 +1943,7 @@ const SplashScreen: React.FC<SplashScreenProps> = ({
         stageTextAnim.setValue(0);
         Animated.timing(stageTextAnim, {
           toValue: 1,
-          duration: 380,
+          duration: 280,
           easing: ease.out,
           useNativeDriver: true,
         }).start();
@@ -1939,9 +2009,15 @@ const SplashScreen: React.FC<SplashScreenProps> = ({
       <GlitchFlash />
 
       {/* ── 9. PULSE RINGS (behind logo) ── */}
-      <PulseRing delay={0} color={C.greenSoft} maxSize={LOGO_SIZE + 160} cy={LOGO_CY} />
-      <PulseRing delay={750} color={C.cyanBright} maxSize={LOGO_SIZE + 240} cy={LOGO_CY} />
-      <PulseRing delay={1500} color={C.greenPrimary} maxSize={LOGO_SIZE + 320} cy={LOGO_CY} />
+      <PulseRing delay={0}    color={C.greenSoft}    maxSize={LOGO_SIZE + 120} cy={LOGO_CY} />
+      <PulseRing delay={400}  color={C.cyanBright}   maxSize={LOGO_SIZE + 200} cy={LOGO_CY} />
+      <PulseRing delay={800}  color={C.greenPrimary} maxSize={LOGO_SIZE + 280} cy={LOGO_CY} />
+      <PulseRing delay={1200} color="#d4ff00"         maxSize={LOGO_SIZE + 360} cy={LOGO_CY} />
+      <PulseRing delay={1600} color="#ffffff"          maxSize={LOGO_SIZE + 440} cy={LOGO_CY} />
+      <PulseRing delay={2000} color={C.cyanBright}   maxSize={LOGO_SIZE + 520} cy={LOGO_CY} />
+
+      {/* ── 9b. ENERGY VORTEX (rotating corona) ── */}
+      <EnergyVortex />
 
       {/* ── 10. LOGO ── */}
       <LogoCore revealAnim={logoRevealAnim} />
@@ -1970,10 +2046,13 @@ const SplashScreen: React.FC<SplashScreenProps> = ({
         <SkipButton onSkip={handleSkip} opacity={skipOpacity} />
       )}
 
-      {/* ── 17. TOP VIGNETTE ── */}
+      {/* ── 17. SCREEN EDGE PULSE ── */}
+      <ScreenEdgePulse />
+
+      {/* ── 18. TOP VIGNETTE ── */}
       <View style={splashStyles.vignetteTop} pointerEvents="none" />
 
-      {/* ── 18. BOTTOM VIGNETTE ── */}
+      {/* ── 19. BOTTOM VIGNETTE ── */}
       <View style={splashStyles.vignetteBottom} pointerEvents="none" />
     </Animated.View>
   );
