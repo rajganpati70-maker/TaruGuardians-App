@@ -1,20 +1,17 @@
-// =====================================================
-// ULTRA PREMIUM LOGO REVEAL
-// Cinematic Logo with Scale, Glow, Shadow, Letter Animation
-// =====================================================
-
 import React, { useEffect, useRef } from 'react';
-import { 
-  View, 
-  Animated, 
-  StyleSheet, 
+import {
+  View,
+  Animated,
+  StyleSheet,
   Dimensions,
   Text,
   Easing,
+  Image,
 } from 'react-native';
-import { Colors } from '../../constants';
 
-const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
+const LOGO_SIZE = Math.min(SCREEN_WIDTH * 0.60, 240);
+const LOGO = require('../../../assets/splash-logo.png');
 
 interface LogoRevealProps {
   active?: boolean;
@@ -22,217 +19,90 @@ interface LogoRevealProps {
 }
 
 const LogoReveal: React.FC<LogoRevealProps> = ({ active = true, onComplete }) => {
-  // Logo scale animation
-  const logoScale = useRef(new Animated.Value(0.5)).current;
+  const logoScale   = useRef(new Animated.Value(0.3)).current;
   const logoOpacity = useRef(new Animated.Value(0)).current;
-  
-  // Glow pulse animation
-  const glowPulse = useRef(new Animated.Value(0.5)).current;
-  const glowScale = useRef(new Animated.Value(1)).current;
-  
-  // Shadow animation
-  const shadowOpacity = useRef(new Animated.Value(0)).current;
-  
-  // Text animations
-  const titleOpacity = useRef(new Animated.Value(0)).current;
-  const subtitleOpacity = useRef(new Animated.Value(0)).current;
-  
-  // Letter by letter animation
-  const letterAnims = useRef<Animated.Value[]>(
-    Array.from({ length: 20 }, () => new Animated.Value(0))
-  );
+  const glowOpacity = useRef(new Animated.Value(0.2)).current;
+  const glowScale   = useRef(new Animated.Value(1)).current;
+  const ringOpacity = useRef(new Animated.Value(0)).current;
+  const ringScale   = useRef(new Animated.Value(0.5)).current;
+  const textOpacity = useRef(new Animated.Value(0)).current;
+  const tagOpacity  = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    if (active) {
-      // Phase 1: Logo entrance (0-500ms)
-      const logoEntrance = Animated.sequence([
-        Animated.timing(logoOpacity, {
-          toValue: 1,
-          duration: 500,
-          easing: Easing.out(Easing.ease),
-          useNativeDriver: true,
-        }),
-        Animated.spring(logoScale, {
-          toValue: 1,
-          damping: 12,
-          stiffness: 100,
-          useNativeDriver: true,
-        }),
-      ]);
+    if (!active) return;
 
-      // Phase 2: Glow pulse (500-1500ms)
-      const glowPulseAnimation = Animated.loop(
-        Animated.sequence([
-          Animated.parallel([
-            Animated.timing(glowPulse, {
-              toValue: 1,
-              duration: 1000,
-              easing: Easing.inOut(Easing.ease),
-              useNativeDriver: true,
-            }),
-            Animated.timing(glowScale, {
-              toValue: 1.3,
-              duration: 1000,
-              easing: Easing.inOut(Easing.ease),
-              useNativeDriver: true,
-            }),
-          ]),
-          Animated.parallel([
-            Animated.timing(glowPulse, {
-              toValue: 0.3,
-              duration: 1000,
-              easing: Easing.inOut(Easing.ease),
-              useNativeDriver: true,
-            }),
-            Animated.timing(glowScale, {
-              toValue: 1,
-              duration: 1000,
-              easing: Easing.inOut(Easing.ease),
-              useNativeDriver: true,
-            }),
-          ]),
-        ])
-      );
+    const entrance = Animated.parallel([
+      Animated.timing(logoOpacity, {
+        toValue: 1, duration: 600,
+        easing: Easing.out(Easing.ease), useNativeDriver: true,
+      }),
+      Animated.spring(logoScale, {
+        toValue: 1, damping: 11, stiffness: 85, useNativeDriver: true,
+      }),
+      Animated.spring(ringScale, {
+        toValue: 1, damping: 10, stiffness: 70, useNativeDriver: true,
+      }),
+      Animated.timing(ringOpacity, {
+        toValue: 1, duration: 700, useNativeDriver: true,
+      }),
+    ]);
 
-      // Phase 3: Shadow fade in (500-1000ms)
-      const shadowAnimation = Animated.timing(shadowOpacity, {
-        toValue: 0.5,
-        duration: 500,
-        delay: 500,
-        easing: Easing.out(Easing.ease),
-        useNativeDriver: true,
-      });
+    const glowLoop = Animated.loop(
+      Animated.sequence([
+        Animated.parallel([
+          Animated.timing(glowOpacity, { toValue: 1,    duration: 1100, easing: Easing.inOut(Easing.sin), useNativeDriver: true }),
+          Animated.timing(glowScale,   { toValue: 1.35, duration: 1100, easing: Easing.inOut(Easing.sin), useNativeDriver: true }),
+        ]),
+        Animated.parallel([
+          Animated.timing(glowOpacity, { toValue: 0.2, duration: 1100, easing: Easing.inOut(Easing.sin), useNativeDriver: true }),
+          Animated.timing(glowScale,   { toValue: 1,   duration: 1100, easing: Easing.inOut(Easing.sin), useNativeDriver: true }),
+        ]),
+      ])
+    );
 
-      // Phase 4: Title letter-by-letter reveal (1500-2500ms)
-      const titleLetters = letterAnims.current.slice(0, 4).map((anim, index) => {
-        return Animated.timing(anim, {
-          toValue: 1,
-          duration: 150,
-          delay: 1500 + index * 100,
-          easing: Easing.out(Easing.ease),
-          useNativeDriver: true,
-        });
-      });
+    const textReveal = Animated.sequence([
+      Animated.delay(700),
+      Animated.timing(textOpacity, { toValue: 1, duration: 400, easing: Easing.out(Easing.ease), useNativeDriver: true }),
+      Animated.delay(150),
+      Animated.timing(tagOpacity,  { toValue: 1, duration: 400, easing: Easing.out(Easing.ease), useNativeDriver: true }),
+    ]);
 
-      // Phase 5: Subtitle reveal (2500-3000ms)
-      const subtitleAnimation = Animated.sequence([
-        Animated.delay(2500),
-        Animated.timing(subtitleOpacity, {
-          toValue: 1,
-          duration: 500,
-          easing: Easing.out(Easing.ease),
-          useNativeDriver: true,
-        }),
-      ]);
+    entrance.start();
+    glowLoop.start();
+    textReveal.start(() => {
+      if (onComplete) setTimeout(onComplete, 500);
+    });
 
-      // Start all animations
-      Animated.parallel([
-        logoEntrance,
-        glowPulseAnimation,
-        shadowAnimation,
-        ...titleLetters,
-        subtitleAnimation,
-      ]).start(() => {
-        if (onComplete) {
-          setTimeout(onComplete, 500);
-        }
-      });
-
-      return () => {
-        logoEntrance.stop();
-        glowPulseAnimation.stop();
-        shadowAnimation.stop();
-        subtitleAnimation.stop();
-      };
-    }
+    return () => {
+      entrance.stop();
+      glowLoop.stop();
+      textReveal.stop();
+    };
   }, [active]);
-
-  const appName = 'TARU';
-  const appTitle = 'GUARDIANS';
 
   return (
     <View style={styles.container} pointerEvents="none">
-      {/* Main Logo Container */}
-      <View style={styles.logoContainer}>
-        {/* Glow effect behind logo */}
-        <Animated.View
-          style={[
-            styles.glowEffect,
-            {
-              transform: [{ scale: glowScale }],
-              opacity: glowPulse,
-            },
-          ]}
-        />
+      {/* Pulsing green glow */}
+      <Animated.View
+        style={[styles.glow, { opacity: glowOpacity, transform: [{ scale: glowScale }] }]}
+      />
 
-        {/* Shadow effect */}
-        <Animated.View
-          style={[
-            styles.shadowEffect,
-            {
-              opacity: shadowOpacity,
-            },
-          ]}
-        />
+      {/* Outer animated ring */}
+      <Animated.View
+        style={[styles.ring, { opacity: ringOpacity, transform: [{ scale: ringScale }] }]}
+      />
 
-        {/* Logo Icon - Abstract Tree + Shield Design */}
-        <Animated.View
-          style={[
-            styles.logoIcon,
-            {
-              transform: [{ scale: logoScale }],
-              opacity: logoOpacity,
-            },
-          ]}
-        >
-          {/* Tree trunk */}
-          <View style={styles.treeTrunk}>
-            <View style={styles.treeTrunkInner} />
-          </View>
-          
-          {/* Tree canopy - multiple layers */}
-          <View style={styles.treeCanopy}>
-            <View style={[styles.canopyLayer, styles.canopyTop]} />
-            <View style={[styles.canopyLayer, styles.canopyMiddle]} />
-            <View style={[styles.canopyLayer, styles.canopyBottom]} />
-          </View>
-          
-          {/* Shield element */}
-          <View style={styles.shield}>
-            <View style={styles.shieldInner} />
-          </View>
-        </Animated.View>
+      {/* TaruGuardians logo — real image, transparent bg */}
+      <Animated.Image
+        source={LOGO}
+        style={[styles.logo, { opacity: logoOpacity, transform: [{ scale: logoScale }] }]}
+        resizeMode="contain"
+      />
 
-        {/* App Name - Letter by Letter */}
-        <View style={styles.textContainer}>
-          {appName.split('').map((letter, index) => (
-            <Animated.View key={`title-${index}`}>
-              <Animated.Text
-                style={[
-                  styles.titleLetter,
-                  {
-                    opacity: letterAnims.current[index] || 0,
-                  },
-                ]}
-              >
-                {letter}
-              </Animated.Text>
-            </Animated.View>
-          ))}
-        </View>
-
-        {/* Subtitle */}
-        <Animated.View style={{ opacity: subtitleOpacity }}>
-          <Text style={styles.subtitle}>{appTitle}</Text>
-        </Animated.View>
-
-        {/* Tagline */}
-        <Animated.View style={{ opacity: titleOpacity }}>
-          <Text style={styles.tagline}>
-            Preserving Nature, Protecting Tomorrow
-          </Text>
-        </Animated.View>
-      </View>
+      {/* Tagline */}
+      <Animated.Text style={[styles.tagline, { opacity: tagOpacity }]}>
+        A tech club rooted in nature.
+      </Animated.Text>
     </View>
   );
 };
@@ -243,142 +113,31 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  logoContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  glowEffect: {
+  glow: {
     position: 'absolute',
-    width: 200,
-    height: 200,
-    borderRadius: 100,
-    backgroundColor: Colors.glow.greenGlow,
-    shadowColor: Colors.glow.greenGlow,
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.8,
-    shadowRadius: 50,
+    width: LOGO_SIZE + 80,
+    height: LOGO_SIZE + 80,
+    borderRadius: (LOGO_SIZE + 80) / 2,
+    backgroundColor: 'rgba(0,200,80,0.15)',
   },
-  shadowEffect: {
+  ring: {
     position: 'absolute',
-    width: 120,
-    height: 20,
-    top: 140,
-    backgroundColor: Colors.background.deepBlack,
-    borderRadius: 60,
-    shadowColor: Colors.background.deepBlack,
-    shadowOffset: { width: 0, height: 10 },
-    shadowOpacity: 0.8,
-    shadowRadius: 20,
+    width: LOGO_SIZE + 28,
+    height: LOGO_SIZE + 28,
+    borderRadius: (LOGO_SIZE + 28) / 2,
+    borderWidth: 2,
+    borderColor: 'rgba(80,220,80,0.5)',
   },
-  logoIcon: {
-    width: 120,
-    height: 140,
-    position: 'relative',
-  },
-  treeTrunk: {
-    position: 'absolute',
-    bottom: 0,
-    left: 50,
-    width: 20,
-    height: 60,
-    backgroundColor: Colors.nature.bark,
-    borderRadius: 3,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  treeTrunkInner: {
-    width: 8,
-    height: 50,
-    backgroundColor: Colors.nature.wood,
-    borderRadius: 2,
-  },
-  treeCanopy: {
-    position: 'absolute',
-    top: 0,
-    left: 10,
-    width: 100,
-    height: 90,
-  },
-  canopyLayer: {
-    position: 'absolute',
-    backgroundColor: Colors.nature.leafGreen,
-    borderRadius: 50,
-  },
-  canopyTop: {
-    width: 80,
-    height: 50,
-    top: 0,
-    left: 10,
-    backgroundColor: Colors.nature.leafGreen,
-  },
-  canopyMiddle: {
-    width: 90,
-    height: 45,
-    top: 25,
-    left: 5,
-    backgroundColor: Colors.nature.leafLight,
-  },
-  canopyBottom: {
-    width: 70,
-    height: 35,
-    top: 50,
-    left: 15,
-    backgroundColor: Colors.nature.vine,
-  },
-  shield: {
-    position: 'absolute',
-    bottom: 30,
-    right: -10,
-    width: 40,
-    height: 50,
-    backgroundColor: Colors.tech.neonBlue,
-    borderRadius: 5,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-    shadowColor: Colors.glow.blueGlow,
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.8,
-    shadowRadius: 8,
-  },
-  shieldInner: {
-    width: 20,
-    height: 25,
-    backgroundColor: Colors.text.primary,
-    borderRadius: 3,
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
-  },
-  textContainer: {
-    flexDirection: 'row',
-    marginTop: 20,
-  },
-  titleLetter: {
-    fontSize: 36,
-    fontWeight: '700',
-    color: Colors.text.primary,
-    letterSpacing: 8,
-    textShadowColor: Colors.glow.greenGlow,
-    textShadowOffset: { width: 0, height: 0 },
-    textShadowRadius: 10,
-  },
-  subtitle: {
-    fontSize: 24,
-    fontWeight: '300',
-    color: Colors.accent.softGold,
-    letterSpacing: 6,
-    marginTop: 5,
-    textShadowColor: Colors.accent.gold,
-    textShadowOffset: { width: 0, height: 0 },
-    textShadowRadius: 5,
+  logo: {
+    width: LOGO_SIZE,
+    height: LOGO_SIZE,
   },
   tagline: {
-    fontSize: 12,
+    marginTop: 24,
+    fontSize: 13,
+    color: 'rgba(255,255,255,0.60)',
+    letterSpacing: 1.6,
     fontWeight: '300',
-    color: Colors.text.tertiary,
-    letterSpacing: 2,
-    marginTop: 15,
   },
 });
 

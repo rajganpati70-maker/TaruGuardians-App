@@ -2720,8 +2720,15 @@ const HomeScreen: React.FC = () => {
               colors={[s.color + '33', '#0A0F14']}
               style={styles.spotlightGradient}
             >
-              <View style={[styles.spotlightAvatar, { borderColor: s.color + '88', borderWidth: 2, backgroundColor: s.color + '22' }]}>
-                <Text style={styles.spotlightAvatarEmoji}>{s.avatar}</Text>
+              <View style={styles.spotlightAvatarWrap}>
+                <View style={[styles.spotlightAvatar, { borderColor: s.color, borderWidth: 2.5, backgroundColor: s.color + '28' }]}>
+                  <Text style={[styles.spotlightAvatarInitials, { color: s.color }]}>
+                    {s.name.split(' ').map((w: string) => w[0]).slice(0, 2).join('').toUpperCase()}
+                  </Text>
+                </View>
+                <View style={[styles.spotlightBadge, { backgroundColor: s.color }]}>
+                  <Text style={styles.spotlightBadgeEmoji}>{s.emoji}</Text>
+                </View>
               </View>
               <Text style={styles.spotlightName}>{s.name}</Text>
               <Text style={styles.spotlightRole}>{s.role}</Text>
@@ -4982,16 +4989,40 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   spotlightGradient: { padding: 14, borderWidth: 1, borderColor: '#ffffff12', borderRadius: CARD_RADIUS, alignItems: 'center' },
-  spotlightAvatar: {
-    width: 64,
-    height: 64,
-    borderRadius: 32,
+  spotlightAvatarWrap: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 10,
-    overflow: 'hidden',
+    marginBottom: 12,
+    position: 'relative',
+    width: 70,
+    height: 70,
   },
-  spotlightImage: { width: 64, height: 64, borderRadius: 32 },
+  spotlightAvatar: {
+    width: 66,
+    height: 66,
+    borderRadius: 33,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  spotlightAvatarInitials: {
+    fontSize: 22,
+    fontWeight: '900',
+    letterSpacing: 1,
+  },
+  spotlightBadge: {
+    position: 'absolute',
+    bottom: -2,
+    right: -2,
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 2,
+    borderColor: '#0A0F14',
+  },
+  spotlightBadgeEmoji: { fontSize: 12 },
+  spotlightImage: { width: 66, height: 66, borderRadius: 33 },
   spotlightAvatarEmoji: { fontSize: 32, textAlign: 'center' },
 
   // --- Join Us Banner ---
