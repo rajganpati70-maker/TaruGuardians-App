@@ -6,13 +6,15 @@
     "preview": {
       "android": {
         "buildType": "apk"
-      }
+      },
+      "prebuildCommand": "npx expo prebuild --clean && mkdir -p android/app/src/main/res/drawable && cp assets/splash.png android/app/src/main/res/drawable/splashscreen_logo.png && for d in mdpi hdpi xhdpi xxhdpi xxxhdpi; do mkdir -p android/app/src/main/res/drawable-$d && cp assets/splash.png android/app/src/main/res/drawable-$d/splashscreen_logo.png; done"
     },
     "production": {
       "android": {
         "buildType": "app-bundle"
       },
-      "ios": {}
+      "ios": {},
+      "prebuildCommand": "npx expo prebuild --clean && mkdir -p android/app/src/main/res/drawable && cp assets/splash.png android/app/src/main/res/drawable/splashscreen_logo.png && for d in mdpi hdpi xhdpi xxhdpi xxxhdpi; do mkdir -p android/app/src/main/res/drawable-$d && cp assets/splash.png android/app/src/main/res/drawable-$d/splashscreen_logo.png; done"
     }
   },
   "submit": {
