@@ -6,3 +6,9 @@ id = "yGq6UpaAtnYaYo6SrEIv3"
 uri = "file://assets/taru_logo.png"
 type = "image"
 title = "Taru Guardians Logo — Background Removed"
+
+[[outputs]]
+id = "jVTB9tHM5DsYxJGNPzz8b"
+uri = "file://assets/icon.png"
+type = "image"
+title = "Taru Guardians — App Icon (Final)"
