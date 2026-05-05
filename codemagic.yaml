@@ -1,6 +1,46 @@
 workflows:
-  react-native-android:
-    name: TaruGuardians Android
+  android-preview:
+    name: TaruGuardians Android (Preview APK)
+    max_build_duration: 120
+    environment:
+      vars:
+        PACKAGE_NAME: "com.taruguardians.app"
+    scripts:
+      - name: Install npm dependencies
+        script: |
+          npm install
+      - name: Set Android SDK location
+        script: |
+          echo "sdk.dir=$ANDROID_SDK_ROOT" > "$CM_BUILD_DIR/android/local.properties"
+      - name: Expo Prebuild
+        script: |
+          npx expo prebuild --platform android --clean
+      - name: Copy splash screen drawable
+        script: |
+          DRAWABLE_DIR="android/app/src/main/res/drawable"
+          mkdir -p "$DRAWABLE_DIR"
+          cp assets/splash.png "$DRAWABLE_DIR/splashscreen_logo.png"
+          for density in mdpi hdpi xhdpi xxhdpi xxxhdpi; do
+            DENSITY_DIR="android/app/src/main/res/drawable-$density"
+            mkdir -p "$DENSITY_DIR"
+            cp assets/splash.png "$DENSITY_DIR/splashscreen_logo.png"
+          done
+      - name: Build debug APK
+        script: |
+          cd android
+          ./gradlew assembleDebug
+    artifacts:
+      - android/app/build/outputs/apk/debug/*.apk
+    publishing:
+      email:
+        recipients:
+          - user_one@example.com
+        notify:
+          success: true
+          failure: true
+
+  android-release:
+    name: TaruGuardians Android (Release APK)
     max_build_duration: 120
     environment:
       android_signing:
@@ -29,7 +69,7 @@ workflows:
             mkdir -p "$DENSITY_DIR"
             cp assets/splash.png "$DENSITY_DIR/splashscreen_logo.png"
           done
-      - name: Build Android release
+      - name: Build release APK
         script: |
           cd android
           ./gradlew assembleRelease
@@ -46,7 +86,7 @@ workflows:
           - user_one@example.com
         notify:
           success: true
-          failure: false
+          failure: true
 
   react-native-ios:
     name: TaruGuardians iOS
