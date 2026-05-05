@@ -977,7 +977,7 @@ const TeamScreen: React.FC = () => {
                 <Text style={styles.modalSectionTitle}>Skills</Text>
                 <View style={styles.tagCloud}>
                   {m.skills.map((s) => (
-                    <View key={s} style={[styles.tagPill, { borderColor: Colors.tech.neonBlue + '55' }]}>
+                    <View key={s} style={[styles.tagPill, { borderColor: 'rgba(0,212,255,0.33)' }]}>
                       <Text style={[styles.tagText, { color: Colors.tech.neonBlue }]}>{s}</Text>
                     </View>
                   ))}
@@ -1243,7 +1243,7 @@ const styles = StyleSheet.create({
   },
   roleChipActive: {
     borderColor: Colors.tech.neonBlue,
-    backgroundColor: Colors.tech.neonBlue + '22',
+    backgroundColor: 'rgba(0,212,255,0.13)',
   },
   roleChipEmoji: { fontSize: 13, marginRight: 5 },
   roleChipLabel: { color: Colors.text.secondary, fontSize: 11, fontWeight: '600' },
@@ -1259,7 +1259,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
   },
   roleChipBadgeActive: {
-    backgroundColor: Colors.tech.neonBlue + '33',
+    backgroundColor: 'rgba(0,212,255,0.2)',
   },
   roleChipBadgeText: {
     color: Colors.text.muted,

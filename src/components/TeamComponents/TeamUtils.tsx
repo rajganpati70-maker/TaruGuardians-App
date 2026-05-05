@@ -164,7 +164,7 @@ const NotificationPanel: React.FC<{
 
   const renderNotification = ({ item }: { item: NotificationItem }) => (
     <View style={[styles.notificationItem, !item.read && styles.notificationItemUnread]}>
-      <View style={[styles.notificationIconContainer, { backgroundColor: item.type === 'achievement' ? Colors.accent.softGold + '20' : item.type === 'project' ? Colors.nature.leafGreen + '20' : Colors.tech.neonBlue + '20' }]}>
+      <View style={[styles.notificationIconContainer, { backgroundColor: item.type === 'achievement' ? 'rgba(212,175,55,0.13)' : item.type === 'project' ? 'rgba(76,175,80,0.13)' : 'rgba(0,212,255,0.13)' }]}>
         <Text style={styles.notificationIcon}>{item.icon}</Text>
       </View>
       <View style={styles.notificationContent}>
@@ -859,9 +859,9 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   notificationItemUnread: {
-    backgroundColor: Colors.tech.neonBlue + '10',
+    backgroundColor: 'rgba(0,212,255,0.06)',
     borderWidth: 1,
-    borderColor: Colors.tech.neonBlue + '30',
+    borderColor: 'rgba(0,212,255,0.19)',
   },
   notificationIconContainer: {
     width: 44,
@@ -920,7 +920,7 @@ const styles = StyleSheet.create({
     borderColor: 'transparent',
   },
   filterChipSelected: {
-    backgroundColor: Colors.tech.neonBlue + '15',
+    backgroundColor: 'rgba(0,212,255,0.08)',
     borderColor: Colors.tech.neonBlue,
   },
   filterChipText: {
@@ -966,7 +966,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   sortDropdownItemActive: {
-    backgroundColor: Colors.tech.neonBlue + '15',
+    backgroundColor: 'rgba(0,212,255,0.08)',
   },
   sortDropdownIcon: {
     fontSize: 16,
@@ -1076,7 +1076,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     padding: 16,
     borderWidth: 1,
-    borderColor: Colors.tech.neonBlue + '30',
+    borderColor: 'rgba(0,212,255,0.19)',
     shadowColor: Colors.glow.blueGlow,
     shadowOffset: { width: 0, height: -5 },
     shadowOpacity: 0.3,

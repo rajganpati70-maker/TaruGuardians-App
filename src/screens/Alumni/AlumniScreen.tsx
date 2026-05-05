@@ -2191,7 +2191,7 @@ const AlumniScreen: React.FC = () => {
       ]}
     >
       <LinearGradient
-        colors={['#0A1A1F', '#0E2F1F', Colors.accent.softGold + '55']}
+        colors={['#0A1A1F', '#0E2F1F', 'rgba(212,175,55,0.33)']}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
         style={styles.headerGradient}
@@ -2554,7 +2554,7 @@ const AlumniScreen: React.FC = () => {
             return (
               <View key={m.id} style={styles.meetupCard}>
                 <LinearGradient
-                  colors={[Colors.tech.neonBlue + '22', '#000000AA']}
+                  colors={['rgba(0,212,255,0.13)', '#000000AA']}
                   style={styles.meetupGradient}
                 >
                   <Text style={styles.meetupBadge}>
@@ -4376,7 +4376,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     maxWidth: 180,
   },
-  chipActive: { borderColor: Colors.tech.neonBlue, backgroundColor: Colors.tech.neonBlue + '22' },
+  chipActive: { borderColor: Colors.tech.neonBlue, backgroundColor: 'rgba(0,212,255,0.13)' },
   chipText: { color: Colors.text.secondary, fontSize: 12, fontWeight: '600' },
   chipTextActive: { color: Colors.tech.neonBlue },
   chipReset: {
@@ -4417,7 +4417,7 @@ const styles = StyleSheet.create({
     borderColor: '#ffffff1A',
   },
   batchChipActive: {
-    backgroundColor: Colors.accent.softGold + '33',
+    backgroundColor: 'rgba(212,175,55,0.2)',
     borderColor: Colors.accent.softGold,
   },
   batchText: { color: Colors.text.secondary, fontSize: 13, fontWeight: '600' },
@@ -4579,7 +4579,7 @@ const styles = StyleSheet.create({
   meetupBadge: {
     alignSelf: 'flex-start',
     color: Colors.tech.neonBlue,
-    backgroundColor: Colors.tech.neonBlue + '22',
+    backgroundColor: 'rgba(0,212,255,0.13)',
     paddingHorizontal: 8,
     paddingVertical: 3,
     borderRadius: 10,

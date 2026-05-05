@@ -65,28 +65,28 @@ const C = {
 const LOGO = require('../../../assets/taru_logo.png');
 
 // ─────────────────────────────────────────────
-// TIMING PLAN  (total ≈ 7 500 ms)
+// TIMING PLAN  (total = 8 000 ms)
 // ─────────────────────────────────────────────
 
 const T = {
-  gridFadeIn: 400,
-  particlesBoot: 600,
-  circuitDraw: 800,
-  matrixStart: 1000,
-  logoRevealStart: 1600,
-  logoRevealDur: 900,
-  titleRevealStart: 2600,
-  titleRevealDur: 700,
-  taglineStart: 3400,
-  taglineDur: 900,
-  passionStart: 4200,
-  passionDur: 1100,
-  statsStart: 5000,
-  statsDur: 600,
-  holdStart: 5800,
-  outroStart: 6600,
-  outroDur: 900,
-  totalDur: 7500,
+  gridFadeIn: 0,
+  particlesBoot: 0,
+  circuitDraw: 0,
+  matrixStart: 0,
+  logoRevealStart: 0,       // IMMEDIATE — logo on frame 0
+  logoRevealDur: 550,
+  titleRevealStart: 500,
+  titleRevealDur: 500,
+  taglineStart: 950,
+  taglineDur: 600,
+  passionStart: 1450,
+  passionDur: 900,
+  statsStart: 2300,
+  statsDur: 500,
+  holdStart: 3200,
+  outroStart: 7200,         // 8 000 − 800 ms fade
+  outroDur: 800,
+  totalDur: 8000,
 };
 
 // ─────────────────────────────────────────────
@@ -356,16 +356,20 @@ const particleStyles = StyleSheet.create({
 
 const ParticleField: React.FC = () => {
   const particles = useMemo<ParticleData[]>(() => {
-    return Array.from({ length: 55 }, (_, i) => ({
+    return Array.from({ length: 90 }, (_, i) => ({
       id: i,
       x: rand(0, W),
       y: rand(0, H),
-      size: rand(2, 6),
-      color: i % 3 === 0 ? C.greenParticle : i % 3 === 1 ? C.cyanParticle : 'rgba(41,121,255,0.7)',
-      duration: randInt(3000, 6500),
-      delay: randInt(0, 4000),
-      driftX: rand(-40, 40),
-      driftY: rand(-60, -10),
+      size: rand(1.5, 7),
+      color: i % 5 === 0 ? C.greenParticle
+           : i % 5 === 1 ? C.cyanParticle
+           : i % 5 === 2 ? 'rgba(41,121,255,0.75)'
+           : i % 5 === 3 ? 'rgba(212,255,0,0.7)'
+           : 'rgba(255,255,255,0.6)',
+      duration: randInt(2500, 6000),
+      delay: randInt(0, 3500),
+      driftX: rand(-50, 50),
+      driftY: rand(-70, -5),
     }));
   }, []);
 
@@ -1270,20 +1274,30 @@ const ShortCircuit: React.FC<ShortCircuitProps> = ({ masterAnim }) => {
   // Static bolt configs — computed once
   const bolts = useMemo<ArcBoltProps[]>(() => [
     // Top-left cluster
-    { x1: 0,        y1: rand(H*0.1, H*0.3),  x2: rand(W*0.3, W*0.5), y2: rand(H*0.2, H*0.45), color: '#ffffff', delay: 0,    duration: 120, thickness: 2.5 },
-    { x1: rand(W*0.05,W*0.15), y1: rand(H*0.05,H*0.2), x2: rand(W*0.4,W*0.6), y2: rand(H*0.3,H*0.5), color: '#00e5ff', delay: 300,  duration: 90,  thickness: 1.5 },
+    { x1: 0,        y1: rand(H*0.05,H*0.25),  x2: rand(W*0.3,W*0.5),  y2: rand(H*0.2,H*0.45),  color: '#ffffff', delay: 0,    duration: 110, thickness: 2.5 },
+    { x1: rand(W*0.02,W*0.12), y1: rand(H*0.05,H*0.18), x2: rand(W*0.4,W*0.6), y2: rand(H*0.3,H*0.5), color: '#00e5ff', delay: 280,  duration: 85,  thickness: 1.5 },
+    { x1: 0,        y1: rand(H*0.35,H*0.5),   x2: rand(W*0.25,W*0.45), y2: rand(H*0.3,H*0.5),  color: '#d4ff00', delay: 700,  duration: 95,  thickness: 2 },
     // Right side
-    { x1: W,        y1: rand(H*0.2, H*0.4),  x2: rand(W*0.5, W*0.7), y2: rand(H*0.3, H*0.55), color: '#d4ff00', delay: 180,  duration: 100, thickness: 2 },
-    { x1: W,        y1: rand(H*0.5, H*0.7),  x2: rand(W*0.4, W*0.7), y2: rand(H*0.55, H*0.75), color: '#ffffff', delay: 600,  duration: 80,  thickness: 1.5 },
+    { x1: W,        y1: rand(H*0.15,H*0.35),  x2: rand(W*0.5,W*0.75), y2: rand(H*0.25,H*0.5),  color: '#d4ff00', delay: 170,  duration: 100, thickness: 2 },
+    { x1: W,        y1: rand(H*0.5,H*0.7),    x2: rand(W*0.4,W*0.7),  y2: rand(H*0.5,H*0.75),  color: '#ffffff', delay: 580,  duration: 80,  thickness: 1.5 },
+    { x1: W,        y1: rand(H*0.75,H*0.9),   x2: rand(W*0.5,W*0.7),  y2: rand(H*0.65,H*0.85), color: '#00e5ff', delay: 1050, duration: 90,  thickness: 1.5 },
     // Bottom cluster
-    { x1: rand(W*0.1,W*0.3), y1: H, x2: rand(W*0.3,W*0.55), y2: rand(H*0.6,H*0.8), color: '#ff6d00', delay: 400,  duration: 110, thickness: 2 },
-    { x1: rand(W*0.6,W*0.85), y1: H, x2: rand(W*0.45,W*0.65), y2: rand(H*0.65,H*0.85), color: '#00e5ff', delay: 750,  duration: 95,  thickness: 1.5 },
+    { x1: rand(W*0.05,W*0.28), y1: H, x2: rand(W*0.3,W*0.55),  y2: rand(H*0.6,H*0.8), color: '#ff6d00', delay: 380,  duration: 110, thickness: 2 },
+    { x1: rand(W*0.6,W*0.88),  y1: H, x2: rand(W*0.45,W*0.65), y2: rand(H*0.65,H*0.85), color: '#00e5ff', delay: 720,  duration: 90,  thickness: 1.5 },
+    { x1: rand(W*0.35,W*0.65), y1: H, x2: rand(W*0.4,W*0.6),   y2: rand(H*0.7,H*0.85), color: '#ffffff', delay: 1200, duration: 100, thickness: 2 },
     // Diagonal cross bolts
-    { x1: 0,        y1: H*0.6,  x2: W*0.45, y2: H*0.42, color: '#d4ff00', delay: 550,  duration: 130, thickness: 1.5 },
-    { x1: W,        y1: H*0.3,  x2: W*0.55, y2: H*0.48, color: '#ffffff', delay: 900,  duration: 85,  thickness: 2 },
+    { x1: 0,   y1: H*0.6,  x2: W*0.45, y2: H*0.42, color: '#d4ff00', delay: 530,  duration: 130, thickness: 1.5 },
+    { x1: W,   y1: H*0.3,  x2: W*0.55, y2: H*0.48, color: '#ffffff', delay: 870,  duration: 85,  thickness: 2 },
+    { x1: 0,   y1: H*0.18, x2: W*0.6,  y2: H*0.55, color: '#00e5ff', delay: 1450, duration: 120, thickness: 1.5 },
+    { x1: W,   y1: H*0.75, x2: W*0.38, y2: H*0.42, color: '#d4ff00', delay: 1800, duration: 110, thickness: 1.5 },
     // Short local arcs near logo
-    { x1: W*0.2, y1: H*0.42, x2: W*0.38, y2: H*0.36, color: '#00e5ff', delay: 1100, duration: 70, thickness: 1 },
-    { x1: W*0.8, y1: H*0.44, x2: W*0.62, y2: H*0.38, color: '#ffffff', delay: 1300, duration: 70, thickness: 1 },
+    { x1: W*0.15, y1: H*0.42, x2: W*0.36, y2: H*0.35, color: '#00e5ff', delay: 1000, duration: 70, thickness: 1 },
+    { x1: W*0.85, y1: H*0.44, x2: W*0.64, y2: H*0.37, color: '#ffffff', delay: 1250, duration: 70, thickness: 1 },
+    { x1: W*0.22, y1: H*0.55, x2: W*0.41, y2: H*0.46, color: '#d4ff00', delay: 1600, duration: 65, thickness: 1 },
+    { x1: W*0.78, y1: H*0.57, x2: W*0.59, y2: H*0.48, color: '#00e5ff', delay: 2000, duration: 75, thickness: 1 },
+    // Top cluster
+    { x1: rand(W*0.2,W*0.45), y1: 0, x2: rand(W*0.35,W*0.55), y2: rand(H*0.2,H*0.38), color: '#ffffff', delay: 500,  duration: 100, thickness: 2 },
+    { x1: rand(W*0.5,W*0.8),  y1: 0, x2: rand(W*0.45,W*0.65), y2: rand(H*0.18,H*0.35), color: '#d4ff00', delay: 1100, duration: 90, thickness: 1.5 },
   ], []);
 
   // Sparks bursting from hot nodes
@@ -1805,7 +1819,284 @@ const EnergyVortex: React.FC = () => {
 };
 
 // ─────────────────────────────────────────────
-// STAGE DEFINITIONS
+// PLASMA GLOW — large soft ambient glow behind logo
+// ─────────────────────────────────────────────
+
+const PlasmaGlow: React.FC = () => {
+  const a1 = useRef(new Animated.Value(0.3)).current;
+  const a2 = useRef(new Animated.Value(0.5)).current;
+  const a3 = useRef(new Animated.Value(0.2)).current;
+  const s1 = useRef(new Animated.Value(1)).current;
+  const s2 = useRef(new Animated.Value(0.8)).current;
+
+  useEffect(() => {
+    const loop = (v: Animated.Value, to: number, from: number, dur: number) =>
+      Animated.loop(Animated.sequence([
+        Animated.timing(v, { toValue: to, duration: dur, easing: ease.inOut, useNativeDriver: true }),
+        Animated.timing(v, { toValue: from, duration: dur * 1.2, easing: ease.inOut, useNativeDriver: true }),
+      ])).start();
+    loop(a1, 0.7, 0.15, 1800);
+    loop(a2, 0.9, 0.3, 2400);
+    loop(a3, 0.55, 0.1, 1400);
+    loop(s1, 1.3, 0.85, 2000);
+    loop(s2, 1.2, 0.7, 1600);
+  }, []);
+
+  const cx = W / 2;
+  const cy = LOGO_CY;
+  const R = LOGO_SIZE * 0.85;
+
+  return (
+    <View style={StyleSheet.absoluteFillObject} pointerEvents="none">
+      <Animated.View style={{
+        position: 'absolute',
+        left: cx - R * 1.8,
+        top: cy - R * 1.8,
+        width: R * 3.6,
+        height: R * 3.6,
+        borderRadius: R * 1.8,
+        backgroundColor: 'rgba(0,230,118,0.045)',
+        opacity: a1,
+        transform: [{ scale: s1 }],
+      }} />
+      <Animated.View style={{
+        position: 'absolute',
+        left: cx - R * 1.1,
+        top: cy - R * 1.1,
+        width: R * 2.2,
+        height: R * 2.2,
+        borderRadius: R * 1.1,
+        backgroundColor: 'rgba(0,229,255,0.07)',
+        opacity: a2,
+        transform: [{ scale: s2 }],
+      }} />
+      <Animated.View style={{
+        position: 'absolute',
+        left: cx - R * 0.65,
+        top: cy - R * 0.65,
+        width: R * 1.3,
+        height: R * 1.3,
+        borderRadius: R * 0.65,
+        backgroundColor: 'rgba(212,255,0,0.035)',
+        opacity: a3,
+      }} />
+    </View>
+  );
+};
+
+// ─────────────────────────────────────────────
+// SHOCKWAVE RING — periodic blast from logo centre
+// ─────────────────────────────────────────────
+
+interface ShockwaveProps { delay: number; color: string; speed: number }
+
+const ShockwaveRing: React.FC<ShockwaveProps> = ({ delay, color, speed }) => {
+  const scale = useRef(new Animated.Value(0.05)).current;
+  const opacity = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    const blast = () => {
+      scale.setValue(0.05);
+      opacity.setValue(0);
+      const gap = randInt(1400, 3200);
+      setTimeout(() => {
+        Animated.parallel([
+          Animated.timing(scale, { toValue: 1, duration: speed, easing: Easing.out(Easing.cubic), useNativeDriver: true }),
+          Animated.sequence([
+            Animated.timing(opacity, { toValue: 0.8, duration: 80, useNativeDriver: true }),
+            Animated.timing(opacity, { toValue: 0, duration: speed - 80, easing: Easing.out(Easing.quad), useNativeDriver: true }),
+          ]),
+        ]).start(() => blast());
+      }, gap);
+    };
+    const id = setTimeout(blast, delay);
+    return () => clearTimeout(id);
+  }, []);
+
+  const maxR = Math.max(W, H) * 0.85;
+  return (
+    <Animated.View
+      style={{
+        position: 'absolute',
+        left: W / 2 - maxR,
+        top: LOGO_CY - maxR,
+        width: maxR * 2,
+        height: maxR * 2,
+        borderRadius: maxR,
+        borderWidth: 2,
+        borderColor: color,
+        opacity,
+        transform: [{ scale }],
+      }}
+      pointerEvents="none"
+    />
+  );
+};
+
+// ─────────────────────────────────────────────
+// CORNER DECORATIONS — tech brackets on all 4 corners
+// ─────────────────────────────────────────────
+
+const CornerDecor: React.FC<{ opacity: Animated.Value }> = ({ opacity }) => {
+  const L = IS_TABLET ? 40 : 28;
+  const W2 = 2;
+  const color = C.greenSoft;
+  const corners = [
+    { top: 0, left: 0, br: 0 },
+    { top: 0, right: 0, bl: 0 },
+    { bottom: 0, left: 0, tr: 0 },
+    { bottom: 0, right: 0, tl: 0 },
+  ];
+
+  const pulse = useRef(new Animated.Value(0.4)).current;
+  useEffect(() => {
+    Animated.loop(Animated.sequence([
+      Animated.timing(pulse, { toValue: 1, duration: 900, easing: ease.inOut, useNativeDriver: true }),
+      Animated.timing(pulse, { toValue: 0.4, duration: 900, easing: ease.inOut, useNativeDriver: true }),
+    ])).start();
+  }, []);
+
+  return (
+    <Animated.View style={[StyleSheet.absoluteFillObject, { opacity: Animated.multiply(opacity, pulse) }]} pointerEvents="none">
+      {/* Top-left */}
+      <View style={{ position: 'absolute', top: 16, left: 16 }}>
+        <View style={{ width: L, height: W2, backgroundColor: color }} />
+        <View style={{ width: W2, height: L, backgroundColor: color, position: 'absolute', top: 0, left: 0 }} />
+      </View>
+      {/* Top-right */}
+      <View style={{ position: 'absolute', top: 16, right: 16 }}>
+        <View style={{ width: L, height: W2, backgroundColor: color }} />
+        <View style={{ width: W2, height: L, backgroundColor: color, position: 'absolute', top: 0, right: 0 }} />
+      </View>
+      {/* Bottom-left */}
+      <View style={{ position: 'absolute', bottom: 16, left: 16 }}>
+        <View style={{ width: L, height: W2, backgroundColor: color, position: 'absolute', bottom: 0 }} />
+        <View style={{ width: W2, height: L, backgroundColor: color, position: 'absolute', bottom: 0, left: 0 }} />
+      </View>
+      {/* Bottom-right */}
+      <View style={{ position: 'absolute', bottom: 16, right: 16 }}>
+        <View style={{ width: L, height: W2, backgroundColor: color, position: 'absolute', bottom: 0, right: 0 }} />
+        <View style={{ width: W2, height: L, backgroundColor: color, position: 'absolute', bottom: 0, right: 0 }} />
+      </View>
+    </Animated.View>
+  );
+};
+
+// ─────────────────────────────────────────────
+// HOLO BANDS — horizontal holographic scan bands
+// ─────────────────────────────────────────────
+
+interface HoloBandProps { y: number; delay: number; color: string; speed: number }
+
+const HoloBand: React.FC<HoloBandProps> = ({ y, delay, color, speed }) => {
+  const translateX = useRef(new Animated.Value(-W)).current;
+  const opacity = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    const sweep = () => {
+      translateX.setValue(-W);
+      const gap = randInt(2000, 5000);
+      setTimeout(() => {
+        Animated.parallel([
+          Animated.timing(translateX, { toValue: W * 1.5, duration: speed, easing: Easing.linear, useNativeDriver: true }),
+          Animated.sequence([
+            Animated.timing(opacity, { toValue: rand(0.3, 0.65), duration: 120, useNativeDriver: true }),
+            Animated.timing(opacity, { toValue: 0, duration: speed - 120, easing: Easing.out(Easing.quad), useNativeDriver: true }),
+          ]),
+        ]).start(() => sweep());
+      }, gap);
+    };
+    const id = setTimeout(sweep, delay);
+    return () => clearTimeout(id);
+  }, []);
+
+  return (
+    <Animated.View
+      style={{
+        position: 'absolute',
+        top: y - 1,
+        left: 0,
+        width: W * 0.45,
+        height: 2,
+        backgroundColor: color,
+        opacity,
+        transform: [{ translateX }],
+      }}
+      pointerEvents="none"
+    />
+  );
+};
+
+const HoloBands: React.FC = () => {
+  const bands = useMemo(() => [
+    { y: H * 0.12, delay: 200,  color: '#00e5ff', speed: 650 },
+    { y: H * 0.25, delay: 900,  color: '#d4ff00', speed: 800 },
+    { y: H * 0.38, delay: 400,  color: '#00E676', speed: 550 },
+    { y: H * 0.50, delay: 1400, color: '#ffffff', speed: 700 },
+    { y: H * 0.63, delay: 600,  color: '#00e5ff', speed: 600 },
+    { y: H * 0.76, delay: 1100, color: '#d4ff00', speed: 850 },
+    { y: H * 0.88, delay: 300,  color: '#00E676', speed: 500 },
+  ], []);
+
+  return (
+    <View style={StyleSheet.absoluteFillObject} pointerEvents="none">
+      {bands.map((b, i) => <HoloBand key={i} {...b} />)}
+    </View>
+  );
+};
+
+// ─────────────────────────────────────────────
+// BOOT SEQUENCE — terminal typing top-left
+// ─────────────────────────────────────────────
+
+const BOOT_LINES = [
+  '> TARU_GUARDIAN_OS v2.6.0',
+  '> Mounting kernel modules...',
+  '> eco.sys loaded       [OK]',
+  '> nature.core linked   [OK]',
+  '> Loading guardian protocols...',
+  '> HIT Haldia node connected',
+  '> 67 guardians online  [OK]',
+  '> Splash ready. BOOT!',
+];
+
+const BootSequence: React.FC<{ opacity: Animated.Value }> = ({ opacity }) => {
+  const lineAnims = useRef(BOOT_LINES.map(() => new Animated.Value(0))).current;
+
+  useEffect(() => {
+    const anims = lineAnims.map((a, i) =>
+      Animated.sequence([
+        Animated.delay(i * 350 + 200),
+        Animated.timing(a, { toValue: 1, duration: 180, useNativeDriver: true }),
+      ])
+    );
+    Animated.parallel(anims).start();
+  }, []);
+
+  return (
+    <Animated.View style={{ position: 'absolute', top: IS_TABLET ? 90 : 70, left: 18, opacity }} pointerEvents="none">
+      {BOOT_LINES.map((line, i) => (
+        <Animated.Text
+          key={i}
+          style={{
+            color: i === BOOT_LINES.length - 1 ? C.greenPrimary : C.whiteLow,
+            fontSize: IS_TABLET ? 9 : 7.5,
+            fontFamily: Platform.OS === 'ios' ? 'Courier New' : 'monospace',
+            fontWeight: '600',
+            letterSpacing: 0.4,
+            lineHeight: IS_TABLET ? 15 : 12,
+            opacity: lineAnims[i],
+          }}
+        >
+          {line}
+        </Animated.Text>
+      ))}
+    </Animated.View>
+  );
+};
+
+// ─────────────────────────────────────────────
+// STAGE DEFINITIONS  (8 stages over 8 000 ms)
 // ─────────────────────────────────────────────
 
 interface Stage {
@@ -1817,12 +2108,14 @@ interface Stage {
 }
 
 const STAGES_DEF: Stage[] = [
-  { label: 'INITIALISING', progressStart: 0, progressEnd: 14, startMs: 0, durationMs: 1000 },
-  { label: 'LOADING MATRIX', progressStart: 14, progressEnd: 32, startMs: 1000, durationMs: 1200 },
-  { label: 'CALIBRATING', progressStart: 32, progressEnd: 52, startMs: 2200, durationMs: 1000 },
-  { label: 'BUILDING IDENTITY', progressStart: 52, progressEnd: 72, startMs: 3200, durationMs: 1400 },
-  { label: 'ACTIVATING PURPOSE', progressStart: 72, progressEnd: 90, startMs: 4600, durationMs: 1200 },
-  { label: 'WELCOME, GUARDIAN', progressStart: 90, progressEnd: 100, startMs: 5800, durationMs: 1700 },
+  { label: 'INITIALISING',       progressStart: 0,   progressEnd: 12, startMs: 0,    durationMs: 700  },
+  { label: 'LOADING MATRIX',     progressStart: 12,  progressEnd: 28, startMs: 700,  durationMs: 800  },
+  { label: 'CALIBRATING SENSORS',progressStart: 28,  progressEnd: 44, startMs: 1500, durationMs: 900  },
+  { label: 'BUILDING IDENTITY',  progressStart: 44,  progressEnd: 60, startMs: 2400, durationMs: 1100 },
+  { label: 'ACTIVATING PURPOSE', progressStart: 60,  progressEnd: 74, startMs: 3500, durationMs: 1000 },
+  { label: 'SYNCING NETWORK',    progressStart: 74,  progressEnd: 86, startMs: 4500, durationMs: 1100 },
+  { label: 'ENCRYPTING CORE',    progressStart: 86,  progressEnd: 95, startMs: 5600, durationMs: 1400 },
+  { label: 'WELCOME, GUARDIAN',  progressStart: 95,  progressEnd: 100,startMs: 7000, durationMs: 1000 },
 ];
 
 // ─────────────────────────────────────────────
@@ -1887,52 +2180,50 @@ const SplashScreen: React.FC<SplashScreenProps> = ({
       timers.push(id);
     };
 
-    // ── IMMEDIATE: Short circuit ON from first frame ──
+    // ── IMMEDIATE: Short circuit + logo ON at frame 0 ──
     statsAnim.setValue(1);
 
-    // ── 300 ms: Logo springs in ──
-    t(300, () => {
-      Animated.timing(logoRevealAnim, {
-        toValue: 1,
-        duration: 600,
-        easing: ease.spring,
-        useNativeDriver: true,
-      }).start();
-    });
+    // Logo reveals IMMEDIATELY
+    Animated.timing(logoRevealAnim, {
+      toValue: 1,
+      duration: T.logoRevealDur,
+      easing: ease.spring,
+      useNativeDriver: true,
+    }).start();
 
-    // ── 900 ms: Title ──
-    t(900, () => {
-      Animated.stagger(140, [
+    // ── 500 ms: Title ──
+    t(T.titleRevealStart, () => {
+      Animated.stagger(120, [
         Animated.timing(titleAnim, {
           toValue: 1,
-          duration: 400,
+          duration: 380,
           easing: ease.out,
           useNativeDriver: true,
         }),
         Animated.timing(subtitleAnim, {
           toValue: 1,
-          duration: 320,
+          duration: 300,
           easing: ease.out,
           useNativeDriver: true,
         }),
       ]).start();
     });
 
-    // ── 1 800 ms: "Turn Passion Into Purpose" ──
-    t(1800, () => {
+    // ── 1 450 ms: "Turn Passion Into Purpose" ──
+    t(T.passionStart, () => {
       Animated.timing(passionAnim, {
         toValue: 1,
-        duration: 900,
+        duration: T.passionDur,
         easing: ease.spring,
         useNativeDriver: true,
       }).start();
     });
 
-    // ── Progress bar continuous ──
+    // ── Progress bar continuous over full 8 s ──
     Animated.timing(progressAnim, {
       toValue: 100,
-      duration: T.totalDur - 600,
-      easing: Easing.bezier(0.1, 0.4, 0.6, 1),
+      duration: T.totalDur - 500,
+      easing: Easing.bezier(0.08, 0.38, 0.58, 1),
       useNativeDriver: false,
     }).start();
 
@@ -1943,7 +2234,7 @@ const SplashScreen: React.FC<SplashScreenProps> = ({
         stageTextAnim.setValue(0);
         Animated.timing(stageTextAnim, {
           toValue: 1,
-          duration: 280,
+          duration: 260,
           easing: ease.out,
           useNativeDriver: true,
         }).start();
@@ -1976,83 +2267,104 @@ const SplashScreen: React.FC<SplashScreenProps> = ({
         pointerEvents="none"
       >
         <LinearGradient
-          colors={[C.deepBlack, '#040e16', '#071a14', C.deepBlack]}
-          locations={[0, 0.35, 0.65, 1]}
+          colors={[C.deepBlack, '#030f1a', '#071a14', '#040c18', C.deepBlack]}
+          locations={[0, 0.25, 0.5, 0.75, 1]}
           start={{ x: 0.3, y: 0 }}
           end={{ x: 0.7, y: 1 }}
           style={StyleSheet.absoluteFillObject}
         />
-
-        {/* Radial centre ambient */}
         <View style={splashStyles.radialAmb} />
+        <View style={splashStyles.radialAmb2} />
       </Animated.View>
 
-      {/* ── 2. HEX GRID ── */}
+      {/* ── 2. PLASMA GLOW (deep behind logo) ── */}
+      <PlasmaGlow />
+
+      {/* ── 3. HEX GRID ── */}
       <HexGrid opacity={hexOpacity} />
 
-      {/* ── 3. DATA STREAMS ── */}
+      {/* ── 4. HOLO BANDS ── */}
+      <HoloBands />
+
+      {/* ── 5. DATA STREAMS ── */}
       <DataStreamLayer />
 
-      {/* ── 4. CIRCUIT LINES ── */}
+      {/* ── 6. CIRCUIT LINES ── */}
       <CircuitLines opacity={circuitOpacity} />
 
-      {/* ── 5. MATRIX RAIN ── */}
+      {/* ── 7. MATRIX RAIN ── */}
       <MatrixRain visible={matrixOpacity} />
 
-      {/* ── 6. FLOATING PARTICLES ── */}
+      {/* ── 8. FLOATING PARTICLES ── */}
       <ParticleField />
 
-      {/* ── 7. SCAN LINE ── */}
+      {/* ── 9. SCAN LINE (x3) ── */}
+      <ScanLine />
+      <ScanLine />
       <ScanLine />
 
-      {/* ── 8. GLITCH FLASH ── */}
+      {/* ── 10. GLITCH FLASH ── */}
       <GlitchFlash />
 
-      {/* ── 9. PULSE RINGS (behind logo) ── */}
-      <PulseRing delay={0}    color={C.greenSoft}    maxSize={LOGO_SIZE + 120} cy={LOGO_CY} />
-      <PulseRing delay={400}  color={C.cyanBright}   maxSize={LOGO_SIZE + 200} cy={LOGO_CY} />
-      <PulseRing delay={800}  color={C.greenPrimary} maxSize={LOGO_SIZE + 280} cy={LOGO_CY} />
-      <PulseRing delay={1200} color="#d4ff00"         maxSize={LOGO_SIZE + 360} cy={LOGO_CY} />
-      <PulseRing delay={1600} color="#ffffff"          maxSize={LOGO_SIZE + 440} cy={LOGO_CY} />
-      <PulseRing delay={2000} color={C.cyanBright}   maxSize={LOGO_SIZE + 520} cy={LOGO_CY} />
+      {/* ── 11. SHOCKWAVE RINGS ── */}
+      <ShockwaveRing delay={600}  color={C.greenPrimary} speed={1400} />
+      <ShockwaveRing delay={1500} color={C.cyanBright}   speed={1100} />
+      <ShockwaveRing delay={2800} color="#d4ff00"         speed={1600} />
+      <ShockwaveRing delay={4200} color="#ffffff"          speed={1200} />
 
-      {/* ── 9b. ENERGY VORTEX (rotating corona) ── */}
+      {/* ── 12. PULSE RINGS (behind logo) ── */}
+      <PulseRing delay={0}    color={C.greenSoft}    maxSize={LOGO_SIZE + 100} cy={LOGO_CY} />
+      <PulseRing delay={300}  color={C.cyanBright}   maxSize={LOGO_SIZE + 180} cy={LOGO_CY} />
+      <PulseRing delay={600}  color={C.greenPrimary} maxSize={LOGO_SIZE + 260} cy={LOGO_CY} />
+      <PulseRing delay={900}  color="#d4ff00"         maxSize={LOGO_SIZE + 340} cy={LOGO_CY} />
+      <PulseRing delay={1200} color="#ffffff"          maxSize={LOGO_SIZE + 420} cy={LOGO_CY} />
+      <PulseRing delay={1500} color={C.cyanBright}   maxSize={LOGO_SIZE + 500} cy={LOGO_CY} />
+      <PulseRing delay={1800} color={C.greenSoft}    maxSize={LOGO_SIZE + 580} cy={LOGO_CY} />
+      <PulseRing delay={2100} color="#d4ff00"         maxSize={LOGO_SIZE + 660} cy={LOGO_CY} />
+
+      {/* ── 13. ENERGY VORTEX (rotating corona) ── */}
       <EnergyVortex />
 
-      {/* ── 10. LOGO ── */}
+      {/* ── 14. LOGO (frame 0) ── */}
       <LogoCore revealAnim={logoRevealAnim} />
 
-      {/* ── 11. BRAND TEXT ── */}
+      {/* ── 15. BRAND TEXT ── */}
       <BrandText titleAnim={titleAnim} subtitleAnim={subtitleAnim} />
 
-      {/* ── 12. PASSION TAGLINE ── */}
+      {/* ── 16. PASSION TAGLINE ── */}
       <PassionTagline masterAnim={passionAnim} />
 
-      {/* ── 13. SHORT CIRCUIT OVERLOAD ── */}
+      {/* ── 17. SHORT CIRCUIT OVERLOAD ── */}
       <ShortCircuit masterAnim={statsAnim} />
 
-      {/* ── 14. PROGRESS HUD ── */}
+      {/* ── 18. BOOT SEQUENCE ── */}
+      <BootSequence opacity={footerOpacity} />
+
+      {/* ── 19. PROGRESS HUD ── */}
       <ProgressHUD
         progress={progressAnim}
         stageLabel={currentStage.label}
         stageAnim={stageTextAnim}
       />
 
-      {/* ── 15. FOOTER ── */}
+      {/* ── 20. FOOTER ── */}
       <Footer opacity={footerOpacity} />
 
-      {/* ── 16. SKIP ── */}
+      {/* ── 21. SKIP ── */}
       {allowSkip && (
         <SkipButton onSkip={handleSkip} opacity={skipOpacity} />
       )}
 
-      {/* ── 17. SCREEN EDGE PULSE ── */}
+      {/* ── 22. CORNER DECORATIONS ── */}
+      <CornerDecor opacity={hexOpacity} />
+
+      {/* ── 23. SCREEN EDGE PULSE ── */}
       <ScreenEdgePulse />
 
-      {/* ── 18. TOP VIGNETTE ── */}
+      {/* ── 24. TOP VIGNETTE ── */}
       <View style={splashStyles.vignetteTop} pointerEvents="none" />
 
-      {/* ── 19. BOTTOM VIGNETTE ── */}
+      {/* ── 25. BOTTOM VIGNETTE ── */}
       <View style={splashStyles.vignetteBottom} pointerEvents="none" />
     </Animated.View>
   );
@@ -2075,7 +2387,16 @@ const splashStyles = StyleSheet.create({
     width: W * 0.8,
     height: H * 0.45,
     borderRadius: W * 0.4,
-    backgroundColor: 'rgba(0,180,80,0.045)',
+    backgroundColor: 'rgba(0,180,80,0.055)',
+  },
+  radialAmb2: {
+    position: 'absolute',
+    top: H * 0.05,
+    left: W * 0.2,
+    width: W * 0.6,
+    height: H * 0.25,
+    borderRadius: W * 0.3,
+    backgroundColor: 'rgba(0,229,255,0.03)',
   },
   vignetteTop: {
     position: 'absolute',

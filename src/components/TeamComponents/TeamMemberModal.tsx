@@ -512,7 +512,7 @@ const TeamMemberModal: React.FC<TeamMemberModalProps> = ({
                 <View
                   style={[
                     styles.contactIcon,
-                    { backgroundColor: Colors.tech.neonBlue + '20' },
+                    { backgroundColor: 'rgba(0,212,255,0.13)' },
                   ]}
                 >
                   <Text style={styles.contactIconText}>✉</Text>
@@ -570,7 +570,7 @@ const TeamMemberModal: React.FC<TeamMemberModalProps> = ({
                 <View
                   style={[
                     styles.contactIcon,
-                    { backgroundColor: Colors.accent.softGold + '20' },
+                    { backgroundColor: 'rgba(212,175,55,0.13)' },
                   ]}
                 >
                   <Text style={styles.contactIconText}>📍</Text>
@@ -586,7 +586,7 @@ const TeamMemberModal: React.FC<TeamMemberModalProps> = ({
                 <View
                   style={[
                     styles.contactIcon,
-                    { backgroundColor: Colors.nature.leafGreen + '20' },
+                    { backgroundColor: 'rgba(76,175,80,0.13)' },
                   ]}
                 >
                   <Text style={styles.contactIconText}>⏱</Text>
@@ -602,7 +602,7 @@ const TeamMemberModal: React.FC<TeamMemberModalProps> = ({
                 <View
                   style={[
                     styles.contactIcon,
-                    { backgroundColor: Colors.accent.gold + '20' },
+                    { backgroundColor: 'rgba(255,215,0,0.13)' },
                   ]}
                 >
                   <Text style={styles.contactIconText}>📅</Text>
@@ -678,7 +678,7 @@ const TeamMemberModal: React.FC<TeamMemberModalProps> = ({
                     key={index}
                     style={[
                       styles.techBadge,
-                      { backgroundColor: Colors.nature.leafGreen + '15' },
+                      { backgroundColor: 'rgba(76,175,80,0.08)' },
                     ]}
                   >
                     <Text
@@ -759,7 +759,7 @@ const TeamMemberModal: React.FC<TeamMemberModalProps> = ({
                   key={index}
                   style={[
                     styles.achievementItem,
-                    { borderColor: Colors.accent.softGold + '20' },
+                    { borderColor: 'rgba(212,175,55,0.13)' },
                   ]}
                 >
                   <Text style={styles.achievementEmoji}>🏆</Text>
@@ -779,7 +779,7 @@ const TeamMemberModal: React.FC<TeamMemberModalProps> = ({
                     key={index}
                     style={[
                       styles.certBadge,
-                      { backgroundColor: Colors.accent.softGold + '15' },
+                      { backgroundColor: 'rgba(212,175,55,0.08)' },
                     ]}
                   >
                     <Text
@@ -817,7 +817,7 @@ const TeamMemberModal: React.FC<TeamMemberModalProps> = ({
                     key={index}
                     style={[
                       styles.hobbyBadge,
-                      { backgroundColor: Colors.tech.neonBlue + '15' },
+                      { backgroundColor: 'rgba(0,212,255,0.08)' },
                     ]}
                   >
                     <Text
@@ -1105,7 +1105,7 @@ const styles = StyleSheet.create({
 
   // Quote Card
   quoteCard: {
-    backgroundColor: Colors.tech.neonBlue + '10',
+    backgroundColor: 'rgba(0,212,255,0.06)',
     borderRadius: 14,
     padding: 16,
     borderLeftWidth: 4,
@@ -1119,7 +1119,7 @@ const styles = StyleSheet.create({
 
   // Fun Fact Card
   funFactCard: {
-    backgroundColor: Colors.accent.softGold + '10',
+    backgroundColor: 'rgba(212,175,55,0.06)',
     borderRadius: 14,
     padding: 16,
     borderWidth: 1,
@@ -1244,7 +1244,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 10,
-    backgroundColor: Colors.accent.softGold + '10',
+    backgroundColor: 'rgba(212,175,55,0.06)',
     padding: 14,
     borderRadius: 14,
     borderWidth: 1,
@@ -1279,7 +1279,7 @@ const styles = StyleSheet.create({
   educationCard: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: Colors.tech.neonBlue + '10',
+    backgroundColor: 'rgba(0,212,255,0.06)',
     borderRadius: 14,
     padding: 16,
   },

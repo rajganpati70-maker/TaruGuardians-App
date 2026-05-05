@@ -4926,7 +4926,7 @@ const styles = StyleSheet.create({
     borderRadius: 18,
     marginRight: 8,
   },
-  filterChipActive: { backgroundColor: Colors.tech.neonBlue + '22', borderColor: Colors.tech.neonBlue },
+  filterChipActive: { backgroundColor: 'rgba(0,212,255,0.13)', borderColor: Colors.tech.neonBlue },
   filterChipText: { color: Colors.text.secondary, fontSize: 11, fontWeight: '600' },
   filterChipTextActive: { color: Colors.tech.neonBlue, fontWeight: '800' },
   announceCard: {

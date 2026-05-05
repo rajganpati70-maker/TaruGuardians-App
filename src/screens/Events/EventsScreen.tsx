@@ -5080,7 +5080,7 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 28,
     borderBottomRightRadius: 28,
     borderBottomWidth: 1,
-    borderBottomColor: Colors.tech.neonBlue + '22',
+    borderBottomColor: 'rgba(0,212,255,0.13)',
   },
   titleRow: {
     flexDirection: 'row',
@@ -5108,7 +5108,7 @@ const styles = StyleSheet.create({
     width: 42,
     height: 42,
     borderRadius: 21,
-    backgroundColor: Colors.tech.neonBlue + '22',
+    backgroundColor: 'rgba(0,212,255,0.13)',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -5168,13 +5168,13 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
     borderRadius: 14,
     borderWidth: 1,
-    borderColor: Colors.tech.neonBlue + '44',
+    borderColor: 'rgba(0,212,255,0.27)',
     marginRight: 8,
     marginBottom: 4,
     backgroundColor: 'transparent',
   },
   filterChipActive: {
-    backgroundColor: Colors.tech.neonBlue + '22',
+    backgroundColor: 'rgba(0,212,255,0.13)',
     borderColor: Colors.tech.neonBlue,
   },
   filterText: {
@@ -5232,7 +5232,7 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   nestedTabActive: {
-    backgroundColor: Colors.tech.neonBlue + '22',
+    backgroundColor: 'rgba(0,212,255,0.13)',
     borderColor: Colors.tech.neonBlue,
   },
   nestedTabIcon: { fontSize: 14, marginRight: 6 },
@@ -5326,7 +5326,7 @@ const styles = StyleSheet.create({
     borderRadius: CARD_RADIUS,
     overflow: 'hidden',
     borderWidth: 1,
-    borderColor: Colors.tech.neonBlue + '33',
+    borderColor: 'rgba(0,212,255,0.2)',
   },
   eventCardBg: {
     padding: 0,
@@ -5447,7 +5447,7 @@ const styles = StyleSheet.create({
     marginTop: 18,
     paddingHorizontal: 18,
     paddingVertical: 10,
-    backgroundColor: Colors.tech.neonBlue + '22',
+    backgroundColor: 'rgba(0,212,255,0.13)',
     borderRadius: 14,
     borderWidth: 1,
     borderColor: Colors.tech.neonBlue,
@@ -5467,13 +5467,13 @@ const styles = StyleSheet.create({
   },
   skeletonHeader: {
     height: 40,
-    backgroundColor: Colors.text.muted + '22',
+    backgroundColor: 'rgba(255,255,255,0.13)',
     borderRadius: 10,
     marginBottom: 12,
   },
   skeletonLine: {
     height: 12,
-    backgroundColor: Colors.text.muted + '22',
+    backgroundColor: 'rgba(255,255,255,0.13)',
     borderRadius: 6,
     width: '80%',
     marginBottom: 8,
@@ -5492,7 +5492,7 @@ const styles = StyleSheet.create({
     borderRadius: 24,
     overflow: 'hidden',
     borderWidth: 1,
-    borderColor: Colors.tech.neonBlue + '44',
+    borderColor: 'rgba(0,212,255,0.27)',
   },
   modalGradient: {},
   modalClose: {
@@ -5580,7 +5580,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: Colors.background.darkGreen,
     borderWidth: 1,
-    borderColor: Colors.tech.neonBlue + '44',
+    borderColor: 'rgba(0,212,255,0.27)',
     marginBottom: 10,
   },
   secondaryButtonText: {
@@ -5614,7 +5614,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 12,
     borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: Colors.text.muted + '33',
+    borderBottomColor: 'rgba(255,255,255,0.2)',
   },
   sortIcon: { fontSize: 16, marginRight: 10 },
   sortLabel: {
@@ -5637,7 +5637,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: HORIZONTAL_PADDING,
     paddingVertical: 18,
     borderTopWidth: StyleSheet.hairlineWidth,
-    borderTopColor: Colors.text.muted + '22',
+    borderTopColor: 'rgba(255,255,255,0.13)',
   },
   extrasHeaderRow: {
     flexDirection: 'row',
@@ -5671,7 +5671,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
     borderRadius: CARD_RADIUS,
     borderWidth: 1,
-    borderColor: Colors.text.muted + '22',
+    borderColor: 'rgba(255,255,255,0.13)',
   },
   calendarCellToday: {
     borderColor: Colors.tech.neonBlue,
@@ -5708,7 +5708,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     borderRadius: 14,
     borderWidth: 1,
-    borderColor: Colors.text.muted + '33',
+    borderColor: 'rgba(255,255,255,0.2)',
     backgroundColor: Colors.background.darkGreen,
     marginBottom: 8,
     alignItems: 'flex-start',
@@ -5900,7 +5900,7 @@ const styles = StyleSheet.create({
   },
   sponsorFollowBtn: {
     borderWidth: 1,
-    borderColor: Colors.text.muted + '33',
+    borderColor: 'rgba(255,255,255,0.2)',
     paddingVertical: 6,
     borderRadius: 10,
     alignItems: 'center',
@@ -5963,7 +5963,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     backgroundColor: Colors.background.deepBlack,
     borderWidth: 1,
-    borderColor: Colors.text.muted + '33',
+    borderColor: 'rgba(255,255,255,0.2)',
     marginRight: 6,
     marginBottom: 4,
   },
@@ -5984,12 +5984,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     borderRadius: 14,
     borderWidth: 1,
-    borderColor: Colors.text.muted + '22',
+    borderColor: 'rgba(255,255,255,0.13)',
     backgroundColor: Colors.background.darkGreen,
     marginBottom: 8,
   },
   faqRowOpen: {
-    borderColor: Colors.tech.neonBlue + '66',
+    borderColor: 'rgba(0,212,255,0.4)',
   },
   faqHeader: {
     flexDirection: 'row',
@@ -6088,7 +6088,7 @@ const styles = StyleSheet.create({
   chapterRsvp: {
     marginTop: 8,
     borderWidth: 1,
-    borderColor: Colors.text.muted + '33',
+    borderColor: 'rgba(255,255,255,0.2)',
     paddingVertical: 6,
     borderRadius: 10,
     alignItems: 'center',
@@ -6105,7 +6105,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     paddingVertical: 10,
     borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: Colors.text.muted + '22',
+    borderBottomColor: 'rgba(255,255,255,0.13)',
   },
   accessIcon: {
     fontSize: 18,
@@ -6164,7 +6164,7 @@ const styles = StyleSheet.create({
     borderRadius: CARD_RADIUS,
     backgroundColor: Colors.background.darkGreen,
     borderWidth: 1,
-    borderColor: Colors.text.muted + '22',
+    borderColor: 'rgba(255,255,255,0.13)',
   },
   feedbackEmoji: {
     fontSize: 22,
@@ -6400,7 +6400,7 @@ const styles = StyleSheet.create({
   conductCloseGhost: {
     backgroundColor: 'transparent',
     borderWidth: 1,
-    borderColor: Colors.text.muted + '33',
+    borderColor: 'rgba(255,255,255,0.2)',
     marginTop: 8,
   },
   conductCloseText: {
@@ -6412,7 +6412,7 @@ const styles = StyleSheet.create({
   // Checkin modal
   checkinInput: {
     borderWidth: 1,
-    borderColor: Colors.text.muted + '55',
+    borderColor: 'rgba(255,255,255,0.33)',
     borderRadius: 12,
     padding: 12,
     color: Colors.text.primary,
@@ -6454,11 +6454,11 @@ const styles = StyleSheet.create({
   },
   starBtnText: {
     fontSize: 32,
-    color: Colors.text.muted + '77',
+    color: 'rgba(255,255,255,0.47)',
   },
   feedbackInput: {
     borderWidth: 1,
-    borderColor: Colors.text.muted + '33',
+    borderColor: 'rgba(255,255,255,0.2)',
     borderRadius: 12,
     padding: 12,
     color: Colors.text.primary,

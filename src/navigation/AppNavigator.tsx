@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   tabItemFocused: {
-    backgroundColor: Colors.tech.neonBlue + '30',
+    backgroundColor: 'rgba(0,212,255,0.19)',
   },
   tabIcon: {
     fontSize: isSmallScreen ? 20 : 22,

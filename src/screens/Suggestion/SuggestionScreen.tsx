@@ -2277,7 +2277,7 @@ const SuggestionScreen: React.FC = () => {
       ]}
     >
       <LinearGradient
-        colors={['#06141F', '#0A2634', Colors.tech.neonBlue + '44']}
+        colors={['#06141F', '#0A2634', 'rgba(0,212,255,0.27)']}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
         style={styles.headerGradient}
@@ -2707,7 +2707,7 @@ const SuggestionScreen: React.FC = () => {
                     <View
                       style={[
                         styles.velocityBarSub,
-                        { height: subH, backgroundColor: Colors.tech.neonBlue + '55' },
+                        { height: subH, backgroundColor: 'rgba(0,212,255,0.33)' },
                       ]}
                     />
                     <View
@@ -2727,7 +2727,7 @@ const SuggestionScreen: React.FC = () => {
               <View
                 style={[
                   styles.velocityLegendDot,
-                  { backgroundColor: Colors.tech.neonBlue + '88' },
+                  { backgroundColor: 'rgba(0,212,255,0.53)' },
                 ]}
               />
               <Text style={styles.velocityLegendText}>Submitted</Text>
@@ -3450,7 +3450,7 @@ const SuggestionScreen: React.FC = () => {
                     <Switch
                       value={formAnonymous}
                       onValueChange={setFormAnonymous}
-                      trackColor={{ false: '#ffffff22', true: Colors.tech.neonBlue + '99' }}
+                      trackColor={{ false: '#ffffff22', true: 'rgba(0,212,255,0.6)' }}
                       thumbColor={formAnonymous ? Colors.tech.neonBlue : '#ccc'}
                     />
                   </View>
@@ -4681,7 +4681,7 @@ const styles = StyleSheet.create({
   },
   categoryChipActive: {
     borderColor: Colors.tech.neonBlue,
-    backgroundColor: Colors.tech.neonBlue + '22',
+    backgroundColor: 'rgba(0,212,255,0.13)',
   },
   categoryIcon: { fontSize: 14, marginRight: 6 },
   categoryLabel: { color: Colors.text.secondary, fontSize: 12, fontWeight: '600' },

@@ -24,3 +24,33 @@ id = "Id_s6KnpaQ5UoC1JyMvnM"
 uri = "file://screenshots/home.jpg"
 type = "image"
 title = "Home Screen — Events + Stats + Bottom Navigation"
+
+[[outputs]]
+id = "Yq8K6Jw9Uesk2WbPWfzCG"
+uri = "file://screenshots/splash_frame1.jpg"
+type = "image"
+title = "Splash Frame 1 — Logo visible at frame 0, INITIALISING 11%, Corner brackets, Holo bands, Vortex rings"
+
+[[outputs]]
+id = "eKYLDty83QIk9moLVDsKT"
+uri = "file://screenshots/splash_1.jpg"
+type = "image"
+title = "Splash Frame 2 — Logo, vortex + circuit lines active, boot sequence top-left"
+
+[[outputs]]
+id = "Jx6Dz0Uwnmmgyk8BUk_sc"
+uri = "file://screenshots/splash_4.jpg"
+type = "image"
+title = "Splash Frame 3 — 11% progress, pulse rings expanding, green particle visible"
+
+[[outputs]]
+id = "mtkAgV-6dNp80C_zfhPme"
+uri = "file://screenshots/splash_3.jpg"
+type = "image"
+title = "Splash Frame 4 — Circuit arc sweep, holo band sweep, all layers live"
+
+[[outputs]]
+id = "LgNA802PBtWoWwZaD4D4X"
+uri = "file://screenshots/splash_5.jpg"
+type = "image"
+title = "Splash Frame 5 — 8% progress, 8 pulse rings, plasma glow behind logo"

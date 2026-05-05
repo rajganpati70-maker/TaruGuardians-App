@@ -2067,7 +2067,7 @@ const TaruWingsScreen: React.FC = () => {
           {
             backgroundColor: selectedWing
               ? selectedWing.color + '33'
-              : Colors.tech.neonBlue + '33',
+              : 'rgba(0,212,255,0.2)',
           },
         ]}
       >
@@ -3968,7 +3968,7 @@ const styles = StyleSheet.create({
   memberBio: { color: Colors.text.secondary, fontSize: 11, lineHeight: 16, marginTop: 4 },
   memberSkillsRow: { flexDirection: 'row', flexWrap: 'wrap', marginTop: 8 },
   memberSkillPill: {
-    backgroundColor: Colors.tech.neonBlue + '22',
+    backgroundColor: 'rgba(0,212,255,0.13)',
     paddingHorizontal: 8,
     paddingVertical: 3,
     borderRadius: 8,
@@ -4048,7 +4048,7 @@ const styles = StyleSheet.create({
   modalSectionTitle: { color: Colors.text.primary, fontSize: 13, fontWeight: '800', marginTop: 16 },
   modalSkillsWrap: { flexDirection: 'row', flexWrap: 'wrap', marginTop: 8 },
   modalSkillPill: {
-    backgroundColor: Colors.tech.neonBlue + '22',
+    backgroundColor: 'rgba(0,212,255,0.13)',
     borderRadius: 10,
     paddingHorizontal: 10,
     paddingVertical: 4,
