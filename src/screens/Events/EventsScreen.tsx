@@ -4607,67 +4607,6 @@ const EventsScreen: React.FC = () => {
 
   const renderExtrasFooter = () => (
     <View>
-      {renderAccessGuides()}
-      {renderTimeBlocks()}
-      {renderRehearsalSteps()}
-      {renderVolunteerRoles()}
-      {renderMemoryCapsules()}
-      {renderSponsorPromises()}
-      {renderGreenScorecards()}
-      {renderCrewRotations()}
-      {renderBackstageNotes()}
-      {renderSensoryChecks()}
-      {renderCostLedger()}
-      {renderAfterCircles()}
-      {renderCodeOfCare()}
-      {renderCalendarSection()}
-      {renderWeatherWatch()}
-      {renderGreenPledges()}
-      {renderGreenOps()}
-      {renderRiskRegister()}
-      {renderSafetyBriefs()}
-      {renderPhotoBriefs()}
-      {renderAfterParty()}
-      {renderMerchSection()}
-      {renderScheduleSection()}
-      {renderStagePlots()}
-      {renderRunOfShow()}
-      {renderTicketsSection()}
-      {renderTicketTiers()}
-      {renderSpeakersSection()}
-      {renderSponsorsSection()}
-      {renderVenuesSection()}
-      {renderTravelSection()}
-      {renderTransitSection()}
-      {renderParkingSection()}
-      {renderStaySection()}
-      {renderPackingListSection()}
-      {renderFoodVendorsSection()}
-      {renderMedicalSection()}
-      {renderStreamSection()}
-      {renderFaqSection()}
-      {renderConductSection()}
-      {renderCommunityPacts()}
-      {renderConsentSection()}
-      {renderChaptersSection()}
-      {renderAccessibilitySection()}
-      {renderVolunteerSection()}
-      {renderEventLessons()}
-      {renderRecapsSection()}
-      {renderCheckinSection()}
-      {renderEventSchedulePromises()}
-      {renderEventProductionChecks()}
-      {renderEventRainyPlans()}
-      {renderEventAftercareSteps()}
-      {renderEventLegacyMarkers()}
-      {renderEventMorningBriefs()}
-      {renderEventRecoveryWeek()}
-      {renderEventAccessibilityPromises()}
-      {renderEventSpeakerBios()}
-      {renderEventVenueMaps()}
-      {renderEventSponsorshipTiers()}
-      {renderEventDayOfRunsheet()}
-      {renderEventWeatherContingencies()}
       <View style={styles.footerBand}>
         <Text style={styles.footerLine}>
           Built with saplings, scripts + slow weekends.
@@ -5059,7 +4998,6 @@ const EventsScreen: React.FC = () => {
               {renderHeader()}
               {renderCategories()}
               {renderNestedTabs()}
-              {renderFeaturedCarousel()}
               <View style={styles.listIntro}>
                 <Text style={styles.sectionTitle}>
                   {activeTab === 'all' ? '🎉 All Events' :
@@ -5085,9 +5023,9 @@ const EventsScreen: React.FC = () => {
             />
           }
           showsVerticalScrollIndicator={false}
-          initialNumToRender={8}
-          windowSize={9}
-          maxToRenderPerBatch={10}
+          initialNumToRender={30}
+          windowSize={15}
+          maxToRenderPerBatch={30}
           removeClippedSubviews={Platform.OS === 'android'}
         />
       </Animated.View>
