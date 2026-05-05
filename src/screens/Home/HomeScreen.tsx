@@ -2157,6 +2157,18 @@ const HomeScreen: React.FC = () => {
   const alertSlideAnim = useRef(new Animated.Value(-120)).current;
   const announcementModalScale = useRef(new Animated.Value(0.9)).current;
 
+  // Join Movement animation refs
+  const pulseRing1 = useRef(new Animated.Value(0)).current;
+  const pulseRing2 = useRef(new Animated.Value(0)).current;
+  const pulseRing3 = useRef(new Animated.Value(0)).current;
+  const joinGlow = useRef(new Animated.Value(0.4)).current;
+  const joinFloat1 = useRef(new Animated.Value(0)).current;
+  const joinFloat2 = useRef(new Animated.Value(0)).current;
+  const joinFloat3 = useRef(new Animated.Value(0)).current;
+  const joinFloat4 = useRef(new Animated.Value(0)).current;
+  const joinFloat5 = useRef(new Animated.Value(0)).current;
+  const joinScale = useRef(new Animated.Value(1)).current;
+
   // Auto-rotate hero
   useEffect(() => {
     const id = setInterval(() => {
@@ -2191,6 +2203,48 @@ const HomeScreen: React.FC = () => {
       announcementModalScale.setValue(0.9);
     }
   }, [showAnnouncementModal, announcementModalScale]);
+
+  // Join Movement animations
+  useEffect(() => {
+    const makeRing = (anim: Animated.Value, delay: number) =>
+      Animated.loop(
+        Animated.sequence([
+          Animated.delay(delay),
+          Animated.timing(anim, { toValue: 1, duration: 2200, easing: Easing.out(Easing.ease), useNativeDriver: true }),
+          Animated.timing(anim, { toValue: 0, duration: 0, useNativeDriver: true }),
+        ])
+      );
+    const makeFloat = (anim: Animated.Value, delay: number) =>
+      Animated.loop(
+        Animated.sequence([
+          Animated.delay(delay),
+          Animated.timing(anim, { toValue: 1, duration: 2800 + delay * 0.3, easing: Easing.inOut(Easing.sin), useNativeDriver: true }),
+          Animated.timing(anim, { toValue: 0, duration: 2800 + delay * 0.3, easing: Easing.inOut(Easing.sin), useNativeDriver: true }),
+        ])
+      );
+    const glowLoop = Animated.loop(
+      Animated.sequence([
+        Animated.timing(joinGlow, { toValue: 1, duration: 1600, easing: Easing.inOut(Easing.sin), useNativeDriver: true }),
+        Animated.timing(joinGlow, { toValue: 0.4, duration: 1600, easing: Easing.inOut(Easing.sin), useNativeDriver: true }),
+      ])
+    );
+    const scaleLoop = Animated.loop(
+      Animated.sequence([
+        Animated.timing(joinScale, { toValue: 1.08, duration: 1400, easing: Easing.inOut(Easing.sin), useNativeDriver: true }),
+        Animated.timing(joinScale, { toValue: 1, duration: 1400, easing: Easing.inOut(Easing.sin), useNativeDriver: true }),
+      ])
+    );
+    makeRing(pulseRing1, 0).start();
+    makeRing(pulseRing2, 730).start();
+    makeRing(pulseRing3, 1460).start();
+    makeFloat(joinFloat1, 0).start();
+    makeFloat(joinFloat2, 400).start();
+    makeFloat(joinFloat3, 800).start();
+    makeFloat(joinFloat4, 200).start();
+    makeFloat(joinFloat5, 600).start();
+    glowLoop.start();
+    scaleLoop.start();
+  }, [pulseRing1, pulseRing2, pulseRing3, joinGlow, joinFloat1, joinFloat2, joinFloat3, joinFloat4, joinFloat5, joinScale]);
 
   // ------ Event reminder countdown ------
   const getCountdownLabel = useCallback((rawDate: string): string => {
@@ -2776,6 +2830,97 @@ const HomeScreen: React.FC = () => {
       })}
     </View>
   );
+
+  const renderJoinMovement = () => {
+    const PARTICLES = [
+      { anim: joinFloat1, x: 28, color: '#00FF88', size: 5 },
+      { anim: joinFloat2, x: 62, color: '#00D4FF', size: 4 },
+      { anim: joinFloat3, x: 82, color: '#D4AF37', size: 6 },
+      { anim: joinFloat4, x: 14, color: '#00FFFF', size: 4 },
+      { anim: joinFloat5, x: 90, color: '#00FF88', size: 3 },
+    ] as const;
+
+    const makeRingStyle = (anim: Animated.Value, size: number) => ({
+      width: size,
+      height: size,
+      borderRadius: size / 2,
+      position: 'absolute' as const,
+      borderWidth: 1.5,
+      borderColor: '#00FF88',
+      opacity: anim.interpolate({ inputRange: [0, 0.5, 1], outputRange: [0.7, 0.3, 0] }),
+      transform: [{ scale: anim.interpolate({ inputRange: [0, 1], outputRange: [0.4, 1] }) }],
+    });
+
+    return (
+      <View style={styles.joinBlock}>
+        <LinearGradient
+          colors={['#020D07', '#041A0E', '#020D07']}
+          style={styles.joinGradient}
+        >
+          {/* Floating particles */}
+          {PARTICLES.map((p, i) => (
+            <Animated.View
+              key={i}
+              style={[
+                styles.joinParticle,
+                {
+                  left: `${p.x}%` as any,
+                  width: p.size,
+                  height: p.size,
+                  borderRadius: p.size / 2,
+                  backgroundColor: p.color,
+                  transform: [{
+                    translateY: p.anim.interpolate({ inputRange: [0, 1], outputRange: [0, -22] }),
+                  }],
+                  opacity: p.anim.interpolate({ inputRange: [0, 0.5, 1], outputRange: [0.3, 0.9, 0.3] }),
+                },
+              ]}
+            />
+          ))}
+
+          {/* Glowing ring system */}
+          <View style={styles.joinRingWrap}>
+            <Animated.View style={makeRingStyle(pulseRing1, 200)} />
+            <Animated.View style={makeRingStyle(pulseRing2, 160)} />
+            <Animated.View style={makeRingStyle(pulseRing3, 120)} />
+
+            {/* Core icon */}
+            <Animated.View style={[styles.joinIconCore, { transform: [{ scale: joinScale }] }]}>
+              <Animated.View style={[styles.joinIconGlow, { opacity: joinGlow }]} />
+              <Text style={styles.joinIconEmoji}>🌿</Text>
+            </Animated.View>
+          </View>
+
+          {/* Text */}
+          <Animated.Text style={[styles.joinTitle, { opacity: joinGlow.interpolate({ inputRange: [0.4, 1], outputRange: [0.85, 1] }) }]}>
+            Join the Movement
+          </Animated.Text>
+          <Text style={styles.joinSubtitle}>
+            210+ students. 6 wings. 1 mission.{'\n'}Plant often. Build things. Show up.
+          </Text>
+
+          {/* CTA */}
+          <TouchableOpacity
+            activeOpacity={0.85}
+            onPress={() => Linking.openURL('https://www.taruguardians.club')}
+            style={styles.joinBtn}
+          >
+            <LinearGradient
+              colors={['#00FF88', '#00D4FF']}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 0 }}
+              style={styles.joinBtnGrad}
+            >
+              <Text style={styles.joinBtnText}>Apply Now →</Text>
+            </LinearGradient>
+          </TouchableOpacity>
+
+          {/* Bottom label */}
+          <Text style={styles.joinMeta}>Open to all HIT students · No experience needed</Text>
+        </LinearGradient>
+      </View>
+    );
+  };
 
   const renderNewsletter = () => (
     <View style={styles.newsletterBlock}>
@@ -4659,6 +4804,7 @@ const HomeScreen: React.FC = () => {
         {renderTimeline()}
         {renderPledges()}
         {renderFAQ()}
+        {renderJoinMovement()}
         {renderNewsletter()}
         {renderShareBand()}
         {renderFooter()}
@@ -4933,6 +5079,67 @@ const styles = StyleSheet.create({
   faqQuestion: { color: Colors.text.primary, fontSize: 13, fontWeight: '700', flex: 1 },
   faqToggle: { color: Colors.tech.neonBlue, fontSize: 18, fontWeight: '900', marginLeft: 8 },
   faqAnswer: { color: Colors.text.secondary, fontSize: 12, lineHeight: 17, marginTop: 8 },
+
+  // Join Movement
+  joinBlock: { paddingHorizontal: HORIZONTAL_PADDING, paddingTop: 28 },
+  joinGradient: {
+    borderRadius: CARD_RADIUS,
+    paddingHorizontal: 20,
+    paddingTop: 48,
+    paddingBottom: 28,
+    alignItems: 'center',
+    overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: '#00FF8822',
+  },
+  joinParticle: {
+    position: 'absolute',
+    top: 30,
+  },
+  joinRingWrap: {
+    width: 200,
+    height: 200,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 24,
+  },
+  joinIconCore: {
+    width: 72,
+    height: 72,
+    borderRadius: 36,
+    backgroundColor: '#00FF8811',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1.5,
+    borderColor: '#00FF8844',
+  },
+  joinIconGlow: {
+    position: 'absolute',
+    width: 72,
+    height: 72,
+    borderRadius: 36,
+    backgroundColor: '#00FF8822',
+  },
+  joinIconEmoji: { fontSize: 32 },
+  joinTitle: {
+    color: '#FFFFFF',
+    fontSize: 28,
+    fontWeight: '900',
+    textAlign: 'center',
+    letterSpacing: -0.5,
+    marginBottom: 10,
+  },
+  joinSubtitle: {
+    color: 'rgba(255,255,255,0.6)',
+    fontSize: 13,
+    textAlign: 'center',
+    lineHeight: 20,
+    marginBottom: 28,
+  },
+  joinBtn: { borderRadius: 16, overflow: 'hidden', marginBottom: 14 },
+  joinBtnGrad: { paddingHorizontal: 36, paddingVertical: 14 },
+  joinBtnText: { color: '#000', fontWeight: '900', fontSize: 15, letterSpacing: 0.3 },
+  joinMeta: { color: 'rgba(255,255,255,0.35)', fontSize: 11, textAlign: 'center' },
 
   // Newsletter
   newsletterBlock: { paddingHorizontal: HORIZONTAL_PADDING, paddingTop: 28 },
