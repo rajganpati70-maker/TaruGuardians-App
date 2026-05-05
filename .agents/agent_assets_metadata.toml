@@ -12,3 +12,15 @@ id = "jVTB9tHM5DsYxJGNPzz8b"
 uri = "file://assets/icon.png"
 type = "image"
 title = "Taru Guardians — App Icon (Final)"
+
+[[outputs]]
+id = "6Hj8H_9YqRTKxgr7naEkV"
+uri = "file://screenshots/splash.jpg"
+type = "image"
+title = "Splash Screen — Hex grid + Energy Vortex + INITIALISING"
+
+[[outputs]]
+id = "Id_s6KnpaQ5UoC1JyMvnM"
+uri = "file://screenshots/home.jpg"
+type = "image"
+title = "Home Screen — Events + Stats + Bottom Navigation"
