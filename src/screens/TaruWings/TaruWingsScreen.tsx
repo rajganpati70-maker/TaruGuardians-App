@@ -1979,21 +1979,6 @@ const TaruWingsScreen: React.FC = () => {
             </View>
           </View>
           <Text style={styles.detailDesc}>{w.description}</Text>
-          <Text style={styles.detailPhilosophy}>\"{w.philosophy}\"</Text>
-          <View style={styles.metricsRow}>
-            {METRICS.map((metric) => (
-              <View
-                key={metric.id}
-                style={[styles.metricCard, { borderColor: metric.color + '55' }]}
-              >
-                <Text style={styles.metricIcon}>{metric.icon}</Text>
-                <Text style={[styles.metricValue, { color: metric.color }]}>
-                  {metric.value(w)}
-                </Text>
-                <Text style={styles.metricLabel}>{metric.label}</Text>
-              </View>
-            ))}
-          </View>
         </LinearGradient>
       </View>
     );
@@ -3744,50 +3729,6 @@ const TaruWingsScreen: React.FC = () => {
       }
     >
       {renderWingDetailHeader()}
-      {renderToolsBlock()}
-      {renderWingToolsBlock()}
-      {renderWingCraftDrillsBlock()}
-      {renderWingOutputPromisesBlock()}
-      {renderOKRsBlock()}
-      {renderGrowthPathBlock()}
-      {renderOnrampBlock()}
-      {renderPlaybookBlock()}
-      {renderTemplatesBlock()}
-      {renderOpenRoles()}
-      {renderProjectsBlock()}
-      {renderShipLogBlock()}
-      {renderGearBlock()}
-      {renderFeedbackNormsBlock()}
-      {renderWingRetroSignalsBlock()}
-      {renderRetroBlock()}
-      {renderCollabBlock()}
-      {renderWingCollabRitualsBlock()}
-      {renderWingBrotherWingsBlock()}
-      {renderWingGreenCommitmentsBlock()}
-      {renderAwardsBlock()}
-      {renderShowcaseBlock()}
-      {renderEventsBlock()}
-      {renderRitualsBlock()}
-      {renderCirclesBlock()}
-      {renderLearningBlock()}
-      {renderWingCraftBooksBlock()}
-      {renderWingReferencesBlock()}
-      {renderWingElderLoopsBlock()}
-      {renderDirectoryBlock()}
-      {renderWingFirstShippedBlock()}
-      {renderJournalBlock()}
-      {renderWingExitPathsBlock()}
-      {renderWingRitualCadencesBlock()}
-      {renderWingDecisionLogsBlock()}
-      {renderWingCallOfDutiesBlock()}
-      {renderWingPortfolioBriefsBlock()}
-      {renderWingApprenticeshipTracksBlock()}
-      {renderWingMasterclassesBlock()}
-      {renderWingStudyGroupsBlock()}
-      {renderWingWeeklyPulsesBlock()}
-      {renderWingProjectStagesBlock()}
-      {renderWingLifecycleRitesBlock()}
-      {renderWingExitGiftsBlock()}
       {renderMembersBlock()}
     </ScrollView>
   );
