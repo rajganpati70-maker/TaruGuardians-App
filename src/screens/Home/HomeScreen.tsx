@@ -606,8 +606,8 @@ interface FAQ {
 const FAQ_ITEMS: FAQ[] = [
   {
     id: 'f-1',
-    q: 'I\'m a first-year. Can I join mid-semester?',
-    a: 'Yes. We onboard continuously. Apply, tell us what you care about, and the nearest wing head reaches out in 3 working days.',
+    q: 'I am first year, can I join TaruGuardians?',
+    a: 'Yes, you can absolutely join! We recruit 90% from first year.',
   },
   {
     id: 'f-2',
@@ -627,7 +627,7 @@ const FAQ_ITEMS: FAQ[] = [
   {
     id: 'f-5',
     q: 'Is there a cost?',
-    a: 'Membership is free. Some offsite events (treks, photo walks, travel) are paid at cost and subsidised for need-based members.',
+    a: 'Yes, some events are paid but they are at minimal cost. Most of them are free for everyone.',
   },
 ];
 
