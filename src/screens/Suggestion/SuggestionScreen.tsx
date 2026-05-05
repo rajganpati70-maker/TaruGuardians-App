@@ -29,8 +29,11 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Colors } from '../../constants/colors';
 import { Suggestion, SuggestionCategory } from '../../types/navigation';
+
+const MY_SUGGESTIONS_KEY = 'taru_my_suggestions_v1';
 
 // -----------------------------------------------------
 // Responsive + design tokens
@@ -1993,6 +1996,7 @@ const SuggestionScreen: React.FC = () => {
   const [showSuccessCard, setShowSuccessCard] = useState(false);
   const [lastSubmitted, setLastSubmitted] = useState<ExtSuggestion | null>(null);
   const [userSubmissions, setUserSubmissions] = useState<ExtSuggestion[]>([]);
+  const [storageLoaded, setStorageLoaded] = useState(false);
 
   // animations
   const headerAnim = useRef(new Animated.Value(0)).current;
@@ -2034,6 +2038,30 @@ const SuggestionScreen: React.FC = () => {
     const t = setTimeout(() => setLoading(false), 600);
     return () => clearTimeout(t);
   }, [headerAnim, statsAnim, chipAnim, listAnim]);
+
+  // Load saved submissions from storage on mount
+  useEffect(() => {
+    AsyncStorage.getItem(MY_SUGGESTIONS_KEY)
+      .then((raw) => {
+        if (raw) {
+          const saved: ExtSuggestion[] = JSON.parse(raw);
+          setUserSubmissions(saved);
+          setSuggestions((prev) => {
+            const existingIds = new Set(prev.map((s) => s.id));
+            const newOnes = saved.filter((s) => !existingIds.has(s.id));
+            return [...newOnes, ...prev];
+          });
+        }
+      })
+      .catch(() => {})
+      .finally(() => setStorageLoaded(true));
+  }, []);
+
+  // Persist submissions whenever they change (after initial load)
+  useEffect(() => {
+    if (!storageLoaded) return;
+    AsyncStorage.setItem(MY_SUGGESTIONS_KEY, JSON.stringify(userSubmissions)).catch(() => {});
+  }, [userSubmissions, storageLoaded]);
 
   useEffect(() => {
     const target = showDetailModal || showSubmitModal;
@@ -2835,6 +2863,59 @@ const SuggestionScreen: React.FC = () => {
       </View>
     );
   };
+
+  const renderMySubmissions = () => (
+    <View style={styles.mySubsSection}>
+      <LinearGradient
+        colors={['#0D2818', '#0A1F12']}
+        style={styles.mySubsGradient}
+      >
+        <View style={styles.mySubsHeader}>
+          <View style={styles.mySubsTitleRow}>
+            <View style={styles.mySubsDot} />
+            <Text style={styles.mySubsTitle}>My Suggestions</Text>
+            <View style={styles.mySubsCountBadge}>
+              <Text style={styles.mySubsCount}>{userSubmissions.length}</Text>
+            </View>
+          </View>
+          <Text style={styles.mySubsSub}>Saved across sessions</Text>
+        </View>
+
+        {userSubmissions.map((item) => {
+          const cat = SUGGESTION_CATEGORIES.find((c) => c.id === item.category);
+          const status = STATUS_META[item.status];
+          return (
+            <Pressable
+              key={item.id}
+              onPress={() => openDetail(item)}
+              style={styles.mySubsCard}
+            >
+              <View style={[styles.mySubsAccent, { backgroundColor: cat?.color ?? '#22C55E' }]} />
+              <View style={styles.mySubsCardBody}>
+                <View style={styles.mySubsCardTop}>
+                  <Text style={[styles.mySubsCatLabel, { color: cat?.color ?? '#22C55E' }]}>
+                    {cat?.icon} {cat?.name}
+                  </Text>
+                  <View style={[styles.mySubsStatusPill, { backgroundColor: status.color + '22' }]}>
+                    <Text style={[styles.mySubsStatusText, { color: status.color }]}>
+                      {status.icon} {status.label}
+                    </Text>
+                  </View>
+                </View>
+                <Text style={styles.mySubsCardTitle} numberOfLines={1}>
+                  {item.title}
+                </Text>
+                <View style={styles.mySubsCardMeta}>
+                  <Text style={styles.mySubsCardDate}>📅 {item.submittedAt}</Text>
+                  <Text style={styles.mySubsCardVotes}>▲ {item.votedCount}</Text>
+                </View>
+              </View>
+            </Pressable>
+          );
+        })}
+      </LinearGradient>
+    </View>
+  );
 
   const renderListHeader = () => (
     <View style={styles.listHeaderRow}>
@@ -4374,6 +4455,7 @@ const SuggestionScreen: React.FC = () => {
       {renderDiscarded()}
       {renderDecisionJournal()}
       {renderQuarterlyRetro()}
+      {userSubmissions.length > 0 && renderMySubmissions()}
       {renderListHeader()}
     </View>
   );
@@ -5883,6 +5965,111 @@ const styles = StyleSheet.create({
   successDismissText: {
     color: Colors.text.secondary,
     fontSize: 14,
+    fontWeight: '700',
+  },
+
+  // ── My Suggestions section ─────────────────────────
+  mySubsSection: {
+    marginHorizontal: 18,
+    marginBottom: 20,
+    borderRadius: 18,
+    overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: '#22C55E33',
+  },
+  mySubsGradient: {
+    padding: 16,
+  },
+  mySubsHeader: {
+    marginBottom: 14,
+  },
+  mySubsTitleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    marginBottom: 3,
+  },
+  mySubsDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: '#22C55E',
+  },
+  mySubsTitle: {
+    fontSize: 15,
+    fontWeight: '800',
+    color: '#fff',
+  },
+  mySubsCountBadge: {
+    backgroundColor: '#22C55E',
+    borderRadius: 50,
+    paddingHorizontal: 7,
+    paddingVertical: 1,
+    minWidth: 22,
+    alignItems: 'center',
+  },
+  mySubsCount: {
+    fontSize: 11,
+    fontWeight: '800',
+    color: '#000',
+  },
+  mySubsSub: {
+    fontSize: 11,
+    color: 'rgba(255,255,255,0.35)',
+    marginLeft: 16,
+  },
+  mySubsCard: {
+    flexDirection: 'row',
+    backgroundColor: 'rgba(255,255,255,0.05)',
+    borderRadius: 12,
+    marginBottom: 8,
+    overflow: 'hidden',
+  },
+  mySubsAccent: {
+    width: 3,
+  },
+  mySubsCardBody: {
+    flex: 1,
+    padding: 12,
+    gap: 4,
+  },
+  mySubsCardTop: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 2,
+  },
+  mySubsCatLabel: {
+    fontSize: 10,
+    fontWeight: '700',
+    letterSpacing: 0.3,
+  },
+  mySubsStatusPill: {
+    borderRadius: 50,
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+  },
+  mySubsStatusText: {
+    fontSize: 10,
+    fontWeight: '700',
+  },
+  mySubsCardTitle: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: '#fff',
+  },
+  mySubsCardMeta: {
+    flexDirection: 'row',
+    gap: 12,
+    marginTop: 4,
+  },
+  mySubsCardDate: {
+    fontSize: 10,
+    color: 'rgba(255,255,255,0.35)',
+  },
+  mySubsCardVotes: {
+    fontSize: 10,
+    color: '#22C55E',
     fontWeight: '700',
   },
 });
