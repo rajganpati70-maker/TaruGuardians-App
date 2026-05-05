@@ -31,6 +31,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Colors } from '../../constants/colors';
 import { Alumni, AlumniStats } from '../../types/navigation';
 import PhotoAvatar from '../../components/PhotoAvatar';
+import InteractivePoll from '../../components/InteractivePoll';
 
 // -----------------------------------------------------
 // Responsive + design tokens
@@ -3453,33 +3454,11 @@ const AlumniScreen: React.FC = () => {
   const renderAlumniPolls = () => (
     <View style={styles.sectionBlock}>
       <View style={styles.sectionHeaderRow}>
-        <Text style={styles.sectionTitle}>📊 Alumni polls</Text>
-        <Text style={styles.sectionCaption}>Quarterly pulse</Text>
+        <Text style={styles.sectionTitle}>📊 Alumni Voice</Text>
+        <Text style={styles.sectionCaption}>Tap to vote · quarterly pulse</Text>
       </View>
       {ALUMNI_POLLS.map((p) => (
-        <View key={p.id} style={styles.pollCard}>
-          <View style={styles.pollHeaderRow}>
-            <Text style={styles.pollQuestion} numberOfLines={3}>{p.question}</Text>
-            <Text style={styles.pollTotal}>{p.total} voted · {p.finishedAt}</Text>
-          </View>
-          {p.answers.map((a) => (
-            <View key={a.label} style={styles.pollRow}>
-              <View style={styles.pollLabelRow}>
-                <Text style={styles.pollLabel} numberOfLines={2}>{a.label}</Text>
-                <Text style={[styles.pollPct, { color: a.color }]}>{a.pct}%</Text>
-              </View>
-              <View style={styles.pollTrack}>
-                <View
-                  style={[
-                    styles.pollFill,
-                    { width: `${a.pct}%`, backgroundColor: a.color },
-                  ]}
-                />
-              </View>
-            </View>
-          ))}
-          <Text style={styles.pollCommentary}>{p.commentary}</Text>
-        </View>
+        <InteractivePoll key={p.id} poll={p} />
       ))}
     </View>
   );
