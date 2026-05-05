@@ -69,47 +69,39 @@ interface HeroSlide {
 const HERO_SLIDES: HeroSlide[] = [
   {
     id: 'hero-1',
-    eyebrow: '🌿 TARU GUARDIANS',
-    title: 'A tech club\nrooted in nature.',
-    subtitle:
-      'Sustainability × engineering × culture. Ship small. Plant often. Show up for each other.',
-    ctaLabel: 'See this week\'s events',
+    eyebrow: '🏆 UPCOMING EVENT',
+    title: 'Treasure Hunt 2.0',
+    subtitle: 'Sun 18 May 2026 · 10:00 AM · HIT Haldia Campus. A campus-wide hunt with clues, challenges, and team tasks. Put your minds together and race to the finish!',
+    ctaLabel: 'See event details →',
+    ctaTarget: 'EventsTab',
     gradient: ['#042F1A', '#0A3F2A', '#0C5540'],
   },
   {
     id: 'hero-2',
-    eyebrow: '🌱 SUSTAINABILITY DRIVE',
-    title: '12,000 saplings,\n6 semesters.',
-    subtitle:
-      '74% survival rate across 3 urban campuses. Curated with native species only.',
-    ctaLabel: 'Open impact dashboard',
-    gradient: ['#053049', '#064B6E', '#0B6B8F'],
+    eyebrow: '🎨 WORKSHOP',
+    title: 'Figma Craft 3.0',
+    subtitle: 'Upcoming · HIT Haldia Campus. Learn to build real products in Figma — from wireframes to high-fidelity prototypes. Open to all skill levels.',
+    ctaLabel: 'View details →',
+    ctaTarget: 'EventsTab',
+    gradient: ['#2A0E3C', '#401458', '#5C1E7A'],
   },
   {
     id: 'hero-3',
-    eyebrow: '🧠 TECH FOR GOOD',
-    title: 'Build tools,\nnot noise.',
-    subtitle:
-      'We build small utilities for real people — no dashboards nobody reads, no hype trains.',
-    ctaLabel: 'Browse open issues',
-    gradient: ['#1C1038', '#2C1A58', '#3F2474'],
+    eyebrow: '🎉 COLLEGE FEST',
+    title: 'Rivera College Fest\nApplication is Open',
+    subtitle: 'Applications are now open for Rivera College Fest. Represent Taru Guardians, showcase your talent, and make memories that last.',
+    ctaLabel: 'Apply now →',
+    ctaTarget: 'EventsTab',
+    gradient: ['#3A1207', '#5A1E0E', '#7A291A'],
   },
   {
     id: 'hero-4',
-    eyebrow: '🫶 COMMUNITY',
-    title: 'Kindness scales.\nChaos doesn\'t.',
-    subtitle:
-      'An honest, drama-free space to grow. Office hours, mentor circles, Friday no-laptop rituals.',
-    ctaLabel: 'Find a mentor',
-    gradient: ['#3A1240', '#531750', '#79266D'],
-  },
-  {
-    id: 'hero-5',
-    eyebrow: '🎉 FLAGSHIP',
-    title: 'Taru Fest 2026\nis close.',
-    subtitle: 'Four days. Six wings. One unforgettable weekend of building + learning + celebrating.',
-    ctaLabel: 'Reserve your spot',
-    gradient: ['#571607', '#7A1F0E', '#A3291A'],
+    eyebrow: '🌿 JOIN US',
+    title: 'Taru Guardians\nIs Now Recruiting',
+    subtitle: 'We are looking for passionate members across all 6 wings — Content, Tech, Design, Video, Photo & PR. Come build, create, and grow with us.',
+    ctaLabel: 'Join the club →',
+    ctaTarget: 'TaruWingsTab',
+    gradient: ['#053049', '#064B6E', '#0B6B8F'],
   },
 ];
 
@@ -127,12 +119,9 @@ interface HomeStatCard {
 }
 
 const STATS: HomeStatCard[] = [
-  { id: 'members', label: 'Members', value: '210+', caption: 'Across 6 wings', icon: '🧑‍🤝‍🧑', color: '#38BDF8' },
-  { id: 'events', label: 'Events', value: '148', caption: 'All time', icon: '📅', color: '#4ADE80' },
-  { id: 'alumni', label: 'Alumni', value: '520+', caption: 'Giving back', icon: '🎓', color: '#FBBF24' },
-  { id: 'trees', label: 'Trees', value: '12,400', caption: 'Planted, 74% alive', icon: '🌳', color: '#22C55E' },
-  { id: 'shipped', label: 'Projects', value: '46', caption: 'Shipped, not shelved', icon: '🚀', color: '#A78BFA' },
-  { id: 'hours', label: 'Hours', value: '38k+', caption: 'Volunteered', icon: '⏱', color: '#F472B6' },
+  { id: 'members', label: 'Members', value: '67', caption: 'Across 6 wings', icon: '🧑‍🤝‍🧑', color: '#38BDF8' },
+  { id: 'events', label: 'Events', value: '28', caption: 'All time', icon: '📅', color: '#4ADE80' },
+  { id: 'alumni', label: 'Alumni', value: '150+', caption: 'Giving back', icon: '🎓', color: '#FBBF24' },
 ];
 
 // -----------------------------------------------------
@@ -368,33 +357,33 @@ interface Spotlight {
 const SPOTLIGHTS: Spotlight[] = [
   {
     id: 'sp-1',
-    name: 'Ananya Pillai',
-    role: 'Wing Lead · Content',
-    department: 'Content Wing',
-    tagline: 'Good writing is rewriting. We ship stories that actually get read.',
-    emoji: '✍️',
-    avatar: 'https://i.pravatar.cc/150?img=47',
-    color: '#F59E0B',
+    name: 'Prakash Kumar',
+    role: 'President',
+    department: 'Leadership',
+    tagline: 'Every tree we plant is a promise we keep.',
+    emoji: '🏛️',
+    avatar: '🏛️',
+    color: '#FFD700',
   },
   {
     id: 'sp-2',
-    name: 'Vivaan Shetty',
-    role: 'Wing Lead · Web/App',
+    name: 'Aashish Kishore',
+    role: 'Tech Head · Lead',
     department: 'Technology Wing',
-    tagline: 'Small tools, real impact. Ship it, then improve it.',
+    tagline: 'Ship it. Then make it better.',
     emoji: '💻',
-    avatar: 'https://i.pravatar.cc/150?img=12',
+    avatar: '💻',
     color: '#00D4FF',
   },
   {
     id: 'sp-3',
-    name: 'Ishita Kalra',
-    role: 'Wing Lead · Graphic Design',
-    department: 'Design Wing',
-    tagline: 'One unified visual language. Every pixel tells the club\'s story.',
-    emoji: '🎨',
-    avatar: 'https://i.pravatar.cc/150?img=32',
-    color: '#F472B6',
+    name: 'Hrithik Bhadani',
+    role: 'Event & Management Head',
+    department: 'Events Wing',
+    tagline: 'Great events look easy. They aren\'t.',
+    emoji: '🎪',
+    avatar: '🎪',
+    color: '#F97316',
   },
 ];
 
@@ -413,37 +402,37 @@ interface Testimonial {
 const TESTIMONIALS: Testimonial[] = [
   {
     id: 't-1',
-    name: 'Ganpati Raj',
-    role: '1st-year · HIT Haldia',
-    body: 'Mai first year me aaya tha toh laga ki sirf tree plant krte hain — but nahi, mai galat tha. Ye best club hai HIT ka jo tech aur non-tech dono karwata hai.',
-    avatarColor: '#22C55E',
-  },
-  {
-    id: 't-2',
-    name: 'Priya Sharma',
-    role: '2nd-year · Technology Wing',
-    body: 'Itna acha club maine HIT me nahi dekha. Seniors bahut supportive hain, aur yahan real projects milte hain — bas naam ke liye nahi.',
+    name: 'Ankish',
+    role: 'Member · HIT Haldia',
+    body: 'Mai first year me aaya tha toh laga ki ye sirf tree plant krta hai — but nahi, mai galat tha. Ye best club HIT ka hai jo tech aur non-tech dono karwata hai.',
     avatarColor: '#38BDF8',
   },
   {
+    id: 't-2',
+    name: 'Ganpati Raj',
+    role: 'Member · HIT Haldia',
+    body: 'Esse best club maine HIT me nahi dekha jaha senior ka aisa effect ho. Club bhi bahut acha hai — dono cheez saath milti hain.',
+    avatarColor: '#22C55E',
+  },
+  {
     id: 't-3',
-    name: 'Rohit Banerjee',
-    role: '2nd-year · Content Wing',
-    body: 'Pehle socha tha bas events attend krunga. Ab mai khud events plan kr rha hoon. Seniors ne jo trust diya, usne sab badal diya.',
+    name: 'Kumar Aniket',
+    role: 'Member · HIT Haldia',
+    body: 'Seniors bahut supportive hain — aur they support in every manner, from fights to studies. 😄 Genuine log hain yahan.',
     avatarColor: '#F59E0B',
   },
   {
     id: 't-4',
-    name: 'Sneha Das',
-    role: '3rd-year · Design Wing',
-    body: 'Har wing me kuch naya seekhne ko milta hai. Figma Craft ke baad mujhe actual freelance projects mile — Taru Guardians ka hi result hai.',
+    name: 'Piyush',
+    role: 'Member · HIT Haldia',
+    body: 'Ye best club hai. Recently Treasure Hunt krwaya tha — one of the best experiences of my life. Aisa event pehle nahi dekha tha.',
     avatarColor: '#F472B6',
   },
   {
     id: 't-5',
-    name: 'Arjun Mondal',
-    role: '1st-year · Events Wing',
-    body: 'Quiz-O-Mania me participate kiya, next year organize kiya. Iss club me growth real hai — koi drama nahi, bas kaam aur mazaa.',
+    name: 'Soumyodeep',
+    role: 'Member · HIT Haldia',
+    body: 'Mereko laga tha ye sirf tree plant krta hai — but nahi. Ye single club hai HIT ka jiska apna app aur website dono hain. That says it all.',
     avatarColor: '#A78BFA',
   },
 ];
@@ -2433,8 +2422,14 @@ const HomeScreen: React.FC = () => {
         <Text style={styles.heroEyebrow}>{item.eyebrow}</Text>
         <Text style={styles.heroTitle}>{item.title}</Text>
         <Text style={styles.heroSubtitle}>{item.subtitle}</Text>
-        <TouchableOpacity activeOpacity={0.85} style={styles.heroCta}>
-          <Text style={styles.heroCtaText}>{item.ctaLabel}  →</Text>
+        <TouchableOpacity
+          activeOpacity={0.85}
+          style={styles.heroCta}
+          onPress={() => {
+            if (item.ctaTarget) navigation.navigate(item.ctaTarget);
+          }}
+        >
+          <Text style={styles.heroCtaText}>{item.ctaLabel}</Text>
         </TouchableOpacity>
       </LinearGradient>
     </View>
@@ -2619,7 +2614,7 @@ const HomeScreen: React.FC = () => {
         decelerationRate="fast"
         contentContainerStyle={styles.eventScroll}
       >
-        {FEATURED_EVENTS.map((e) => {
+        {FEATURED_EVENTS.filter((e) => !e.priceLabel.includes('Completed')).map((e) => {
           const pct = e.seats.taken / e.seats.total;
           return (
             <TouchableOpacity
@@ -2667,6 +2662,51 @@ const HomeScreen: React.FC = () => {
     </View>
   );
 
+  const renderJoinUsBanner = () => (
+    <View style={styles.joinBannerWrap}>
+      <LinearGradient
+        colors={['#042F1A', '#0A3F2A', '#0C5540']}
+        style={styles.joinBannerGrad}
+        start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
+      >
+        {/* Decorative blobs */}
+        <View style={styles.joinBlob1} />
+        <View style={styles.joinBlob2} />
+
+        <View style={styles.joinBannerInner}>
+          <Text style={styles.joinEyebrow}>🌿 NOW RECRUITING</Text>
+          <Text style={styles.joinTitle}>Become a{'\n'}Taru Guardian</Text>
+          <Text style={styles.joinSubtitle}>
+            6 wings · Tech · Content · Design · Video · Photo · PR.
+            Real work. Real impact. Zero drama.
+          </Text>
+
+          <View style={styles.joinPillsRow}>
+            {['Open to all years', 'Free to join', '3-day response'].map((p) => (
+              <View key={p} style={styles.joinPill}>
+                <Text style={styles.joinPillText}>✓ {p}</Text>
+              </View>
+            ))}
+          </View>
+
+          <TouchableOpacity
+            style={styles.joinCta}
+            onPress={() => navigation.navigate('JoinUs')}
+            activeOpacity={0.88}
+          >
+            <LinearGradient
+              colors={['#00D4FF', '#0066FF']}
+              style={styles.joinCtaGrad}
+              start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
+            >
+              <Text style={styles.joinCtaText}>Apply now →</Text>
+            </LinearGradient>
+          </TouchableOpacity>
+        </View>
+      </LinearGradient>
+    </View>
+  );
+
   const renderSpotlights = () => (
     <View style={styles.sectionBlock}>
       <View style={styles.sectionHeaderRow}>
@@ -2680,8 +2720,8 @@ const HomeScreen: React.FC = () => {
               colors={[s.color + '33', '#0A0F14']}
               style={styles.spotlightGradient}
             >
-              <View style={[styles.spotlightAvatar, { borderColor: s.color + '88', borderWidth: 2 }]}>
-                <Image source={{ uri: s.avatar }} style={styles.spotlightImage} />
+              <View style={[styles.spotlightAvatar, { borderColor: s.color + '88', borderWidth: 2, backgroundColor: s.color + '22' }]}>
+                <Text style={styles.spotlightAvatarEmoji}>{s.avatar}</Text>
               </View>
               <Text style={styles.spotlightName}>{s.name}</Text>
               <Text style={styles.spotlightRole}>{s.role}</Text>
@@ -4739,62 +4779,13 @@ const HomeScreen: React.FC = () => {
         {renderEventReminder()}
         {renderHero()}
         {renderStats()}
-        {renderWeatherStrip()}
-        {renderWeeklyFocus()}
-        {renderQuickWins()}
         {renderQuickActions()}
-        {renderAnnouncements()}
         {renderFeaturedEvents()}
-        {renderCampusCal()}
-        {renderCampusRituals()}
-        {renderMorningPulses()}
-        {renderQuietHours()}
-        {renderSaplingPrograms()}
-        {renderPlantingDiary()}
-        {renderVolunteerSlots()}
-        {renderMentorHours()}
-        {renderRecommendedReads()}
-        {renderEcoHabits()}
-        {renderGuardianHabits()}
-        {renderTrails()}
-        {renderSeasonMoments()}
-        {renderQuarterGoals()}
-        {renderImpactRegions()}
-        {renderWorkshops()}
         {renderLearningPaths()}
-        {renderSavingsLedger()}
-        {renderDailyRituals()}
-        {renderCommunityShouts()}
         {renderImpactDashboard()}
-        {renderCarbonSavings()}
-        {renderPledgeStreaks()}
         {renderScoreboard()}
-        {renderWeeklyDigest()}
-        {renderMemberHighlights()}
-        {renderLocalHeroes()}
-        {renderGratitudeWall()}
-        {renderGuardianCovenants()}
-        {renderDailyBeacons()}
-        {renderSeasonalRituals()}
-        {renderCampusGroves()}
-        {renderKindlingKits()}
-        {renderQuietWins()}
-        {renderFounderNotes()}
-        {renderDawnRituals()}
-        {renderDuskRituals()}
-        {renderHomeClubAnthem()}
-        {renderHomeDailyHabits()}
-        {renderHomeWeeklyRituals()}
-        {renderHomeMonthlyMoments()}
-        {renderMicroMoments()}
-        {renderSimplePractices()}
-        {renderKindnessLedger()}
+        {renderQuickWins()}
         {renderSpotlights()}
-        {renderCollab()}
-        {renderClubValues()}
-        {renderValues()}
-        {renderNorms()}
-        {renderLiveFeed()}
         {renderTestimonials()}
         {renderGallery()}
         {renderBadges()}
@@ -4808,6 +4799,7 @@ const HomeScreen: React.FC = () => {
         {renderNewsletter()}
         {renderShareBand()}
         {renderFooter()}
+        {renderJoinUsBanner()}
       </ScrollView>
       {renderEventModal()}
       {renderAnnouncementModal()}
@@ -5000,6 +4992,50 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   spotlightImage: { width: 64, height: 64, borderRadius: 32 },
+  spotlightAvatarEmoji: { fontSize: 32, textAlign: 'center' },
+
+  // --- Join Us Banner ---
+  joinBannerWrap: {
+    marginHorizontal: HORIZONTAL_PADDING,
+    marginTop: 24,
+    marginBottom: 32,
+    borderRadius: CARD_RADIUS + 4,
+    overflow: 'hidden',
+  },
+  joinBannerGrad: { padding: 28, position: 'relative', overflow: 'hidden' },
+  joinBlob1: {
+    position: 'absolute', top: -40, right: -40,
+    width: 160, height: 160, borderRadius: 80,
+    backgroundColor: '#00D4FF', opacity: 0.08,
+  },
+  joinBlob2: {
+    position: 'absolute', bottom: -30, left: -30,
+    width: 120, height: 120, borderRadius: 60,
+    backgroundColor: '#22C55E', opacity: 0.1,
+  },
+  joinBannerInner: { position: 'relative', zIndex: 1 },
+  joinEyebrow: {
+    fontSize: 11, color: '#4ADE80', fontWeight: '900',
+    letterSpacing: 2.5, marginBottom: 8,
+  },
+  joinTitle: {
+    fontSize: 34, color: '#fff', fontWeight: '900',
+    lineHeight: 40, marginBottom: 10,
+  },
+  joinSubtitle: {
+    fontSize: 13, color: 'rgba(255,255,255,0.6)',
+    lineHeight: 20, marginBottom: 18,
+  },
+  joinPillsRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginBottom: 22 },
+  joinPill: {
+    backgroundColor: 'rgba(255,255,255,0.1)',
+    borderRadius: 20, paddingVertical: 5, paddingHorizontal: 12,
+    borderWidth: 1, borderColor: 'rgba(255,255,255,0.15)',
+  },
+  joinPillText: { color: '#4ADE80', fontSize: 11, fontWeight: '700' },
+  joinCta: { borderRadius: 16, overflow: 'hidden', alignSelf: 'flex-start' },
+  joinCtaGrad: { paddingVertical: 14, paddingHorizontal: 28 },
+  joinCtaText: { color: '#fff', fontSize: 15, fontWeight: '900', letterSpacing: 0.3 },
   spotlightEmoji: { fontSize: 24 },
   spotlightName: { color: Colors.text.primary, fontSize: 14, fontWeight: '800' },
   spotlightRole: { color: Colors.accent.softGold, fontSize: 12, marginTop: 2, fontWeight: '700' },

@@ -6,6 +6,15 @@ import { Animated } from 'react-native';
 import { NavigatorScreenParams } from '@react-navigation/native';
 
 // =====================================================
+// ROOT STACK NAVIGATION PARAMETERS
+// =====================================================
+
+export type RootStackParamList = {
+  MainTabs: undefined;
+  JoinUs: undefined;
+};
+
+// =====================================================
 // BOTTOM TAB NAVIGATION PARAMETERS
 // =====================================================
 
