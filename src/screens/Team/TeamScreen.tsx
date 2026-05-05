@@ -26,6 +26,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
+import PhotoAvatar from '../../components/PhotoAvatar';
 import { Colors } from '../../constants/colors';
 import { TeamMember, Department, Project } from '../../types/navigation';
 import type { TextStyle } from 'react-native';
@@ -660,14 +661,13 @@ const TeamScreen: React.FC = () => {
                     style={styles.leaderGradient}
                   >
                     <View style={styles.leaderAvatarRow}>
-                      <LinearGradient
-                        colors={[dept?.color ?? '#FFD700', '#F59E0B']}
-                        style={[styles.leaderAvatar, { width: LEAD_AVATAR, height: LEAD_AVATAR, borderRadius: LEAD_AVATAR / 2 }]}
-                      >
-                        <Text style={styles.leaderAvatarText}>
-                          {m.name.split(' ').map((p) => p[0]).slice(0, 2).join('').toUpperCase()}
-                        </Text>
-                      </LinearGradient>
+                      <PhotoAvatar
+                        name={m.name}
+                        color={dept?.color ?? '#FFD700'}
+                        size="lg"
+                        isFeatured={m.tier === 'lead'}
+                        showParticles
+                      />
                     </View>
                     <HighlightText text={m.name} query={searchQuery} style={styles.leaderName} numberOfLines={1} />
                     <HighlightText text={m.role} query={searchQuery} style={styles.leaderRole} numberOfLines={1} />
@@ -732,16 +732,12 @@ const TeamScreen: React.FC = () => {
             style={styles.cardGradient}
           >
             <View style={styles.cardAvatarRow}>
-              <View
-                style={[
-                  styles.cardAvatar,
-                  { backgroundColor: (dept?.color ?? Colors.tech.neonBlue) + '33' },
-                ]}
-              >
-                <Text style={styles.cardAvatarText}>
-                  {item.name.split(' ').map((p) => p[0]).slice(0, 2).join('').toUpperCase()}
-                </Text>
-              </View>
+              <PhotoAvatar
+                name={item.name}
+                color={dept?.color ?? Colors.tech.neonBlue}
+                size="md"
+                isFeatured={item.tier === 'lead'}
+              />
               <View style={[styles.tierBadge, { backgroundColor: '#38BDF833', borderColor: '#38BDF8' }]}>
                 <Text style={[styles.tierBadgeText, { color: '#38BDF8' }]}>⭐ Lead</Text>
               </View>
@@ -797,16 +793,12 @@ const TeamScreen: React.FC = () => {
           style={styles.cardInner}
         >
           <View style={styles.listCardInnerRow}>
-            <View
-              style={[
-                styles.listAvatar,
-                { backgroundColor: (dept?.color ?? Colors.tech.neonBlue) + '33' },
-              ]}
-            >
-              <Text style={styles.listAvatarText}>
-                {item.name.split(' ').map((p) => p[0]).slice(0, 2).join('').toUpperCase()}
-              </Text>
-            </View>
+            <PhotoAvatar
+              name={item.name}
+              color={dept?.color ?? Colors.tech.neonBlue}
+              size="sm"
+              containerStyle={{ marginRight: 12 }}
+            />
             <View style={{ flex: 1 }}>
               <HighlightText text={item.name} query={searchQuery} style={styles.listName} />
               <HighlightText
@@ -903,14 +895,13 @@ const TeamScreen: React.FC = () => {
               </View>
 
               <View style={styles.modalAvatarWrap}>
-                <LinearGradient
-                  colors={[dept?.color ?? Colors.tech.neonBlue, '#0A0F14']}
-                  style={styles.modalAvatar}
-                >
-                  <Text style={styles.modalAvatarText}>
-                    {m.name.split(' ').map((p) => p[0]).slice(0, 2).join('').toUpperCase()}
-                  </Text>
-                </LinearGradient>
+                <PhotoAvatar
+                  name={m.name}
+                  color={dept?.color ?? Colors.tech.neonBlue}
+                  size="xl"
+                  isFeatured={m.tier === 'lead'}
+                  showParticles
+                />
               </View>
 
               <Text style={styles.modalTitle}>{m.name}</Text>

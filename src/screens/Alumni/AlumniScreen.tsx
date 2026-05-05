@@ -30,6 +30,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Colors } from '../../constants/colors';
 import { Alumni, AlumniStats } from '../../types/navigation';
+import PhotoAvatar from '../../components/PhotoAvatar';
 
 // -----------------------------------------------------
 // Responsive + design tokens
@@ -2420,18 +2421,14 @@ const AlumniScreen: React.FC = () => {
                 style={styles.hofGradient}
               >
                 <View style={styles.hofTopRow}>
-                  <View
-                    style={[
-                      styles.avatar,
-                      {
-                        backgroundColor:
-                          (SECTORS.find((s) => s.id === a.sector)?.color ?? Colors.tech.neonBlue) +
-                          '33',
-                      },
-                    ]}
-                  >
-                    <Text style={styles.avatarText}>{a.name.charAt(0)}</Text>
-                  </View>
+                  <PhotoAvatar
+                    name={a.name}
+                    color={SECTORS.find((s) => s.id === a.sector)?.color ?? Colors.tech.neonBlue}
+                    size="md"
+                    isMentor={a.mentor}
+                    isFeatured={a.featured}
+                    containerStyle={{ marginRight: 12 }}
+                  />
                   <View style={{ flex: 1 }}>
                     <Text style={styles.hofName} numberOfLines={1}>
                       {a.name}
@@ -3022,9 +3019,14 @@ const AlumniScreen: React.FC = () => {
               end={{ x: 1, y: 1 }}
               style={styles.alumniGradient}
             >
-              <View style={[styles.avatar, { backgroundColor: c + '33' }]}>
-                <Text style={styles.avatarText}>{item.name.charAt(0)}</Text>
-              </View>
+              <PhotoAvatar
+                name={item.name}
+                color={c}
+                size="md"
+                isMentor={item.mentor}
+                isFeatured={item.featured}
+                containerStyle={{ marginRight: 12 }}
+              />
               <View style={styles.alumniMeta}>
                 <View style={styles.alumniMetaRow}>
                   <Text style={styles.alumniName} numberOfLines={1}>
@@ -3059,9 +3061,14 @@ const AlumniScreen: React.FC = () => {
           style={styles.gridInner}
         >
           <LinearGradient colors={[c + '22', '#0A0F14']} style={styles.gridGradient}>
-            <View style={[styles.avatarLarge, { backgroundColor: c + '44' }]}>
-              <Text style={styles.avatarLargeText}>{item.name.charAt(0)}</Text>
-            </View>
+            <PhotoAvatar
+              name={item.name}
+              color={c}
+              size="lg"
+              isMentor={item.mentor}
+              isFeatured={item.featured}
+              containerStyle={{ marginBottom: 6 }}
+            />
             <Text style={styles.gridName} numberOfLines={1}>
               {item.name}
             </Text>
@@ -3096,7 +3103,7 @@ const AlumniScreen: React.FC = () => {
     <View>
       {[1, 2, 3, 4].map((i) => (
         <View key={i} style={[styles.alumniCard, styles.skeletonCard]}>
-          <View style={styles.skeletonAvatar} />
+          <PhotoAvatar name="Loading" color="#334155" size="md" containerStyle={{ marginRight: 12 }} />
           <View style={{ flex: 1 }}>
             <View style={[styles.skeletonLine, { width: '55%' }]} />
             <View style={[styles.skeletonLine, { width: '80%' }]} />
@@ -3146,9 +3153,15 @@ const AlumniScreen: React.FC = () => {
               style={styles.modalHero}
             >
               <View style={styles.modalHeroRow}>
-                <View style={[styles.avatarHero, { backgroundColor: c + '55' }]}>
-                  <Text style={styles.avatarHeroText}>{a.name.charAt(0)}</Text>
-                </View>
+                <PhotoAvatar
+                  name={a.name}
+                  color={c}
+                  size="xl"
+                  isMentor={a.mentor}
+                  isFeatured={a.featured}
+                  showParticles
+                  containerStyle={{ marginRight: 16 }}
+                />
                 <View style={{ flex: 1 }}>
                   <Text style={styles.modalName}>{a.name}</Text>
                   <Text style={styles.modalCurrent}>{a.currentRole}</Text>
@@ -4226,58 +4239,8 @@ const AlumniScreen: React.FC = () => {
   const headerComponent = (
     <View>
       {renderHeader()}
-      {renderSectorRail()}
-      {renderBatchRail()}
       {renderHallOfFame()}
-      {renderLegacyLines()}
-      {renderStoryBeats()}
-      {renderTestimonials()}
-      {renderFirstJobs()}
-      {renderTopCompanies()}
-      {renderAlumniVentures()}
-      {renderChapters()}
-      {renderMeetups()}
-      {renderReunions()}
-      {renderFiresides()}
-      {renderMentorBoard()}
-      {renderAdvisors()}
-      {renderFamilyHeritage()}
-      {renderAMA()}
-      {renderAlumniKnowledge()}
-      {renderMentorshipSlots()}
-      {renderCareerPivots()}
-      {renderCompanyReferrals()}
-      {renderCareerGrants()}
-      {renderRelocationGrants()}
-      {renderScholarships()}
-      {renderAlumniCare()}
-      {renderAlumniAwards()}
-      {renderLegacyProjects()}
-      {renderGivingLedger()}
       {renderAlumniPolls()}
-      {renderDiaspora()}
-      {renderPublications()}
-      {renderPledges()}
-      {renderSignOffs()}
-      {renderAlumniMentorPods()}
-      {renderAlumniCheckpoints()}
-      {renderAlumniReturnPrograms()}
-      {renderAlumniHonourList()}
-      {renderAlumniLettersHome()}
-      {renderAlumniRegionCircles()}
-      {renderAlumniCraftArchives()}
-      {renderAlumniCareerLetters()}
-      {renderAlumniVillageFunds()}
-      {renderAlumniLineages()}
-      {renderAlumniAdvisoryTracks()}
-      {renderAlumniRemembered()}
-      {renderAlumniHomecomings()}
-      {renderAlumniTraditions()}
-      {renderAlumniGrovePlots()}
-      {renderAlumniChapterCities()}
-      {renderAlumniHelpLedger()}
-      {renderAlumniReunionFormats()}
-      {renderAlumniLetterBox()}
       {renderAlumniListHeader()}
     </View>
   );
