@@ -1990,6 +1990,9 @@ const SuggestionScreen: React.FC = () => {
   const [formTags, setFormTags] = useState<string[]>([]);
   const [formTagInput, setFormTagInput] = useState('');
   const [submitting, setSubmitting] = useState(false);
+  const [showSuccessCard, setShowSuccessCard] = useState(false);
+  const [lastSubmitted, setLastSubmitted] = useState<ExtSuggestion | null>(null);
+  const [userSubmissions, setUserSubmissions] = useState<ExtSuggestion[]>([]);
 
   // animations
   const headerAnim = useRef(new Animated.Value(0)).current;
@@ -2097,6 +2100,12 @@ const SuggestionScreen: React.FC = () => {
     selectedStatus !== 'all' ||
     selectedPriority !== 'all' ||
     searchQuery.trim().length > 0;
+
+  const displayData = useMemo(() => {
+    const userIds = new Set(userSubmissions.map((s) => s.id));
+    const rest = filtered.filter((s) => !userIds.has(s.id)).slice(-3);
+    return [...userSubmissions, ...rest];
+  }, [userSubmissions, filtered]);
 
   // -------------- Handlers ---------------
   const onRefresh = useCallback(() => {
@@ -2206,12 +2215,11 @@ const SuggestionScreen: React.FC = () => {
         tags: formTags.length > 0 ? formTags : ['new'],
       };
       setSuggestions((prev) => [newSuggestion, ...prev]);
+      setUserSubmissions((prev) => [newSuggestion, ...prev]);
+      setLastSubmitted(newSuggestion);
       setSubmitting(false);
       closeSubmit();
-      Alert.alert(
-        'Submitted',
-        'Thanks! Your suggestion is now live. Council will review within 14 days.'
-      );
+      setShowSuccessCard(true);
     }, 700);
   }, [
     formCategory,
@@ -4384,7 +4392,7 @@ const SuggestionScreen: React.FC = () => {
         </ScrollView>
       ) : (
         <FlatList
-          data={filtered.slice(-3)}
+          data={displayData}
           keyExtractor={(item) => item.id}
           renderItem={renderCard}
           contentContainerStyle={styles.listContent}
@@ -4407,6 +4415,42 @@ const SuggestionScreen: React.FC = () => {
       {renderDetailModal()}
       {renderSubmitModal()}
       {renderSortSheet()}
+
+      <Modal
+        visible={showSuccessCard}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setShowSuccessCard(false)}
+      >
+        <View style={styles.successBackdrop}>
+          <View style={styles.successCard}>
+            <View style={styles.successIconCircle}>
+              <Text style={styles.successIconText}>✓</Text>
+            </View>
+            <Text style={styles.successHeading}>Suggestion submitted!</Text>
+            <Text style={styles.successTitle} numberOfLines={3}>
+              {lastSubmitted?.title}
+            </Text>
+            <Text style={styles.successSub}>
+              Council will review within 14 days.
+            </Text>
+            <View style={styles.successActions}>
+              <TouchableOpacity
+                style={styles.successViewBtn}
+                onPress={() => setShowSuccessCard(false)}
+              >
+                <Text style={styles.successViewText}>View in list</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.successDismissBtn}
+                onPress={() => setShowSuccessCard(false)}
+              >
+                <Text style={styles.successDismissText}>Dismiss</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 };
@@ -5755,6 +5799,92 @@ const styles = StyleSheet.create({
   sflSuggestion: { color: Colors.text.primary, fontSize: 12, fontWeight: '900', flex: 1, lineHeight: 16 },
   sflUpdate: { fontSize: 11, fontWeight: '700', marginTop: 8, paddingLeft: 32, lineHeight: 15 },
   sflResponse: { color: Colors.text.secondary, fontSize: 11, lineHeight: 16, marginTop: 4, paddingLeft: 32, fontStyle: 'italic' },
+
+  // --- Success card ---
+  successBackdrop: {
+    flex: 1,
+    backgroundColor: '#000000CC',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 28,
+  },
+  successCard: {
+    backgroundColor: '#0D1F2D',
+    borderRadius: 24,
+    padding: 28,
+    width: '100%',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#22C55E44',
+  },
+  successIconCircle: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    backgroundColor: '#22C55E22',
+    borderWidth: 2,
+    borderColor: '#22C55E',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 16,
+  },
+  successIconText: {
+    fontSize: 30,
+    color: '#22C55E',
+    fontWeight: '900',
+  },
+  successHeading: {
+    color: '#22C55E',
+    fontSize: 18,
+    fontWeight: '900',
+    marginBottom: 10,
+    textAlign: 'center',
+  },
+  successTitle: {
+    color: Colors.text.primary,
+    fontSize: 15,
+    fontWeight: '700',
+    textAlign: 'center',
+    lineHeight: 22,
+    marginBottom: 10,
+  },
+  successSub: {
+    color: Colors.text.muted,
+    fontSize: 12,
+    textAlign: 'center',
+    marginBottom: 24,
+  },
+  successActions: {
+    flexDirection: 'row',
+    gap: 12,
+    width: '100%',
+  },
+  successViewBtn: {
+    flex: 1,
+    backgroundColor: '#22C55E',
+    borderRadius: 12,
+    paddingVertical: 13,
+    alignItems: 'center',
+  },
+  successViewText: {
+    color: '#000',
+    fontSize: 14,
+    fontWeight: '800',
+  },
+  successDismissBtn: {
+    flex: 1,
+    backgroundColor: '#ffffff14',
+    borderRadius: 12,
+    paddingVertical: 13,
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#ffffff22',
+  },
+  successDismissText: {
+    color: Colors.text.secondary,
+    fontSize: 14,
+    fontWeight: '700',
+  },
 });
 
 export default SuggestionScreen;
