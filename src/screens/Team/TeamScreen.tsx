@@ -28,6 +28,36 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Colors } from '../../constants/colors';
 import { TeamMember, Department, Project } from '../../types/navigation';
+import type { TextStyle } from 'react-native';
+
+// -----------------------------------------------------
+// HighlightText — wraps matched search text in a glow
+// -----------------------------------------------------
+const HighlightText: React.FC<{
+  text: string;
+  query: string;
+  style: TextStyle | TextStyle[];
+  numberOfLines?: number;
+}> = ({ text, query, style, numberOfLines }) => {
+  if (!query.trim()) {
+    return <Text style={style} numberOfLines={numberOfLines}>{text}</Text>;
+  }
+  const q = query.trim().toLowerCase();
+  const idx = text.toLowerCase().indexOf(q);
+  if (idx === -1) {
+    return <Text style={style} numberOfLines={numberOfLines}>{text}</Text>;
+  }
+  const before = text.slice(0, idx);
+  const match = text.slice(idx, idx + q.length);
+  const after = text.slice(idx + q.length);
+  return (
+    <Text style={style} numberOfLines={numberOfLines}>
+      {before}
+      <Text style={styles.highlightMatch}>{match}</Text>
+      {after}
+    </Text>
+  );
+};
 
 // -----------------------------------------------------
 // Tokens
@@ -658,8 +688,8 @@ const TeamScreen: React.FC = () => {
                         </Text>
                       </LinearGradient>
                     </View>
-                    <Text style={styles.leaderName} numberOfLines={1}>{m.name}</Text>
-                    <Text style={styles.leaderRole} numberOfLines={1}>{m.role}</Text>
+                    <HighlightText text={m.name} query={searchQuery} style={styles.leaderName} numberOfLines={1} />
+                    <HighlightText text={m.role} query={searchQuery} style={styles.leaderRole} numberOfLines={1} />
                     {m.tagline ? (
                       <Text style={styles.leaderTagline} numberOfLines={2}>"{m.tagline}"</Text>
                     ) : null}
@@ -736,8 +766,8 @@ const TeamScreen: React.FC = () => {
               </View>
             </View>
 
-            <Text style={styles.cardName} numberOfLines={1}>{item.name}</Text>
-            <Text style={styles.cardRole} numberOfLines={1}>{item.role}</Text>
+            <HighlightText text={item.name} query={searchQuery} style={styles.cardName} numberOfLines={1} />
+            <HighlightText text={item.role} query={searchQuery} style={styles.cardRole} numberOfLines={1} />
             <Text style={styles.cardDept} numberOfLines={1}>
               {dept?.icon} {dept?.name}
             </Text>
@@ -797,10 +827,13 @@ const TeamScreen: React.FC = () => {
               </Text>
             </View>
             <View style={{ flex: 1 }}>
-              <Text style={styles.listName}>{item.name}</Text>
-              <Text style={styles.listRole} numberOfLines={1}>
-                {item.role} · {dept?.name}
-              </Text>
+              <HighlightText text={item.name} query={searchQuery} style={styles.listName} />
+              <HighlightText
+                text={`${item.role} · ${dept?.name ?? ''}`}
+                query={searchQuery}
+                style={styles.listRole}
+                numberOfLines={1}
+              />
               <Text style={styles.listBio} numberOfLines={2}>{item.bio}</Text>
             </View>
             <View style={{ alignItems: 'flex-end' }}>
@@ -1135,6 +1168,12 @@ const TeamScreen: React.FC = () => {
 // =====================================================
 
 const styles = StyleSheet.create({
+  highlightMatch: {
+    backgroundColor: '#FBBF2444',
+    color: '#FBBF24',
+    borderRadius: 3,
+    fontWeight: '800',
+  },
   container: { flex: 1, backgroundColor: Colors.background.deepBlack },
   scrollRoot: { flex: 1 },
   listContent: { paddingBottom: 100 },
