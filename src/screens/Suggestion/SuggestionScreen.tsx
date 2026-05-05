@@ -4358,43 +4358,14 @@ const SuggestionScreen: React.FC = () => {
       {renderReturnSignals()}
       {renderVelocity()}
       {renderVoterWeights()}
-      {renderDecisionRights()}
-      {renderGuardrails()}
       {renderEscalation()}
       {renderStageTips()}
       {renderMonthlyDigest()}
       {renderTracking()}
       {renderShippedWins()}
-      {renderCases()}
       {renderDiscarded()}
       {renderDecisionJournal()}
-      {renderDisagreeLog()}
       {renderQuarterlyRetro()}
-      {renderOwnershipMap()}
-      {renderFeedbackLoops()}
-      {renderFeedbackLoop()}
-      {renderVoices()}
-      {renderTrustPromises()}
-      {renderRoadmap()}
-      {renderOpenCalls()}
-      {renderIntakeWindows()}
-      {renderCommitteePicks()}
-      {renderDesignPrinciples()}
-      {renderLifecycleStages()}
-      {renderReviewerDuties()}
-      {renderWorkedCases()}
-      {renderSuggPitchTemplates()}
-      {renderSuggDecisionGates()}
-      {renderSuggReviewerPrinciples()}
-      {renderSuggConflictPaths()}
-      {renderSuggCommCadences()}
-      {renderSuggPilotRecipes()}
-      {renderSuggImpactLedger()}
-      {renderSuggFollowUpRings()}
-      {renderSuggReviewWindows()}
-      {renderSuggResponseTemplates()}
-      {renderSuggHiddenPatterns()}
-      {renderSuggFollowupLetters()}
       {renderListHeader()}
     </View>
   );
@@ -4413,7 +4384,7 @@ const SuggestionScreen: React.FC = () => {
         </ScrollView>
       ) : (
         <FlatList
-          data={filtered}
+          data={filtered.slice(-3)}
           keyExtractor={(item) => item.id}
           renderItem={renderCard}
           contentContainerStyle={styles.listContent}
