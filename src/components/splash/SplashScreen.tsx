@@ -1036,71 +1036,308 @@ const passionStyles = StyleSheet.create({
 });
 
 // ─────────────────────────────────────────────
-// STATS ROW
+// SHORT CIRCUIT OVERLOAD EFFECT
+// Electric arcs · sparks · surge flash · overload
 // ─────────────────────────────────────────────
 
-const STATS = [
-  { value: '67+', label: 'Members' },
-  { value: '6', label: 'Wings' },
-  { value: '28', label: 'Events' },
-  { value: '150+', label: 'Alumni' },
-];
+// Generates a zigzag lightning bolt path as a series of small segments
+const makeBoltPoints = (
+  x1: number, y1: number,
+  x2: number, y2: number,
+  segments: number
+): { x: number; y: number }[] => {
+  const pts: { x: number; y: number }[] = [{ x: x1, y: y1 }];
+  const dx = (x2 - x1) / segments;
+  const dy = (y2 - y1) / segments;
+  for (let i = 1; i < segments; i++) {
+    const jitter = rand(-22, 22);
+    const isH = Math.abs(dx) > Math.abs(dy);
+    pts.push({
+      x: x1 + dx * i + (isH ? 0 : jitter),
+      y: y1 + dy * i + (isH ? jitter : 0),
+    });
+  }
+  pts.push({ x: x2, y: y2 });
+  return pts;
+};
 
-interface StatsRowProps {
-  anim: Animated.Value;
+// Single electric arc bolt
+interface ArcBoltProps {
+  x1: number; y1: number;
+  x2: number; y2: number;
+  color: string;
+  delay: number;
+  duration: number;
+  thickness: number;
 }
 
-const StatsRow: React.FC<StatsRowProps> = ({ anim }) => {
-  const translateY = anim.interpolate({
-    inputRange: [0, 1],
-    outputRange: [20, 0],
-  });
+const ArcBolt: React.FC<ArcBoltProps> = ({
+  x1, y1, x2, y2, color, delay, duration, thickness,
+}) => {
+  const opacity = useRef(new Animated.Value(0)).current;
+  const [pts] = useState(() => makeBoltPoints(x1, y1, x2, y2, randInt(6, 12)));
 
+  useEffect(() => {
+    const fire = () => {
+      const gap = randInt(600, 2200);
+      setTimeout(() => {
+        Animated.sequence([
+          Animated.timing(opacity, { toValue: rand(0.7, 1), duration: 30, useNativeDriver: true }),
+          Animated.timing(opacity, { toValue: rand(0.2, 0.5), duration: 40, useNativeDriver: true }),
+          Animated.timing(opacity, { toValue: rand(0.8, 1), duration: 25, useNativeDriver: true }),
+          Animated.timing(opacity, { toValue: 0, duration: duration, useNativeDriver: true }),
+        ]).start(() => fire());
+      }, gap);
+    };
+    const id = setTimeout(fire, delay);
+    return () => clearTimeout(id);
+  }, []);
+
+  // Render as a chain of small line segments between points
   return (
     <Animated.View
-      style={[statsStyles.container, { opacity: anim, transform: [{ translateY }] }]}
+      style={[StyleSheet.absoluteFillObject, { opacity }]}
       pointerEvents="none"
     >
-      {STATS.map((stat, i) => (
-        <View key={i} style={statsStyles.stat}>
-          <Text style={statsStyles.value}>{stat.value}</Text>
-          <Text style={statsStyles.label}>{stat.label}</Text>
-        </View>
-      ))}
+      {pts.slice(0, -1).map((pt, i) => {
+        const next = pts[i + 1];
+        const segW = Math.sqrt(Math.pow(next.x - pt.x, 2) + Math.pow(next.y - pt.y, 2));
+        const angle = Math.atan2(next.y - pt.y, next.x - pt.x) * (180 / Math.PI);
+        return (
+          <View
+            key={i}
+            style={{
+              position: 'absolute',
+              left: pt.x,
+              top: pt.y - thickness / 2,
+              width: segW,
+              height: thickness,
+              backgroundColor: color,
+              borderRadius: thickness,
+              transform: [{ rotate: `${angle}deg` }],
+              transformOrigin: '0% 50%',
+            } as any}
+          />
+        );
+      })}
+      {/* Spark at end point */}
+      <View
+        style={{
+          position: 'absolute',
+          left: x2 - 4,
+          top: y2 - 4,
+          width: 8,
+          height: 8,
+          borderRadius: 4,
+          backgroundColor: '#ffffff',
+        }}
+      />
     </Animated.View>
   );
 };
 
-const statsStyles = StyleSheet.create({
-  container: {
-    position: 'absolute',
-    bottom: H * 0.14,
-    left: 0,
-    right: 0,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: IS_SMALL ? 16 : 28,
-    paddingHorizontal: 24,
-  },
-  stat: {
-    alignItems: 'center',
-  },
-  value: {
-    fontSize: IS_SMALL ? 16 : IS_TABLET ? 24 : 18,
-    fontWeight: '900',
-    color: C.greenPrimary,
-    letterSpacing: 1,
-  },
-  label: {
-    fontSize: 9,
-    fontWeight: '600',
-    color: C.whiteMid,
-    letterSpacing: 2,
-    textTransform: 'uppercase',
-    marginTop: 2,
-  },
-});
+// Flying spark particle
+interface SparkProps {
+  ox: number; oy: number;
+  angle: number; speed: number;
+  color: string; delay: number;
+}
+
+const Spark: React.FC<SparkProps> = ({ ox, oy, angle, speed, color, delay }) => {
+  const tx = useRef(new Animated.Value(0)).current;
+  const ty = useRef(new Animated.Value(0)).current;
+  const opacity = useRef(new Animated.Value(0)).current;
+  const scale = useRef(new Animated.Value(1)).current;
+
+  const rad = (angle * Math.PI) / 180;
+  const destX = Math.cos(rad) * speed;
+  const destY = Math.sin(rad) * speed;
+
+  useEffect(() => {
+    const fire = () => {
+      tx.setValue(0); ty.setValue(0); scale.setValue(1);
+      const gap = randInt(800, 3000);
+      setTimeout(() => {
+        Animated.parallel([
+          Animated.sequence([
+            Animated.timing(opacity, { toValue: 1, duration: 40, useNativeDriver: true }),
+            Animated.timing(opacity, { toValue: 0, duration: 320, easing: Easing.out(Easing.quad), useNativeDriver: true }),
+          ]),
+          Animated.timing(tx, { toValue: destX, duration: 360, easing: Easing.out(Easing.quad), useNativeDriver: true }),
+          Animated.timing(ty, { toValue: destY, duration: 360, easing: Easing.out(Easing.quad), useNativeDriver: true }),
+          Animated.timing(scale, { toValue: 0.1, duration: 360, useNativeDriver: true }),
+        ]).start(() => fire());
+      }, gap);
+    };
+    const id = setTimeout(fire, delay);
+    return () => clearTimeout(id);
+  }, []);
+
+  return (
+    <Animated.View
+      style={{
+        position: 'absolute',
+        left: ox - 2,
+        top: oy - 2,
+        width: 4,
+        height: 4,
+        borderRadius: 2,
+        backgroundColor: color,
+        opacity,
+        transform: [{ translateX: tx }, { translateY: ty }, { scale }],
+      }}
+      pointerEvents="none"
+    />
+  );
+};
+
+// Full-screen surge flash
+interface SurgeFlashProps { trigger: Animated.Value }
+
+const SurgeFlash: React.FC<SurgeFlashProps> = ({ trigger }) => {
+  const opacity = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    const surge = () => {
+      const gap = randInt(1200, 3500);
+      setTimeout(() => {
+        Animated.sequence([
+          Animated.timing(opacity, { toValue: rand(0.06, 0.16), duration: 35, useNativeDriver: true }),
+          Animated.timing(opacity, { toValue: 0.01, duration: 50, useNativeDriver: true }),
+          Animated.timing(opacity, { toValue: rand(0.08, 0.2), duration: 30, useNativeDriver: true }),
+          Animated.timing(opacity, { toValue: 0, duration: 120, useNativeDriver: true }),
+        ]).start(() => surge());
+      }, gap);
+    };
+    surge();
+  }, []);
+
+  return (
+    <Animated.View
+      style={[StyleSheet.absoluteFillObject, { backgroundColor: '#d4ff00', opacity }]}
+      pointerEvents="none"
+    />
+  );
+};
+
+// Overloaded circuit node — a bright glowing dot that flickers
+interface OverloadNodeProps { x: number; y: number; color: string; delay: number }
+
+const OverloadNode: React.FC<OverloadNodeProps> = ({ x, y, color, delay }) => {
+  const opacity = useRef(new Animated.Value(0)).current;
+  const scale = useRef(new Animated.Value(1)).current;
+
+  useEffect(() => {
+    const id = setTimeout(() => {
+      Animated.loop(
+        Animated.sequence([
+          Animated.parallel([
+            Animated.timing(opacity, { toValue: rand(0.7, 1), duration: randInt(60, 140), useNativeDriver: true }),
+            Animated.timing(scale, { toValue: rand(1.2, 2.0), duration: randInt(60, 140), useNativeDriver: true }),
+          ]),
+          Animated.parallel([
+            Animated.timing(opacity, { toValue: rand(0.1, 0.4), duration: randInt(80, 200), useNativeDriver: true }),
+            Animated.timing(scale, { toValue: 1, duration: randInt(80, 200), useNativeDriver: true }),
+          ]),
+        ])
+      ).start();
+    }, delay);
+    return () => clearTimeout(id);
+  }, []);
+
+  return (
+    <Animated.View
+      style={{
+        position: 'absolute',
+        left: x - 5,
+        top: y - 5,
+        width: 10,
+        height: 10,
+        borderRadius: 5,
+        backgroundColor: color,
+        opacity,
+        transform: [{ scale }],
+      }}
+      pointerEvents="none"
+    />
+  );
+};
+
+// Master short-circuit assembly
+interface ShortCircuitProps { masterAnim: Animated.Value }
+
+const ShortCircuit: React.FC<ShortCircuitProps> = ({ masterAnim }) => {
+  // Static bolt configs — computed once
+  const bolts = useMemo<ArcBoltProps[]>(() => [
+    // Top-left cluster
+    { x1: 0,        y1: rand(H*0.1, H*0.3),  x2: rand(W*0.3, W*0.5), y2: rand(H*0.2, H*0.45), color: '#ffffff', delay: 0,    duration: 120, thickness: 2.5 },
+    { x1: rand(W*0.05,W*0.15), y1: rand(H*0.05,H*0.2), x2: rand(W*0.4,W*0.6), y2: rand(H*0.3,H*0.5), color: '#00e5ff', delay: 300,  duration: 90,  thickness: 1.5 },
+    // Right side
+    { x1: W,        y1: rand(H*0.2, H*0.4),  x2: rand(W*0.5, W*0.7), y2: rand(H*0.3, H*0.55), color: '#d4ff00', delay: 180,  duration: 100, thickness: 2 },
+    { x1: W,        y1: rand(H*0.5, H*0.7),  x2: rand(W*0.4, W*0.7), y2: rand(H*0.55, H*0.75), color: '#ffffff', delay: 600,  duration: 80,  thickness: 1.5 },
+    // Bottom cluster
+    { x1: rand(W*0.1,W*0.3), y1: H, x2: rand(W*0.3,W*0.55), y2: rand(H*0.6,H*0.8), color: '#ff6d00', delay: 400,  duration: 110, thickness: 2 },
+    { x1: rand(W*0.6,W*0.85), y1: H, x2: rand(W*0.45,W*0.65), y2: rand(H*0.65,H*0.85), color: '#00e5ff', delay: 750,  duration: 95,  thickness: 1.5 },
+    // Diagonal cross bolts
+    { x1: 0,        y1: H*0.6,  x2: W*0.45, y2: H*0.42, color: '#d4ff00', delay: 550,  duration: 130, thickness: 1.5 },
+    { x1: W,        y1: H*0.3,  x2: W*0.55, y2: H*0.48, color: '#ffffff', delay: 900,  duration: 85,  thickness: 2 },
+    // Short local arcs near logo
+    { x1: W*0.2, y1: H*0.42, x2: W*0.38, y2: H*0.36, color: '#00e5ff', delay: 1100, duration: 70, thickness: 1 },
+    { x1: W*0.8, y1: H*0.44, x2: W*0.62, y2: H*0.38, color: '#ffffff', delay: 1300, duration: 70, thickness: 1 },
+  ], []);
+
+  // Sparks bursting from hot nodes
+  const nodes = useMemo(() => [
+    { x: W * 0.18, y: H * 0.32 },
+    { x: W * 0.82, y: H * 0.28 },
+    { x: W * 0.12, y: H * 0.65 },
+    { x: W * 0.88, y: H * 0.62 },
+    { x: W * 0.50, y: H * 0.78 },
+    { x: W * 0.35, y: H * 0.22 },
+    { x: W * 0.65, y: H * 0.20 },
+  ], []);
+
+  const sparks = useMemo(() => {
+    const result: SparkProps[] = [];
+    nodes.forEach((node, ni) => {
+      for (let a = 0; a < 360; a += randInt(28, 48)) {
+        result.push({
+          ox: node.x, oy: node.y,
+          angle: a,
+          speed: rand(18, 55),
+          color: ni % 3 === 0 ? '#ffffff' : ni % 3 === 1 ? '#d4ff00' : '#00e5ff',
+          delay: randInt(0, 1800),
+        });
+      }
+    });
+    return result;
+  }, []);
+
+  const overloadNodes = useMemo(() => nodes.map((n, i) => ({
+    ...n,
+    color: i % 2 === 0 ? '#ffffff' : '#d4ff00',
+    delay: i * 120,
+  })), []);
+
+  return (
+    <Animated.View
+      style={[StyleSheet.absoluteFillObject, { opacity: masterAnim }]}
+      pointerEvents="none"
+    >
+      {/* Arc bolts */}
+      {bolts.map((b, i) => <ArcBolt key={`bolt-${i}`} {...b} />)}
+
+      {/* Flying sparks */}
+      {sparks.map((s, i) => <Spark key={`spark-${i}`} {...s} />)}
+
+      {/* Overloaded nodes */}
+      {overloadNodes.map((n, i) => <OverloadNode key={`node-${i}`} {...n} />)}
+
+      {/* Surge flash */}
+      <SurgeFlash trigger={masterAnim} />
+    </Animated.View>
+  );
+};
 
 // ─────────────────────────────────────────────
 // PROGRESS HUD
@@ -1611,11 +1848,11 @@ const SplashScreen: React.FC<SplashScreenProps> = ({
       }).start();
     });
 
-    // ── 5 000 ms: Stats row ──
+    // ── 4 800 ms: Short circuit overload ──
     t(T.statsStart, () => {
       Animated.timing(statsAnim, {
         toValue: 1,
-        duration: T.statsDur,
+        duration: 400,
         easing: ease.out,
         useNativeDriver: true,
       }).start();
@@ -1715,8 +1952,8 @@ const SplashScreen: React.FC<SplashScreenProps> = ({
       {/* ── 12. PASSION TAGLINE ── */}
       <PassionTagline masterAnim={passionAnim} />
 
-      {/* ── 13. STATS ── */}
-      <StatsRow anim={statsAnim} />
+      {/* ── 13. SHORT CIRCUIT OVERLOAD ── */}
+      <ShortCircuit masterAnim={statsAnim} />
 
       {/* ── 14. PROGRESS HUD ── */}
       <ProgressHUD
