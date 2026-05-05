@@ -1,9 +1,4 @@
-// =====================================================
-// ULTRA PREMIUM MAIN APP ENTRY POINT
-// WITH BOTTOM TAB NAVIGATION - 6 TABS
-// =====================================================
-
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { View, StyleSheet, StatusBar, Animated, Platform } from 'react-native';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -39,48 +34,40 @@ const linking = {
 };
 
 const App: React.FC = () => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [isSplashComplete, setIsSplashComplete] = useState(false);
-  const appOpacity = useState(new Animated.Value(0))[0];
+  const [splashDone, setSplashDone] = useState(false);
+  const appOpacity = useRef(new Animated.Value(0)).current;
 
   const handleSplashComplete = () => {
-    setIsLoading(false);
-    setIsSplashComplete(true);
+    setSplashDone(true);
     Animated.timing(appOpacity, {
       toValue: 1,
-      duration: 800,
+      duration: 700,
       useNativeDriver: true,
     }).start();
   };
 
-  useEffect(() => {
-    // Auto-trigger splash if not already complete
-    if (!isSplashComplete) {
-      const timer = setTimeout(() => {
-        handleSplashComplete();
-      }, 100);
-      return () => clearTimeout(timer);
-    }
-  }, []);
-
-  if (isLoading && !isSplashComplete) {
+  if (!splashDone) {
     return (
-      <View style={styles.container}>
-        <StatusBar barStyle="light-content" backgroundColor={Colors.background.deepBlack} />
-        <SplashScreen onComplete={handleSplashComplete} duration={3000} />
+      <View style={styles.root}>
+        <StatusBar
+          barStyle="light-content"
+          backgroundColor="#000000"
+          translucent={Platform.OS === 'android'}
+        />
+        <SplashScreen onComplete={handleSplashComplete} />
       </View>
     );
   }
 
   return (
-    <GestureHandlerRootView style={styles.container}>
+    <GestureHandlerRootView style={styles.root}>
       <NavigationContainer theme={CustomTheme} linking={linking}>
         <StatusBar
           barStyle="light-content"
           backgroundColor={Colors.background.deepBlack}
           translucent={Platform.OS === 'android'}
         />
-        <Animated.View style={[styles.container, { opacity: appOpacity }]}>
+        <Animated.View style={[styles.root, { opacity: appOpacity }]}>
           <AppNavigator />
         </Animated.View>
       </NavigationContainer>
@@ -89,9 +76,9 @@ const App: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
+  root: {
     flex: 1,
-    backgroundColor: Colors.background.deepBlack,
+    backgroundColor: '#000000',
   },
 });
 

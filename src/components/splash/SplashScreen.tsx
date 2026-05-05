@@ -1,1356 +1,1789 @@
 // =====================================================
-// TARU GUARDIANS — PREMIUM SPLASH ORCHESTRATION
-// Multi-stage boot sequence · nature × tech fusion
+// TARU GUARDIANS — ULTRA PREMIUM SPLASH SCREEN v3
+// Tech × Sustainability · "Turn Passion Into Purpose"
+// Self-contained · 7-second cinematic boot sequence
 // =====================================================
 
-import React, { useEffect, useMemo, useRef, useState, useCallback } from 'react';
+import React, {
+  useEffect,
+  useRef,
+  useState,
+  useCallback,
+  useMemo,
+} from 'react';
 import {
   View,
+  Text,
   Animated,
   StyleSheet,
   Dimensions,
   StatusBar,
-  Easing,
-  Text,
-  AccessibilityInfo,
   Platform,
+  Easing,
+  Image,
   Pressable,
 } from 'react-native';
-import { Colors, AnimationConfig } from '../../constants';
+import { LinearGradient } from 'expo-linear-gradient';
 
-// -----------------------------------------------------
-// Effect imports
-// -----------------------------------------------------
+// ─────────────────────────────────────────────
+// SCREEN DIMENSIONS
+// ─────────────────────────────────────────────
 
-import BackgroundGradient from './BackgroundGradient';
-import ParticleSystem from './ParticleSystem';
-import NeuralNetwork from './NeuralNetwork';
-import NatureElements from './NatureElements';
-import TechFusion from './TechFusion';
-import LogoReveal from './LogoReveal';
-import GlowEffects from './GlowEffects';
-import WaveformEffect from './WaveformEffect';
-import RingPulseEffect from './RingPulseEffect';
-import StarFieldEffect from './StarFieldEffect';
-import AdvancedParticleSystem from './AdvancedParticleSystem';
-import HolographicOverlay from './HolographicOverlay';
-import MorphingShapes from './MorphingShapes';
-import EnergyFlow from './EnergyFlow';
-import MatrixRainEffect from './MatrixRainEffect';
-import AuroraBorealisEffect from './AuroraBorealisEffect';
-import NebulaEffect from './NebulaEffect';
-import PlasmaField from './PlasmaField';
-import RippleEffect from './RippleEffect';
-import ScanlineEffect from './ScanlineEffect';
-import GeometricPattern from './GeometricPattern';
-import LightBeamEffect from './LightBeamEffect';
-import BioDigitalCoreEffect from './BioDigitalCoreEffect';
-import DigitalRainEffect from './DigitalRainEffect';
-import CosmicDustEffect from './CosmicDustEffect';
-import EnergyOrbsEffect from './EnergyOrbsEffect';
-import NebulaCloudsEffect from './NebulaCloudsEffect';
-import VortexEffect from './VortexEffect';
-import ChromaWaveEffect from './ChromaWaveEffect';
-import UltimateFusionEffect from './UltimateFusionEffect';
-import FallingLeavesEffect from './FallingLeavesEffect';
-import SunbeamsEffect from './SunbeamsEffect';
-import FirefliesEffect from './FirefliesEffect';
-import ForestSilhouetteEffect from './ForestSilhouetteEffect';
-import PetalDriftEffect from './PetalDriftEffect';
-import GentleRainEffect from './GentleRainEffect';
-import MistLayerEffect from './MistLayerEffect';
-import BirdsFlightEffect from './BirdsFlightEffect';
-import BloomBurstEffect from './BloomBurstEffect';
-import FernFrondEffect from './FernFrondEffect';
-import ConstellationEffect from './ConstellationEffect';
-import DewDropEffect from './DewDropEffect';
-import PollenDriftEffect from './PollenDriftEffect';
-import RiverRippleEffect from './RiverRippleEffect';
-import MoonGlowEffect from './MoonGlowEffect';
+const { width: W, height: H } = Dimensions.get('window');
+const IS_SMALL = W < 375;
+const IS_TABLET = W >= 768;
 
-const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
-const IS_SMALL = SCREEN_WIDTH < 375;
-const IS_TABLET = SCREEN_WIDTH >= 768;
+// ─────────────────────────────────────────────
+// DESIGN TOKENS
+// ─────────────────────────────────────────────
 
-// -----------------------------------------------------
-// Types
-// -----------------------------------------------------
-
-interface SplashScreenProps {
-  onComplete: () => void;
-  duration?: number;
-  allowSkip?: boolean;
-  variant?: 'full' | 'fast';
-}
-
-type StageKey =
-  | 'boot'
-  | 'cosmos'
-  | 'nature'
-  | 'tech'
-  | 'fusion'
-  | 'logo'
-  | 'brand'
-  | 'outro';
-
-interface StageBlueprint {
-  key: StageKey;
-  index: number;
-  durationMs: number;
-  eyebrow: string;
-  title: string;
-  subtitle: string;
-  accent: string;
-  progressFrom: number;
-  progressTo: number;
-  statusLines: string[];
-}
-
-// -----------------------------------------------------
-// Stage config — readable data over nested code
-// -----------------------------------------------------
-
-const STAGES: StageBlueprint[] = [
-  {
-    key: 'boot',
-    index: 0,
-    durationMs: 1400,
-    eyebrow: 'SYSTEM',
-    title: 'Waking up kindly.',
-    subtitle: 'Nothing flashy. Breathing the app in.',
-    accent: '#94A3B8',
-    progressFrom: 0,
-    progressTo: 12,
-    statusLines: [
-      'Warming up cold paths',
-      'Leasing local storage',
-      'Reading last known state',
-    ],
-  },
-  {
-    key: 'cosmos',
-    index: 1,
-    durationMs: 1400,
-    eyebrow: 'SKY',
-    title: 'Stars first. Then soil.',
-    subtitle: 'Listening to the network, the clock, the light.',
-    accent: '#6366F1',
-    progressFrom: 12,
-    progressTo: 26,
-    statusLines: [
-      'Calibrating starlight',
-      'Positioning nebulae',
-      'Sampling cosmic dust',
-    ],
-  },
-  {
-    key: 'nature',
-    index: 2,
-    durationMs: 1600,
-    eyebrow: 'ROOTS',
-    title: 'Roots waking.',
-    subtitle: 'Tiny motions. Slow greens. The club\'s first breath.',
-    accent: '#22C55E',
-    progressFrom: 26,
-    progressTo: 44,
-    statusLines: [
-      'Growing 12,000 saplings',
-      'Routing monsoon paths',
-      'Composing bird + breeze track',
-    ],
-  },
-  {
-    key: 'tech',
-    index: 3,
-    durationMs: 1500,
-    eyebrow: 'GRID',
-    title: 'The grid lights up.',
-    subtitle: 'Quiet, honest code. Drawing the neural lattice.',
-    accent: '#38BDF8',
-    progressFrom: 44,
-    progressTo: 62,
-    statusLines: [
-      'Linking neural mesh',
-      'Booting matrix rain',
-      'Settling holographic overlay',
-    ],
-  },
-  {
-    key: 'fusion',
-    index: 4,
-    durationMs: 1400,
-    eyebrow: 'FUSION',
-    title: 'Two halves. One club.',
-    subtitle: 'Sustainability × engineering × culture. No versus.',
-    accent: '#D4AF37',
-    progressFrom: 62,
-    progressTo: 80,
-    statusLines: [
-      'Weaving aurora into lattice',
-      'Aligning nature palette to tech grid',
-      'Priming fusion core',
-    ],
-  },
-  {
-    key: 'logo',
-    index: 5,
-    durationMs: 1300,
-    eyebrow: 'IDENTITY',
-    title: 'Taru Guardians.',
-    subtitle: 'A tech club rooted in nature.',
-    accent: '#D4AF37',
-    progressFrom: 80,
-    progressTo: 92,
-    statusLines: [
-      'Revealing mark',
-      'Anchoring typography',
-      'Holding still for a heartbeat',
-    ],
-  },
-  {
-    key: 'brand',
-    index: 6,
-    durationMs: 900,
-    eyebrow: 'GREETING',
-    title: 'Welcome back, guardian.',
-    subtitle: '6 wings. 210+ members. 12,400 trees. 520 alumni.',
-    accent: '#FBBF24',
-    progressFrom: 92,
-    progressTo: 98,
-    statusLines: [
-      'Preloading six wings',
-      'Inviting alumni shelf',
-      'Cueing first-light transition',
-    ],
-  },
-  {
-    key: 'outro',
-    index: 7,
-    durationMs: 1000,
-    eyebrow: 'BEGIN',
-    title: 'Stepping onto the floor.',
-    subtitle: 'Handing you the home tab. Mind the plants.',
-    accent: '#00D4FF',
-    progressFrom: 98,
-    progressTo: 100,
-    statusLines: [
-      'Warming bottom-tab bar',
-      'Dispatching to Home',
-      'Bye, splash.',
-    ],
-  },
-];
-
-const TOTAL_DURATION = STAGES.reduce((a, s) => a + s.durationMs, 0);
-
-// -----------------------------------------------------
-// Rotating nature + tech quotes
-// -----------------------------------------------------
-
-const QUOTES = [
-  {
-    text: 'The best time to plant a tree was 20 years ago. The second best is today.',
-    attribution: 'Chinese proverb · printed on our lanyards',
-  },
-  {
-    text: 'Build tools that stay useful after you graduate.',
-    attribution: 'The Taru handbook, page 4',
-  },
-  {
-    text: 'We don\'t ship hype. We ship pull-requests with kind reviewers.',
-    attribution: 'Web/App wing ethos',
-  },
-  {
-    text: 'A 74% survival rate isn\'t perfect. It\'s honest.',
-    attribution: '2025 sustainability audit',
-  },
-  {
-    text: 'Calm is a feature. Protect it.',
-    attribution: 'Club-wide retro, Feb 2025',
-  },
-  {
-    text: 'Show up for the Sunday digest. Even the week you don\'t feel like it.',
-    attribution: 'Content wing rituals',
-  },
-  {
-    text: 'Every event must be better for a first-year than a senior.',
-    attribution: 'Events wing covenant',
-  },
-  {
-    text: 'No laptop Fridays. Yes to warm tea and real talk.',
-    attribution: 'Old rule that became a new rule',
-  },
-];
-
-// -----------------------------------------------------
-// Config helpers
-// -----------------------------------------------------
-
-const getStageByTime = (elapsedMs: number): StageBlueprint => {
-  let acc = 0;
-  for (const s of STAGES) {
-    acc += s.durationMs;
-    if (elapsedMs < acc) return s;
-  }
-  return STAGES[STAGES.length - 1];
+const C = {
+  black: '#000000',
+  deepBlack: '#020409',
+  darkBg: '#060d12',
+  greenPrimary: '#00E676',
+  greenSoft: '#1de9b6',
+  greenDark: '#00c853',
+  greenGlow: '#00ff8844',
+  cyanBright: '#00e5ff',
+  cyanSoft: '#18ffff',
+  cyanGlow: '#00e5ff33',
+  tealAccent: '#1de9b6',
+  neonBlue: '#2979ff',
+  blueSoft: '#448aff',
+  whiteFull: '#ffffff',
+  whiteHigh: 'rgba(255,255,255,0.92)',
+  whiteMid: 'rgba(255,255,255,0.60)',
+  whiteLow: 'rgba(255,255,255,0.30)',
+  whiteGhost: 'rgba(255,255,255,0.10)',
+  greenParticle: 'rgba(0,230,118,0.85)',
+  cyanParticle: 'rgba(0,229,255,0.75)',
+  gridLine: 'rgba(0,230,118,0.08)',
+  gridLineBright: 'rgba(0,230,118,0.18)',
 };
 
-const getStageStart = (stage: StageBlueprint): number => {
-  let acc = 0;
-  for (const s of STAGES) {
-    if (s.key === stage.key) return acc;
-    acc += s.durationMs;
-  }
-  return 0;
+const LOGO = require('../../../assets/icon.png');
+
+// ─────────────────────────────────────────────
+// TIMING PLAN  (total ≈ 7 500 ms)
+// ─────────────────────────────────────────────
+
+const T = {
+  gridFadeIn: 400,
+  particlesBoot: 600,
+  circuitDraw: 800,
+  matrixStart: 1000,
+  logoRevealStart: 1600,
+  logoRevealDur: 900,
+  titleRevealStart: 2600,
+  titleRevealDur: 700,
+  taglineStart: 3400,
+  taglineDur: 900,
+  passionStart: 4200,
+  passionDur: 1100,
+  statsStart: 5000,
+  statsDur: 600,
+  holdStart: 5800,
+  outroStart: 6600,
+  outroDur: 900,
+  totalDur: 7500,
 };
 
-// Derived visibility rules — which effects are on per stage
-interface EffectVisibility {
-  backgroundGradient: boolean;
-  particleSystem: boolean;
-  starField: boolean;
-  glow: boolean;
-  cosmicDust: boolean;
-  nebulaClouds: boolean;
-  natureElements: boolean;
-  auroraBorealis: boolean;
-  waveform: boolean;
-  energyFlow: boolean;
-  neuralNetwork: boolean;
-  techFusion: boolean;
-  holographicOverlay: boolean;
-  advancedParticles: boolean;
-  morphingShapes: boolean;
-  matrixRain: boolean;
-  geometricPattern: boolean;
-  bioDigitalCore: boolean;
-  digitalRain: boolean;
-  energyOrbs: boolean;
-  chromaWave: boolean;
-  ultimateFusion: boolean;
-  lightBeam: boolean;
-  ripple: boolean;
-  nebula: boolean;
-  plasmaField: boolean;
-  ringPulse: boolean;
-  vortex: boolean;
-  logoReveal: boolean;
-  scanline: boolean;
-  // Nature layer
-  fallingLeaves: boolean;
-  sunbeams: boolean;
-  fireflies: boolean;
-  forestSilhouette: boolean;
-  petalDrift: boolean;
-  gentleRain: boolean;
-  mistLayer: boolean;
-  birdsFlight: boolean;
-  bloomBurst: boolean;
-  fernFrond: boolean;
-  constellation: boolean;
-  dewDrop: boolean;
-  pollenDrift: boolean;
-  riverRipple: boolean;
-  moonGlow: boolean;
-}
+// ─────────────────────────────────────────────
+// HELPERS
+// ─────────────────────────────────────────────
 
-const visibilityForStage = (key: StageKey): EffectVisibility => {
-  const base: EffectVisibility = {
-    backgroundGradient: true,
-    particleSystem: false,
-    starField: false,
-    glow: true,
-    cosmicDust: false,
-    nebulaClouds: false,
-    natureElements: false,
-    auroraBorealis: false,
-    waveform: false,
-    energyFlow: false,
-    neuralNetwork: false,
-    techFusion: false,
-    holographicOverlay: false,
-    advancedParticles: false,
-    morphingShapes: false,
-    matrixRain: false,
-    geometricPattern: false,
-    bioDigitalCore: false,
-    digitalRain: false,
-    energyOrbs: false,
-    chromaWave: false,
-    ultimateFusion: false,
-    lightBeam: false,
-    ripple: false,
-    nebula: false,
-    plasmaField: false,
-    ringPulse: false,
-    vortex: false,
-    logoReveal: false,
-    scanline: true,
-    fallingLeaves: false,
-    sunbeams: false,
-    fireflies: false,
-    forestSilhouette: false,
-    petalDrift: false,
-    gentleRain: false,
-    mistLayer: false,
-    birdsFlight: false,
-    bloomBurst: false,
-    fernFrond: false,
-    constellation: false,
-    dewDrop: false,
-    pollenDrift: false,
-    riverRipple: false,
-    moonGlow: false,
-  };
-  switch (key) {
-    case 'boot':
-      return { ...base, particleSystem: true, fireflies: true, constellation: true, moonGlow: true };
-    case 'cosmos':
-      return {
-        ...base,
-        particleSystem: true,
-        starField: true,
-        cosmicDust: true,
-        nebulaClouds: true,
-        fireflies: true,
-        constellation: true,
-      };
-    case 'nature':
-      return {
-        ...base,
-        starField: true,
-        natureElements: true,
-        auroraBorealis: true,
-        waveform: true,
-        energyFlow: true,
-        fallingLeaves: true,
-        sunbeams: true,
-        fireflies: true,
-        forestSilhouette: true,
-        petalDrift: true,
-        mistLayer: true,
-        birdsFlight: true,
-        bloomBurst: true,
-        fernFrond: true,
-        dewDrop: true,
-        pollenDrift: true,
-        riverRipple: true,
-        moonGlow: true,
-      };
-    case 'tech':
-      return {
-        ...base,
-        natureElements: true,
-        neuralNetwork: true,
-        techFusion: true,
-        holographicOverlay: true,
-        advancedParticles: true,
-        morphingShapes: true,
-        matrixRain: true,
-        geometricPattern: true,
-        digitalRain: true,
-      };
-    case 'fusion':
-      return {
-        ...base,
-        neuralNetwork: true,
-        techFusion: true,
-        auroraBorealis: true,
-        energyOrbs: true,
-        chromaWave: true,
-        bioDigitalCore: true,
-        ultimateFusion: true,
-        lightBeam: true,
-        holographicOverlay: true,
-      };
-    case 'logo':
-      return {
-        ...base,
-        logoReveal: true,
-        bioDigitalCore: true,
-        lightBeam: true,
-        ringPulse: true,
-        glow: true,
-        fireflies: true,
-        sunbeams: true,
-      };
-    case 'brand':
-      return {
-        ...base,
-        logoReveal: true,
-        ringPulse: true,
-        ripple: true,
-        plasmaField: true,
-        chromaWave: true,
-        fireflies: true,
-        petalDrift: true,
-      };
-    case 'outro':
-      return {
-        ...base,
-        ripple: true,
-        nebula: true,
-        plasmaField: true,
-        ringPulse: true,
-        vortex: true,
-        fireflies: true,
-        bloomBurst: true,
-      };
-    default:
-      return base;
-  }
+const rand = (min: number, max: number) =>
+  Math.random() * (max - min) + min;
+const randInt = (min: number, max: number) =>
+  Math.floor(rand(min, max));
+const pick = <T,>(arr: T[]): T => arr[randInt(0, arr.length)];
+
+const ease = {
+  out: Easing.out(Easing.cubic),
+  inOut: Easing.inOut(Easing.cubic),
+  spring: Easing.out(Easing.back(1.4)),
+  smooth: Easing.bezier(0.25, 0.46, 0.45, 0.94),
 };
 
-// -----------------------------------------------------
-// Small presentational helpers
-// -----------------------------------------------------
+// ─────────────────────────────────────────────
+// MATRIX RAIN COLUMN
+// ─────────────────────────────────────────────
 
-interface StageStripProps {
-  stages: StageBlueprint[];
-  activeIndex: number;
-  progress: Animated.Value;
+const MATRIX_CHARS =
+  'アイウエオカキクケコサシスセソタチツテトナニヌネノ0123456789ABCDEF∑∞∂√π≈≠';
+
+interface MatrixColumnProps {
+  x: number;
+  delay: number;
+  speed: number;
+  opacity: number;
+  height: number;
 }
 
-const StageStrip: React.FC<StageStripProps> = ({ stages, activeIndex }) => (
-  <View style={splashStyles.stageStripRow}>
-    {stages.map((s, i) => {
-      const active = i === activeIndex;
-      const done = i < activeIndex;
-      return (
-        <View
-          key={s.key}
-          style={[
-            splashStyles.stageDot,
-            {
-              backgroundColor: done
-                ? s.accent + 'CC'
-                : active
-                ? s.accent
-                : '#ffffff22',
-              width: active ? 22 : 8,
-              borderColor: active ? '#ffffff66' : 'transparent',
-            },
-          ]}
-        />
-      );
-    })}
-  </View>
-);
-
-interface ProgressBarProps {
-  progress: Animated.Value;
-  accent: string;
-}
-
-const ProgressBar: React.FC<ProgressBarProps> = ({ progress, accent }) => {
-  const width = progress.interpolate({
-    inputRange: [0, 100],
-    outputRange: ['0%', '100%'],
-  });
-  return (
-    <View style={splashStyles.progressBarTrack}>
-      <Animated.View
-        style={[
-          splashStyles.progressBarFill,
-          {
-            backgroundColor: accent,
-            width,
-          },
-        ]}
-      />
-    </View>
-  );
-};
-
-interface NarrationBlockProps {
-  stage: StageBlueprint;
-  eyebrowAnim: Animated.Value;
-  titleAnim: Animated.Value;
-  subtitleAnim: Animated.Value;
-  statusIndex: number;
-}
-
-const NarrationBlock: React.FC<NarrationBlockProps> = ({
-  stage,
-  eyebrowAnim,
-  titleAnim,
-  subtitleAnim,
-  statusIndex,
-}) => {
-  const statusLine = stage.statusLines[statusIndex % stage.statusLines.length];
-  return (
-    <View style={splashStyles.narrationWrap}>
-      <Animated.Text
-        style={[
-          splashStyles.narrationEyebrow,
-          {
-            opacity: eyebrowAnim,
-            color: stage.accent,
-            transform: [
-              {
-                translateY: eyebrowAnim.interpolate({
-                  inputRange: [0, 1],
-                  outputRange: [6, 0],
-                }),
-              },
-            ],
-          },
-        ]}
-      >
-        {stage.eyebrow}
-      </Animated.Text>
-      <Animated.Text
-        style={[
-          splashStyles.narrationTitle,
-          {
-            opacity: titleAnim,
-            transform: [
-              {
-                translateY: titleAnim.interpolate({
-                  inputRange: [0, 1],
-                  outputRange: [10, 0],
-                }),
-              },
-            ],
-          },
-        ]}
-      >
-        {stage.title}
-      </Animated.Text>
-      <Animated.Text
-        style={[
-          splashStyles.narrationSubtitle,
-          {
-            opacity: subtitleAnim,
-            transform: [
-              {
-                translateY: subtitleAnim.interpolate({
-                  inputRange: [0, 1],
-                  outputRange: [6, 0],
-                }),
-              },
-            ],
-          },
-        ]}
-      >
-        {stage.subtitle}
-      </Animated.Text>
-      <View style={splashStyles.statusRow}>
-        <View style={[splashStyles.statusDot, { backgroundColor: stage.accent }]} />
-        <Text style={splashStyles.statusText}>{statusLine}</Text>
-      </View>
-    </View>
-  );
-};
-
-interface QuoteBlockProps {
-  quote: { text: string; attribution: string };
-  anim: Animated.Value;
-}
-
-const QuoteBlock: React.FC<QuoteBlockProps> = ({ quote, anim }) => (
-  <Animated.View
-    style={[
-      splashStyles.quoteWrap,
-      {
-        opacity: anim,
-        transform: [
-          {
-            translateY: anim.interpolate({
-              inputRange: [0, 1],
-              outputRange: [8, 0],
-            }),
-          },
-        ],
-      },
-    ]}
-  >
-    <Text style={splashStyles.quoteText}>"{quote.text}"</Text>
-    <Text style={splashStyles.quoteAttr}>— {quote.attribution}</Text>
-  </Animated.View>
-);
-
-interface FooterBrandBarProps {
-  appVersion: string;
-  tagline: string;
-  opacity: Animated.Value;
-}
-
-const FooterBrandBar: React.FC<FooterBrandBarProps> = ({
-  appVersion,
-  tagline,
+const MatrixColumn: React.FC<MatrixColumnProps> = ({
+  x,
+  delay,
+  speed,
   opacity,
-}) => (
-  <Animated.View style={[splashStyles.footerBrandBar, { opacity }]}>
-    <Text style={splashStyles.footerBrand}>Taru Guardians</Text>
-    <View style={splashStyles.footerDot} />
-    <Text style={splashStyles.footerTagline}>{tagline}</Text>
-    <View style={splashStyles.footerDot} />
-    <Text style={splashStyles.footerVersion}>{appVersion}</Text>
-  </Animated.View>
-);
-
-interface SkipPillProps {
-  onSkip: () => void;
-  opacity: Animated.Value;
-  visible: boolean;
-}
-
-const SkipPill: React.FC<SkipPillProps> = ({ onSkip, opacity, visible }) => {
-  if (!visible) return null;
-  return (
-    <Animated.View style={[splashStyles.skipPillWrap, { opacity }]}>
-      <Pressable
-        onPress={onSkip}
-        hitSlop={10}
-        accessibilityRole="button"
-        accessibilityLabel="Skip splash"
-        style={splashStyles.skipPill}
-      >
-        <Text style={splashStyles.skipPillText}>Skip ›</Text>
-      </Pressable>
-    </Animated.View>
-  );
-};
-
-// -----------------------------------------------------
-// Main component
-// -----------------------------------------------------
-
-const SplashScreen: React.FC<SplashScreenProps> = ({
-  onComplete,
-  duration = AnimationConfig.totalDuration,
-  allowSkip = true,
-  variant = 'full',
+  height,
 }) => {
-  const [activeStageIndex, setActiveStageIndex] = useState(0);
-  const [statusIndex, setStatusIndex] = useState(0);
-  const [quoteIndex, setQuoteIndex] = useState(0);
-  const [reduceMotion, setReduceMotion] = useState(false);
-
-  const activeStage = STAGES[activeStageIndex];
-  const visibility = useMemo(() => visibilityForStage(activeStage.key), [activeStage.key]);
-
-  // Animated values
-  const rootOpacity = useRef(new Animated.Value(1)).current;
-  const rootScale = useRef(new Animated.Value(1)).current;
-  const eyebrowAnim = useRef(new Animated.Value(0)).current;
-  const titleAnim = useRef(new Animated.Value(0)).current;
-  const subtitleAnim = useRef(new Animated.Value(0)).current;
-  const quoteAnim = useRef(new Animated.Value(0)).current;
-  const progressAnim = useRef(new Animated.Value(0)).current;
-  const footerOpacity = useRef(new Animated.Value(0)).current;
-  const skipPillOpacity = useRef(new Animated.Value(0)).current;
-  const stageStripOpacity = useRef(new Animated.Value(0)).current;
-  const bgPulseAnim = useRef(new Animated.Value(0)).current;
-  const vignetteAnim = useRef(new Animated.Value(0)).current;
-  const accentOverlayAnim = useRef(new Animated.Value(0)).current;
-
-  // refs to timers for clean teardown
-  const stageTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const statusTimer = useRef<ReturnType<typeof setInterval> | null>(null);
-  const quoteTimer = useRef<ReturnType<typeof setInterval> | null>(null);
-  const bgLoop = useRef<Animated.CompositeAnimation | null>(null);
-
-  // -----------------------------------------------------
-  // Accessibility: respect reduced motion
-  // -----------------------------------------------------
-
-  useEffect(() => {
-    let mounted = true;
-    AccessibilityInfo.isReduceMotionEnabled().then((v) => {
-      if (mounted) setReduceMotion(Boolean(v));
-    });
-    const sub = AccessibilityInfo.addEventListener(
-      'reduceMotionChanged',
-      (v) => mounted && setReduceMotion(Boolean(v)),
-    );
-    return () => {
-      mounted = false;
-      // newer RN returns a subscription with remove()
-      // but `as any` is forbidden — feature-detect safely:
-      if (sub && typeof (sub as unknown as { remove?: () => void }).remove === 'function') {
-        (sub as unknown as { remove: () => void }).remove();
-      }
-    };
-  }, []);
-
-  // -----------------------------------------------------
-  // Stage transitions
-  // -----------------------------------------------------
-
-  const finish = useCallback(() => {
-    Animated.parallel([
-      Animated.timing(rootOpacity, {
-        toValue: 0,
-        duration: reduceMotion ? 200 : 900,
-        easing: Easing.inOut(Easing.ease),
-        useNativeDriver: true,
-      }),
-      Animated.timing(rootScale, {
-        toValue: reduceMotion ? 1 : 1.08,
-        duration: reduceMotion ? 200 : 900,
-        easing: Easing.inOut(Easing.ease),
-        useNativeDriver: true,
-      }),
-    ]).start(() => onComplete());
-  }, [onComplete, reduceMotion, rootOpacity, rootScale]);
-
-  const animateStageText = useCallback(
-    (stage: StageBlueprint) => {
-      eyebrowAnim.setValue(0);
-      titleAnim.setValue(0);
-      subtitleAnim.setValue(0);
-      Animated.stagger(reduceMotion ? 60 : 140, [
-        Animated.timing(eyebrowAnim, {
-          toValue: 1,
-          duration: reduceMotion ? 180 : 400,
-          easing: Easing.out(Easing.cubic),
-          useNativeDriver: true,
-        }),
-        Animated.timing(titleAnim, {
-          toValue: 1,
-          duration: reduceMotion ? 220 : 520,
-          easing: Easing.out(Easing.cubic),
-          useNativeDriver: true,
-        }),
-        Animated.timing(subtitleAnim, {
-          toValue: 1,
-          duration: reduceMotion ? 180 : 400,
-          easing: Easing.out(Easing.cubic),
-          useNativeDriver: true,
-        }),
-      ]).start();
-      Animated.timing(accentOverlayAnim, {
-        toValue: stage.index,
-        duration: reduceMotion ? 160 : 360,
-        easing: Easing.inOut(Easing.ease),
-        useNativeDriver: false,
-      }).start();
-      Animated.timing(progressAnim, {
-        toValue: stage.progressTo,
-        duration: reduceMotion ? 200 : stage.durationMs * 0.92,
-        easing: Easing.inOut(Easing.quad),
-        useNativeDriver: false,
-      }).start();
-    },
-    [
-      eyebrowAnim,
-      titleAnim,
-      subtitleAnim,
-      accentOverlayAnim,
-      progressAnim,
-      reduceMotion,
-    ],
+  const translateY = useRef(new Animated.Value(-height)).current;
+  const colOpacity = useRef(new Animated.Value(0)).current;
+  const [chars] = useState(() =>
+    Array.from({ length: Math.ceil(height / 18) }, () =>
+      pick(MATRIX_CHARS.split(''))
+    )
   );
 
-  const advanceToStage = useCallback(
-    (index: number) => {
-      if (index >= STAGES.length) {
-        finish();
-        return;
-      }
-      setActiveStageIndex(index);
-      setStatusIndex(0);
-      animateStageText(STAGES[index]);
-    },
-    [animateStageText, finish],
-  );
-
-  // Initial boot
   useEffect(() => {
-    animateStageText(STAGES[0]);
-    Animated.timing(footerOpacity, {
-      toValue: 1,
-      duration: 800,
-      delay: 300,
-      easing: Easing.out(Easing.cubic),
-      useNativeDriver: true,
-    }).start();
-    Animated.timing(stageStripOpacity, {
-      toValue: 1,
-      duration: 700,
-      delay: 200,
-      easing: Easing.out(Easing.cubic),
-      useNativeDriver: true,
-    }).start();
-    if (allowSkip) {
-      Animated.timing(skipPillOpacity, {
-        toValue: 1,
-        duration: 400,
-        delay: 900,
-        easing: Easing.out(Easing.cubic),
-        useNativeDriver: true,
-      }).start();
-    }
-    Animated.timing(vignetteAnim, {
-      toValue: 1,
-      duration: 1400,
-      delay: 200,
-      easing: Easing.out(Easing.cubic),
-      useNativeDriver: true,
-    }).start();
-    bgLoop.current = Animated.loop(
+    const anim = Animated.loop(
       Animated.sequence([
-        Animated.timing(bgPulseAnim, {
-          toValue: 1,
-          duration: 3600,
-          easing: Easing.inOut(Easing.quad),
-          useNativeDriver: true,
-        }),
-        Animated.timing(bgPulseAnim, {
+        Animated.delay(delay),
+        Animated.parallel([
+          Animated.timing(colOpacity, {
+            toValue: opacity,
+            duration: 300,
+            useNativeDriver: true,
+          }),
+          Animated.timing(translateY, {
+            toValue: height + 80,
+            duration: speed,
+            easing: Easing.linear,
+            useNativeDriver: true,
+          }),
+        ]),
+        Animated.timing(colOpacity, {
           toValue: 0,
-          duration: 3600,
-          easing: Easing.inOut(Easing.quad),
+          duration: 200,
           useNativeDriver: true,
         }),
-      ]),
-    );
-    bgLoop.current.start();
-    return () => {
-      bgLoop.current?.stop();
-    };
-  }, [
-    animateStageText,
-    allowSkip,
-    bgPulseAnim,
-    footerOpacity,
-    skipPillOpacity,
-    stageStripOpacity,
-    vignetteAnim,
-  ]);
-
-  // Stage timer
-  useEffect(() => {
-    const s = activeStage;
-    const mult = variant === 'fast' ? 0.55 : 1;
-    stageTimer.current = setTimeout(() => {
-      advanceToStage(activeStageIndex + 1);
-    }, Math.max(400, Math.floor(s.durationMs * mult * (reduceMotion ? 0.6 : 1))));
-    return () => {
-      if (stageTimer.current) clearTimeout(stageTimer.current);
-    };
-  }, [activeStageIndex, activeStage, advanceToStage, reduceMotion, variant]);
-
-  // Status text rotator (per stage)
-  useEffect(() => {
-    setStatusIndex(0);
-    statusTimer.current = setInterval(() => {
-      setStatusIndex((i) => i + 1);
-    }, 650);
-    return () => {
-      if (statusTimer.current) clearInterval(statusTimer.current);
-    };
-  }, [activeStageIndex]);
-
-  // Quote rotator — independent cycle
-  useEffect(() => {
-    quoteAnim.setValue(1);
-    quoteTimer.current = setInterval(() => {
-      Animated.timing(quoteAnim, {
-        toValue: 0,
-        duration: 260,
-        easing: Easing.in(Easing.cubic),
-        useNativeDriver: true,
-      }).start(() => {
-        setQuoteIndex((i) => (i + 1) % QUOTES.length);
-        Animated.timing(quoteAnim, {
-          toValue: 1,
-          duration: 320,
-          easing: Easing.out(Easing.cubic),
+        Animated.timing(translateY, {
+          toValue: -height,
+          duration: 0,
           useNativeDriver: true,
-        }).start();
-      });
-    }, 3000);
-    return () => {
-      if (quoteTimer.current) clearInterval(quoteTimer.current);
-    };
-  }, [quoteAnim]);
-
-  const handleSkip = useCallback(() => {
-    if (stageTimer.current) clearTimeout(stageTimer.current);
-    if (statusTimer.current) clearInterval(statusTimer.current);
-    if (quoteTimer.current) clearInterval(quoteTimer.current);
-    finish();
-  }, [finish]);
-
-  // -----------------------------------------------------
-  // Derived display state
-  // -----------------------------------------------------
-
-  const v = visibility;
-  const quote = QUOTES[quoteIndex];
-
-  const accentGlowOpacity = bgPulseAnim.interpolate({
-    inputRange: [0, 1],
-    outputRange: [0.12, 0.28],
-  });
-
-  const accentColor = activeStage.accent;
-
-  // -----------------------------------------------------
-  // Render
-  // -----------------------------------------------------
+        }),
+      ])
+    );
+    anim.start();
+    return () => anim.stop();
+  }, []);
 
   return (
     <Animated.View
       style={[
-        splashStyles.container,
-        {
-          opacity: rootOpacity,
-          transform: [{ scale: rootScale }],
-        },
+        matrixStyles.column,
+        { left: x, opacity: colOpacity, transform: [{ translateY }] },
       ]}
-      accessible
-      accessibilityRole="alert"
-      accessibilityLabel={`Taru Guardians launching. Stage ${activeStage.index + 1} of ${STAGES.length}: ${activeStage.title}.`}
+      pointerEvents="none"
     >
-      <StatusBar
-        barStyle="light-content"
-        backgroundColor={Colors.background.deepBlack}
-        translucent={Platform.OS === 'android'}
-      />
-
-      {/* Always-on base gradient */}
-      <BackgroundGradient active={v.backgroundGradient} />
-
-      {/* Ambient accent pulse glow tied to stage */}
-      <Animated.View
-        pointerEvents="none"
-        style={[
-          splashStyles.accentPulseLayer,
-          {
-            backgroundColor: accentColor,
-            opacity: accentGlowOpacity,
-          },
-        ]}
-      />
-
-      {/* Star / cosmos layer */}
-      {v.starField ? <StarFieldEffect active /> : null}
-      {v.cosmicDust ? <CosmicDustEffect active /> : null}
-      {v.nebulaClouds ? <NebulaCloudsEffect active /> : null}
-
-      {/* Particles */}
-      {v.particleSystem ? <ParticleSystem active /> : null}
-      {v.advancedParticles ? <AdvancedParticleSystem active /> : null}
-
-      {/* Glow field */}
-      {v.glow ? <GlowEffects active /> : null}
-
-      {/* Nature stage */}
-      {v.natureElements ? <NatureElements active /> : null}
-      {v.auroraBorealis ? <AuroraBorealisEffect active /> : null}
-      {v.waveform ? <WaveformEffect active /> : null}
-      {v.energyFlow ? <EnergyFlow active /> : null}
-
-      {/* Nature vibe layer (new) */}
-      {v.forestSilhouette ? (
-        <ForestSilhouetteEffect reduceMotion={reduceMotion} />
-      ) : null}
-      {v.mistLayer ? (
-        <MistLayerEffect reduceMotion={reduceMotion} tint="cool" density="normal" />
-      ) : null}
-      {v.sunbeams ? (
-        <SunbeamsEffect reduceMotion={reduceMotion} density="normal" />
-      ) : null}
-      {v.gentleRain ? (
-        <GentleRainEffect reduceMotion={reduceMotion} density="soft" />
-      ) : null}
-      {v.fallingLeaves ? (
-        <FallingLeavesEffect reduceMotion={reduceMotion} />
-      ) : null}
-      {v.petalDrift ? (
-        <PetalDriftEffect reduceMotion={reduceMotion} density="soft" />
-      ) : null}
-      {v.birdsFlight ? (
-        <BirdsFlightEffect reduceMotion={reduceMotion} density="soft" />
-      ) : null}
-      {v.bloomBurst ? (
-        <BloomBurstEffect reduceMotion={reduceMotion} density="soft" />
-      ) : null}
-      {v.fireflies ? (
-        <FirefliesEffect reduceMotion={reduceMotion} density="soft" />
-      ) : null}
-      {v.fernFrond ? (
-        <FernFrondEffect reduceMotion={reduceMotion} />
-      ) : null}
-      {v.constellation ? (
-        <ConstellationEffect reduceMotion={reduceMotion} />
-      ) : null}
-      {v.dewDrop ? (
-        <DewDropEffect reduceMotion={reduceMotion} />
-      ) : null}
-      {v.pollenDrift ? (
-        <PollenDriftEffect reduceMotion={reduceMotion} density="normal" />
-      ) : null}
-      {v.riverRipple ? (
-        <RiverRippleEffect reduceMotion={reduceMotion} density="normal" />
-      ) : null}
-      {v.moonGlow ? (
-        <MoonGlowEffect reduceMotion={reduceMotion} density="normal" />
-      ) : null}
-
-      {/* Tech stage */}
-      {v.neuralNetwork ? <NeuralNetwork active /> : null}
-      {v.techFusion ? <TechFusion active /> : null}
-      {v.holographicOverlay ? <HolographicOverlay active /> : null}
-      {v.morphingShapes ? <MorphingShapes active /> : null}
-      {v.matrixRain ? <MatrixRainEffect active /> : null}
-      {v.geometricPattern ? <GeometricPattern active /> : null}
-      {v.digitalRain ? <DigitalRainEffect active /> : null}
-
-      {/* Fusion core */}
-      {v.bioDigitalCore ? <BioDigitalCoreEffect active /> : null}
-      {v.energyOrbs ? <EnergyOrbsEffect active /> : null}
-      {v.chromaWave ? <ChromaWaveEffect active /> : null}
-      {v.ultimateFusion ? <UltimateFusionEffect active /> : null}
-      {v.lightBeam ? <LightBeamEffect active /> : null}
-
-      {/* Outro */}
-      {v.ripple ? <RippleEffect active /> : null}
-      {v.nebula ? <NebulaEffect active /> : null}
-      {v.plasmaField ? <PlasmaField active /> : null}
-      {v.ringPulse ? <RingPulseEffect active /> : null}
-      {v.vortex ? <VortexEffect active /> : null}
-
-      {/* Identity */}
-      {v.logoReveal ? <LogoReveal active onComplete={() => { /* no-op */ }} /> : null}
-
-      {/* Vignette over everything */}
-      <Animated.View
-        pointerEvents="none"
-        style={[
-          splashStyles.vignetteLayer,
-          {
-            opacity: vignetteAnim,
-          },
-        ]}
-      />
-
-      {/* Narration / status HUD */}
-      <View style={splashStyles.hudWrap} pointerEvents="box-none">
-        <View style={splashStyles.hudInner}>
-          <Animated.View style={{ opacity: stageStripOpacity }}>
-            <StageStrip
-              stages={STAGES}
-              activeIndex={activeStageIndex}
-              progress={progressAnim}
-            />
-          </Animated.View>
-
-          <NarrationBlock
-            stage={activeStage}
-            eyebrowAnim={eyebrowAnim}
-            titleAnim={titleAnim}
-            subtitleAnim={subtitleAnim}
-            statusIndex={statusIndex}
-          />
-
-          <ProgressBar progress={progressAnim} accent={accentColor} />
-
-          <QuoteBlock quote={quote} anim={quoteAnim} />
-        </View>
-      </View>
-
-      {/* Skip pill */}
-      <SkipPill
-        onSkip={handleSkip}
-        opacity={skipPillOpacity}
-        visible={allowSkip}
-      />
-
-      {/* Footer brand bar */}
-      <FooterBrandBar
-        appVersion="v1.0.0 · expo sdk 52"
-        tagline="Rooted in nature. Built on code."
-        opacity={footerOpacity}
-      />
-
-      {/* Always on top */}
-      {v.scanline ? <ScanlineEffect active /> : null}
+      {chars.map((ch, i) => (
+        <Text
+          key={i}
+          style={[
+            matrixStyles.char,
+            {
+              color:
+                i === chars.length - 1 ? C.whiteFull : C.greenPrimary,
+              opacity: i === chars.length - 1 ? 1 : (chars.length - i) / chars.length,
+            },
+          ]}
+        >
+          {ch}
+        </Text>
+      ))}
     </Animated.View>
   );
 };
 
-// -----------------------------------------------------
-// Styles
-// -----------------------------------------------------
+const matrixStyles = StyleSheet.create({
+  column: {
+    position: 'absolute',
+    top: 0,
+    width: 16,
+    flexDirection: 'column',
+  },
+  char: {
+    fontSize: 13,
+    fontFamily: Platform.OS === 'ios' ? 'Courier New' : 'monospace',
+    height: 18,
+    textAlign: 'center',
+    fontWeight: '700',
+  },
+});
 
-const splashStyles = StyleSheet.create({
-  container: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: Colors.background.deepBlack,
-  },
-  accentPulseLayer: {
-    ...StyleSheet.absoluteFillObject,
-  },
-  vignetteLayer: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'transparent',
-    shadowColor: '#000',
-    shadowOpacity: 0.8,
-    shadowRadius: 60,
-    shadowOffset: { width: 0, height: 0 },
-  },
+// ─────────────────────────────────────────────
+// MATRIX RAIN (full overlay)
+// ─────────────────────────────────────────────
 
-  // HUD
-  hudWrap: {
-    ...StyleSheet.absoluteFillObject,
-    justifyContent: 'flex-end',
-    paddingHorizontal: IS_SMALL ? 18 : 26,
-    paddingBottom: IS_TABLET ? 90 : 70,
+interface MatrixRainProps {
+  visible: Animated.Value;
+}
+
+const MatrixRain: React.FC<MatrixRainProps> = ({ visible }) => {
+  const columns = useMemo(() => {
+    const cols: MatrixColumnProps[] = [];
+    const colCount = Math.floor(W / 18);
+    for (let i = 0; i < colCount; i++) {
+      cols.push({
+        x: i * 18,
+        delay: randInt(0, 2800),
+        speed: randInt(2200, 5000),
+        opacity: rand(0.15, 0.55),
+        height: H,
+      });
+    }
+    return cols;
+  }, []);
+
+  return (
+    <Animated.View
+      style={[StyleSheet.absoluteFillObject, { opacity: visible }]}
+      pointerEvents="none"
+    >
+      {columns.map((col, i) => (
+        <MatrixColumn key={i} {...col} />
+      ))}
+    </Animated.View>
+  );
+};
+
+// ─────────────────────────────────────────────
+// FLOATING PARTICLE
+// ─────────────────────────────────────────────
+
+interface ParticleData {
+  id: number;
+  x: number;
+  y: number;
+  size: number;
+  color: string;
+  duration: number;
+  delay: number;
+  driftX: number;
+  driftY: number;
+}
+
+interface FloatingParticleProps {
+  particle: ParticleData;
+}
+
+const FloatingParticle: React.FC<FloatingParticleProps> = ({ particle }) => {
+  const opacity = useRef(new Animated.Value(0)).current;
+  const translateX = useRef(new Animated.Value(0)).current;
+  const translateY = useRef(new Animated.Value(0)).current;
+  const scale = useRef(new Animated.Value(0.3)).current;
+
+  useEffect(() => {
+    const anim = Animated.loop(
+      Animated.sequence([
+        Animated.delay(particle.delay),
+        Animated.parallel([
+          Animated.timing(opacity, {
+            toValue: rand(0.4, 0.9),
+            duration: particle.duration * 0.3,
+            useNativeDriver: true,
+          }),
+          Animated.spring(scale, {
+            toValue: 1,
+            friction: 5,
+            tension: 80,
+            useNativeDriver: true,
+          }),
+        ]),
+        Animated.parallel([
+          Animated.timing(translateX, {
+            toValue: particle.driftX,
+            duration: particle.duration,
+            easing: ease.inOut,
+            useNativeDriver: true,
+          }),
+          Animated.timing(translateY, {
+            toValue: particle.driftY,
+            duration: particle.duration,
+            easing: ease.inOut,
+            useNativeDriver: true,
+          }),
+          Animated.sequence([
+            Animated.delay(particle.duration * 0.6),
+            Animated.timing(opacity, {
+              toValue: 0,
+              duration: particle.duration * 0.4,
+              useNativeDriver: true,
+            }),
+          ]),
+        ]),
+        Animated.parallel([
+          Animated.timing(translateX, { toValue: 0, duration: 0, useNativeDriver: true }),
+          Animated.timing(translateY, { toValue: 0, duration: 0, useNativeDriver: true }),
+          Animated.timing(scale, { toValue: 0.3, duration: 0, useNativeDriver: true }),
+        ]),
+      ])
+    );
+    anim.start();
+    return () => anim.stop();
+  }, []);
+
+  return (
+    <Animated.View
+      style={[
+        particleStyles.particle,
+        {
+          left: particle.x,
+          top: particle.y,
+          width: particle.size,
+          height: particle.size,
+          borderRadius: particle.size / 2,
+          backgroundColor: particle.color,
+          opacity,
+          transform: [{ translateX }, { translateY }, { scale }],
+        },
+      ]}
+      pointerEvents="none"
+    />
+  );
+};
+
+const particleStyles = StyleSheet.create({
+  particle: {
+    position: 'absolute',
   },
-  hudInner: {
-    width: '100%',
-  },
-  stageStripRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 18,
-  },
-  stageDot: {
-    height: 6,
-    borderRadius: 3,
-    marginRight: 6,
+});
+
+// ─────────────────────────────────────────────
+// PARTICLE FIELD
+// ─────────────────────────────────────────────
+
+const ParticleField: React.FC = () => {
+  const particles = useMemo<ParticleData[]>(() => {
+    return Array.from({ length: 55 }, (_, i) => ({
+      id: i,
+      x: rand(0, W),
+      y: rand(0, H),
+      size: rand(2, 6),
+      color: i % 3 === 0 ? C.greenParticle : i % 3 === 1 ? C.cyanParticle : 'rgba(41,121,255,0.7)',
+      duration: randInt(3000, 6500),
+      delay: randInt(0, 4000),
+      driftX: rand(-40, 40),
+      driftY: rand(-60, -10),
+    }));
+  }, []);
+
+  return (
+    <View style={StyleSheet.absoluteFillObject} pointerEvents="none">
+      {particles.map((p) => (
+        <FloatingParticle key={p.id} particle={p} />
+      ))}
+    </View>
+  );
+};
+
+// ─────────────────────────────────────────────
+// CIRCUIT BOARD LINES
+// ─────────────────────────────────────────────
+
+const CircuitLines: React.FC<{ opacity: Animated.Value }> = ({ opacity }) => {
+  const paths = useMemo(() => {
+    const lines: { x1: number; y1: number; x2: number; y2: number; isHorizontal: boolean }[] = [];
+    for (let i = 0; i < 18; i++) {
+      const isHorizontal = i % 2 === 0;
+      if (isHorizontal) {
+        lines.push({
+          x1: rand(0, W * 0.3),
+          y1: rand(H * 0.05, H * 0.95),
+          x2: rand(W * 0.6, W),
+          y2: rand(H * 0.05, H * 0.95),
+          isHorizontal: true,
+        });
+      } else {
+        lines.push({
+          x1: rand(W * 0.05, W * 0.95),
+          y1: rand(0, H * 0.3),
+          x2: rand(W * 0.05, W * 0.95),
+          y2: rand(H * 0.6, H),
+          isHorizontal: false,
+        });
+      }
+    }
+    return lines;
+  }, []);
+
+  const animations = useRef(
+    paths.map(() => new Animated.Value(0))
+  ).current;
+
+  useEffect(() => {
+    const anims = animations.map((anim, i) =>
+      Animated.sequence([
+        Animated.delay(i * 120),
+        Animated.timing(anim, {
+          toValue: 1,
+          duration: 800,
+          easing: ease.out,
+          useNativeDriver: false,
+        }),
+      ])
+    );
+    Animated.parallel(anims).start();
+  }, []);
+
+  return (
+    <Animated.View
+      style={[StyleSheet.absoluteFillObject, { opacity }]}
+      pointerEvents="none"
+    >
+      {paths.map((path, i) => {
+        const width = Math.abs(path.x2 - path.x1) || 2;
+        const height = Math.abs(path.y2 - path.y1) || 2;
+        const isH = path.isHorizontal;
+        const animatedWidth = animations[i].interpolate({
+          inputRange: [0, 1],
+          outputRange: [0, isH ? width : 1.5],
+        });
+        const animatedHeight = animations[i].interpolate({
+          inputRange: [0, 1],
+          outputRange: [0, isH ? 1.5 : height],
+        });
+        return (
+          <Animated.View
+            key={i}
+            style={{
+              position: 'absolute',
+              left: Math.min(path.x1, path.x2),
+              top: Math.min(path.y1, path.y2),
+              width: animatedWidth,
+              height: animatedHeight,
+              backgroundColor: i % 4 === 0 ? C.greenSoft : C.gridLineBright,
+            }}
+          />
+        );
+      })}
+      {/* Circuit nodes */}
+      {paths.map((path, i) => {
+        const nodeOpacity = animations[i];
+        return (
+          <Animated.View
+            key={`node-${i}`}
+            style={{
+              position: 'absolute',
+              left: path.x1 - 3,
+              top: path.y1 - 3,
+              width: 6,
+              height: 6,
+              borderRadius: 3,
+              backgroundColor: i % 3 === 0 ? C.greenPrimary : C.cyanBright,
+              opacity: nodeOpacity,
+            }}
+          />
+        );
+      })}
+    </Animated.View>
+  );
+};
+
+// ─────────────────────────────────────────────
+// HEX GRID BACKGROUND
+// ─────────────────────────────────────────────
+
+const HexGrid: React.FC<{ opacity: Animated.Value }> = ({ opacity }) => {
+  const hexSize = IS_TABLET ? 44 : 32;
+  const hexW = hexSize * 2;
+  const hexH = hexSize * Math.sqrt(3);
+  const cols = Math.ceil(W / hexW) + 2;
+  const rows = Math.ceil(H / hexH) + 2;
+
+  const hexes = useMemo(() => {
+    const result: { cx: number; cy: number; key: string; bright: boolean }[] = [];
+    for (let r = -1; r < rows; r++) {
+      for (let c = -1; c < cols; c++) {
+        const cx = c * hexW + (r % 2 === 0 ? 0 : hexW / 2);
+        const cy = r * hexH;
+        result.push({
+          cx,
+          cy,
+          key: `${r}-${c}`,
+          bright: Math.random() < 0.08,
+        });
+      }
+    }
+    return result;
+  }, []);
+
+  const drawHexPath = (cx: number, cy: number, size: number) => {
+    const pts: string[] = [];
+    for (let i = 0; i < 6; i++) {
+      const angle = (Math.PI / 3) * i - Math.PI / 6;
+      pts.push(`${cx + size * Math.cos(angle)},${cy + size * Math.sin(angle)}`);
+    }
+    return pts;
+  };
+
+  return (
+    <Animated.View
+      style={[StyleSheet.absoluteFillObject, { opacity }]}
+      pointerEvents="none"
+    >
+      {hexes.map((hex) => {
+        const pts = drawHexPath(hex.cx, hex.cy, hexSize - 2);
+        return (
+          <View
+            key={hex.key}
+            style={[
+              hexGridStyles.hex,
+              {
+                left: hex.cx - hexSize,
+                top: hex.cy - hexSize * 0.866,
+                width: hexSize * 2,
+                height: hexSize * 1.732,
+                borderColor: hex.bright ? C.gridLineBright : C.gridLine,
+              },
+            ]}
+          />
+        );
+      })}
+    </Animated.View>
+  );
+};
+
+const hexGridStyles = StyleSheet.create({
+  hex: {
+    position: 'absolute',
     borderWidth: 1,
-  },
-
-  // Narration
-  narrationWrap: {
-    marginBottom: 14,
-  },
-  narrationEyebrow: {
-    fontSize: 11,
-    letterSpacing: 3,
-    fontWeight: '800',
-  },
-  narrationTitle: {
-    color: '#fff',
-    fontSize: IS_SMALL ? 22 : IS_TABLET ? 32 : 26,
-    fontWeight: '900',
-    marginTop: 8,
-    lineHeight: IS_TABLET ? 38 : 32,
-  },
-  narrationSubtitle: {
-    color: '#ffffffCC',
-    fontSize: IS_SMALL ? 12 : 13,
-    lineHeight: 19,
-    marginTop: 6,
-    maxWidth: IS_TABLET ? 480 : SCREEN_WIDTH - 52,
-  },
-  statusRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 10,
-  },
-  statusDot: {
-    width: 8,
-    height: 8,
     borderRadius: 4,
-    marginRight: 8,
+    backgroundColor: 'transparent',
   },
-  statusText: {
-    color: '#ffffffAA',
-    fontSize: 11,
-    letterSpacing: 0.5,
-    fontVariant: ['tabular-nums'],
-  },
+});
 
-  // Progress
-  progressBarTrack: {
+// ─────────────────────────────────────────────
+// SCAN LINE
+// ─────────────────────────────────────────────
+
+const ScanLine: React.FC = () => {
+  const translateY = useRef(new Animated.Value(-H * 0.1)).current;
+
+  useEffect(() => {
+    const anim = Animated.loop(
+      Animated.timing(translateY, {
+        toValue: H * 1.1,
+        duration: 3800,
+        easing: Easing.linear,
+        useNativeDriver: true,
+      })
+    );
+    anim.start();
+    return () => anim.stop();
+  }, []);
+
+  return (
+    <Animated.View
+      style={[scanStyles.line, { transform: [{ translateY }] }]}
+      pointerEvents="none"
+    />
+  );
+};
+
+const scanStyles = StyleSheet.create({
+  line: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    height: 2,
+    backgroundColor: 'rgba(0,230,118,0.18)',
+  },
+});
+
+// ─────────────────────────────────────────────
+// PULSE RINGS (expanding from logo center)
+// ─────────────────────────────────────────────
+
+interface PulseRingProps {
+  delay: number;
+  color: string;
+  maxSize: number;
+  cy: number;
+}
+
+const PulseRing: React.FC<PulseRingProps> = ({ delay, color, maxSize, cy }) => {
+  const scale = useRef(new Animated.Value(0.2)).current;
+  const opacity = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    const anim = Animated.loop(
+      Animated.sequence([
+        Animated.delay(delay),
+        Animated.parallel([
+          Animated.timing(scale, {
+            toValue: 1,
+            duration: 2200,
+            easing: Easing.out(Easing.quad),
+            useNativeDriver: true,
+          }),
+          Animated.sequence([
+            Animated.timing(opacity, {
+              toValue: 0.6,
+              duration: 300,
+              useNativeDriver: true,
+            }),
+            Animated.timing(opacity, {
+              toValue: 0,
+              duration: 1900,
+              easing: Easing.out(Easing.quad),
+              useNativeDriver: true,
+            }),
+          ]),
+        ]),
+        Animated.parallel([
+          Animated.timing(scale, { toValue: 0.2, duration: 0, useNativeDriver: true }),
+        ]),
+      ])
+    );
+    anim.start();
+    return () => anim.stop();
+  }, []);
+
+  return (
+    <Animated.View
+      style={[
+        pulseStyles.ring,
+        {
+          width: maxSize,
+          height: maxSize,
+          borderRadius: maxSize / 2,
+          borderColor: color,
+          top: cy - maxSize / 2,
+          left: W / 2 - maxSize / 2,
+          opacity,
+          transform: [{ scale }],
+        },
+      ]}
+      pointerEvents="none"
+    />
+  );
+};
+
+const pulseStyles = StyleSheet.create({
+  ring: {
+    position: 'absolute',
+    borderWidth: 1.5,
+    backgroundColor: 'transparent',
+  },
+});
+
+// ─────────────────────────────────────────────
+// LOGO CORE — logo + glow + rings
+// ─────────────────────────────────────────────
+
+const LOGO_SIZE = Math.min(W * 0.44, 200);
+const LOGO_CY = H * 0.38;
+
+interface LogoCoreProps {
+  revealAnim: Animated.Value;
+}
+
+const LogoCore: React.FC<LogoCoreProps> = ({ revealAnim }) => {
+  const glowPulse = useRef(new Animated.Value(0.6)).current;
+
+  useEffect(() => {
+    const anim = Animated.loop(
+      Animated.sequence([
+        Animated.timing(glowPulse, {
+          toValue: 1,
+          duration: 1800,
+          easing: ease.inOut,
+          useNativeDriver: true,
+        }),
+        Animated.timing(glowPulse, {
+          toValue: 0.6,
+          duration: 1800,
+          easing: ease.inOut,
+          useNativeDriver: true,
+        }),
+      ])
+    );
+    anim.start();
+    return () => anim.stop();
+  }, []);
+
+  const logoScale = revealAnim.interpolate({
+    inputRange: [0, 0.5, 1],
+    outputRange: [0.0, 1.12, 1],
+  });
+  const logoOpacity = revealAnim.interpolate({
+    inputRange: [0, 0.35, 1],
+    outputRange: [0, 1, 1],
+  });
+  const ringScale = revealAnim.interpolate({
+    inputRange: [0, 0.6, 1],
+    outputRange: [0.3, 1.05, 1],
+  });
+  const ringOpacity = revealAnim.interpolate({
+    inputRange: [0, 0.5, 1],
+    outputRange: [0, 0.8, 1],
+  });
+  const glowOpacity = Animated.multiply(revealAnim, glowPulse);
+
+  return (
+    <View
+      style={[logoStyles.container, { top: LOGO_CY - LOGO_SIZE / 2 }]}
+      pointerEvents="none"
+    >
+      {/* Outer ambient glow */}
+      <Animated.View
+        style={[
+          logoStyles.glowOuter,
+          {
+            width: LOGO_SIZE + 110,
+            height: LOGO_SIZE + 110,
+            borderRadius: (LOGO_SIZE + 110) / 2,
+            opacity: Animated.multiply(revealAnim, glowPulse),
+          },
+        ]}
+      />
+
+      {/* Mid glow */}
+      <Animated.View
+        style={[
+          logoStyles.glowMid,
+          {
+            width: LOGO_SIZE + 60,
+            height: LOGO_SIZE + 60,
+            borderRadius: (LOGO_SIZE + 60) / 2,
+            opacity: glowOpacity,
+          },
+        ]}
+      />
+
+      {/* Outer decorative ring */}
+      <Animated.View
+        style={[
+          logoStyles.ringOuter,
+          {
+            width: LOGO_SIZE + 48,
+            height: LOGO_SIZE + 48,
+            borderRadius: (LOGO_SIZE + 48) / 2,
+            opacity: ringOpacity,
+            transform: [{ scale: ringScale }],
+          },
+        ]}
+      />
+
+      {/* Inner decorative ring */}
+      <Animated.View
+        style={[
+          logoStyles.ringInner,
+          {
+            width: LOGO_SIZE + 20,
+            height: LOGO_SIZE + 20,
+            borderRadius: (LOGO_SIZE + 20) / 2,
+            opacity: ringOpacity,
+            transform: [{ scale: ringScale }],
+          },
+        ]}
+      />
+
+      {/* The logo */}
+      <Animated.Image
+        source={LOGO}
+        style={[
+          logoStyles.logo,
+          {
+            width: LOGO_SIZE,
+            height: LOGO_SIZE,
+            opacity: logoOpacity,
+            transform: [{ scale: logoScale }],
+          },
+        ]}
+        resizeMode="contain"
+      />
+    </View>
+  );
+};
+
+const logoStyles = StyleSheet.create({
+  container: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    alignItems: 'center',
+  },
+  glowOuter: {
+    position: 'absolute',
+    backgroundColor: 'rgba(0,230,118,0.06)',
+  },
+  glowMid: {
+    position: 'absolute',
+    backgroundColor: 'rgba(0,230,118,0.12)',
+  },
+  ringOuter: {
+    position: 'absolute',
+    borderWidth: 1,
+    borderColor: 'rgba(0,230,118,0.35)',
+    backgroundColor: 'transparent',
+  },
+  ringInner: {
+    position: 'absolute',
+    borderWidth: 1.5,
+    borderColor: 'rgba(29,233,182,0.55)',
+    backgroundColor: 'transparent',
+  },
+  logo: {
+    borderRadius: 4,
+  },
+});
+
+// ─────────────────────────────────────────────
+// BRAND TEXT — "TARU GUARDIANS"
+// ─────────────────────────────────────────────
+
+interface BrandTextProps {
+  titleAnim: Animated.Value;
+  subtitleAnim: Animated.Value;
+}
+
+const BrandText: React.FC<BrandTextProps> = ({ titleAnim, subtitleAnim }) => {
+  const titleY = titleAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [22, 0],
+  });
+  const subY = subtitleAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [16, 0],
+  });
+
+  return (
+    <View style={brandStyles.container} pointerEvents="none">
+      {/* Club name */}
+      <Animated.Text
+        style={[
+          brandStyles.title,
+          { opacity: titleAnim, transform: [{ translateY: titleY }] },
+        ]}
+      >
+        TARU GUARDIANS
+      </Animated.Text>
+
+      {/* Divider line */}
+      <Animated.View
+        style={[brandStyles.divider, { opacity: subtitleAnim, scaleX: subtitleAnim }]}
+      />
+
+      {/* Sub label */}
+      <Animated.Text
+        style={[
+          brandStyles.subtitle,
+          { opacity: subtitleAnim, transform: [{ translateY: subY }] },
+        ]}
+      >
+        HIT HALDIA · TECH CLUB
+      </Animated.Text>
+    </View>
+  );
+};
+
+const brandStyles = StyleSheet.create({
+  container: {
+    position: 'absolute',
+    bottom: H * 0.28,
+    left: 0,
+    right: 0,
+    alignItems: 'center',
+  },
+  title: {
+    fontSize: IS_SMALL ? 24 : IS_TABLET ? 40 : 30,
+    fontWeight: '900',
+    color: C.whiteFull,
+    letterSpacing: IS_SMALL ? 4 : 7,
+    textAlign: 'center',
+  },
+  divider: {
+    width: IS_SMALL ? 100 : 140,
+    height: 1.5,
+    backgroundColor: C.greenPrimary,
+    marginVertical: 10,
+  },
+  subtitle: {
+    fontSize: IS_SMALL ? 10 : 11,
+    fontWeight: '700',
+    color: C.greenSoft,
+    letterSpacing: 3.5,
+    textAlign: 'center',
+  },
+});
+
+// ─────────────────────────────────────────────
+// PASSION TAGLINE — "Turn Passion Into Purpose"
+// letter-by-letter reveal
+// ─────────────────────────────────────────────
+
+const PASSION_TEXT = 'Turn Passion Into Purpose';
+const PASSION_CHARS = PASSION_TEXT.split('');
+
+interface PassionTaglineProps {
+  masterAnim: Animated.Value;
+}
+
+const PassionTagline: React.FC<PassionTaglineProps> = ({ masterAnim }) => {
+  const charAnims = useRef(
+    PASSION_CHARS.map(() => new Animated.Value(0))
+  ).current;
+
+  useEffect(() => {
+    const listener = masterAnim.addListener(({ value }) => {
+      if (value > 0.05) {
+        masterAnim.removeAllListeners();
+        const stagger = Animated.stagger(
+          38,
+          charAnims.map((a) =>
+            Animated.spring(a, {
+              toValue: 1,
+              friction: 6,
+              tension: 120,
+              useNativeDriver: true,
+            })
+          )
+        );
+        stagger.start();
+      }
+    });
+    return () => masterAnim.removeAllListeners();
+  }, []);
+
+  return (
+    <Animated.View
+      style={[passionStyles.container, { opacity: masterAnim }]}
+      pointerEvents="none"
+    >
+      <View style={passionStyles.row}>
+        {PASSION_CHARS.map((ch, i) => {
+          const isSpace = ch === ' ';
+          return (
+            <Animated.Text
+              key={i}
+              style={[
+                passionStyles.char,
+                isSpace && passionStyles.space,
+                {
+                  opacity: charAnims[i],
+                  transform: [
+                    {
+                      translateY: charAnims[i].interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [14, 0],
+                      }),
+                    },
+                    {
+                      scale: charAnims[i].interpolate({
+                        inputRange: [0, 0.5, 1],
+                        outputRange: [0.6, 1.1, 1],
+                      }),
+                    },
+                  ],
+                },
+              ]}
+            >
+              {ch}
+            </Animated.Text>
+          );
+        })}
+      </View>
+
+      {/* Underline glow */}
+      <Animated.View
+        style={[
+          passionStyles.underline,
+          {
+            opacity: masterAnim.interpolate({
+              inputRange: [0, 1],
+              outputRange: [0, 0.7],
+            }),
+          },
+        ]}
+      />
+    </Animated.View>
+  );
+};
+
+const passionStyles = StyleSheet.create({
+  container: {
+    position: 'absolute',
+    bottom: H * 0.21,
+    left: 0,
+    right: 0,
+    alignItems: 'center',
+  },
+  row: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+  },
+  char: {
+    fontSize: IS_SMALL ? 16 : IS_TABLET ? 28 : 20,
+    fontWeight: '800',
+    color: C.cyanBright,
+    letterSpacing: 0.5,
+  },
+  space: {
+    width: IS_SMALL ? 7 : 9,
+  },
+  underline: {
+    marginTop: 6,
+    width: IS_SMALL ? 200 : 260,
+    height: 2,
+    borderRadius: 1,
+    backgroundColor: C.cyanBright,
+  },
+});
+
+// ─────────────────────────────────────────────
+// STATS ROW
+// ─────────────────────────────────────────────
+
+const STATS = [
+  { value: '67+', label: 'Members' },
+  { value: '6', label: 'Wings' },
+  { value: '28', label: 'Events' },
+  { value: '150+', label: 'Alumni' },
+];
+
+interface StatsRowProps {
+  anim: Animated.Value;
+}
+
+const StatsRow: React.FC<StatsRowProps> = ({ anim }) => {
+  const translateY = anim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [20, 0],
+  });
+
+  return (
+    <Animated.View
+      style={[statsStyles.container, { opacity: anim, transform: [{ translateY }] }]}
+      pointerEvents="none"
+    >
+      {STATS.map((stat, i) => (
+        <View key={i} style={statsStyles.stat}>
+          <Text style={statsStyles.value}>{stat.value}</Text>
+          <Text style={statsStyles.label}>{stat.label}</Text>
+        </View>
+      ))}
+    </Animated.View>
+  );
+};
+
+const statsStyles = StyleSheet.create({
+  container: {
+    position: 'absolute',
+    bottom: H * 0.14,
+    left: 0,
+    right: 0,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: IS_SMALL ? 16 : 28,
+    paddingHorizontal: 24,
+  },
+  stat: {
+    alignItems: 'center',
+  },
+  value: {
+    fontSize: IS_SMALL ? 16 : IS_TABLET ? 24 : 18,
+    fontWeight: '900',
+    color: C.greenPrimary,
+    letterSpacing: 1,
+  },
+  label: {
+    fontSize: 9,
+    fontWeight: '600',
+    color: C.whiteMid,
+    letterSpacing: 2,
+    textTransform: 'uppercase',
+    marginTop: 2,
+  },
+});
+
+// ─────────────────────────────────────────────
+// PROGRESS HUD
+// ─────────────────────────────────────────────
+
+interface ProgressHUDProps {
+  progress: Animated.Value;
+  stageLabel: string;
+  stageAnim: Animated.Value;
+}
+
+const ProgressHUD: React.FC<ProgressHUDProps> = ({
+  progress,
+  stageLabel,
+  stageAnim,
+}) => {
+  const barWidth = progress.interpolate({
+    inputRange: [0, 100],
+    outputRange: ['0%', '100%'],
+  });
+  const labelY = stageAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [6, 0],
+  });
+
+  return (
+    <View style={hudStyles.container} pointerEvents="none">
+      {/* Stage label */}
+      <Animated.Text
+        style={[
+          hudStyles.stageLabel,
+          { opacity: stageAnim, transform: [{ translateY: labelY }] },
+        ]}
+      >
+        {stageLabel}
+      </Animated.Text>
+
+      {/* Progress track */}
+      <View style={hudStyles.track}>
+        <Animated.View style={[hudStyles.fill, { width: barWidth }]}>
+          {/* Glowing tip */}
+          <View style={hudStyles.fillTip} />
+        </Animated.View>
+      </View>
+
+      {/* Percentage */}
+      <Animated.Text style={[hudStyles.pct, { opacity: stageAnim }]}>
+        <AnimatedPercent progress={progress} />
+      </Animated.Text>
+    </View>
+  );
+};
+
+// Helper to display animated percentage
+const AnimatedPercent: React.FC<{ progress: Animated.Value }> = ({
+  progress,
+}) => {
+  const [pct, setPct] = useState(0);
+  useEffect(() => {
+    const id = progress.addListener(({ value }) => {
+      setPct(Math.round(value));
+    });
+    return () => progress.removeListener(id);
+  }, []);
+  return <>{pct}%</>;
+};
+
+const hudStyles = StyleSheet.create({
+  container: {
+    position: 'absolute',
+    bottom: H * 0.06,
+    left: IS_SMALL ? 24 : 32,
+    right: IS_SMALL ? 24 : 32,
+  },
+  stageLabel: {
+    fontSize: 10,
+    fontWeight: '700',
+    color: C.greenSoft,
+    letterSpacing: 3,
+    textTransform: 'uppercase',
+    marginBottom: 8,
+    fontFamily: Platform.OS === 'ios' ? 'Courier New' : 'monospace',
+  },
+  track: {
     width: '100%',
-    height: 4,
-    backgroundColor: '#ffffff1A',
+    height: 3,
+    backgroundColor: 'rgba(255,255,255,0.08)',
     borderRadius: 2,
     overflow: 'hidden',
-    marginTop: 16,
   },
-  progressBarFill: {
+  fill: {
     height: '100%',
+    backgroundColor: C.greenPrimary,
     borderRadius: 2,
+    position: 'relative',
   },
-
-  // Quote
-  quoteWrap: {
-    marginTop: 16,
-    borderTopWidth: 1,
-    borderTopColor: '#ffffff18',
-    paddingTop: 12,
-  },
-  quoteText: {
-    color: '#ffffffCC',
-    fontSize: 12,
-    fontStyle: 'italic',
-    lineHeight: 18,
-  },
-  quoteAttr: {
-    color: '#ffffff77',
-    fontSize: 10,
-    marginTop: 4,
-  },
-
-  // Skip pill
-  skipPillWrap: {
+  fillTip: {
     position: 'absolute',
-    top: IS_TABLET ? 64 : 48,
-    right: 18,
+    right: 0,
+    top: -2,
+    width: 7,
+    height: 7,
+    borderRadius: 3.5,
+    backgroundColor: C.cyanBright,
   },
-  skipPill: {
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 14,
-    backgroundColor: '#ffffff16',
+  pct: {
+    marginTop: 6,
+    fontSize: 9,
+    fontWeight: '700',
+    color: C.whiteLow,
+    letterSpacing: 1.5,
+    fontFamily: Platform.OS === 'ios' ? 'Courier New' : 'monospace',
+    textAlign: 'right',
+  },
+});
+
+// ─────────────────────────────────────────────
+// SKIP BUTTON
+// ─────────────────────────────────────────────
+
+interface SkipButtonProps {
+  onSkip: () => void;
+  opacity: Animated.Value;
+}
+
+const SkipButton: React.FC<SkipButtonProps> = ({ onSkip, opacity }) => (
+  <Animated.View style={[skipStyles.wrap, { opacity }]}>
+    <Pressable onPress={onSkip} hitSlop={12} style={skipStyles.pill}>
+      <Text style={skipStyles.text}>Skip  ›</Text>
+    </Pressable>
+  </Animated.View>
+);
+
+const skipStyles = StyleSheet.create({
+  wrap: {
+    position: 'absolute',
+    top: IS_TABLET ? 64 : 52,
+    right: 20,
+  },
+  pill: {
+    paddingHorizontal: 14,
+    paddingVertical: 7,
+    borderRadius: 16,
+    backgroundColor: 'rgba(255,255,255,0.07)',
     borderWidth: 1,
-    borderColor: '#ffffff24',
+    borderColor: 'rgba(255,255,255,0.14)',
   },
-  skipPillText: {
-    color: '#ffffffCC',
+  text: {
+    color: C.whiteMid,
     fontSize: 11,
     fontWeight: '700',
     letterSpacing: 0.5,
   },
+});
 
-  // Footer brand bar
-  footerBrandBar: {
+// ─────────────────────────────────────────────
+// FOOTER
+// ─────────────────────────────────────────────
+
+interface FooterProps {
+  opacity: Animated.Value;
+}
+
+const Footer: React.FC<FooterProps> = ({ opacity }) => (
+  <Animated.View style={[footerStyles.container, { opacity }]} pointerEvents="none">
+    <Text style={footerStyles.brand}>TARU GUARDIANS</Text>
+    <View style={footerStyles.dot} />
+    <Text style={footerStyles.tagline}>Rooted in Nature · Built on Code</Text>
+  </Animated.View>
+);
+
+const footerStyles = StyleSheet.create({
+  container: {
     position: 'absolute',
-    bottom: IS_TABLET ? 38 : 28,
+    top: IS_TABLET ? 60 : 50,
     left: 0,
     right: 0,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  footerBrand: {
-    color: '#fff',
-    fontSize: 11,
+  brand: {
+    fontSize: 9,
     fontWeight: '900',
-    letterSpacing: 2,
+    color: C.whiteLow,
+    letterSpacing: 3,
   },
-  footerDot: {
+  dot: {
     width: 3,
     height: 3,
     borderRadius: 1.5,
-    backgroundColor: '#ffffff44',
-    marginHorizontal: 8,
+    backgroundColor: C.greenPrimary,
+    marginHorizontal: 10,
   },
-  footerTagline: {
-    color: '#ffffff99',
-    fontSize: 10,
-    letterSpacing: 0.5,
+  tagline: {
+    fontSize: 9,
+    fontWeight: '500',
+    color: C.whiteLow,
+    letterSpacing: 1,
   },
-  footerVersion: {
-    color: '#ffffff66',
-    fontSize: 10,
-    letterSpacing: 0.5,
+});
+
+// ─────────────────────────────────────────────
+// DATA STREAM LINES (vertical binary streams)
+// ─────────────────────────────────────────────
+
+interface DataStreamProps {
+  x: number;
+  delay: number;
+}
+
+const DataStream: React.FC<DataStreamProps> = ({ x, delay }) => {
+  const translateY = useRef(new Animated.Value(-H)).current;
+  const opacity = useRef(new Animated.Value(0)).current;
+  const [bits] = useState(() =>
+    Array.from({ length: 24 }, () => (Math.random() > 0.5 ? '1' : '0'))
+  );
+
+  useEffect(() => {
+    const anim = Animated.loop(
+      Animated.sequence([
+        Animated.delay(delay),
+        Animated.parallel([
+          Animated.timing(opacity, { toValue: rand(0.05, 0.18), duration: 400, useNativeDriver: true }),
+          Animated.timing(translateY, {
+            toValue: H * 1.2,
+            duration: randInt(5000, 9000),
+            easing: Easing.linear,
+            useNativeDriver: true,
+          }),
+        ]),
+        Animated.timing(opacity, { toValue: 0, duration: 200, useNativeDriver: true }),
+        Animated.timing(translateY, { toValue: -H, duration: 0, useNativeDriver: true }),
+      ])
+    );
+    anim.start();
+    return () => anim.stop();
+  }, []);
+
+  return (
+    <Animated.View
+      style={[
+        streamStyles.stream,
+        { left: x, opacity, transform: [{ translateY }] },
+      ]}
+      pointerEvents="none"
+    >
+      {bits.map((b, i) => (
+        <Text key={i} style={streamStyles.bit}>
+          {b}
+        </Text>
+      ))}
+    </Animated.View>
+  );
+};
+
+const streamStyles = StyleSheet.create({
+  stream: {
+    position: 'absolute',
+    top: 0,
+    flexDirection: 'column',
+  },
+  bit: {
+    color: C.greenSoft,
+    fontSize: 9,
+    fontFamily: Platform.OS === 'ios' ? 'Courier New' : 'monospace',
+    lineHeight: 14,
+    textAlign: 'center',
+    width: 12,
+  },
+});
+
+const DataStreamLayer: React.FC = () => {
+  const streams = useMemo(
+    () =>
+      Array.from({ length: 12 }, (_, i) => ({
+        x: rand(0, W - 14),
+        delay: randInt(0, 5000),
+      })),
+    []
+  );
+
+  return (
+    <View style={StyleSheet.absoluteFillObject} pointerEvents="none">
+      {streams.map((s, i) => (
+        <DataStream key={i} x={s.x} delay={s.delay} />
+      ))}
+    </View>
+  );
+};
+
+// ─────────────────────────────────────────────
+// GLITCH FLASH (subtle, techy)
+// ─────────────────────────────────────────────
+
+const GlitchFlash: React.FC = () => {
+  const opacity = useRef(new Animated.Value(0)).current;
+  const translateX = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    const glitch = () => {
+      const delay = randInt(1800, 4500);
+      setTimeout(() => {
+        Animated.sequence([
+          Animated.parallel([
+            Animated.timing(opacity, { toValue: rand(0.04, 0.09), duration: 40, useNativeDriver: true }),
+            Animated.timing(translateX, { toValue: rand(-8, 8), duration: 40, useNativeDriver: true }),
+          ]),
+          Animated.parallel([
+            Animated.timing(opacity, { toValue: 0, duration: 40, useNativeDriver: true }),
+            Animated.timing(translateX, { toValue: 0, duration: 40, useNativeDriver: true }),
+          ]),
+        ]).start(() => glitch());
+      }, delay);
+    };
+    glitch();
+  }, []);
+
+  return (
+    <Animated.View
+      style={[
+        StyleSheet.absoluteFillObject,
+        {
+          backgroundColor: C.cyanBright,
+          opacity,
+          transform: [{ translateX }],
+        },
+      ]}
+      pointerEvents="none"
+    />
+  );
+};
+
+// ─────────────────────────────────────────────
+// STAGE DEFINITIONS
+// ─────────────────────────────────────────────
+
+interface Stage {
+  label: string;
+  progressStart: number;
+  progressEnd: number;
+  startMs: number;
+  durationMs: number;
+}
+
+const STAGES_DEF: Stage[] = [
+  { label: 'INITIALISING', progressStart: 0, progressEnd: 14, startMs: 0, durationMs: 1000 },
+  { label: 'LOADING MATRIX', progressStart: 14, progressEnd: 32, startMs: 1000, durationMs: 1200 },
+  { label: 'CALIBRATING', progressStart: 32, progressEnd: 52, startMs: 2200, durationMs: 1000 },
+  { label: 'BUILDING IDENTITY', progressStart: 52, progressEnd: 72, startMs: 3200, durationMs: 1400 },
+  { label: 'ACTIVATING PURPOSE', progressStart: 72, progressEnd: 90, startMs: 4600, durationMs: 1200 },
+  { label: 'WELCOME, GUARDIAN', progressStart: 90, progressEnd: 100, startMs: 5800, durationMs: 1700 },
+];
+
+// ─────────────────────────────────────────────
+// MAIN SPLASH SCREEN COMPONENT
+// ─────────────────────────────────────────────
+
+export interface SplashScreenProps {
+  onComplete: () => void;
+  duration?: number;
+  allowSkip?: boolean;
+}
+
+const SplashScreen: React.FC<SplashScreenProps> = ({
+  onComplete,
+  allowSkip = true,
+}) => {
+  // ── Master progress & stage ──────────────────
+  const [stageIndex, setStageIndex] = useState(0);
+  const progressAnim = useRef(new Animated.Value(0)).current;
+  const stageTextAnim = useRef(new Animated.Value(0)).current;
+
+  // ── Layer anims ──────────────────────────────
+  const rootOpacity = useRef(new Animated.Value(1)).current;
+  const bgOpacity = useRef(new Animated.Value(0)).current;
+  const hexOpacity = useRef(new Animated.Value(0)).current;
+  const circuitOpacity = useRef(new Animated.Value(0)).current;
+  const matrixOpacity = useRef(new Animated.Value(0)).current;
+  const footerOpacity = useRef(new Animated.Value(0)).current;
+  const skipOpacity = useRef(new Animated.Value(0)).current;
+
+  // ── Logo & text ──────────────────────────────
+  const logoRevealAnim = useRef(new Animated.Value(0)).current;
+  const titleAnim = useRef(new Animated.Value(0)).current;
+  const subtitleAnim = useRef(new Animated.Value(0)).current;
+  const passionAnim = useRef(new Animated.Value(0)).current;
+  const statsAnim = useRef(new Animated.Value(0)).current;
+
+  // ── Finish handler ───────────────────────────
+  const hasFinished = useRef(false);
+
+  const finish = useCallback(() => {
+    if (hasFinished.current) return;
+    hasFinished.current = true;
+    Animated.timing(rootOpacity, {
+      toValue: 0,
+      duration: 800,
+      easing: ease.inOut,
+      useNativeDriver: true,
+    }).start(() => onComplete());
+  }, [onComplete]);
+
+  const handleSkip = useCallback(() => {
+    finish();
+  }, [finish]);
+
+  // ── Main timeline ────────────────────────────
+
+  useEffect(() => {
+    const timers: ReturnType<typeof setTimeout>[] = [];
+    const t = (ms: number, fn: () => void) => {
+      const id = setTimeout(fn, ms);
+      timers.push(id);
+    };
+
+    // ── 0 ms: Background fade in ──
+    Animated.timing(bgOpacity, {
+      toValue: 1,
+      duration: 500,
+      easing: ease.out,
+      useNativeDriver: true,
+    }).start();
+
+    // ── 300 ms: Hex grid ──
+    t(300, () => {
+      Animated.timing(hexOpacity, {
+        toValue: 1,
+        duration: 800,
+        easing: ease.out,
+        useNativeDriver: true,
+      }).start();
+    });
+
+    // ── 400 ms: Footer + skip ──
+    t(400, () => {
+      Animated.parallel([
+        Animated.timing(footerOpacity, {
+          toValue: 1,
+          duration: 700,
+          easing: ease.out,
+          useNativeDriver: true,
+        }),
+        Animated.timing(skipOpacity, {
+          toValue: 1,
+          duration: 500,
+          easing: ease.out,
+          useNativeDriver: true,
+        }),
+      ]).start();
+    });
+
+    // ── 600 ms: Circuit lines ──
+    t(600, () => {
+      Animated.timing(circuitOpacity, {
+        toValue: 0.8,
+        duration: 600,
+        easing: ease.out,
+        useNativeDriver: true,
+      }).start();
+    });
+
+    // ── 1 000 ms: Matrix rain ──
+    t(T.matrixStart, () => {
+      Animated.timing(matrixOpacity, {
+        toValue: 1,
+        duration: 500,
+        easing: ease.out,
+        useNativeDriver: true,
+      }).start();
+    });
+
+    // ── 1 600 ms: Logo reveal ──
+    t(T.logoRevealStart, () => {
+      Animated.timing(logoRevealAnim, {
+        toValue: 1,
+        duration: T.logoRevealDur,
+        easing: ease.spring,
+        useNativeDriver: true,
+      }).start();
+    });
+
+    // ── 2 600 ms: Title ──
+    t(T.titleRevealStart, () => {
+      Animated.stagger(180, [
+        Animated.timing(titleAnim, {
+          toValue: 1,
+          duration: 550,
+          easing: ease.out,
+          useNativeDriver: true,
+        }),
+        Animated.timing(subtitleAnim, {
+          toValue: 1,
+          duration: 450,
+          easing: ease.out,
+          useNativeDriver: true,
+        }),
+      ]).start();
+    });
+
+    // ── 4 200 ms: "Turn Passion Into Purpose" ──
+    t(T.passionStart, () => {
+      Animated.timing(passionAnim, {
+        toValue: 1,
+        duration: T.passionDur,
+        easing: ease.spring,
+        useNativeDriver: true,
+      }).start();
+    });
+
+    // ── 5 000 ms: Stats row ──
+    t(T.statsStart, () => {
+      Animated.timing(statsAnim, {
+        toValue: 1,
+        duration: T.statsDur,
+        easing: ease.out,
+        useNativeDriver: true,
+      }).start();
+    });
+
+    // ── Progress bar continuous ──
+    Animated.timing(progressAnim, {
+      toValue: 100,
+      duration: T.totalDur - 600,
+      easing: Easing.bezier(0.1, 0.4, 0.6, 1),
+      useNativeDriver: false,
+    }).start();
+
+    // ── Stage label cycling ──
+    STAGES_DEF.forEach((stage, i) => {
+      t(stage.startMs, () => {
+        setStageIndex(i);
+        stageTextAnim.setValue(0);
+        Animated.timing(stageTextAnim, {
+          toValue: 1,
+          duration: 380,
+          easing: ease.out,
+          useNativeDriver: true,
+        }).start();
+      });
+    });
+
+    // ── Outro ──
+    t(T.outroStart, () => finish());
+
+    return () => timers.forEach(clearTimeout);
+  }, []);
+
+  const currentStage = STAGES_DEF[stageIndex] ?? STAGES_DEF[0];
+
+  // ─────────────────────────────────────────────
+  // RENDER
+  // ─────────────────────────────────────────────
+
+  return (
+    <Animated.View style={[splashStyles.root, { opacity: rootOpacity }]}>
+      <StatusBar
+        barStyle="light-content"
+        backgroundColor={C.deepBlack}
+        translucent={Platform.OS === 'android'}
+      />
+
+      {/* ── 1. BACKGROUND GRADIENT ── */}
+      <Animated.View
+        style={[StyleSheet.absoluteFillObject, { opacity: bgOpacity }]}
+        pointerEvents="none"
+      >
+        <LinearGradient
+          colors={[C.deepBlack, '#040e16', '#071a14', C.deepBlack]}
+          locations={[0, 0.35, 0.65, 1]}
+          start={{ x: 0.3, y: 0 }}
+          end={{ x: 0.7, y: 1 }}
+          style={StyleSheet.absoluteFillObject}
+        />
+
+        {/* Radial centre ambient */}
+        <View style={splashStyles.radialAmb} />
+      </Animated.View>
+
+      {/* ── 2. HEX GRID ── */}
+      <HexGrid opacity={hexOpacity} />
+
+      {/* ── 3. DATA STREAMS ── */}
+      <DataStreamLayer />
+
+      {/* ── 4. CIRCUIT LINES ── */}
+      <CircuitLines opacity={circuitOpacity} />
+
+      {/* ── 5. MATRIX RAIN ── */}
+      <MatrixRain visible={matrixOpacity} />
+
+      {/* ── 6. FLOATING PARTICLES ── */}
+      <ParticleField />
+
+      {/* ── 7. SCAN LINE ── */}
+      <ScanLine />
+
+      {/* ── 8. GLITCH FLASH ── */}
+      <GlitchFlash />
+
+      {/* ── 9. PULSE RINGS (behind logo) ── */}
+      <PulseRing delay={0} color={C.greenSoft} maxSize={LOGO_SIZE + 160} cy={LOGO_CY} />
+      <PulseRing delay={750} color={C.cyanBright} maxSize={LOGO_SIZE + 240} cy={LOGO_CY} />
+      <PulseRing delay={1500} color={C.greenPrimary} maxSize={LOGO_SIZE + 320} cy={LOGO_CY} />
+
+      {/* ── 10. LOGO ── */}
+      <LogoCore revealAnim={logoRevealAnim} />
+
+      {/* ── 11. BRAND TEXT ── */}
+      <BrandText titleAnim={titleAnim} subtitleAnim={subtitleAnim} />
+
+      {/* ── 12. PASSION TAGLINE ── */}
+      <PassionTagline masterAnim={passionAnim} />
+
+      {/* ── 13. STATS ── */}
+      <StatsRow anim={statsAnim} />
+
+      {/* ── 14. PROGRESS HUD ── */}
+      <ProgressHUD
+        progress={progressAnim}
+        stageLabel={currentStage.label}
+        stageAnim={stageTextAnim}
+      />
+
+      {/* ── 15. FOOTER ── */}
+      <Footer opacity={footerOpacity} />
+
+      {/* ── 16. SKIP ── */}
+      {allowSkip && (
+        <SkipButton onSkip={handleSkip} opacity={skipOpacity} />
+      )}
+
+      {/* ── 17. TOP VIGNETTE ── */}
+      <View style={splashStyles.vignetteTop} pointerEvents="none" />
+
+      {/* ── 18. BOTTOM VIGNETTE ── */}
+      <View style={splashStyles.vignetteBottom} pointerEvents="none" />
+    </Animated.View>
+  );
+};
+
+// ─────────────────────────────────────────────
+// ROOT STYLES
+// ─────────────────────────────────────────────
+
+const splashStyles = StyleSheet.create({
+  root: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: C.deepBlack,
+    overflow: 'hidden',
+  },
+  radialAmb: {
+    position: 'absolute',
+    top: H * 0.22,
+    left: W * 0.1,
+    width: W * 0.8,
+    height: H * 0.45,
+    borderRadius: W * 0.4,
+    backgroundColor: 'rgba(0,180,80,0.045)',
+  },
+  vignetteTop: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: H * 0.22,
+    backgroundColor: 'transparent',
+    // Using borderRadius trick for vignette fade
+  },
+  vignetteBottom: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: H * 0.18,
+    backgroundColor: 'transparent',
   },
 });
 
 export default SplashScreen;
 
-// -----------------------------------------------------
-// Exports for other callers (debug, documentation)
-// -----------------------------------------------------
+// ─────────────────────────────────────────────
+// NAMED RE-EXPORTS (for App.tsx + nav imports)
+// ─────────────────────────────────────────────
 
-export { STAGES, QUOTES, TOTAL_DURATION, visibilityForStage, getStageByTime, getStageStart };
-export type { StageKey, StageBlueprint, EffectVisibility };
+export { SplashScreen };
