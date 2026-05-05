@@ -24,6 +24,20 @@ const CustomTheme = {
   },
 };
 
+const linking = {
+  prefixes: [],
+  config: {
+    screens: {
+      HomeTab: '/',
+      EventsTab: '/events',
+      TaruWingsTab: '/wings',
+      TeamTab: '/team',
+      AlumniTab: '/alumni',
+      SuggestionTab: '/suggestion',
+    },
+  },
+};
+
 const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isSplashComplete, setIsSplashComplete] = useState(false);
@@ -60,7 +74,7 @@ const App: React.FC = () => {
 
   return (
     <GestureHandlerRootView style={styles.container}>
-      <NavigationContainer theme={CustomTheme}>
+      <NavigationContainer theme={CustomTheme} linking={linking}>
         <StatusBar
           barStyle="light-content"
           backgroundColor={Colors.background.deepBlack}

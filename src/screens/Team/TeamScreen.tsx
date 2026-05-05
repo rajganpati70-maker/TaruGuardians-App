@@ -461,6 +461,14 @@ const TeamScreen: React.FC = () => {
 
   const hasFilters = tierFilter !== 'all' || roleFilter !== 'all' || searchQuery.trim().length > 0;
 
+  const roleCounts = useMemo(() => {
+    const counts: Record<string, number> = { all: TEAM_MEMBERS.length };
+    TEAM_MEMBERS.forEach((m) => {
+      counts[m.roleKey] = (counts[m.roleKey] ?? 0) + 1;
+    });
+    return counts;
+  }, []);
+
   // ------ Handlers ------
   const onRefresh = useCallback(() => {
     setRefreshing(true);
@@ -623,6 +631,7 @@ const TeamScreen: React.FC = () => {
         >
           {ROLE_FILTERS.map((rf) => {
             const active = roleFilter === rf.key;
+            const count = roleCounts[rf.key] ?? 0;
             return (
               <TouchableOpacity
                 key={rf.key}
@@ -633,6 +642,13 @@ const TeamScreen: React.FC = () => {
                 <Text style={[styles.roleChipLabel, active && styles.roleChipLabelActive]}>
                   {rf.label}
                 </Text>
+                {count > 0 && (
+                  <View style={[styles.roleChipBadge, active && styles.roleChipBadgeActive]}>
+                    <Text style={[styles.roleChipBadgeText, active && styles.roleChipBadgeTextActive]}>
+                      {count}
+                    </Text>
+                  </View>
+                )}
               </TouchableOpacity>
             );
           })}
@@ -1135,11 +1151,8 @@ const TeamScreen: React.FC = () => {
           data={gridData}
           key={viewMode}
           keyExtractor={(item) => item.id}
-          numColumns={viewMode === 'grid' ? (IS_TABLET ? 3 : 2) : 1}
+          numColumns={1}
           renderItem={viewMode === 'grid' ? renderGridCard : renderListCard}
-          columnWrapperStyle={
-            viewMode === 'grid' ? { paddingHorizontal: HORIZONTAL_PADDING / 2 } : undefined
-          }
           contentContainerStyle={styles.listContent}
           ListHeaderComponent={listHeader}
           ListEmptyComponent={showMemberGrid ? renderEmpty : undefined}
@@ -1279,6 +1292,27 @@ const styles = StyleSheet.create({
   roleChipEmoji: { fontSize: 13, marginRight: 5 },
   roleChipLabel: { color: Colors.text.secondary, fontSize: 11, fontWeight: '600' },
   roleChipLabelActive: { color: Colors.tech.neonBlue, fontWeight: '800' },
+  roleChipBadge: {
+    marginLeft: 6,
+    backgroundColor: '#ffffff18',
+    borderRadius: 99,
+    minWidth: 18,
+    height: 18,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 5,
+  },
+  roleChipBadgeActive: {
+    backgroundColor: Colors.tech.neonBlue + '33',
+  },
+  roleChipBadgeText: {
+    color: Colors.text.muted,
+    fontSize: 10,
+    fontWeight: '700',
+  },
+  roleChipBadgeTextActive: {
+    color: Colors.tech.neonBlue,
+  },
 
   // Section blocks
   sectionBlock: { paddingTop: 22 },
@@ -1341,9 +1375,8 @@ const styles = StyleSheet.create({
 
   // Grid cells
   gridCell: {
-    flex: 1,
-    paddingHorizontal: HORIZONTAL_PADDING / 2,
-    marginTop: 8,
+    marginHorizontal: HORIZONTAL_PADDING,
+    marginTop: 10,
   },
   cardInner: { borderRadius: CARD_RADIUS, overflow: 'hidden' },
   cardGradient: {
