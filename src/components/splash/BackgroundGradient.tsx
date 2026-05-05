@@ -131,12 +131,12 @@ const BackgroundGradient: React.FC<BackgroundGradientProps> = ({ active = true }
       {/* Base layer - solid dark */}
       <View style={styles.baseLayer} />
 
-      {/* Layer 1: Deep black to dark green */}
+      {/* Layer 1: Deep black to obsidian */}
       <Animated.View style={[styles.gradientLayer, { opacity: layer1Opacity }]}>
         <LinearGradient
           colors={[
             Colors.background.deepBlack,
-            Colors.background.darkGreen,
+            Colors.background.obsidian,
           ]}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
@@ -144,12 +144,12 @@ const BackgroundGradient: React.FC<BackgroundGradientProps> = ({ active = true }
         />
       </Animated.View>
 
-      {/* Layer 2: Dark green to dark teal */}
+      {/* Layer 2: Obsidian to charcoal */}
       <Animated.View style={[styles.gradientLayer, { opacity: layer2Opacity }]}>
         <LinearGradient
           colors={[
-            Colors.background.darkGreen,
-            Colors.background.darkTeal,
+            Colors.background.obsidian,
+            Colors.background.charcoal,
           ]}
           start={{ x: 0.5, y: 0 }}
           end={{ x: 0.5, y: 1 }}
@@ -157,11 +157,11 @@ const BackgroundGradient: React.FC<BackgroundGradientProps> = ({ active = true }
         />
       </Animated.View>
 
-      {/* Layer 3: Dark teal to midnight */}
+      {/* Layer 3: Charcoal to midnight */}
       <Animated.View style={[styles.gradientLayer, { opacity: layer3Opacity }]}>
         <LinearGradient
           colors={[
-            Colors.background.darkTeal,
+            Colors.background.charcoal,
             Colors.background.midnight,
           ]}
           start={{ x: 0.3, y: 0 }}
@@ -213,12 +213,12 @@ const styles = StyleSheet.create({
     width: SCREEN_WIDTH * 0.6,
     height: SCREEN_HEIGHT * 0.4,
     borderRadius: SCREEN_WIDTH,
-    backgroundColor: Colors.glow.greenSoft,
+    backgroundColor: 'transparent',
   },
   glowInner: {
     flex: 1,
     borderRadius: SCREEN_WIDTH,
-    backgroundColor: Colors.glow.greenSoft,
+    backgroundColor: 'transparent',
   },
   radialOverlay: {
     ...StyleSheet.absoluteFillObject,
