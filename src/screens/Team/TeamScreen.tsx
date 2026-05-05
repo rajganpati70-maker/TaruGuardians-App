@@ -536,41 +536,6 @@ const TeamScreen: React.FC = () => {
           </View>
         </View>
 
-        <Animated.View
-          style={[
-            styles.statsRow,
-            {
-              opacity: statsAnim,
-              transform: [{ translateY: statsAnim.interpolate({ inputRange: [0, 1], outputRange: [14, 0] }) }],
-            },
-          ]}
-        >
-          <View style={styles.statCell}>
-            <Text style={styles.statValue}>{totalMembers}</Text>
-            <Text style={styles.statLabel}>Members</Text>
-          </View>
-          <View style={styles.statDivider} />
-          <View style={styles.statCell}>
-            <Text style={[styles.statValue, { color: '#FBBF24' }]}>{leadershipMembers.length}</Text>
-            <Text style={styles.statLabel}>Leads</Text>
-          </View>
-          <View style={styles.statDivider} />
-          <View style={styles.statCell}>
-            <Text style={[styles.statValue, { color: '#4ADE80' }]}>{totalEventsOrganized}</Text>
-            <Text style={styles.statLabel}>Events</Text>
-          </View>
-          <View style={styles.statDivider} />
-          <View style={styles.statCell}>
-            <Text style={[styles.statValue, { color: '#38BDF8' }]}>{totalProjectsShipped}</Text>
-            <Text style={styles.statLabel}>Projects</Text>
-          </View>
-          <View style={styles.statDivider} />
-          <View style={styles.statCell}>
-            <Text style={[styles.statValue, { color: '#A78BFA' }]}>{totalHours.toLocaleString()}</Text>
-            <Text style={styles.statLabel}>Hours</Text>
-          </View>
-        </Animated.View>
-
         {/* Search bar */}
         <View style={styles.searchBar}>
           <Text style={styles.searchIcon}>🔍</Text>

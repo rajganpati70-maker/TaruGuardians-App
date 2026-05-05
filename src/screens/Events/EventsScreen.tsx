@@ -2303,49 +2303,51 @@ const EventsScreen: React.FC = () => {
   // Nested tabs ------------------------------------------------
   const renderNestedTabs = () => (
     <Animated.View style={[styles.nestedTabsContainer, { opacity: tabAnim }]}>
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 4 }}>
-        <View style={[styles.nestedTabs, { width: 'auto', gap: 8 }]}>
-          <TouchableOpacity
-            activeOpacity={0.8}
-            style={[styles.nestedTab, activeTab === 'all' && styles.nestedTabActive]}
-            onPress={() => handleTabChange('all')}
-          >
-            <Text style={styles.nestedTabIcon}>🎉</Text>
-            <Text style={[styles.nestedTabText, activeTab === 'all' && styles.nestedTabTextActive]}>
-              All ({UPCOMING_EVENTS.length + PAST_EVENTS.length})
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            activeOpacity={0.8}
-            style={[styles.nestedTab, activeTab === 'upcoming' && styles.nestedTabActive]}
-            onPress={() => handleTabChange('upcoming')}
-          >
-            <Text style={styles.nestedTabIcon}>📅</Text>
-            <Text style={[styles.nestedTabText, activeTab === 'upcoming' && styles.nestedTabTextActive]}>
-              Upcoming ({UPCOMING_EVENTS.length})
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            activeOpacity={0.8}
-            style={[styles.nestedTab, activeTab === 'past' && styles.nestedTabActive]}
-            onPress={() => handleTabChange('past')}
-          >
-            <Text style={styles.nestedTabIcon}>🗂️</Text>
-            <Text style={[styles.nestedTabText, activeTab === 'past' && styles.nestedTabTextActive]}>
-              Past ({PAST_EVENTS.length})
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            activeOpacity={0.8}
-            style={[styles.nestedTab, activeTab === 'ongoing' && styles.nestedTabActive]}
-            onPress={() => handleTabChange('ongoing')}
-          >
-            <Text style={styles.nestedTabIcon}>🔴</Text>
-            <Text style={[styles.nestedTabText, activeTab === 'ongoing' && styles.nestedTabTextActive]}>
-              Ongoing
-            </Text>
-          </TouchableOpacity>
-        </View>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.nestedTabsScroll}
+      >
+        <TouchableOpacity
+          activeOpacity={0.8}
+          style={[styles.nestedTab, activeTab === 'all' && styles.nestedTabActive]}
+          onPress={() => handleTabChange('all')}
+        >
+          <Text style={styles.nestedTabIcon}>🎉</Text>
+          <Text style={[styles.nestedTabText, activeTab === 'all' && styles.nestedTabTextActive]}>
+            All ({UPCOMING_EVENTS.length + PAST_EVENTS.length})
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          activeOpacity={0.8}
+          style={[styles.nestedTab, activeTab === 'upcoming' && styles.nestedTabActive]}
+          onPress={() => handleTabChange('upcoming')}
+        >
+          <Text style={styles.nestedTabIcon}>📅</Text>
+          <Text style={[styles.nestedTabText, activeTab === 'upcoming' && styles.nestedTabTextActive]}>
+            Upcoming ({UPCOMING_EVENTS.length})
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          activeOpacity={0.8}
+          style={[styles.nestedTab, activeTab === 'past' && styles.nestedTabActive]}
+          onPress={() => handleTabChange('past')}
+        >
+          <Text style={styles.nestedTabIcon}>🗂️</Text>
+          <Text style={[styles.nestedTabText, activeTab === 'past' && styles.nestedTabTextActive]}>
+            Past ({PAST_EVENTS.length})
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          activeOpacity={0.8}
+          style={[styles.nestedTab, activeTab === 'ongoing' && styles.nestedTabActive]}
+          onPress={() => handleTabChange('ongoing')}
+        >
+          <Text style={styles.nestedTabIcon}>🔴</Text>
+          <Text style={[styles.nestedTabText, activeTab === 'ongoing' && styles.nestedTabTextActive]}>
+            Ongoing
+          </Text>
+        </TouchableOpacity>
       </ScrollView>
     </Animated.View>
   );
@@ -5262,26 +5264,28 @@ const styles = StyleSheet.create({
 
   // Nested tabs
   nestedTabsContainer: {
-    paddingHorizontal: HORIZONTAL_PADDING,
     marginTop: 10,
+  },
+  nestedTabsScroll: {
+    paddingHorizontal: HORIZONTAL_PADDING,
+    paddingVertical: 4,
   },
   nestedTabs: {
     flexDirection: 'row',
-    backgroundColor: Colors.background.darkGreen,
-    borderRadius: 14,
-    padding: 4,
   },
   nestedTab: {
-    flex: 1,
     flexDirection: 'row',
-    justifyContent: 'center',
     alignItems: 'center',
-    paddingVertical: 10,
-    borderRadius: 12,
+    paddingHorizontal: 14,
+    paddingVertical: 9,
+    borderRadius: 22,
+    borderWidth: 1.5,
+    borderColor: '#ffffff22',
+    backgroundColor: '#ffffff0A',
+    marginRight: 8,
   },
   nestedTabActive: {
     backgroundColor: Colors.tech.neonBlue + '22',
-    borderWidth: 1,
     borderColor: Colors.tech.neonBlue,
   },
   nestedTabIcon: { fontSize: 14, marginRight: 6 },
@@ -5292,6 +5296,7 @@ const styles = StyleSheet.create({
   },
   nestedTabTextActive: {
     color: Colors.tech.neonBlue,
+    fontWeight: '700',
   },
 
   // List intro
