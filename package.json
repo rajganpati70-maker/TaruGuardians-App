@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@expo/metro-runtime": "~4.0.1",
-    "@react-native-async-storage/async-storage": "^1.23.1",
+    "@react-native-async-storage/async-storage": "^1.24.0",
     "@react-navigation/bottom-tabs": "^7.15.11",
     "@react-navigation/material-top-tabs": "^7.4.24",
     "@react-navigation/native": "^7.2.2",
@@ -37,7 +37,7 @@
     "react-native-web": "^0.19.13"
   },
   "devDependencies": {
-    "@babel/core": "^7.25.2",
+    "@babel/core": "^7.29.0",
     "@types/react": "~18.3.12",
     "typescript": "~5.3.3"
   }
