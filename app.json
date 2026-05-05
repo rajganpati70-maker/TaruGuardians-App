@@ -39,6 +39,11 @@
           "imageWidth": 200
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "58994bd5-2fcc-466e-9663-e82adc60b25a"
+      }
+    }
   }
 }
