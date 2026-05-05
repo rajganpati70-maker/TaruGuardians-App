@@ -1928,28 +1928,37 @@ const EventsScreen: React.FC = () => {
     if (onlyFeatured) list = list.filter((e) => e.isFeature);
 
     // Sort
-    const sorted = [...list];
-    switch (sortKey) {
-      case 'date-asc':
-        sorted.sort((a, b) => a.date.localeCompare(b.date));
-        break;
-      case 'date-desc':
-        sorted.sort((a, b) => b.date.localeCompare(a.date));
-        break;
-      case 'price-asc':
-        sorted.sort((a, b) => a.price - b.price);
-        break;
-      case 'price-desc':
-        sorted.sort((a, b) => b.price - a.price);
-        break;
-      case 'popularity':
-        sorted.sort(
-          (a, b) =>
-            b.attendees / b.maxAttendees - a.attendees / a.maxAttendees,
-        );
-        break;
+    const sortFn = (a: Event, b: Event): number => {
+      switch (sortKey) {
+        case 'date-asc': {
+          const aDate = a.date === 'TBA' ? '9999' : a.date;
+          const bDate = b.date === 'TBA' ? '9999' : b.date;
+          return aDate.localeCompare(bDate);
+        }
+        case 'date-desc': {
+          const aDate = a.date === 'TBA' ? '0000' : a.date;
+          const bDate = b.date === 'TBA' ? '0000' : b.date;
+          return bDate.localeCompare(aDate);
+        }
+        case 'price-asc':
+          return a.price - b.price;
+        case 'price-desc':
+          return b.price - a.price;
+        case 'popularity':
+          return b.attendees / b.maxAttendees - a.attendees / a.maxAttendees;
+        default:
+          return 0;
+      }
+    };
+
+    // In "All" tab: always show upcoming first, then past — sorted within each group
+    if (activeTab === 'all') {
+      const upcoming = list.filter((e) => e.type === 'upcoming').sort(sortFn);
+      const past = list.filter((e) => e.type === 'past').sort(sortFn);
+      return [...upcoming, ...past];
     }
-    return sorted;
+
+    return [...list].sort(sortFn);
   }, [
     sourceEvents,
     selectedCategory,
