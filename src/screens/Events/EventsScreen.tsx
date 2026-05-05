@@ -1850,7 +1850,7 @@ const EVENT_WEATHER_CONTINGENCIES: EventWeatherContingency[] = [
 
 const EventsScreen: React.FC = () => {
   // State
-  const [activeTab, setActiveTab] = useState<'upcoming' | 'past'>('upcoming');
+  const [activeTab, setActiveTab] = useState<'all' | 'upcoming' | 'past' | 'ongoing'>('all');
   const [selectedCategory, setSelectedCategory] = useState<string>('1');
   const [searchQuery, setSearchQuery] = useState('');
   const [sortKey, setSortKey] = useState<SortKey>('date-asc');
@@ -1893,7 +1893,11 @@ const EventsScreen: React.FC = () => {
   const extrasModalOpacity = useRef(new Animated.Value(0)).current;
 
   // Source of truth based on activeTab
-  const sourceEvents = activeTab === 'upcoming' ? UPCOMING_EVENTS : PAST_EVENTS;
+  const sourceEvents =
+    activeTab === 'upcoming' ? UPCOMING_EVENTS :
+    activeTab === 'past' ? PAST_EVENTS :
+    activeTab === 'ongoing' ? [] :
+    [...UPCOMING_EVENTS, ...PAST_EVENTS];
 
   // Derived list (memoized)
   const filteredEvents = useMemo(() => {
@@ -2023,7 +2027,7 @@ const EventsScreen: React.FC = () => {
   }, []);
 
   const handleTabChange = useCallback(
-    (tab: 'upcoming' | 'past') => {
+    (tab: 'all' | 'upcoming' | 'past' | 'ongoing') => {
       if (tab === activeTab) return;
       Animated.sequence([
         Animated.timing(listAnim, {
@@ -2299,50 +2303,56 @@ const EventsScreen: React.FC = () => {
   // Nested tabs ------------------------------------------------
   const renderNestedTabs = () => (
     <Animated.View style={[styles.nestedTabsContainer, { opacity: tabAnim }]}>
-      <View style={styles.nestedTabs}>
-        <TouchableOpacity
-          activeOpacity={0.8}
-          style={[
-            styles.nestedTab,
-            activeTab === 'upcoming' && styles.nestedTabActive,
-          ]}
-          onPress={() => handleTabChange('upcoming')}
-        >
-          <Text style={styles.nestedTabIcon}>📅</Text>
-          <Text
-            style={[
-              styles.nestedTabText,
-              activeTab === 'upcoming' && styles.nestedTabTextActive,
-            ]}
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 4 }}>
+        <View style={[styles.nestedTabs, { width: 'auto', gap: 8 }]}>
+          <TouchableOpacity
+            activeOpacity={0.8}
+            style={[styles.nestedTab, activeTab === 'all' && styles.nestedTabActive]}
+            onPress={() => handleTabChange('all')}
           >
-            Upcoming ({UPCOMING_EVENTS.length})
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          activeOpacity={0.8}
-          style={[
-            styles.nestedTab,
-            activeTab === 'past' && styles.nestedTabActive,
-          ]}
-          onPress={() => handleTabChange('past')}
-        >
-          <Text style={styles.nestedTabIcon}>🗂️</Text>
-          <Text
-            style={[
-              styles.nestedTabText,
-              activeTab === 'past' && styles.nestedTabTextActive,
-            ]}
+            <Text style={styles.nestedTabIcon}>🎉</Text>
+            <Text style={[styles.nestedTabText, activeTab === 'all' && styles.nestedTabTextActive]}>
+              All ({UPCOMING_EVENTS.length + PAST_EVENTS.length})
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            activeOpacity={0.8}
+            style={[styles.nestedTab, activeTab === 'upcoming' && styles.nestedTabActive]}
+            onPress={() => handleTabChange('upcoming')}
           >
-            Past ({PAST_EVENTS.length})
-          </Text>
-        </TouchableOpacity>
-      </View>
+            <Text style={styles.nestedTabIcon}>📅</Text>
+            <Text style={[styles.nestedTabText, activeTab === 'upcoming' && styles.nestedTabTextActive]}>
+              Upcoming ({UPCOMING_EVENTS.length})
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            activeOpacity={0.8}
+            style={[styles.nestedTab, activeTab === 'past' && styles.nestedTabActive]}
+            onPress={() => handleTabChange('past')}
+          >
+            <Text style={styles.nestedTabIcon}>🗂️</Text>
+            <Text style={[styles.nestedTabText, activeTab === 'past' && styles.nestedTabTextActive]}>
+              Past ({PAST_EVENTS.length})
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            activeOpacity={0.8}
+            style={[styles.nestedTab, activeTab === 'ongoing' && styles.nestedTabActive]}
+            onPress={() => handleTabChange('ongoing')}
+          >
+            <Text style={styles.nestedTabIcon}>🔴</Text>
+            <Text style={[styles.nestedTabText, activeTab === 'ongoing' && styles.nestedTabTextActive]}>
+              Ongoing
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
     </Animated.View>
   );
 
-  // Featured carousel (upcoming only) --------------------------
+  // Featured carousel (all + upcoming only) --------------------------
   const renderFeaturedCarousel = () => {
-    if (activeTab !== 'upcoming' || featuredUpcoming.length === 0) return null;
+    if ((activeTab !== 'upcoming' && activeTab !== 'all') || featuredUpcoming.length === 0) return null;
     return (
       <View style={styles.featuredContainer}>
         <View style={styles.sectionHeader}>
@@ -5050,10 +5060,13 @@ const EventsScreen: React.FC = () => {
               {renderFeaturedCarousel()}
               <View style={styles.listIntro}>
                 <Text style={styles.sectionTitle}>
-                  {activeTab === 'upcoming' ? '🚀 Upcoming' : '🗂️ Past'}
+                  {activeTab === 'all' ? '🎉 All Events' :
+                   activeTab === 'upcoming' ? '🚀 Upcoming' :
+                   activeTab === 'ongoing' ? '🔴 Ongoing' :
+                   '🗂️ Past'}
                 </Text>
                 <Text style={styles.sectionHint}>
-                  {filteredEvents.length} results
+                  {activeTab === 'ongoing' ? 'None right now' : `${filteredEvents.length} results`}
                 </Text>
               </View>
             </>
