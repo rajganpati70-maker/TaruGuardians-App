@@ -19,6 +19,16 @@ workflows:
       - name: Expo Prebuild
         script: |
           npx expo prebuild --platform android --clean
+      - name: Copy splash screen drawable
+        script: |
+          DRAWABLE_DIR="android/app/src/main/res/drawable"
+          mkdir -p "$DRAWABLE_DIR"
+          cp assets/splash.png "$DRAWABLE_DIR/splashscreen_logo.png"
+          for density in mdpi hdpi xhdpi xxhdpi xxxhdpi; do
+            DENSITY_DIR="android/app/src/main/res/drawable-$density"
+            mkdir -p "$DENSITY_DIR"
+            cp assets/splash.png "$DENSITY_DIR/splashscreen_logo.png"
+          done
       - name: Build Android release
         script: |
           cd android
