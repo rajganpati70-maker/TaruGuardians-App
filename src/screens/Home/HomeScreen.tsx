@@ -122,7 +122,6 @@ const STATS: HomeStatCard[] = [
   { id: 'members', label: 'Members', value: '67', caption: 'Across 6 wings', icon: '🧑‍🤝‍🧑', color: '#38BDF8' },
   { id: 'events', label: 'Events', value: '28', caption: 'All time', icon: '📅', color: '#4ADE80' },
   { id: 'alumni', label: 'Alumni', value: '150+', caption: 'Giving back', icon: '🎓', color: '#FBBF24' },
-  { id: 'trees', label: 'Trees', value: '12,400', caption: 'Planted, 74% alive', icon: '🌳', color: '#22C55E' },
 ];
 
 // -----------------------------------------------------
