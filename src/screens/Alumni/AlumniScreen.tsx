@@ -126,6 +126,7 @@ interface ExtAlumni extends Alumni {
   sustainabilityPledge?: string;
   quote?: string;
   timeline: { year: string; role: string; company: string }[];
+  clubPost?: string;
 }
 
 const makeAlumni = (
@@ -150,6 +151,7 @@ const makeAlumni = (
     linkedin?: string;
     email?: string;
     role?: string;
+    clubPost?: string;
   }
 ): ExtAlumni => ({
   id: String(id),
@@ -159,9 +161,9 @@ const makeAlumni = (
   company,
   location,
   imageUrl: '',
-  email: opts?.email ?? `${name.toLowerCase().replace(/[^a-z]/g, '')}@alumni.taruguardians.org`,
+  email: opts?.email ?? `${name.toLowerCase().replace(/\s+/g, '.').replace(/[^a-z.]/g, '')}@alumni.taruguardians.org`,
   linkedin:
-    opts?.linkedin ?? `https://linkedin.com/in/${name.toLowerCase().replace(/[^a-z]/g, '-')}`,
+    opts?.linkedin ?? `https://linkedin.com/in/${name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z-]/g, '')}`,
   currentRole,
   pastRoles: opts?.pastRoles ?? [],
   achievements,
@@ -173,11 +175,12 @@ const makeAlumni = (
   mentor: opts?.mentor,
   sustainabilityPledge: opts?.pledge,
   quote: opts?.quote,
+  clubPost: opts?.clubPost,
   timeline:
     opts?.timeline ??
     [
-      { year: batch, role: 'Graduated', company: 'Taru Guardians' },
-      { year: String(Number(batch) + 1), role: currentRole, company },
+      { year: batch, role: 'Joined Taru Guardians', company: 'Taru Guardians' },
+      { year: '2025', role: currentRole, company },
     ],
 });
 
@@ -188,874 +191,361 @@ const makeAlumni = (
 const ALUMNI_DATA: ExtAlumni[] = [
   makeAlumni(
     1,
-    'Rohit Sharma',
-    '2020',
-    'Engineering Manager',
-    'Google',
+    'Rohan Kumar Singh',
+    '2025',
+    'SDE',
+    'BlueStock',
     'Bangalore, India',
     'tech',
-    6,
-    ['Google Excellence Award 2023', 'Led migration of 400M-user billing service', 'Author of 2 internal design docs turned org-wide'],
-    ['Go', 'Kubernetes', 'Distributed Systems', 'Site Reliability', 'Team Leadership'],
-    'Dream bada rakho lekin ground realities ko respect karo — shortcuts long-term compound nahi karte.',
-    {
-      featured: true,
-      mentor: true,
-      pledge: 'Plant 50 trees every year + fund 5 scholarships annually.',
-      quote: 'Code is easy. Calibrating impact is hard.',
-      pastRoles: ['Software Engineer', 'Senior SWE'],
-      timeline: [
-        { year: '2020', role: 'Graduated', company: 'Taru Guardians' },
-        { year: '2020', role: 'SWE Intern', company: 'Infosys' },
-        { year: '2021', role: 'Software Engineer', company: 'Flipkart' },
-        { year: '2023', role: 'Senior SWE', company: 'Google' },
-        { year: '2025', role: 'Engineering Manager', company: 'Google' },
-      ],
-    }
-  ),
-  makeAlumni(
-    2,
-    'Priya Singh',
-    '2021',
-    'Senior Product Manager',
-    'Amazon',
-    'Hyderabad, India',
-    'product',
-    5,
-    ['Amazon Star Award 2024', 'Shipped 3 0→1 products with >50M users', 'Keynote at PMF India 2024'],
-    ['Product Strategy', 'User Research', 'Growth', 'A/B Experimentation', 'SQL'],
-    'Features kam banao, outcomes zyada sochna seekho — user pain points ka ek clear tree rakho.',
-    {
-      featured: true,
-      mentor: true,
-      quote: 'A PM without data is just opinions with confidence.',
-      pledge: 'Mentor 10 first-gen college students every year.',
-      timeline: [
-        { year: '2021', role: 'Graduated', company: 'Taru Guardians' },
-        { year: '2021', role: 'APM', company: 'Swiggy' },
-        { year: '2023', role: 'Product Manager', company: 'Amazon' },
-        { year: '2025', role: 'Senior PM', company: 'Amazon' },
-      ],
-    }
-  ),
-  makeAlumni(
-    3,
-    'Ankit Patel',
-    '2022',
-    'Machine Learning Engineer',
-    'Microsoft',
-    'Bangalore, India',
-    'data',
-    4,
-    ['Microsoft AI Impact Award', 'Co-authored 2 NeurIPS workshop papers', 'Open-sourced a ranking library (3.2k stars)'],
-    ['Python', 'PyTorch', 'Transformers', 'MLOps', 'Distributed Training'],
-    'ML me shortcut lene se models unreliable ho jaate hain — baseline strong banao pehle.',
-    {
-      featured: true,
-      mentor: true,
-      quote: 'Data is the new oil — but refining matters more than volume.',
-      pledge: 'Donate 5% of stipend to open-source AI safety research.',
-    }
-  ),
-  makeAlumni(
-    4,
-    'Sneha Gupta',
-    '2023',
-    'Senior Product Designer',
-    'Apple',
-    'Bangalore, India',
-    'design',
-    3,
-    ['Apple Design Excellence 2024', '3 WWDC session feature shipments', 'Design system used by 14 teams'],
-    ['Figma', 'Design Systems', 'Motion', 'Prototyping', 'User Research'],
-    'Aesthetic likna easy hai, accessibility tough — dono ek saath practice karte raho.',
-    {
-      featured: true,
-      mentor: true,
-      quote: 'Great design is invisible — and opinionated.',
-      pledge: 'Free accessibility audits for 12 NGO websites every year.',
-    }
-  ),
-  makeAlumni(
-    5,
-    'Vikram Kumar',
-    '2024',
-    'Founder & CEO',
-    'EcoTech Solutions',
-    'Bangalore, India',
-    'entrepreneur',
-    2,
-    ['Forbes 30 Under 30 — Asia 2025', 'Raised Seed + Series A ($8.4M)', 'Recognized by UNEP for rural cleantech'],
-    ['Business Strategy', 'Hardware–Software', 'Fundraising', 'IoT', 'Supply Chain'],
-    'Idea se zyada execution matter karta hai — aur execution = honest feedback loops.',
-    {
-      featured: true,
-      mentor: true,
-      pledge: 'Hire 30% of workforce from tier-3 colleges and rural talent.',
-      quote: 'Startups don\'t need vision decks — they need weekly cash runways and believers.',
-      timeline: [
-        { year: '2024', role: 'Graduated', company: 'Taru Guardians' },
-        { year: '2024', role: 'Co-founder', company: 'EcoTech Solutions' },
-        { year: '2025', role: 'CEO', company: 'EcoTech Solutions' },
-      ],
-    }
-  ),
-  makeAlumni(
-    6,
-    'Meera Shah',
-    '2025',
-    'Business Analyst',
-    'McKinsey & Company',
-    'Mumbai, India',
-    'finance',
     1,
-    ['Top Performer Q4 2025', 'Led 3 CSR engagements', 'Best Campus Rookie — McK Mumbai'],
-    ['Structured Problem Solving', 'Excel Modeling', 'Client Communication', 'Strategy'],
-    'Pehla saal seekhne me invest karo — compensation baad me apne aap chase karega.',
+    ['SDE at BlueStock — one of the first hires from TaruGuardians batch 2025', 'Led backend services during internship phase', 'President of TaruGuardians 2021–2025 — steered the club through its most active year'],
+    ['Web Dev', 'App Dev', 'Product', 'Org Design'],
+    'Ek club chalaana aur ek company mein kaam karna — dono mein ek hi cheez kaam aati hai: ownership lena bina kisi ke kaha.',
     {
+      featured: true,
       mentor: true,
-      quote: 'Consulting is 80% listening, 20% framing.',
-      pledge: 'Volunteer 100+ hrs with rural financial-literacy NGOs.',
+      quote: 'Code likhna easy hai. Club banana mushkil hai.',
+      clubPost: '#President — TaruGuardians (2021–2025)',
+      timeline: [
+        { year: '2021', role: 'Joined TaruGuardians', company: 'Taru Guardians' },
+        { year: '2022', role: 'Core Member', company: 'Taru Guardians' },
+        { year: '2023', role: 'President', company: 'Taru Guardians' },
+        { year: '2025', role: 'SDE', company: 'BlueStock' },
+      ],
+    }
+  ),
+  makeAlumni(
+    2,
+    'Aryan Raj',
+    '2025',
+    'Software Engineer',
+    'Placed',
+    'Noida, India',
+    'tech',
+    1,
+    ['Placed as Software Engineer — Batch 2025', 'Program Head of TaruGuardians — managed all club programmes and academic sessions', 'Organised 10+ technical workshops for club members'],
+    ['Web Dev', 'App Dev', 'Product'],
+    'Program Head ban ke samjha ki manage karna ek skill hai — sirf kaam karna nahi.',
+    {
+      featured: true,
+      mentor: true,
+      clubPost: '#Program Head — TaruGuardians (2021–2025)',
+      timeline: [
+        { year: '2021', role: 'Joined TaruGuardians', company: 'Taru Guardians' },
+        { year: '2023', role: 'Program Head', company: 'Taru Guardians' },
+        { year: '2025', role: 'Software Engineer', company: 'Placed' },
+      ],
+    }
+  ),
+  makeAlumni(
+    3,
+    'Khushi Kumari',
+    '2025',
+    'Apprentice',
+    'Birla Soft',
+    'Kolkata, India',
+    'tech',
+    1,
+    ['Apprentice at Birla Soft — secured placement from Batch 2020–2024', 'Program Head of TaruGuardians — co-led all academic and engagement programmes', 'Coordinated placement prep sessions for 50+ junior members'],
+    ['Web Dev', 'App Dev', 'Org Design'],
+    'Program Head role ne mujhe sikhaya ki process banana hi half the work hota hai.',
+    {
+      featured: true,
+      mentor: true,
+      clubPost: '#Program Head — TaruGuardians (2020–2024)',
+      timeline: [
+        { year: '2020', role: 'Joined TaruGuardians', company: 'Taru Guardians' },
+        { year: '2022', role: 'Program Head', company: 'Taru Guardians' },
+        { year: '2025', role: 'Apprentice', company: 'Birla Soft' },
+      ],
+    }
+  ),
+  makeAlumni(
+    4,
+    'Anand Kumar Jha',
+    '2025',
+    'Intern',
+    'Oasis Infobyte',
+    'Bangalore, India',
+    'product',
+    1,
+    ['Intern at Oasis Infobyte — worked on full-stack web features', 'Vice President of TaruGuardians — second-in-command driving club strategy', 'Placed at XYZ Company post-graduation'],
+    ['Web Dev', 'Data Science', 'Product'],
+    'Vice President banna matlab President ka kaam bhi karna aur apna bhi — tabhi seekhte hain.',
+    {
+      featured: true,
+      mentor: true,
+      quote: 'Leadership ka matlab spotlight nahi, spotlight banana hai doosron ke liye.',
+      clubPost: '#Vice President — TaruGuardians (2021–2025)',
+      timeline: [
+        { year: '2021', role: 'Joined TaruGuardians', company: 'Taru Guardians' },
+        { year: '2023', role: 'Vice President', company: 'Taru Guardians' },
+        { year: '2024', role: 'Intern', company: 'Oasis Infobyte' },
+        { year: '2025', role: 'SDE', company: 'XYZ Company' },
+      ],
+    }
+  ),
+  makeAlumni(
+    5,
+    'Mohit Kumar Singh',
+    '2025',
+    'NEC Finalist',
+    'IIT Bombay',
+    'Noida, India',
+    'research',
+    1,
+    ['NEC Finalist at IIT Bombay — represented the college at national engineering level', 'Administrative Head of TaruGuardians — managed operations, logistics and internal systems', 'Streamlined club onboarding and documentation processes'],
+    ['ML', 'Data Science', 'App Dev'],
+    'Admin Head dikhne mein boring lagta hai par club ke sab kaam usi ke upar tike hote hain.',
+    {
+      featured: true,
+      mentor: true,
+      quote: 'Jo kaam koi nahi karta, woh karna seekho — wahi tumhe alag banata hai.',
+      clubPost: '#Administrative Head — TaruGuardians (2021–2025)',
+      timeline: [
+        { year: '2021', role: 'Joined TaruGuardians', company: 'Taru Guardians' },
+        { year: '2023', role: 'Administrative Head', company: 'Taru Guardians' },
+        { year: '2025', role: 'NEC Finalist', company: 'IIT Bombay' },
+      ],
+    }
+  ),
+  makeAlumni(
+    6,
+    'Harshita Sinha',
+    '2025',
+    'Software Engineer',
+    'XYZ Company',
+    'Kolkata, India',
+    'tech',
+    1,
+    ['Placed as Software Engineer at XYZ Company — Batch 2025', 'JS Tech Head of TaruGuardians — led the JavaScript and web technology wing', 'Conducted 8+ web development workshops for club members'],
+    ['Web Dev', 'App Dev', 'Data Science'],
+    'JS Tech wing chalate chalate samajh aaya ki teaching se hi deep understanding aati hai.',
+    {
+      clubPost: '#JS Tech Head — TaruGuardians (2021–2025)',
+      timeline: [
+        { year: '2021', role: 'Joined TaruGuardians', company: 'Taru Guardians' },
+        { year: '2023', role: 'JS Tech Head', company: 'Taru Guardians' },
+        { year: '2025', role: 'Software Engineer', company: 'XYZ Company' },
+      ],
     }
   ),
   makeAlumni(
     7,
-    'Aditya Reddy',
-    '2020',
-    'Vice President — Investment Banking',
-    'Goldman Sachs',
+    'Adi Nath Bhawani',
+    '2025',
+    'Tech Lead',
+    'XYZ Company',
     'Bangalore, India',
-    'finance',
-    6,
-    ['Best Analyst 2022', 'Closed $1.2B cross-border deal', 'Directors\' List 3 years in a row'],
-    ['Valuation', 'M&A', 'Financial Modeling', 'Cross-border deals'],
-    'Network is net worth — par trust unka hi banta hai jinhone mistakes mana aur fix kiya ho.',
+    'data',
+    1,
+    ['Country Topper in NPTEL (Computer Science) — AIR 1 nationally', 'GATE CSE — AIR 456', 'Tech Head of TaruGuardians — spearheaded all technical initiatives and hackathons'],
+    ['ML', 'Data Science', 'Web Dev'],
+    'GATE crack karna ek goal tha, par club ka Tech Head ban ke samjha ki real engineering kya hoti hai.',
     {
+      featured: true,
       mentor: true,
-      quote: 'In finance, compounding your reputation matters more than compounding your Excel tricks.',
+      quote: 'Rank milti hai ratt se, samajh milti hai build karne se.',
+      clubPost: '#Tech Head — TaruGuardians (2021–2025)',
+      timeline: [
+        { year: '2021', role: 'Joined TaruGuardians', company: 'Taru Guardians' },
+        { year: '2022', role: 'Tech Head', company: 'Taru Guardians' },
+        { year: '2025', role: 'GATE AIR 456 · Country Topper NPTEL', company: 'IIT/XYZ Company' },
+      ],
     }
   ),
   makeAlumni(
     8,
-    'Kavya Nair',
-    '2021',
-    'Scientist-C',
-    'ISRO',
-    'Bangalore, India',
-    'research',
-    5,
-    ['ISRO Young Scientist Award 2024', 'Co-designed Chandrayaan-3 payload thermal subsystem', '3 peer-reviewed publications'],
-    ['MATLAB', 'Thermal Analysis', 'Systems Engineering', 'Scientific Writing'],
-    'Reach for the stars — lekin paper pehle publish karo, ghar waale phir satisfy hote hain.',
+    'Utsav Raj',
+    '2025',
+    'Intern',
+    'TDS Advenue',
+    'Noida, India',
+    'product',
+    1,
+    ['Intern at TDS Advenue — worked on marketing and digital outreach', 'PR Head of TaruGuardians — led all external communications and brand presence', 'Placed at XYZ Company post-internship'],
+    ['Web Dev', 'App Dev', 'Org Design'],
+    'PR ka kaam sirf post karna nahi hota — story sahi jagah sahi time pe deliver karni hoti hai.',
     {
-      featured: true,
-      mentor: true,
-      quote: 'Space missions fail silently. Engineering rigor is not optional.',
+      clubPost: '#PR Head — TaruGuardians (2021–2025)',
+      timeline: [
+        { year: '2021', role: 'Joined TaruGuardians', company: 'Taru Guardians' },
+        { year: '2023', role: 'PR Head', company: 'Taru Guardians' },
+        { year: '2024', role: 'Intern', company: 'TDS Advenue' },
+        { year: '2025', role: 'SDE', company: 'XYZ Company' },
+      ],
     }
   ),
   makeAlumni(
     9,
-    'Harshit Jain',
-    '2019',
-    'Staff Software Engineer',
-    'Netflix',
-    'Los Gatos, USA',
-    'tech',
-    7,
-    ['Netflix Rockstar 2023', 'Led CDN rollout in APAC', 'Invited speaker QCon SF'],
-    ['Streaming Systems', 'Rust', 'Edge Computing', 'Video Codecs'],
-    'Bahar jaake kaam karna hai to system-design me genuinely deep jaao — interviews ki ratt mat lagao.',
-    {
-      quote: 'Scale eats assumptions for breakfast.',
-    }
-  ),
-  makeAlumni(
-    10,
-    'Shruti Menon',
-    '2022',
-    'UX Researcher',
-    'Spotify',
-    'Stockholm, Sweden',
-    'research',
-    4,
-    ['Spotify R&D Award', 'Led listener-behavior study across 12 markets', 'Published Nielsen-Norman guest essay'],
-    ['Mixed-methods Research', 'Diary Studies', 'NPS', 'Quant+Qual', 'Storytelling'],
-    'Research agar action me translate na ho to report nahi, museum piece ban jaati hai.',
-    {
-      mentor: true,
-      quote: 'Users don\'t owe you coherence. You owe them clarity.',
-    }
-  ),
-  makeAlumni(
-    11,
-    'Devraj Iyer',
-    '2021',
-    'Senior iOS Engineer',
-    'Swiggy',
-    'Bangalore, India',
-    'tech',
-    5,
-    ['Swiggy Spotlight 2024', 'Shipped delivery-partner iOS rewrite', 'Led 4-person pod'],
-    ['Swift', 'SwiftUI', 'Combine', 'Performance Tuning', 'CI/CD'],
-    'Crash-free sessions >= 99.7% ke neeche chhota hi launch mat karo.',
-    {}
-  ),
-  makeAlumni(
-    12,
-    'Anaya Verma',
-    '2023',
-    'Sustainability Analyst',
-    'BCG — Climate & Sustainability',
-    'Gurugram, India',
-    'impact',
-    3,
-    ['Clean Tech Rising 2025', 'ESG framework for 2 Fortune 500', 'TEDx Youth Bangalore'],
-    ['ESG Reporting', 'Carbon Accounting', 'Policy Analysis', 'Workshops'],
-    'Sustainability marketing ke paar le jaao — real KPIs ke bina intent shallow hai.',
-    {
-      featured: true,
-      mentor: true,
-      pledge: 'Help 20 startups publish their first sustainability report pro-bono.',
-      quote: 'Climate is not a vertical. It\'s a context.',
-    }
-  ),
-  makeAlumni(
-    13,
-    'Ritika Bansal',
-    '2020',
-    'Lead Data Scientist',
-    'Ola',
-    'Bangalore, India',
-    'data',
-    6,
-    ['Ola Innovate 2023', 'Built matching engine v3', '3 patents filed'],
-    ['Causal Inference', 'Bayesian Methods', 'PyMC', 'Spark', 'A/B'],
-    'Data scientist ko philosopher banna padta hai — pehle question, phir model.',
-    {
-      mentor: true,
-    }
-  ),
-  makeAlumni(
-    14,
-    'Arjun Pillai',
-    '2022',
-    'Backend Engineer',
-    'Stripe',
-    'Dublin, Ireland',
-    'tech',
-    4,
-    ['Stripe Engineering Excellence', 'Owned payments reconciliation SLA', 'Open-source contributor to Postgres'],
-    ['Java', 'Postgres', 'Kafka', 'Observability', 'Consistency models'],
-    'Payments systems me integrity > latency. Har bug ka blast radius sochke code likho.',
-    {
-      mentor: true,
-      quote: 'Correctness is a feature, not a luxury.',
-    }
-  ),
-  makeAlumni(
-    15,
-    'Nandini Rao',
-    '2024',
-    'Brand Strategist',
-    'Ogilvy',
-    'Mumbai, India',
-    'creative',
-    2,
-    ['Young Lions Shortlist', 'Led 3 fintech repositioning campaigns'],
-    ['Brand Strategy', 'Copy', 'Storytelling', 'Campaign Planning'],
-    'Brand matlab logo nahi — brand matlab emotional default jo customer ke mann me apna ghar bana le.',
-    {
-      quote: 'Ads ruk jaate hain, reputation compound hoti hai.',
-    }
-  ),
-  makeAlumni(
-    16,
-    'Sanjay Rane',
-    '2019',
-    'Co-founder & CTO',
-    'GreenLogix',
-    'Pune, India',
-    'entrepreneur',
-    7,
-    ['Seed raised $1.8M', 'Deploy cleantech in 14 MSMEs', 'IIT Bombay collaborator'],
-    ['Hardware', 'Low-power electronics', 'Embedded C', 'Operations'],
-    'Customer ke saath 20 hafta gujaro phir build karo — chair-builder hardware startup zinda nahi rahti.',
-    {
-      mentor: true,
-      pledge: 'Co-build 4 open-source hardware kits for schools.',
-    }
-  ),
-  makeAlumni(
-    17,
-    'Ayesha Khan',
-    '2023',
-    'Frontend Engineer',
-    'Razorpay',
-    'Bangalore, India',
-    'tech',
-    3,
-    ['Razorpay Shine Award', 'Accessible payment flow redesign', 'Internal speaker program host'],
-    ['React', 'TypeScript', 'Accessibility', 'Performance', 'Design tokens'],
-    'Frontend me polish obvious dikhti hai — isliye uske peeche "fundamentals" ko dhanda karo.',
-    {
-      mentor: true,
-      quote: 'Shipping fast is good. Shipping correct is non-negotiable.',
-    }
-  ),
-  makeAlumni(
-    18,
-    'Rahul Desai',
-    '2021',
-    'Senior Consultant',
-    'Deloitte Strategy',
-    'Bangalore, India',
-    'finance',
-    5,
-    ['Outstanding Consultant 2024', 'Turnaround for state-run utility'],
-    ['Market Entry', 'Due Diligence', 'Financial Modeling', 'Workshops'],
-    'Consulting deck me slide kam, decision framework zyada honi chahiye.',
-    {}
-  ),
-  makeAlumni(
-    19,
-    'Pooja Kulkarni',
-    '2020',
-    'DevOps Architect',
-    'Atlassian',
-    'Bangalore, India',
-    'tech',
-    6,
-    ['Atlassian Values Award', 'Reduced CI minutes by 42%', 'Speaker at DevOpsDays'],
-    ['Kubernetes', 'Terraform', 'Observability', 'Incident Management'],
-    'Automate apni insanity — log roz dekhne padein to pipeline adhoora hai.',
-    {
-      mentor: true,
-    }
-  ),
-  makeAlumni(
-    20,
-    'Tanmay Joshi',
-    '2022',
-    'Game Designer',
-    'Ubisoft',
-    'Montreal, Canada',
-    'creative',
-    4,
-    ['Game Awards Shortlist 2024', 'Designed 2 mechanics shipped in AAA title'],
-    ['Unity', 'Game Balance', 'Level Design', 'Playtesting'],
-    'Game design me "fun" feel se judge hota hai, metrics se prove hota hai.',
-    {
-      quote: 'Players don\'t play your intention. They play your systems.',
-    }
-  ),
-  makeAlumni(
-    21,
-    'Megha Srinivasan',
-    '2019',
-    'Principal Engineer',
-    'Adobe',
-    'Noida, India',
-    'tech',
-    7,
-    ['Adobe Founders\' Award', 'Led Premiere Rush perf overhaul', 'Architect of cloud-sync subsystem'],
-    ['C++', 'Graphics', 'Cross-platform', 'Profiling', 'Leadership'],
-    'Principal role = technical judgment + taste + humility to be overruled by data.',
-    {
-      featured: true,
-      mentor: true,
-    }
-  ),
-  makeAlumni(
-    22,
-    'Aniket Bose',
-    '2024',
-    'Associate',
-    'Bain & Company',
-    'New Delhi, India',
-    'finance',
-    2,
-    ['Bain Best Campus Recruit 2024', 'Led PE due-diligence for consumer deal'],
-    ['Excel Modeling', 'Slide-writing', 'Primary Research'],
-    'Modeling jitni shortcut se karoge utna recover karna mehenga padega.',
-    {
-      quote: 'The first draft of your model is always wrong. Iterate ruthlessly.',
-    }
-  ),
-  makeAlumni(
-    23,
-    'Shalini Yadav',
-    '2023',
-    'AI Researcher',
-    'Google DeepMind',
-    'London, UK',
-    'research',
-    3,
-    ['Chevening Scholar 2024', 'Published at ICML', 'Collaborator on foundation-model safety'],
-    ['JAX', 'Reinforcement Learning', 'Safety Research', 'Writing'],
-    'Research me hype-cycle ko ignore karna seekho, baseline methods me mehnat karo.',
-    {
-      featured: true,
-      mentor: true,
-      quote: 'Papers are conversations, not trophies.',
-    }
-  ),
-  makeAlumni(
-    24,
-    'Siddharth Menon',
-    '2021',
-    'Associate Product Manager',
-    'Cred',
-    'Bangalore, India',
-    'product',
-    5,
-    ['Cred Bootcamp Top 3', 'Launched 2 new experiments yielding +7% NPS'],
-    ['Product Sense', 'SQL', 'Amplitude', 'Feature Specs'],
-    'PM roles me listening a superpower hai — kabhi bhi "smart jawab" se pehle 2 questions aur puchho.',
-    {}
-  ),
-  makeAlumni(
-    25,
-    'Divya Menon',
-    '2018',
-    'Head of Design',
-    'Zerodha',
-    'Bangalore, India',
-    'design',
-    8,
-    ['AIGA Honor 2024', 'Scaled design team 3→22', 'Author of Kite design language book'],
-    ['Design Leadership', 'Systems', 'Culture Building', 'Hiring'],
-    'Taste 3 saal me develop hoti hai, sensibility ban\'ne me 10 lagta hai — patient raho.',
-    {
-      featured: true,
-      mentor: true,
-      pledge: 'Run 4 free design bootcamps per year for tier-3 students.',
-    }
-  ),
-  makeAlumni(
-    26,
-    'Rakesh Pandey',
-    '2020',
-    'Senior SRE',
-    'PhonePe',
-    'Bangalore, India',
-    'tech',
-    6,
-    ['PhonePe Technology Excellence', 'Sub-60 sec MTTR for transactions infra'],
-    ['SRE', 'Kafka', 'Scaling', 'Incident Review'],
-    'SRE role me ego checkbox pe chhodo — blameless postmortem culture sirf words me nahi, practice me chahiye.',
-    {}
-  ),
-  makeAlumni(
-    27,
-    'Avni Saxena',
-    '2022',
-    'Impact Investment Analyst',
-    'Omidyar Network India',
-    'Mumbai, India',
-    'impact',
-    4,
-    ['Top Analyst 2024', 'Supported 6 early-stage impact startups'],
-    ['Impact Modeling', 'Due Diligence', 'Portfolio Support'],
-    'Impact measure karo ya mat maapo — par blind faith me invest mat karo.',
-    {
-      mentor: true,
-    }
-  ),
-  makeAlumni(
-    28,
-    'Manish Ahuja',
-    '2019',
-    'Principal Data Scientist',
-    'Walmart Labs',
-    'Bangalore, India',
-    'data',
-    7,
-    ['Walmart CTO Recognition', 'Built demand forecasting engine v4', 'Speaker KDD 2024'],
-    ['Forecasting', 'Causal ML', 'Python', 'Scientific Writing'],
-    'Business value dikhane ke liye pahle problem clearly articulate karo — model baad ki baat hai.',
-    {
-      mentor: true,
-      quote: 'A clean problem statement is half the model.',
-    }
-  ),
-  makeAlumni(
-    29,
-    'Ishita Roy',
-    '2024',
-    'Growth Marketing Lead',
-    'Meesho',
-    'Bangalore, India',
-    'creative',
-    2,
-    ['Meesho Lightspeed Award', 'Led 0→1 creator program'],
-    ['Growth Loops', 'Attribution', 'Creator Ops', 'Content'],
-    'Growth me vanity-metrics se bacho — unit economics aur retention ko always front-and-center rakho.',
-    {}
-  ),
-  makeAlumni(
-    30,
-    'Parth Saluja',
-    '2023',
-    'Full-stack Developer',
-    'Atlan',
-    'Bangalore, India',
-    'tech',
-    3,
-    ['Atlan Hackday Winner 2024', 'Built lineage visualization v2'],
-    ['TypeScript', 'GraphQL', 'Data catalogs', 'UX-engineering'],
-    'Product-engineer banna hai to spec likhna seekho, sirf ticket-execute mat karo.',
-    {}
-  ),
-  makeAlumni(
-    31,
-    'Riya Chauhan',
-    '2021',
-    'Senior Lawyer (Tech & IP)',
-    'Cyril Amarchand Mangaldas',
-    'Mumbai, India',
-    'finance',
-    5,
-    ['Rising Star — Legal 500', 'Advised 3 IPO-track startups'],
-    ['Technology Law', 'IP', 'Contract Drafting', 'Negotiation'],
-    'Legal me shortcut = long term se bahut mehenga — har clause justify kar saktey ho tabhi draft bhejo.',
-    {
-      mentor: true,
-    }
-  ),
-  makeAlumni(
-    32,
-    'Karan Malhotra',
-    '2020',
-    'Founding Engineer',
-    'Turing',
-    'Remote (Bangalore)',
-    'entrepreneur',
-    6,
-    ['Forbes Asia Emerging Builders 2024', 'Built core matching engine'],
-    ['Python', 'Ruby', 'Django', 'Team Building'],
-    'Joining a 5-person company chhoti si family jaisa hai — culture fit skill fit se zyada critical hai.',
-    {
-      quote: 'Employee #1 → Employee #50 is two different universes.',
-    }
-  ),
-  makeAlumni(
-    33,
-    'Neha Bhatt',
-    '2022',
-    'Behavioral Scientist',
-    'Dalberg Design',
-    'Delhi NCR, India',
-    'research',
-    4,
-    ['Dalberg MVP 2024', 'Field research across 6 states'],
-    ['Behavioral Economics', 'Field Research', 'Workshops', 'Synthesis'],
-    'Policy aur design ke beech ka pul hona hota hai — dono ko speak karna padega.',
-    {
-      mentor: true,
-    }
-  ),
-  makeAlumni(
-    34,
-    'Yash Agarwal',
-    '2024',
-    'Software Engineer',
-    'Linear',
-    'Remote (Mumbai)',
-    'tech',
-    2,
-    ['Linear Launch-week contributor'],
-    ['React', 'GraphQL', 'Elixir', 'Product sense'],
-    'Small team = big leverage. Apne bugs khud fix karo, apni launches khud own karo.',
-    {}
-  ),
-  makeAlumni(
-    35,
-    'Lavanya Iyer',
-    '2020',
-    'Director of Operations',
-    'Piramal Foundation',
-    'Mumbai, India',
-    'impact',
-    6,
-    ['Aspire Fellow 2023', 'Scaled rural health programs across 4 states'],
-    ['Operations', 'Government Relations', 'Monitoring & Evaluation'],
-    'Impact operations me data aur humility dono chahiye — yaha sirf spreadsheets se truth nahi milti.',
-    {
-      mentor: true,
-      pledge: 'Design a rural leadership accelerator with 100 cohort slots / year.',
-    }
-  ),
-  makeAlumni(
-    36,
-    'Ankita Mehta',
-    '2019',
-    'Senior Economist',
-    'World Bank',
-    'Washington DC, USA',
-    'research',
-    7,
-    ['Chevening Scholar 2021', '3 World Bank policy papers'],
-    ['Econometrics', 'Policy Analysis', 'Stata', 'Writing'],
-    'Economics ke without politics samjhe kaam adhoora hai — humility rakho data pe.',
-    {
-      featured: true,
-    }
-  ),
-  makeAlumni(
-    37,
-    'Rohan Kapoor',
-    '2021',
-    'AI Platform Engineer',
-    'OpenAI',
-    'San Francisco, USA',
-    'tech',
-    5,
-    ['OpenAI Builder of the Quarter 2025', 'Core author of model-eval framework'],
-    ['Python', 'CUDA', 'Distributed systems', 'Infrastructure'],
-    'Frontier AI companies me prod reliability > research glamour — build boring but solid.',
-    {
-      featured: true,
-      mentor: true,
-      quote: 'The model is the artist. The infra is the stage.',
-    }
-  ),
-  makeAlumni(
-    38,
-    'Sana Fatima',
-    '2023',
-    'Content Strategist',
-    'Netflix',
-    'Mumbai, India',
-    'creative',
-    3,
-    ['Netflix India Rookie 2024', 'Commissioned 2 regional documentaries'],
-    ['Editorial', 'Research', 'Pitch-writing', 'Audience insight'],
-    'Content jo apne audience ko respect karta hai wahi compound karta hai — baaki is churn ka hissa hai.',
-    {}
-  ),
-  makeAlumni(
-    39,
-    'Tejas Sawant',
-    '2018',
-    'Chief of Staff',
-    'Razorpay',
-    'Bangalore, India',
-    'product',
-    8,
-    ['Glue Award for Leadership', 'Built OKR rollout infra', 'Public speaker on operational craft'],
-    ['Operations', 'Program Management', 'Strategy', 'Coaching'],
-    'Chief of staff = leverage through clarity — politics me pado nahi, work speak karne do.',
-    {
-      mentor: true,
-      featured: true,
-    }
-  ),
-  makeAlumni(
-    40,
-    'Geetika Bose',
-    '2020',
-    'Co-founder',
-    'Climafarms',
+    'Adarsh Ranjan',
+    '2025',
+    'Campus Ambassador',
+    'GeeksforGeeks',
     'Kolkata, India',
-    'entrepreneur',
-    6,
-    ['Ashoka Fellow 2024', 'Deployed cleantech on 20k acres of farmland'],
-    ['AgriTech', 'Field Deployment', 'Partnerships', 'Community Building'],
-    'Farmers ke saath baith ke cycle pakdo — MVP hackathon se nahi mitti se banta hai.',
-    {
-      featured: true,
-      pledge: 'Train 1000 women farmers every year on regenerative agriculture.',
-    }
-  ),
-  makeAlumni(
-    41,
-    'Ayaan Sinha',
-    '2022',
-    'Site Reliability Engineer',
-    'Shopify',
-    'Bangalore, India',
     'tech',
-    4,
-    ['Shopify Shoutout 2024'],
-    ['K8s', 'Go', 'Incident Response', 'Observability'],
-    'Night on-call shift pe khud hi seekhoge: prevention > firefighting.',
-    {}
-  ),
-  makeAlumni(
-    42,
-    'Komal Arya',
-    '2024',
-    'Associate Product Designer',
-    'Paytm',
-    'Noida, India',
-    'design',
-    2,
-    ['Paytm Young Gun 2025'],
-    ['Figma', 'Mobile IA', 'Prototyping'],
-    'Pehla saal portfolio se zyada ek strong mentor find karne me lagaao.',
-    {}
-  ),
-  makeAlumni(
-    43,
-    'Siddharth Nair',
-    '2019',
-    'Partner',
-    'Blume Ventures',
-    'Bangalore, India',
-    'entrepreneur',
-    7,
-    ['Seed backer of 12 unicorn-track startups'],
-    ['Venture Investing', 'Dealflow', 'Founder Coaching'],
-    'VC business me bet thoughts nahi, founders pe lagate hain — chemistry aur craft dono dekho.',
+    1,
+    ['Campus Ambassador at GeeksforGeeks — bridged the club with the largest coding platform', 'JS Non-Tech Head of TaruGuardians — led non-technical JavaScript community activities', 'Placed at XYZ Company — Batch 2025'],
+    ['Web Dev', 'App Dev', 'Org Design'],
+    'Ambassador banna ek responsibility hai — tum ek platform aur ek community dono represent karte ho.',
     {
-      mentor: true,
-    }
-  ),
-  makeAlumni(
-    44,
-    'Priyanshi Jain',
-    '2021',
-    'Lead Copywriter',
-    'Wieden+Kennedy',
-    'Delhi NCR, India',
-    'creative',
-    5,
-    ['Goafest Young Lion 2024'],
-    ['Long-form writing', 'Brand voice', 'Pitches'],
-    'Copy me clarity > cleverness — tagline ke peeche story honi chahiye.',
-    {}
-  ),
-  makeAlumni(
-    45,
-    'Harsh Vardhan',
-    '2018',
-    'Senior Director — Engineering',
-    'Freshworks',
-    'Chennai, India',
-    'tech',
-    8,
-    ['Freshworks Engineering Excellence', 'Scaled platform to 60k+ customers'],
-    ['SaaS', 'Architecture', 'Leadership'],
-    'Senior role me humility chahiye — junior best engineers se seekh sakte ho daily.',
-    {
-      featured: true,
-      mentor: true,
+      clubPost: '#JS Non-Tech Head — TaruGuardians (2021–2025)',
       timeline: [
-        { year: '2018', role: 'Graduated', company: 'Taru Guardians' },
-        { year: '2018', role: 'Software Engineer', company: 'Freshworks' },
-        { year: '2021', role: 'Engineering Manager', company: 'Freshworks' },
-        { year: '2023', role: 'Director', company: 'Freshworks' },
-        { year: '2025', role: 'Senior Director', company: 'Freshworks' },
+        { year: '2021', role: 'Joined TaruGuardians', company: 'Taru Guardians' },
+        { year: '2023', role: 'JS Non-Tech Head', company: 'Taru Guardians' },
+        { year: '2024', role: 'Campus Ambassador', company: 'GeeksforGeeks' },
+        { year: '2025', role: 'SDE', company: 'XYZ Company' },
       ],
     }
   ),
   makeAlumni(
-    46,
-    'Nisha Pillai',
-    '2022',
-    'Energy Analyst',
-    'IEA (International Energy Agency)',
-    'Paris, France',
-    'impact',
-    4,
-    ['IEA Young Analyst Program'],
-    ['Energy Modeling', 'Policy Research', 'Writing'],
-    'Sustainability me rich data mil jaati hai — par comms skill zyada matter karta hai.',
-    {
-      mentor: true,
-    }
-  ),
-  makeAlumni(
-    47,
-    'Gaurav Khanna',
-    '2023',
-    'Android Engineer',
-    'Truecaller',
+    10,
+    'Prasoon Kumar',
+    '2025',
+    'Engineer',
+    'Integri Robotics & Automation',
     'Bangalore, India',
     'tech',
-    3,
-    ['Truecaller Q3 2024 MVP'],
-    ['Kotlin', 'Compose', 'Performance', 'Play Store hygiene'],
-    'Library churn me phasne se bacho — fundamentals tight rakho (concurrency, memory, render).',
-    {}
-  ),
-  makeAlumni(
-    48,
-    'Sara D\'Souza',
-    '2020',
-    'Diplomatic Fellow',
-    'United Nations Development Programme',
-    'Geneva, Switzerland',
-    'impact',
-    6,
-    ['UN Gender Action Fellowship 2024', '4 cross-country field missions'],
-    ['Policy', 'Multi-lateral negotiation', 'Writing', 'Languages'],
-    'Diplomacy me patience + precision — zor se bolna communication nahi hota.',
+    1,
+    ['Placed at Integri Robotics & Automation — robotics and automation domain', 'Management Head of TaruGuardians — oversaw club operations and cross-team coordination', 'Grew the club membership by 40% during his tenure'],
+    ['ML', 'App Dev', 'Data Science'],
+    'Management matlab sirf meetings nahi — seedha impact deliver karna chahiye.',
     {
       featured: true,
-    }
-  ),
-  makeAlumni(
-    49,
-    'Ashish Gowda',
-    '2019',
-    'Principal Product Manager',
-    'Atlassian',
-    'Bangalore, India',
-    'product',
-    7,
-    ['Atlassian PM of the Year 2023'],
-    ['Dev tools', 'B2B SaaS', 'Cross-functional leadership'],
-    'B2B PM role me user != buyer — dono ko genuinely serve karo.',
-    {
       mentor: true,
-      featured: true,
+      clubPost: '#Management Head — TaruGuardians (2021–2025)',
+      timeline: [
+        { year: '2021', role: 'Joined TaruGuardians', company: 'Taru Guardians' },
+        { year: '2023', role: 'Management Head', company: 'Taru Guardians' },
+        { year: '2025', role: 'Engineer', company: 'Integri Robotics & Automation' },
+      ],
     }
   ),
   makeAlumni(
-    50,
-    'Ritu Saxena',
-    '2021',
-    'Creative Director',
-    'Scroll.in',
-    'New Delhi, India',
+    11,
+    'Ashish Kumar',
+    '2025',
+    'Software Engineer',
+    'XYZ Company',
+    'Noida, India',
+    'product',
+    1,
+    ['Placed at XYZ Company — Batch 2025', 'Membership Head of TaruGuardians — managed 200+ member onboarding and retention', 'Designed the club membership framework still in use today'],
+    ['Web Dev', 'Product', 'Org Design'],
+    'Membership Head ne sikhaya ki community banana ek product hai — users happy toh club happy.',
+    {
+      clubPost: '#Membership Head — TaruGuardians (2021–2025)',
+      timeline: [
+        { year: '2021', role: 'Joined TaruGuardians', company: 'Taru Guardians' },
+        { year: '2023', role: 'Membership Head', company: 'Taru Guardians' },
+        { year: '2025', role: 'Software Engineer', company: 'XYZ Company' },
+      ],
+    }
+  ),
+  makeAlumni(
+    12,
+    'Sandeep Jha',
+    '2025',
+    'Software Engineer',
+    'XYZ Company',
+    'Kolkata, India',
     'creative',
-    5,
-    ['Ramnath Goenka Award 2024', '3 long-form visual essays shipped'],
-    ['Visual storytelling', 'Editorial', 'Digital publishing'],
-    'Media me trust build karna slow kaam hai — viral hona goal mat banao.',
-    {}
+    1,
+    ['Placed at XYZ Company — Batch 2025', 'Media Head of TaruGuardians — led all digital media, social channels and visual content', 'Grew club social following 3x during tenure'],
+    ['Web Dev', 'App Dev', 'Org Design'],
+    'Media Head ban ke samjha ki content consistency brand se badi cheez hai.',
+    {
+      clubPost: '#Media Head — TaruGuardians (2021–2025)',
+      timeline: [
+        { year: '2021', role: 'Joined TaruGuardians', company: 'Taru Guardians' },
+        { year: '2023', role: 'Media Head', company: 'Taru Guardians' },
+        { year: '2025', role: 'Software Engineer', company: 'XYZ Company' },
+      ],
+    }
   ),
   makeAlumni(
-    51,
-    'Varun Rao',
-    '2024',
-    'Backend Engineer',
-    'Uber',
-    'Bangalore, India',
-    'tech',
-    2,
-    ['Uber Hackathon Winner 2025'],
-    ['Go', 'gRPC', 'Distributed systems', 'Streaming'],
-    'Jab pehla system design review aaye, prepare karke jaana — shortcut nahi chalte.',
-    {}
-  ),
-  makeAlumni(
-    52,
-    'Bhoomika Das',
-    '2018',
-    'VP — Product',
-    'Swiggy',
+    13,
+    'Bhumika Singh',
+    '2025',
+    'Software Engineer',
+    'XYZ Company',
     'Bangalore, India',
     'product',
-    8,
-    ['Swiggy Innovation Trailblazer', 'Scaled food+grocery product org 25→240'],
-    ['Zero-to-one', 'Consumer product', 'Org design'],
-    'VP role me sabse important skill hai delegate-with-trust + tough-decisions-with-kindness.',
+    1,
+    ['Placed at XYZ Company — Batch 2025', 'Management Head of TaruGuardians — co-led operations and member engagement', 'Spearheaded the club annual report and impact documentation'],
+    ['Web Dev', 'Product', 'Org Design'],
+    'Club management ne sikhaya ki planning ke bina passion waste ho jaata hai.',
+    {
+      clubPost: '#Management Head — TaruGuardians (2021–2025)',
+      timeline: [
+        { year: '2021', role: 'Joined TaruGuardians', company: 'Taru Guardians' },
+        { year: '2023', role: 'Management Head', company: 'Taru Guardians' },
+        { year: '2025', role: 'Software Engineer', company: 'XYZ Company' },
+      ],
+    }
+  ),
+  makeAlumni(
+    14,
+    'Supreeta Roy',
+    '2025',
+    'Software Engineer',
+    'XYZ Company',
+    'Noida, India',
+    'creative',
+    1,
+    ['Placed at XYZ Company — Batch 2025', 'Media Head of TaruGuardians — managed content strategy and digital storytelling', "Produced the club's first video series on member journeys"],
+    ['Web Dev', 'App Dev', 'Product'],
+    'Content sirf dikhta nahi, feel hota hai — woh feel banani padti hai consciously.',
+    {
+      clubPost: '#Media Head — TaruGuardians (2021–2025)',
+      timeline: [
+        { year: '2021', role: 'Joined TaruGuardians', company: 'Taru Guardians' },
+        { year: '2023', role: 'Media Head', company: 'Taru Guardians' },
+        { year: '2025', role: 'Software Engineer', company: 'XYZ Company' },
+      ],
+    }
+  ),
+  makeAlumni(
+    15,
+    'Ashna Thakur',
+    '2025',
+    'Software Engineer',
+    'XYZ Company',
+    'Kolkata, India',
+    'creative',
+    1,
+    ['Placed at XYZ Company — Batch 2025', 'PR Head of TaruGuardians — led public relations, outreach and external partnerships', 'Secured 3 industry collaborations for the club during tenure'],
+    ['App Dev', 'Product', 'Org Design'],
+    'PR mein sabse badi learning: relationships pehle banao, ask baad mein karo.',
+    {
+      clubPost: '#PR Head — TaruGuardians (2021–2025)',
+      timeline: [
+        { year: '2021', role: 'Joined TaruGuardians', company: 'Taru Guardians' },
+        { year: '2023', role: 'PR Head', company: 'Taru Guardians' },
+        { year: '2025', role: 'Software Engineer', company: 'XYZ Company' },
+      ],
+    }
+  ),
+  makeAlumni(
+    16,
+    'Bishnu Chatterjee',
+    '2025',
+    'NEC Finalist',
+    'IIT Bombay',
+    'Bangalore, India',
+    'research',
+    1,
+    ['NEC Finalist at IIT Bombay — competed at the national engineering championship', 'Core technical member of TaruGuardians — represented club in inter-college competitions', 'Led the competitive programming cell within the club'],
+    ['ML', 'Data Science', 'App Dev'],
+    'NEC tak pahunchne ke liye club ne jo foundation diya, woh kisi coaching se nahi milta.',
     {
       featured: true,
-      mentor: true,
-      pledge: 'Mentor 30 women founders each year.',
+      clubPost: '#Core Tech Member — TaruGuardians (2021–2025)',
+      timeline: [
+        { year: '2021', role: 'Joined TaruGuardians', company: 'Taru Guardians' },
+        { year: '2023', role: 'Core Tech Member', company: 'Taru Guardians' },
+        { year: '2025', role: 'NEC Finalist', company: 'IIT Bombay' },
+      ],
     }
   ),
 ];
@@ -1066,18 +556,17 @@ const ALUMNI_DATA: ExtAlumni[] = [
 
 const uniqueCompanies = Array.from(new Set(ALUMNI_DATA.map((a) => a.company))).sort();
 
-const ALUMNI_STATS: AlumniStats & { avgYoE: number; countries: number; mentors: number } = {
-  totalAlumni: 500,
+const ALUMNI_STATS: AlumniStats & { avgYoE: number; mentors: number } = {
+  totalAlumni: 200,
   avgExperience: Math.round(
     (ALUMNI_DATA.reduce((acc, a) => acc + a.experienceYears, 0) / ALUMNI_DATA.length) * 10
   ) / 10,
   placementRate: 96,
-  companiesHired: uniqueCompanies.length + 120,
+  companiesHired: 40,
   avgYoE:
     Math.round(
       (ALUMNI_DATA.reduce((acc, a) => acc + a.experienceYears, 0) / ALUMNI_DATA.length) * 10
     ) / 10,
-  countries: new Set(ALUMNI_DATA.map((a) => a.location.split(',').slice(-1)[0].trim())).size,
   mentors: ALUMNI_DATA.filter((a) => a.mentor).length,
 };
 
@@ -2710,7 +2199,7 @@ const AlumniScreen: React.FC = () => {
             <Text style={styles.headerEyebrow}>🌿 Taru Guardians</Text>
             <Text style={styles.headerTitle}>Alumni Network</Text>
             <Text style={styles.headerSubtitle}>
-              500+ alumni · 60+ companies · 12 countries — building tech, climate, product and design.
+              200+ alumni · 40+ companies — building tech, product and design.
             </Text>
           </View>
           <View style={styles.headerControls}>
@@ -2762,11 +2251,6 @@ const AlumniScreen: React.FC = () => {
           <View style={styles.statCell}>
             <Text style={styles.statValue}>{ALUMNI_STATS.mentors}</Text>
             <Text style={styles.statLabel}>Mentors</Text>
-          </View>
-          <View style={styles.statDivider} />
-          <View style={styles.statCell}>
-            <Text style={styles.statValue}>{ALUMNI_STATS.countries}</Text>
-            <Text style={styles.statLabel}>Countries</Text>
           </View>
         </Animated.View>
 
@@ -3628,7 +3112,7 @@ const AlumniScreen: React.FC = () => {
       <Text style={styles.footerText}>
         Showing {filteredAlumni.length} of {ALUMNI_DATA.length} curated alumni profiles
       </Text>
-      <Text style={styles.footerText}>🌿 Tech + climate · 500+ network strong</Text>
+      <Text style={styles.footerText}>🌿 TaruGuardians · Batch 2025 · 200+ network strong</Text>
     </View>
   );
 
@@ -3696,6 +3180,13 @@ const AlumniScreen: React.FC = () => {
               contentContainerStyle={styles.modalScrollContent}
               showsVerticalScrollIndicator={false}
             >
+              {a.clubPost ? (
+                <View style={[styles.modalSection, { borderLeftWidth: 3, borderLeftColor: c, paddingLeft: 12 }]}>
+                  <Text style={styles.modalSectionTitle}>🏛️ Club Post Served</Text>
+                  <Text style={[styles.modalSectionBody, { color: c, fontWeight: '700' }]}>{a.clubPost}</Text>
+                </View>
+              ) : null}
+
               <View style={styles.modalSection}>
                 <Text style={styles.modalSectionTitle}>Message to students</Text>
                 <Text style={styles.modalSectionBody}>{a.messageToStudents}</Text>
