@@ -6,6 +6,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, Animated, Dimensions, TouchableOpacity } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Colors } from '../constants/colors';
 
 import HomeScreen from '../screens/Home/HomeScreen';
@@ -14,11 +15,13 @@ import TaruWingsScreen from '../screens/TaruWings/TaruWingsScreen';
 import TeamScreen from '../screens/Team/TeamScreen';
 import AlumniScreen from '../screens/Alumni/AlumniScreen';
 import SuggestionScreen from '../screens/Suggestion/SuggestionScreen';
+import JoinUsScreen from '../screens/JoinUs/JoinUsScreen';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const isSmallScreen = SCREEN_WIDTH < 375;
 
 const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
 
 // =====================================================
 // CUSTOM TAB BAR COMPONENT
@@ -112,49 +115,30 @@ const CustomTabBar: React.FC<any> = ({ state, descriptors, navigation, insets })
 // MAIN NAVIGATION COMPONENT
 // =====================================================
 
+const TabNavigator: React.FC = () => (
+  <Tab.Navigator
+    tabBar={(props) => <CustomTabBar {...props} />}
+    screenOptions={{
+      headerShown: false,
+      tabBarShowLabel: false,
+      tabBarStyle: { display: 'none' },
+    }}
+  >
+    <Tab.Screen name="HomeTab" component={HomeScreen} options={{ tabBarAccessibilityLabel: 'Home' }} />
+    <Tab.Screen name="EventsTab" component={EventsScreen} options={{ tabBarAccessibilityLabel: 'Events' }} />
+    <Tab.Screen name="TaruWingsTab" component={TaruWingsScreen} options={{ tabBarAccessibilityLabel: 'Taru Wings' }} />
+    <Tab.Screen name="TeamTab" component={TeamScreen} options={{ tabBarAccessibilityLabel: 'Team' }} />
+    <Tab.Screen name="AlumniTab" component={AlumniScreen} options={{ tabBarAccessibilityLabel: 'Alumni' }} />
+    <Tab.Screen name="SuggestionTab" component={SuggestionScreen} options={{ tabBarAccessibilityLabel: 'Suggestion' }} />
+  </Tab.Navigator>
+);
+
 const AppNavigator: React.FC = () => {
   return (
-    <Tab.Navigator
-      tabBar={(props) => <CustomTabBar {...props} />}
-      screenOptions={{
-        headerShown: false,
-        tabBarShowLabel: false,
-        tabBarStyle: {
-          display: 'none',
-        },
-      }}
-    >
-      <Tab.Screen 
-        name="HomeTab" 
-        component={HomeScreen}
-        options={{ tabBarAccessibilityLabel: 'Home' }}
-      />
-      <Tab.Screen 
-        name="EventsTab" 
-        component={EventsScreen}
-        options={{ tabBarAccessibilityLabel: 'Events' }}
-      />
-      <Tab.Screen 
-        name="TaruWingsTab" 
-        component={TaruWingsScreen}
-        options={{ tabBarAccessibilityLabel: 'Taru Wings' }}
-      />
-      <Tab.Screen 
-        name="TeamTab" 
-        component={TeamScreen}
-        options={{ tabBarAccessibilityLabel: 'Team' }}
-      />
-      <Tab.Screen 
-        name="AlumniTab" 
-        component={AlumniScreen}
-        options={{ tabBarAccessibilityLabel: 'Alumni' }}
-      />
-      <Tab.Screen 
-        name="SuggestionTab" 
-        component={SuggestionScreen}
-        options={{ tabBarAccessibilityLabel: 'Suggestion' }}
-      />
-    </Tab.Navigator>
+    <Stack.Navigator screenOptions={{ headerShown: false, animation: 'slide_from_right' }}>
+      <Stack.Screen name="MainTabs" component={TabNavigator} />
+      <Stack.Screen name="JoinUs" component={JoinUsScreen} options={{ animation: 'slide_from_bottom' }} />
+    </Stack.Navigator>
   );
 };
 

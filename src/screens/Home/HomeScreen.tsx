@@ -2609,6 +2609,51 @@ const HomeScreen: React.FC = () => {
     </View>
   );
 
+  const renderJoinUsBanner = () => (
+    <View style={styles.joinBannerWrap}>
+      <LinearGradient
+        colors={['#042F1A', '#0A3F2A', '#0C5540']}
+        style={styles.joinBannerGrad}
+        start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
+      >
+        {/* Decorative blobs */}
+        <View style={styles.joinBlob1} />
+        <View style={styles.joinBlob2} />
+
+        <View style={styles.joinBannerInner}>
+          <Text style={styles.joinEyebrow}>🌿 NOW RECRUITING</Text>
+          <Text style={styles.joinTitle}>Become a{'\n'}Taru Guardian</Text>
+          <Text style={styles.joinSubtitle}>
+            6 wings · Tech · Content · Design · Video · Photo · PR.
+            Real work. Real impact. Zero drama.
+          </Text>
+
+          <View style={styles.joinPillsRow}>
+            {['Open to all years', 'Free to join', '3-day response'].map((p) => (
+              <View key={p} style={styles.joinPill}>
+                <Text style={styles.joinPillText}>✓ {p}</Text>
+              </View>
+            ))}
+          </View>
+
+          <TouchableOpacity
+            style={styles.joinCta}
+            onPress={() => navigation.navigate('JoinUs')}
+            activeOpacity={0.88}
+          >
+            <LinearGradient
+              colors={['#00D4FF', '#0066FF']}
+              style={styles.joinCtaGrad}
+              start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
+            >
+              <Text style={styles.joinCtaText}>Apply now →</Text>
+            </LinearGradient>
+          </TouchableOpacity>
+        </View>
+      </LinearGradient>
+    </View>
+  );
+
   const renderSpotlights = () => (
     <View style={styles.sectionBlock}>
       <View style={styles.sectionHeaderRow}>
@@ -4598,6 +4643,7 @@ const HomeScreen: React.FC = () => {
         {renderQuickWins()}
         {renderSpotlights()}
         {renderTestimonials()}
+        {renderJoinUsBanner()}
       </ScrollView>
       {renderEventModal()}
       {renderAnnouncementModal()}
@@ -4791,6 +4837,49 @@ const styles = StyleSheet.create({
   },
   spotlightImage: { width: 64, height: 64, borderRadius: 32 },
   spotlightAvatarEmoji: { fontSize: 32, textAlign: 'center' },
+
+  // --- Join Us Banner ---
+  joinBannerWrap: {
+    marginHorizontal: HORIZONTAL_PADDING,
+    marginTop: 24,
+    marginBottom: 32,
+    borderRadius: CARD_RADIUS + 4,
+    overflow: 'hidden',
+  },
+  joinBannerGrad: { padding: 28, position: 'relative', overflow: 'hidden' },
+  joinBlob1: {
+    position: 'absolute', top: -40, right: -40,
+    width: 160, height: 160, borderRadius: 80,
+    backgroundColor: '#00D4FF', opacity: 0.08,
+  },
+  joinBlob2: {
+    position: 'absolute', bottom: -30, left: -30,
+    width: 120, height: 120, borderRadius: 60,
+    backgroundColor: '#22C55E', opacity: 0.1,
+  },
+  joinBannerInner: { position: 'relative', zIndex: 1 },
+  joinEyebrow: {
+    fontSize: 11, color: '#4ADE80', fontWeight: '900',
+    letterSpacing: 2.5, marginBottom: 8,
+  },
+  joinTitle: {
+    fontSize: 34, color: '#fff', fontWeight: '900',
+    lineHeight: 40, marginBottom: 10,
+  },
+  joinSubtitle: {
+    fontSize: 13, color: 'rgba(255,255,255,0.6)',
+    lineHeight: 20, marginBottom: 18,
+  },
+  joinPillsRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginBottom: 22 },
+  joinPill: {
+    backgroundColor: 'rgba(255,255,255,0.1)',
+    borderRadius: 20, paddingVertical: 5, paddingHorizontal: 12,
+    borderWidth: 1, borderColor: 'rgba(255,255,255,0.15)',
+  },
+  joinPillText: { color: '#4ADE80', fontSize: 11, fontWeight: '700' },
+  joinCta: { borderRadius: 16, overflow: 'hidden', alignSelf: 'flex-start' },
+  joinCtaGrad: { paddingVertical: 14, paddingHorizontal: 28 },
+  joinCtaText: { color: '#fff', fontSize: 15, fontWeight: '900', letterSpacing: 0.3 },
   spotlightEmoji: { fontSize: 24 },
   spotlightName: { color: Colors.text.primary, fontSize: 14, fontWeight: '800' },
   spotlightRole: { color: Colors.accent.softGold, fontSize: 12, marginTop: 2, fontWeight: '700' },
