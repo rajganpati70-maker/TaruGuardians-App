@@ -79,7 +79,7 @@ const HERO_SLIDES: HeroSlide[] = [
   {
     id: 'hero-2',
     eyebrow: '🎨 WORKSHOP',
-    title: 'Figma Craft 3.9',
+    title: 'Figma Craft 3.0',
     subtitle: 'Upcoming · HIT Haldia Campus. Learn to build real products in Figma — from wireframes to high-fidelity prototypes. Open to all skill levels.',
     ctaLabel: 'View details →',
     ctaTarget: 'EventsTab',
