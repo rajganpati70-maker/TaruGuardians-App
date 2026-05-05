@@ -1809,12 +1809,7 @@ const TaruWingsScreen: React.FC = () => {
           </View>
           <View style={styles.headerDivider} />
           <View style={styles.headerStat}>
-            <Text style={styles.headerStatValue}>{totalProjects}</Text>
-            <Text style={styles.headerStatLabel}>Projects</Text>
-          </View>
-          <View style={styles.headerDivider} />
-          <View style={styles.headerStat}>
-            <Text style={styles.headerStatValue}>{totalEvents}</Text>
+            <Text style={styles.headerStatValue}>28</Text>
             <Text style={styles.headerStatLabel}>Events</Text>
           </View>
         </View>
@@ -1886,17 +1881,17 @@ const TaruWingsScreen: React.FC = () => {
           <Text style={styles.sectionCaption}>1 min read</Text>
         </View>
         <View style={styles.processCard}>
-          <Text style={styles.processHeading}>The cadence</Text>
+          <Text style={styles.processHeading}>All wings. All fields.</Text>
           <Text style={styles.processBody}>
-            Each wing runs on a 4-week loop: Mon standup · Wed crit/review · Fri ship · Sat
-            retro. You own one clear deliverable per loop — that\'s it. Nothing else on your
-            plate.
+            These are all the wings that exist in our club. Every wing handles all currently
+            related work in its field — end-to-end, from planning to delivery. No task falls
+            through the gap. If it\'s related to the wing\'s domain, this wing owns it.
           </Text>
           <View style={styles.processListBlock}>
-            <Text style={styles.processPoint}>• No surprise work after 8 pm. Ever.</Text>
-            <Text style={styles.processPoint}>• Any member can call a pause on a project without explanation.</Text>
-            <Text style={styles.processPoint}>• Every wing has 2 office-hour windows per week.</Text>
-            <Text style={styles.processPoint}>• First-years always pair with a senior on their first 3 loops.</Text>
+            <Text style={styles.processPoint}>• Each wing covers every aspect of its field — not just one slice.</Text>
+            <Text style={styles.processPoint}>• Wings collaborate across domains on every major deliverable.</Text>
+            <Text style={styles.processPoint}>• Sustainability first — every output checks: paperless draft, compostable vendor.</Text>
+            <Text style={styles.processPoint}>• First-years always pair with a senior on their first 3 projects.</Text>
           </View>
         </View>
       </View>
@@ -1958,13 +1953,6 @@ const TaruWingsScreen: React.FC = () => {
             <Text style={styles.ethosPillarTitle}>Credit openly</Text>
             <Text style={styles.ethosPillarBody}>
               Every artefact names all contributors — including first-years and one-time helpers.
-            </Text>
-          </View>
-          <View style={styles.ethosPillar}>
-            <Text style={styles.ethosPillarEmoji}>🔁</Text>
-            <Text style={styles.ethosPillarTitle}>Make it reusable</Text>
-            <Text style={styles.ethosPillarBody}>
-              We always produce a template alongside the artefact. Next person starts at step 2.
             </Text>
           </View>
         </View>
@@ -2110,21 +2098,7 @@ const TaruWingsScreen: React.FC = () => {
       <View style={{ flex: 1 }}>
         <Text style={styles.memberName}>{item.name}</Text>
         <Text style={styles.memberRole}>{item.role}</Text>
-        <Text style={styles.memberBio} numberOfLines={2}>
-          {item.bio}
-        </Text>
-        <View style={styles.memberSkillsRow}>
-          {item.skills.slice(0, 3).map((s) => (
-            <View key={s} style={styles.memberSkillPill}>
-              <Text style={styles.memberSkillText}>{s}</Text>
-            </View>
-          ))}
-          {item.skills.length > 3 ? (
-            <Text style={styles.memberSkillMore}>+{item.skills.length - 3}</Text>
-          ) : null}
-        </View>
       </View>
-      <Text style={styles.memberYear}>{item.year}</Text>
     </TouchableOpacity>
   );
 
