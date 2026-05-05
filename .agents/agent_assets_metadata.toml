@@ -1,0 +1,8 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "yGq6UpaAtnYaYo6SrEIv3"
+uri = "file://assets/taru_logo.png"
+type = "image"
+title = "Taru Guardians Logo — Background Removed"

@@ -62,7 +62,7 @@ const C = {
   gridLineBright: 'rgba(0,230,118,0.18)',
 };
 
-const LOGO = require('../../../assets/icon.png');
+const LOGO = require('../../../assets/taru_logo.png');
 
 // ─────────────────────────────────────────────
 // TIMING PLAN  (total ≈ 7 500 ms)
@@ -673,7 +673,7 @@ const pulseStyles = StyleSheet.create({
 // LOGO CORE — logo + glow + rings
 // ─────────────────────────────────────────────
 
-const LOGO_SIZE = Math.min(W * 0.44, 200);
+const LOGO_SIZE = Math.min(W * 0.62, 280);
 const LOGO_CY = H * 0.38;
 
 interface LogoCoreProps {
