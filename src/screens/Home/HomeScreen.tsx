@@ -18,6 +18,7 @@ import {
   Modal,
   Alert,
   Linking,
+  Image,
   Platform,
   Share,
   Easing,
@@ -358,6 +359,7 @@ interface Spotlight {
   department: string;
   tagline: string;
   emoji: string;
+  avatar: string;
   color: string;
 }
 
@@ -369,6 +371,7 @@ const SPOTLIGHTS: Spotlight[] = [
     department: 'Content Wing',
     tagline: 'Good writing is rewriting. We ship stories that actually get read.',
     emoji: '✍️',
+    avatar: 'https://i.pravatar.cc/150?img=47',
     color: '#F59E0B',
   },
   {
@@ -378,6 +381,7 @@ const SPOTLIGHTS: Spotlight[] = [
     department: 'Technology Wing',
     tagline: 'Small tools, real impact. Ship it, then improve it.',
     emoji: '💻',
+    avatar: 'https://i.pravatar.cc/150?img=12',
     color: '#00D4FF',
   },
   {
@@ -387,6 +391,7 @@ const SPOTLIGHTS: Spotlight[] = [
     department: 'Design Wing',
     tagline: 'One unified visual language. Every pixel tells the club\'s story.',
     emoji: '🎨',
+    avatar: 'https://i.pravatar.cc/150?img=32',
     color: '#F472B6',
   },
 ];
@@ -2501,8 +2506,8 @@ const HomeScreen: React.FC = () => {
               colors={[s.color + '33', '#0A0F14']}
               style={styles.spotlightGradient}
             >
-              <View style={[styles.spotlightAvatar, { backgroundColor: s.color + '33' }]}>
-                <Text style={styles.spotlightEmoji}>{s.emoji}</Text>
+              <View style={[styles.spotlightAvatar, { borderColor: s.color + '88', borderWidth: 2 }]}>
+                <Image source={{ uri: s.avatar }} style={styles.spotlightImage} />
               </View>
               <Text style={styles.spotlightName}>{s.name}</Text>
               <Text style={styles.spotlightRole}>{s.role}</Text>
@@ -4719,13 +4724,15 @@ const styles = StyleSheet.create({
   },
   spotlightGradient: { padding: 14, borderWidth: 1, borderColor: '#ffffff12', borderRadius: CARD_RADIUS, alignItems: 'center' },
   spotlightAvatar: {
-    width: 56,
-    height: 56,
-    borderRadius: 28,
+    width: 64,
+    height: 64,
+    borderRadius: 32,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 8,
+    marginBottom: 10,
+    overflow: 'hidden',
   },
+  spotlightImage: { width: 64, height: 64, borderRadius: 32 },
   spotlightEmoji: { fontSize: 24 },
   spotlightName: { color: Colors.text.primary, fontSize: 14, fontWeight: '800' },
   spotlightRole: { color: Colors.accent.softGold, fontSize: 12, marginTop: 2, fontWeight: '700' },
