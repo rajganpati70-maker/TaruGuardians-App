@@ -253,6 +253,7 @@ interface FeaturedEvent {
   description: string;
   seats: { taken: number; total: number };
   priceLabel: string;
+  rawDate?: string;
 }
 
 const FEATURED_EVENTS: FeaturedEvent[] = [
@@ -266,6 +267,7 @@ const FEATURED_EVENTS: FeaturedEvent[] = [
     description: 'An exciting campus-wide treasure hunt with clues, challenges, and team tasks. Put your minds together and race to the finish.',
     seats: { taken: 0, total: 200 },
     priceLabel: 'Free',
+    rawDate: '2026-05-18T10:00:00',
   },
   {
     id: 'e-2',
@@ -2142,6 +2144,9 @@ const HomeScreen: React.FC = () => {
   const [showEventModal, setShowEventModal] = useState(false);
   const [selectedAnnouncement, setSelectedAnnouncement] = useState<ExtAnnouncement | null>(null);
   const [showAnnouncementModal, setShowAnnouncementModal] = useState(false);
+  const [dismissedAlerts, setDismissedAlerts] = useState<Set<string>>(new Set());
+  const [remindersSet, setRemindersSet] = useState<Set<string>>(new Set());
+  const [alertCountdowns, setAlertCountdowns] = useState<Record<string, string>>({});
 
   // ------ Animations ------
   const heroScrollX = useRef(new Animated.Value(0)).current;
@@ -2149,6 +2154,7 @@ const HomeScreen: React.FC = () => {
   const statsAnim = useRef(new Animated.Value(0)).current;
   const rowStagger = useRef(new Animated.Value(0)).current;
   const eventModalScale = useRef(new Animated.Value(0.9)).current;
+  const alertSlideAnim = useRef(new Animated.Value(-120)).current;
   const announcementModalScale = useRef(new Animated.Value(0.9)).current;
 
   // Auto-rotate hero
@@ -2185,6 +2191,67 @@ const HomeScreen: React.FC = () => {
       announcementModalScale.setValue(0.9);
     }
   }, [showAnnouncementModal, announcementModalScale]);
+
+  // ------ Event reminder countdown ------
+  const getCountdownLabel = useCallback((rawDate: string): string => {
+    const now = new Date();
+    const target = new Date(rawDate);
+    const diffMs = target.getTime() - now.getTime();
+    if (diffMs <= 0) return 'Happening now!';
+    const diffHrs = Math.floor(diffMs / (1000 * 60 * 60));
+    const diffDays = Math.floor(diffHrs / 24);
+    const remHrs = diffHrs % 24;
+    if (diffDays === 0) return remHrs <= 1 ? 'In less than 1 hour!' : `In ${remHrs} hours`;
+    if (diffDays === 1) return `Tomorrow · ${remHrs}h left`;
+    return `${diffDays} days away`;
+  }, []);
+
+  const getAlertColor = useCallback((rawDate: string): string => {
+    const diffMs = new Date(rawDate).getTime() - Date.now();
+    const diffDays = diffMs / (1000 * 60 * 60 * 24);
+    if (diffDays <= 1) return '#EF4444';
+    if (diffDays <= 3) return '#F97316';
+    if (diffDays <= 7) return '#F59E0B';
+    return '#22C55E';
+  }, []);
+
+  const activeAlerts = useMemo(() =>
+    FEATURED_EVENTS.filter(
+      (e) => e.rawDate && !dismissedAlerts.has(e.id) && new Date(e.rawDate).getTime() > Date.now()
+    ),
+    [dismissedAlerts]
+  );
+
+  useEffect(() => {
+    if (activeAlerts.length === 0) return;
+    Animated.spring(alertSlideAnim, {
+      toValue: 0,
+      useNativeDriver: true,
+      friction: 7,
+      tension: 60,
+    }).start();
+    const tick = () => {
+      const updated: Record<string, string> = {};
+      activeAlerts.forEach((e) => { if (e.rawDate) updated[e.id] = getCountdownLabel(e.rawDate); });
+      setAlertCountdowns(updated);
+    };
+    tick();
+    const id = setInterval(tick, 60000);
+    return () => clearInterval(id);
+  }, [activeAlerts, alertSlideAnim, getCountdownLabel]);
+
+  const handleSetReminder = useCallback((eventId: string, eventTitle: string) => {
+    setRemindersSet((prev) => new Set(prev).add(eventId));
+    Alert.alert(
+      '🔔 Reminder Set!',
+      `You'll be reminded about "${eventTitle}" before it starts. We'll notify you 24 hours in advance.`,
+      [{ text: 'Got it', style: 'default' }]
+    );
+  }, []);
+
+  const handleDismissAlert = useCallback((eventId: string) => {
+    setDismissedAlerts((prev) => new Set(prev).add(eventId));
+  }, []);
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
@@ -2253,6 +2320,59 @@ const HomeScreen: React.FC = () => {
   }, [announcementFilter]);
 
   // ------ Sub-renderers ------
+  const renderEventReminder = () => {
+    if (activeAlerts.length === 0) return null;
+    return (
+      <Animated.View style={{ transform: [{ translateY: alertSlideAnim }] }}>
+        {activeAlerts.map((e) => {
+          const alertColor = e.rawDate ? getAlertColor(e.rawDate) : '#22C55E';
+          const countdown = alertCountdowns[e.id] ?? (e.rawDate ? getCountdownLabel(e.rawDate) : '');
+          const reminded = remindersSet.has(e.id);
+          return (
+            <View key={e.id} style={[styles.alertBanner, { borderLeftColor: alertColor }]}>
+              <LinearGradient
+                colors={[alertColor + '22', alertColor + '0A']}
+                style={styles.alertGradient}
+              >
+                <View style={styles.alertTopRow}>
+                  <View style={[styles.alertPulse, { backgroundColor: alertColor }]} />
+                  <Text style={[styles.alertCountdown, { color: alertColor }]}>{countdown}</Text>
+                  <TouchableOpacity
+                    onPress={() => handleDismissAlert(e.id)}
+                    hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+                    style={styles.alertDismissBtn}
+                  >
+                    <Text style={styles.alertDismissText}>✕</Text>
+                  </TouchableOpacity>
+                </View>
+                <Text style={styles.alertTitle} numberOfLines={1}>📅 {e.title}</Text>
+                <Text style={styles.alertLocation} numberOfLines={1}>📍 {e.location}</Text>
+                <View style={styles.alertBtnRow}>
+                  <TouchableOpacity
+                    style={[styles.alertReminderBtn, reminded && { backgroundColor: alertColor + '33' }]}
+                    onPress={() => !reminded && handleSetReminder(e.id, e.title)}
+                    activeOpacity={reminded ? 1 : 0.8}
+                  >
+                    <Text style={[styles.alertReminderBtnText, { color: alertColor }]}>
+                      {reminded ? '✓ Reminder set' : '🔔 Remind me'}
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.alertViewBtn}
+                    onPress={() => navigation.navigate('EventsTab')}
+                    activeOpacity={0.8}
+                  >
+                    <Text style={styles.alertViewBtnText}>View event →</Text>
+                  </TouchableOpacity>
+                </View>
+              </LinearGradient>
+            </View>
+          );
+        })}
+      </Animated.View>
+    );
+  };
+
   const renderHeroSlide = ({ item }: { item: HeroSlide }) => (
     <View style={styles.heroSlide}>
       <LinearGradient colors={item.gradient} style={styles.heroGradient} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
@@ -4471,6 +4591,7 @@ const HomeScreen: React.FC = () => {
           />
         }
       >
+        {renderEventReminder()}
         {renderHero()}
         {renderStats()}
         {renderWeatherStrip()}
@@ -6001,6 +6122,83 @@ const styles = StyleSheet.create({
   hmoMoment: { fontSize: 12, fontWeight: '700', marginTop: 2, lineHeight: 16 },
   hmoKeeper: { color: Colors.text.muted, fontSize: 11, marginTop: 8, paddingLeft: 32 },
   hmoLegacy: { color: Colors.text.secondary, fontSize: 11, lineHeight: 15, marginTop: 4, paddingLeft: 32 },
+
+  // --- Event Reminder Alert Banner ---
+  alertBanner: {
+    marginHorizontal: HORIZONTAL_PADDING,
+    marginTop: 10,
+    marginBottom: 4,
+    borderRadius: CARD_RADIUS,
+    borderLeftWidth: 4,
+    overflow: 'hidden',
+  },
+  alertGradient: {
+    padding: 14,
+    borderRadius: CARD_RADIUS,
+  },
+  alertTopRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 6,
+  },
+  alertPulse: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    marginRight: 8,
+  },
+  alertCountdown: {
+    fontSize: 12,
+    fontWeight: '900',
+    flex: 1,
+    letterSpacing: 0.4,
+  },
+  alertDismissBtn: {
+    padding: 4,
+  },
+  alertDismissText: {
+    color: Colors.text.muted,
+    fontSize: 14,
+    fontWeight: '700',
+  },
+  alertTitle: {
+    color: Colors.text.primary,
+    fontSize: 15,
+    fontWeight: '800',
+    marginBottom: 3,
+  },
+  alertLocation: {
+    color: Colors.text.secondary,
+    fontSize: 12,
+    marginBottom: 10,
+  },
+  alertBtnRow: {
+    flexDirection: 'row',
+    gap: 8,
+  },
+  alertReminderBtn: {
+    paddingVertical: 7,
+    paddingHorizontal: 14,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: '#ffffff22',
+    backgroundColor: '#ffffff0D',
+  },
+  alertReminderBtnText: {
+    fontSize: 12,
+    fontWeight: '800',
+  },
+  alertViewBtn: {
+    paddingVertical: 7,
+    paddingHorizontal: 14,
+    borderRadius: 20,
+    backgroundColor: '#ffffff15',
+  },
+  alertViewBtnText: {
+    color: Colors.text.primary,
+    fontSize: 12,
+    fontWeight: '700',
+  },
 });
 
 export default HomeScreen;
